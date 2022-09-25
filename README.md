@@ -8,6 +8,8 @@ ln -s `pwd` ~/.config/nixpkgs
 nix-env -f '<nixpkgs>' -iA home-manager
 ```
 
+TODO: https://github.com/tars0x9752/home#non-nixos-x86_64-linux
+
 
 ## How to setup
 
