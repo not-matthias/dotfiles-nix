@@ -1,11 +1,41 @@
 {
-  description = "A very basic flake";
+  description = "Personal flake";
 
-  outputs = { self, nixpkgs }: {
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
+    home-manager = {
+        url = "github:nix-community/home-manager";
+        inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    defaultPackage.x86_64-linux = self.packages.x86_64-linux.hello;
-
+    nur = {
+        url = "github:nix-community/NUR";
+        inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
+
+  outputs = { self, nixpkgs, home-manager, ... }:
+    let 
+      system = "x86_64-linux";
+      username = "not-matthias";
+      lib = nixpkgs.lib;
+
+    in {
+      # nixosConfigurations.nixbox = nixpkgs.lib.nixosSystem {
+      #   system = "x86_64-linux";
+      #   modules = [ 
+      #     ./configuration.nix
+      #   ];
+      # };
+
+      homeConfigurations = {
+        ${username} = home-manager.lib.homeManagerConfiguration {
+          system = "x86_64-linux";
+          homeDirectory = "/home/${username}";
+          username = "${username}";
+          configuration.imports = [ ./home.nix ];
+        };
+      };
+    };
 }
