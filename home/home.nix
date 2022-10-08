@@ -2,6 +2,7 @@
   nixpkgs,
   config,
   pkgs,
+  lib,
   ...
 }: {
   # Home Manager needs a bit of information about you and the
@@ -10,6 +11,10 @@
   home.homeDirectory = "/home/not-matthias";
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "vscode"
+    ];
 
   # TODO: Needs to be added to global configuration.nix
   # See: https://github.com/nix-community/home-manager/issues/2424
@@ -20,15 +25,22 @@
     fish
 
     # Tools
+    bat
     exa
     bottom
     btop
     tokei
     alejandra
+    zoxide
+    fcp
+    tealdeer
 
     # Dev
     jetbrains-mono
-#    jetbrains.clion # TODO: Enable unfree
+    #    jetbrains.clion # TODO: Enable unfree
+
+    # System
+    papirus-icon-theme
   ];
 
   # TODO: https://github.com/yrashk/nix-home/blob/master/home.nix#L156

@@ -1,5 +1,7 @@
 [
-	./alacritty
-	./cargo
-	./direnv
+  ./alacritty
+  ./cargo
+  ./direnv
+  ./git
+  ./vscode
 ]

@@ -1,0 +1,1 @@
+- [ ] Install betterdiscord: https://github.com/LunNova/replugged-nix-flake

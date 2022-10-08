@@ -1,7 +1,5 @@
-{ config, ...}:
-
-{
-	# TODO: Add plugins
+{config, ...}: {
+  # TODO: Add plugins
 
   programs.vscode = {
     enable = true;
