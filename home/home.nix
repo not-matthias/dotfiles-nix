@@ -49,6 +49,26 @@
     treefmt
     fzf
     kalker
+    ripgrep
+    du-dust
+    topgrade
+    hyperfine
+    hexyl
+    fd
+    gping
+    ouch
+    oxipng
+    delta # TODO: Set as git default
+
+    # Cargo tools
+    cargo-expand
+    cargo-udeps
+    cargo-update
+    cargo-sort
+    cargo-criterion
+    cargo-asm
+#    cargo-aoc
+    cargo-bloat
 
     # User
     signal-desktop

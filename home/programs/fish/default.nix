@@ -15,6 +15,8 @@ in {
     shellAbbrs = {
       "c" = "clear";
       "x" = "exit";
+      "find" = "fd";
+      "ping" = "gping";
       # TODO: Add the others
 
       "pwd" = "pwd | xclip -selection clipboard && pwd";
