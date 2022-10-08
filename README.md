@@ -49,3 +49,6 @@ nix flake init
 - https://github.com/MatthiasBenaets/nixos-config
 - https://ghedam.at/24353/tutorial-getting-started-with-home-manager-for-nix
 - https://ipetkov.dev/blog/tips-and-tricks-for-nix-flakes/
+
+Dotfiles: 
+- https://github.com/yrashk/nix-home

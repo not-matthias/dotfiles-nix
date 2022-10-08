@@ -1,1 +1,3 @@
 - [ ] Install betterdiscord: https://github.com/LunNova/replugged-nix-flake
+- [ ] fix icons: https://github.com/nix-community/home-manager/issues/1439
+    - Alt+F2 then r seems to fix it: https://github.com/NixOS/nixpkgs/issues/12757#issuecomment-178288669
