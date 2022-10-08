@@ -2,6 +2,8 @@
   ./alacritty
   ./cargo
   ./direnv
+  ./fish
   ./git
+  ./tmux
   ./vscode
 ]
