@@ -1,18 +1,23 @@
-{ pkgs, ... }:
+{ nixpkgs, config, pkgs, ... }:
 
 {
+  # Home Manager needs a bit of information about you and the
+  # paths it should manage.
+  home.username = "not-matthias";
+  home.homeDirectory = "/home/not-matthias";
+
+	nixpkgs.config.allowUnfree = true;
+
   home.packages = [
     pkgs.cowsay
+    pkgs.notion-app-enhanced
+    pkgs.bottom
+    pkgs.btop
   ];
 
   programs.git = {
     enable = true;
   };
-
-  # Home Manager needs a bit of information about you and the
-  # paths it should manage.
-  home.username = "not-matthias";
-  home.homeDirectory = "/home/not-matthias";
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
