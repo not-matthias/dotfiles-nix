@@ -7,24 +7,38 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nurpkgs = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
+      hostName = "nixos";
+      username = "not-matthias";
       pkgs = nixpkgs.legacyPackages.${system};
     in {
-      homeConfigurations.jdoe = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+#        nixosConfigurations = {
+#          ${hostName} = nixpkgs.lib.nixosSystem {
+#            inherit system;
+##            modules = [ ./system/configuration.nix ];
+#          };
+#        };
 
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
-        modules = [
-          ./home.nix
-        ];
+        homeManagerConfiguration = {
+          ${username} = home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
 
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
-      };
+            modules = [
+            	./home/home.nix
+            ];
+
+#            activationPackage = pkgs.writeScriptBin "activate" ''
+#							#!${pkgs.runtimeShell}
+#							${home-manager.lib.hmActivationScript self}
+          };
+        };
     };
 }
