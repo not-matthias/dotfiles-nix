@@ -50,3 +50,4 @@ nix flake init
 
 Dotfiles: 
 - https://github.com/yrashk/nix-home
+- https://github.com/Th0rgal/horus-nix-home

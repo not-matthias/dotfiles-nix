@@ -5,6 +5,7 @@
   ./firefox
   ./fish
   ./git
+  ./hyprland
   ./neovim
   ./tmux
   ./vscode
