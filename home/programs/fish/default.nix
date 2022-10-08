@@ -20,6 +20,10 @@ in {
       "pwd" = "pwd | xclip -selection clipboard && pwd";
     };
     interactiveShellInit = fishPrompt + fishAbbr;
+    shellInit = ''
+      zoxide init --cmd j fish | source
+      mcfly init fish | source
+    '';
     functions = {
       fish_greeting = '''';
       fish_mode_prompt = '''';
