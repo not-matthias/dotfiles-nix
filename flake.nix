@@ -1,5 +1,5 @@
 {
-  description = "Home Manager configuration of Jane Doe";
+  description = "Home Manager configuration";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -34,10 +34,6 @@
             modules = [
             	./home/home.nix
             ];
-
-#            activationPackage = pkgs.writeScriptBin "activate" ''
-#							#!${pkgs.runtimeShell}
-#							${home-manager.lib.hmActivationScript self}
           };
         };
     };
