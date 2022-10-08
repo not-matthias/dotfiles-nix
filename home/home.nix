@@ -17,10 +17,18 @@
 
   # TODO: https://github.com/yrashk/nix-home/blob/master/home.nix#L65
   home.packages = with pkgs; [
-    cowsay
+    fish
+
+    # Tools
+    exa
     bottom
     btop
+    tokei
     alejandra
+
+    # Dev
+    jetbrains-mono
+#    jetbrains.clion # TODO: Enable unfree
   ];
 
   # TODO: https://github.com/yrashk/nix-home/blob/master/home.nix#L156
