@@ -13,28 +13,31 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
-    let
-      system = "x86_64-linux";
-      hostName = "nixos";
-      username = "not-matthias";
-      pkgs = nixpkgs.legacyPackages.${system};
-    in {
-#        nixosConfigurations = {
-#          ${hostName} = nixpkgs.lib.nixosSystem {
-#            inherit system;
-##            modules = [ ./system/configuration.nix ];
-#          };
-#        };
+  outputs = {
+    nixpkgs,
+    home-manager,
+    ...
+  }: let
+    system = "x86_64-linux";
+    hostName = "nixos";
+    username = "not-matthias";
+    pkgs = nixpkgs.legacyPackages.${system};
+  in {
+    #        nixosConfigurations = {
+    #          ${hostName} = nixpkgs.lib.nixosSystem {
+    #            inherit system;
+    ##            modules = [ ./system/configuration.nix ];
+    #          };
+    #        };
 
-        homeManagerConfiguration = {
-          ${username} = home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
+    homeManagerConfiguration = {
+      ${username} = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
 
-            modules = [
-            	./home/home.nix
-            ];
-          };
-        };
+        modules = [
+          ./home/home.nix
+        ];
+      };
     };
+  };
 }

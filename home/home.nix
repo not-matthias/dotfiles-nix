@@ -1,26 +1,29 @@
-{ nixpkgs, config, pkgs, ... }:
-
 {
+  nixpkgs,
+  config,
+  pkgs,
+  ...
+}: {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = "not-matthias";
   home.homeDirectory = "/home/not-matthias";
 
-	nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfree = true;
 
-	# TODO: Needs to be added to global configuration.nix
-	# See: https://github.com/nix-community/home-manager/issues/2424
-	#	programs.dconf.enable = true;
+  # TODO: Needs to be added to global configuration.nix
+  # See: https://github.com/nix-community/home-manager/issues/2424
+  #	programs.dconf.enable = true;
 
-	# TODO: https://github.com/yrashk/nix-home/blob/master/home.nix#L65
+  # TODO: https://github.com/yrashk/nix-home/blob/master/home.nix#L65
   home.packages = with pkgs; [
     cowsay
     bottom
     btop
+    alejandra
   ];
 
-
-	# TODO: https://github.com/yrashk/nix-home/blob/master/home.nix#L156
+  # TODO: https://github.com/yrashk/nix-home/blob/master/home.nix#L156
   programs.git = {
     enable = true;
   };
@@ -37,7 +40,6 @@
   # the Home Manager release notes for a list of state version
   # changes in each release.
   home.stateVersion = "22.05";
-
 
   imports = (import ./programs) ++ (import ./services);
 }
