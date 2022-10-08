@@ -12,7 +12,7 @@ in {
     baseIndex = 1;
     extraConfig = tmuxConf;
     escapeTime = 0;
-#    keyMode = "vi";
+    #    keyMode = "vi";
     plugins = with plugins; [
       cpu
       {
