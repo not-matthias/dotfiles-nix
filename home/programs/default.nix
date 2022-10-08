@@ -1,2 +1,5 @@
 [
+	./alacritty
+	./cargo
+	./direnv
 ]
