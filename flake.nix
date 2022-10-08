@@ -22,6 +22,7 @@
     hostName = "nixos";
     username = "not-matthias";
     pkgs = nixpkgs.legacyPackages.${system};
+    nurpkgs = import nurpkgs {inherit pkgs;};
   in {
     #        nixosConfigurations = {
     #          ${hostName} = nixpkgs.lib.nixosSystem {
@@ -29,7 +30,6 @@
     ##            modules = [ ./system/configuration.nix ];
     #          };
     #        };
-
     homeManagerConfiguration = {
       ${username} = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;

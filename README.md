@@ -41,8 +41,6 @@ Setup flake:
 nix flake init
 ```
 
-
-
 ## References
 
 - https://invidious.namazso.eu/watch?v=AGVXJ-TIv3Y

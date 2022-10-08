@@ -1,2 +1,4 @@
 [
+  ./onedrive
+  ./redshift
 ]

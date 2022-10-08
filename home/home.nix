@@ -69,7 +69,7 @@
     cargo-sort
     cargo-criterion
     cargo-asm
-#    cargo-aoc
+    #    cargo-aoc
     cargo-bloat
 
     # User
@@ -84,14 +84,28 @@
     vlc
     krita
     obs-studio
+    cava
+    notepadqq
+    flameshot
 
     # Dev
     jetbrains-mono
     #    jetbrains.clion
+    wine
+    docker
+    docker-compose
+    virt-manager
+    qemu_kvm
+    graphviz
+    cmake
 
-    # System
+    # Misc
     papirus-icon-theme
+    gnome.gnome-tweaks
   ];
+
+  # Ensure fonts installed via Nix are picked up.
+  fonts.fontconfig.enable = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

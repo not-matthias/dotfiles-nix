@@ -2,8 +2,10 @@
   ./alacritty
   ./cargo
   ./direnv
+  ./firefox
   ./fish
   ./git
+  ./neovim
   ./tmux
   ./vscode
 ]

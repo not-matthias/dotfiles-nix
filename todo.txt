@@ -1,3 +1,9 @@
 - [ ] Install betterdiscord: https://github.com/LunNova/replugged-nix-flake
 - [ ] fix icons: https://github.com/nix-community/home-manager/issues/1439
     - Alt+F2 then r seems to fix it: https://github.com/NixOS/nixpkgs/issues/12757#issuecomment-178288669
+- [ ] Hyprland: https://github.com/notusknot/dotfiles-nix/tree/main/modules/hyprland
+- [ ] Rust: https://github.com/tars0x9752/home/blob/main/modules/rust.nix
+- [ ] Dconf: https://github.com/gvolpe/nix-config/tree/master/home/programs/dconf
+- [ ] Neovim IDE: https://github.com/gvolpe/nix-config/tree/master/home/programs/neovim-ide
+- [ ] Firefox:
+    - https://github.com/gvolpe/nix-config/blob/master/home/programs/browsers/firefox.nix
