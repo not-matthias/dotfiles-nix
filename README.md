@@ -11,6 +11,15 @@ home-manager switch
 
 TODO: https://github.com/tars0x9752/home#non-nixos-x86_64-linux
 
+## Fix home-manager error 
+
+```
+nix-env --set-flag priority 0 nix-2.11.0
+nix-shell '<home-manager>' -A install
+```
+
+Source: https://github.com/nix-community/home-manager/issues/2995#issuecomment-1146676866
+
 
 ## How to setup
 
