@@ -16,6 +16,7 @@
       "vscode"
       "clion"
       "obsidian"
+      "discord"
     ];
 
   home.sessionVariables = {
@@ -61,6 +62,7 @@
     delta # TODO: Set as git default
 
     # Cargo tools
+    cargo-edit
     cargo-expand
     cargo-udeps
     cargo-update
@@ -72,6 +74,8 @@
 
     # User
     signal-desktop
+    discord
+    betterdiscordctl
     obsidian
     anki
     xournalpp
