@@ -14,6 +14,7 @@
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "vscode"
+      "clion"
     ];
 
   # TODO: Needs to be added to global configuration.nix
@@ -34,10 +35,11 @@
     zoxide
     fcp
     tealdeer
+    treefmt
 
     # Dev
     jetbrains-mono
-    #    jetbrains.clion # TODO: Enable unfree
+    #    jetbrains.clion
 
     # System
     papirus-icon-theme
