@@ -15,11 +15,21 @@
     builtins.elem (lib.getName pkg) [
       "vscode"
       "clion"
+      "obsidian"
     ];
 
-  # TODO: Needs to be added to global configuration.nix
-  # See: https://github.com/nix-community/home-manager/issues/2424
-  #	programs.dconf.enable = true;
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    BROWSER = "firefox";
+    TERMINAL = "alacritty";
+  };
+
+  pam.sessionVariables =
+    config.home.sessionVariables
+    // {
+      LANGUAGE = "en_US:en";
+      LANG = "en_US.UTF-8";
+    };
 
   # TODO: https://github.com/yrashk/nix-home/blob/master/home.nix#L65
   home.packages = with pkgs; [
@@ -36,6 +46,19 @@
     fcp
     tealdeer
     treefmt
+    fzf
+    kalker
+
+    # User
+    signal-desktop
+    obsidian
+    anki
+    xournalpp
+    blanket
+    calibre
+    vlc
+    krita
+    obs-studio
 
     # Dev
     jetbrains-mono
@@ -44,11 +67,6 @@
     # System
     papirus-icon-theme
   ];
-
-  # TODO: https://github.com/yrashk/nix-home/blob/master/home.nix#L156
-  programs.git = {
-    enable = true;
-  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
