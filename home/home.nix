@@ -11,13 +11,13 @@
   home.homeDirectory = "/home/not-matthias";
 
   nixpkgs.config.allowUnfree = true;
-#  nixpkgs.config.allowUnfreePredicate = pkg:
-#    builtins.elem (lib.getName pkg) [
-#      "vscode"
-#      "clion"
-#      "obsidian"
-#      "discord"
-#    ];
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "vscode"
+      "clion"
+      "obsidian"
+      "discord"
+    ];
 
   home.sessionVariables = {
     EDITOR = "nvim";
@@ -74,9 +74,9 @@
 
     # User
     signal-desktop
-#    discord
+    discord
     betterdiscordctl
-#    obsidian
+    obsidian
     anki
     xournalpp
     blanket
