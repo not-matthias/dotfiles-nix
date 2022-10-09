@@ -8,5 +8,5 @@
   ./hyprland
   ./neovim
   ./tmux
-  ./vscode
+#  ./vscode
 ]
