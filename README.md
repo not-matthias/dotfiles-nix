@@ -7,7 +7,7 @@ Install home-manager as described here: https://github.com/nix-community/home-ma
 
 ```
 ln -s `pwd` ~/.config/nixpkgs
-home-manager switch
+./switch home   # Or system if you are using NixOS
 ```
 
 ## Optimise
@@ -17,7 +17,9 @@ nix-collect-garbage -d
 nix store optimise
 ```
 
-## Fix home-manager error 
+## Errors
+
+### Fix home-manager error 
 
 ```
 nix-env --set-flag priority 0 nix-2.11.0
@@ -27,7 +29,7 @@ nix-shell '<home-manager>' -A install
 Source: https://github.com/nix-community/home-manager/issues/2995#issuecomment-1146676866
 
 
-## How to setup
+### Flakes not supported
 
 Add to /etc/nix/nix.conf:
 ```
@@ -35,10 +37,6 @@ Add to /etc/nix/nix.conf:
 experimental-features = nix-command flakes
 ```
 
-Setup flake:
-```
-nix flake init
-```
 
 ## References
 
