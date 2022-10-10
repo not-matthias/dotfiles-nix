@@ -3,9 +3,10 @@ NixOS dotfiles and hardware configurations
 
 ## Installation
 
+Install home-manager as described here: https://github.com/nix-community/home-manager#installation
+
 ```
 ln -s `pwd` ~/.config/nixpkgs
-nix-env -f '<nixpkgs>' -iA home-manager
 home-manager switch
 ```
 
