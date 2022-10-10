@@ -10,8 +10,6 @@ ln -s `pwd` ~/.config/nixpkgs
 home-manager switch
 ```
 
-TODO: https://github.com/tars0x9752/home#non-nixos-x86_64-linux
-
 ## Optimise
 
 ```
