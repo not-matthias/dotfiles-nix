@@ -16,20 +16,23 @@
 
   time.timeZone = "Europe/Vienna";
   i18n = {
-    defaultLocale = "en_US.UTF-8";
+    defaultLocale = "en_US.utf8";
+    extraLocaleSettings = {
+      LC_ADDRESS = "de_AT.utf8";
+      LC_IDENTIFICATION = "de_AT.utf8";
+      LC_MEASUREMENT = "de_AT.utf8";
+      LC_MONETARY = "de_AT.utf8";
+      LC_NAME = "de_AT.utf8";
+      LC_NUMERIC = "de_AT.utf8";
+      LC_PAPER = "de_AT.utf8";
+      LC_TELEPHONE = "de_AT.utf8";
+      LC_TIME = "de_AT.utf8";
+    };
   };
 
   console = {
     font = "Lat2-Terminus16";
     keyMap = "us";
-  };
-
-  security.rtkit.enable = true;
-  sound = {
-    enable = true;
-    mediaKeys = {
-      enable = true;
-    };
   };
 
   fonts.fonts = with pkgs; [
@@ -63,6 +66,11 @@
       usbutils
     ];
   };
+
+  # Enable sound with pipewire.
+  sound.enable = true;
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
 
   services = {
     pipewire = {

@@ -1,5 +1,8 @@
-{ pkgs, user, ... }:
 {
+  pkgs,
+  user,
+  ...
+}: {
   services = {
     flameshot = {
       enable = true;
@@ -9,7 +12,7 @@
           saveAsFileExtension = ".png";
           uiColor = "#2d0096";
           showHelp = "false";
-        #   disabledTrayIcon = "true";
+          #   disabledTrayIcon = "true";
         };
       };
     };
