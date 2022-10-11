@@ -4,7 +4,7 @@
   user,
   ...
 }: {
-  imports = [(import ./hardware-configuration.nix)];
+  imports = [(import ./hardware-configuration.nix)] ++ [(import ../../modules/desktop/virtualization)];
 
   # TODO: Window Manager, Docker, Hardware Devices (Bluetooth)
 

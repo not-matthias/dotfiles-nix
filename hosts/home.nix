@@ -67,8 +67,6 @@
       jetbrains-mono
       #    jetbrains.clion
       wine
-      virt-manager
-      qemu_kvm
       graphviz
       cmake
       gitAndTools.gh
