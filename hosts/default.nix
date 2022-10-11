@@ -24,7 +24,7 @@ in {
     modules = [
       #   hyprland.nixosModules.default
       ./laptop
-      # ./configuration.nix
+      ./configuration.nix
 
       home-manager.nixosModules.home-manager
       {
@@ -32,7 +32,7 @@ in {
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {inherit user;};
         home-manager.users.${user} = {
-          imports = [(import ./home.nix)];
+          imports = [(import ./home.nix)] ++ [(import ./laptop/home.nix)];
         };
       }
     ];

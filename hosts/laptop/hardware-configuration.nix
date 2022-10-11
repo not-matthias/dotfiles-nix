@@ -12,10 +12,22 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "sd_mod" "rtsx_pci_sdmmc"];
+  boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "rtsx_pci_sdmmc"];
   boot.initrd.kernelModules = [];
   boot.kernelModules = [];
   boot.extraModulePackages = [];
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/3a71b953-9330-4929-a35f-4a17973186b2";
+    fsType = "ext4";
+  };
+
+  boot.initrd.luks.devices."luks-b9eeb412-f2ac-42e5-adf6-88aa1e4cab73".device = "/dev/disk/by-uuid/b9eeb412-f2ac-42e5-adf6-88aa1e4cab73";
+
+  fileSystems."/boot/efi" = {
+    device = "/dev/disk/by-uuid/DE67-F487";
+    fsType = "vfat";
+  };
 
   swapDevices = [
     {device = "/dev/disk/by-uuid/1965b4ab-ece0-4246-9a21-86262af7c5b7";}

@@ -1,14 +1,3 @@
-#
-#  Main system configuration. More information available in configuration.nix(5) man page.
-#
-#  flake.nix
-#   ├─ ./hosts
-#   │   └─ configuration.nix *
-#   └─ ./modules
-#       └─ ./editors
-#           └─ ./emacs
-#               └─ default.nix
-#
 {
   config,
   lib,
@@ -62,6 +51,7 @@
   environment = {
     variables = {
       TERMINAL = "alacritty";
+      BROWSER = "firefox";
       EDITOR = "nvim";
       VISUAL = "nvim";
     };
@@ -94,7 +84,6 @@
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
-    package = pkgs.nixFlakes;
     registry.nixpkgs.flake = inputs.nixpkgs;
     extraOptions = ''
       experimental-features = nix-command flakes
@@ -103,6 +92,13 @@
     '';
   };
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "vscode"
+      "clion"
+      "obsidian"
+      "discord"
+    ];
 
   system = {
     autoUpgrade = {
