@@ -10,6 +10,11 @@ ln -s `pwd` ~/.config/nixpkgs
 ./switch home   # Or system if you are using NixOS
 ```
 
+With NixOS: 
+```
+sudo nixos-rebuild switch --flake .#laptop
+```
+
 ## Optimise
 
 ```
