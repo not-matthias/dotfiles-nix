@@ -111,6 +111,7 @@
     qemu_kvm
     graphviz
     cmake
+    gitAndTools.gh
 
     # Misc
     papirus-icon-theme
