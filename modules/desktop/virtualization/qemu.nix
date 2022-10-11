@@ -19,11 +19,11 @@
   virtualisation = {
     libvirtd = {
       enable = true;
-      qemuPackage = pkgs.qemu_kvm;
       qemu = {
         verbatimConfig = ''
           nvram = [ "${pkgs.OVMF}/FV/OVMF.fd:${pkgs.OVMF}/FV/OVMF_VARS.fd" ]
         '';
+        package = pkgs.qemu_kvm;
       };
     };
     spiceUSBRedirection.enable = true; # USB passthrough
