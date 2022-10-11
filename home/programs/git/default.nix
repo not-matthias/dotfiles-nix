@@ -6,6 +6,9 @@
     extraConfig = {
       pull.rebase = true;
       push.autoSetupRemote = true;
+      credential."https://github.com" = {
+        helper = "~/.nix-profile/bin/gh";
+      };
     };
   };
 }
