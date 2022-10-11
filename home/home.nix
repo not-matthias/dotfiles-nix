@@ -114,6 +114,7 @@
 
     # Misc
     papirus-icon-theme
+    gnome.adwaita-icon-theme
     gnome.gnome-tweaks
   ];
 
