@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: {
-  programs.dconf.enable = true;
+  imports = [(import ./dconf.nix)];
 
   services = {
     xserver = {
