@@ -11,11 +11,6 @@
 
   # TODO: Window Manager, Hardware Devices (Bluetooth)
 
-  programs = {
-    dconf.enable = true;
-    light.enable = true;
-  };
-
   networking = {
     hostName = "laptop";
     networkmanager.enable = true;

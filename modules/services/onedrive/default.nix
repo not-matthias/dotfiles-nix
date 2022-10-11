@@ -4,5 +4,7 @@
   ...
 }: {
   # TODO: https://nixos.wiki/wiki/OneDrive
-  #  services.onedrive.enable = true;
+  # services.onedrive = {
+  #   enable = true;
+  # };
 }
