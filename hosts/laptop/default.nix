@@ -4,9 +4,11 @@
   user,
   ...
 }: {
-  imports = [(import ./hardware-configuration.nix)] ++ [(import ../../modules/desktop/virtualization)];
+  imports =
+    [(import ./hardware-configuration.nix)]
+    ++ (import ../../modules/desktop/virtualization);
 
-  # TODO: Window Manager, Docker, Hardware Devices (Bluetooth)
+  # TODO: Window Manager, Hardware Devices (Bluetooth)
 
   programs = {
     dconf.enable = true;
