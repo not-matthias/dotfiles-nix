@@ -67,8 +67,6 @@
       jetbrains-mono
       #    jetbrains.clion
       wine
-      docker
-      docker-compose
       virt-manager
       qemu_kvm
       graphviz

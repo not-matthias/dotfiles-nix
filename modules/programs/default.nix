@@ -2,6 +2,7 @@
   ./alacritty
   ./cargo
   ./direnv
+  ./docker
   ./firefox
   ./fish
   ./git
