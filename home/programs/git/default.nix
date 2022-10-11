@@ -7,7 +7,7 @@
       pull.rebase = true;
       push.autoSetupRemote = true;
       credential."https://github.com" = {
-        helper = "~/.nix-profile/bin/gh";
+        helper = "!~/.nix-profile/bin/gh auth git-credential";
       };
     };
   };
