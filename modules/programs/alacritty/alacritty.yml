@@ -212,7 +212,7 @@ colors:
 font:
   normal:
     # Font family
-    family: "JetBrainsMono Nerd Font"
+    family: "JetBrainsMono"
     style: Regular
 
   # Point size
