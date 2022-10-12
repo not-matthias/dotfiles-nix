@@ -31,7 +31,7 @@
   };
 
   hardware.pulseaudio.enable = false;
-  
+
   environment = {
     systemPackages = with pkgs; [
       gnome.adwaita-icon-theme
