@@ -67,21 +67,25 @@
     ];
   };
 
-  # Enable sound with pipewire.
+  # Enable sound with pipewire/pulseaudio.
   sound.enable = true;
-  hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
 
-  services = {
-    pipewire = {
-      enable = true;
-      alsa = {
-        enable = true;
-        support32Bit = true;
-      };
-      pulse.enable = true;
-    };
+  hardware.pulseaudio = {
+    enable = true;
+    package = pkgs.pulseaudioFull;
   };
+
+  # services = {
+  #   pipewire = {
+  #     enable = true;
+  #     alsa = {
+  #       enable = true;
+  #       support32Bit = true;
+  #     };
+  #     pulse.enable = true;
+  #   };
+  # };
 
   nix = {
     settings = {

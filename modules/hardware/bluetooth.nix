@@ -1,4 +1,8 @@
 {pkgs, ...}: {
+  services = {
+    blueman.enable = true;
+  };
+
   hardware.bluetooth = {
     enable = true;
     hsphfpd.enable = true; # HSP & HFP daemon
