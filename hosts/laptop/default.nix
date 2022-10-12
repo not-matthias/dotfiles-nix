@@ -6,8 +6,8 @@
 }: {
   imports =
     [(import ./hardware-configuration.nix)]
-    ++ [(import ../../modules/hardware)]
     ++ [(import ../../modules/desktop/gnome)]
+    ++ (import ../../modules/hardware)
     ++ (import ../../modules/desktop/virtualization);
 
   # TODO: Window Manager, Hardware Devices (Bluetooth)
