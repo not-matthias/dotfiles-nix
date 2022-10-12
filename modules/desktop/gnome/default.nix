@@ -4,7 +4,6 @@
   pkgs,
   ...
 }: {
-  imports = [(import ./dconf.nix)];
   programs.dconf.enable = true;
 
   services = {
@@ -14,7 +13,6 @@
       layout = "us";
       xkbOptions = "eurosign:e";
       libinput.enable = true;
-      wacom.enable = true;
 
       displayManager = {
         gdm = {
@@ -27,16 +25,18 @@
         };
       };
     };
+    udev.packages = with pkgs; [
+      gnome.gnome-settings-daemon
+    ];
   };
 
   hardware.pulseaudio.enable = false;
-  environment.systemPackages = with pkgs; [
-    gnome.adwaita-icon-theme
-    gnomeExtensions.appindicator  # systray icons
-    xclip
-    xorg.xev
-    xorg.xkill
-    xorg.xrandr
-  ];
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+  
+  environment = {
+    systemPackages = with pkgs; [
+      gnome.adwaita-icon-theme
+      gnomeExtensions.appindicator
+      gnomeExtensions.pop-shell
+    ];
+  };
 }
