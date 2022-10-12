@@ -1,11 +1,11 @@
 {programs, ...}: {
   programs.dconf.enable = true;
 
-  dconf.settings = {
-    "system/locale" = {
-      region = "en_US.UTF-8";
-    };
-  };
+  # dconf.settings = {
+  #   "system/locale" = {
+  #     region = "en_US.UTF-8";
+  #   };
+  # };
 }
 # {lib, ...}: {
 #   dconf.settings = {
