@@ -221,7 +221,7 @@ font:
 # Start zeelij on startup
 # See: https://stackoverflow.com/questions/67463932/is-it-possible-to-make-alacritty-starts-with-tmux
 shell:
-  program: /usr/bin/fish
+  program: /etc/profiles/per-user/not-matthias/bin/fish
   args:
     - -l
     - -c
