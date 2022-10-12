@@ -70,6 +70,7 @@
       graphviz
       cmake
       gitAndTools.gh
+      python3
 
       # Misc
       papirus-icon-theme
