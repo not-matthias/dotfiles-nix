@@ -32,9 +32,11 @@
   hardware.pulseaudio.enable = false;
   environment.systemPackages = with pkgs; [
     gnome.adwaita-icon-theme
+    gnomeExtensions.appindicator  # systray icons
     xclip
     xorg.xev
     xorg.xkill
     xorg.xrandr
   ];
+  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 }
