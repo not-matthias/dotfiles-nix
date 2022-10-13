@@ -62,6 +62,7 @@
       notepadqq
       flameshot
       zotero
+      noisetorch
 
       # Dev
       jetbrains-mono
