@@ -7,6 +7,8 @@
   imports =
     [(import ./hardware-configuration.nix)]
     ++ [(import ../../modules/desktop/gnome)]
+    ++ [(import ../../modules/desktop/eduroam)]
+    ++ [(import ../../modules/programs/protonvpn)]
     ++ (import ../../modules/hardware)
     ++ (import ../../modules/desktop/virtualization);
 
