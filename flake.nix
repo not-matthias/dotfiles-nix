@@ -12,41 +12,28 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
     hyprland = {
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = {
+  outputs = inputs @ {
+    self,
     nixpkgs,
     home-manager,
+    nur,
     hyprland,
     ...
   }: let
-    system = "x86_64-linux";
-    hostName = "nixos";
-    username = "not-matthias";
-    pkgs = nixpkgs.legacyPackages.${system};
+    user = "not-matthias";
+    location = "~/.config/nixpkgs";
   in {
-    #        nixosConfigurations = {
-    #          ${hostName} = nixpkgs.lib.nixosSystem {
-    #            inherit system;
-    ##            modules = [ ./system/configuration.nix ];
-    #          };
-    #        };
-    homeManagerConfiguration = {
-      ${username} = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-
-        modules = [
-          ./modules/home.nix
-
-#          hyprland.homeManagerModules.default
-#          {wayland.windowManager.hyprland.enable = true;}
-        ];
-      };
-    };
+    nixosConfigurations = (
+      import ./hosts {
+        inherit (nixpkgs) lib;
+        inherit inputs nixpkgs home-manager nur user location hyprland;
+      }
+    );
   };
 }

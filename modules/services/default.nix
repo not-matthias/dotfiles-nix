@@ -1,4 +1,5 @@
 [
+  ./flameshot
   ./onedrive
   ./redshift
 ]
