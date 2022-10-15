@@ -3,7 +3,6 @@ abbr dotfiles "cd ~/.dotfiles && code . && exit"
 abbr tm "tmux"
 
 abbr cat "bat"
-abbr rm "rip"
 abbr cp "fcp"
 abbr xxd "hexyl"
 abbr dmesg "rmesg"
