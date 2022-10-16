@@ -1,7 +1,11 @@
-{user, ...}: {
+{
+  pkgs,
+  user,
+  ...
+}: {
   dconf.settings = {
     "org/gnome/desktop/applications/terminal" = {
-      exec = "/etc/profiles/per-user/${user}/bin/alacritty";
+      exec = "${pkgs.alacritty}/bin/alacritty";
       exec-arg = "-x";
     };
 
