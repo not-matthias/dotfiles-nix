@@ -7,6 +7,7 @@
   location,
   ...
 }: {
+  users.defaultUserShell = pkgs.fish;
   users.users.${user} = {
     isNormalUser = true;
     extraGroups = ["wheel" "video" "audio" "camera" "networkmanager" "kvm" "libvirtd"];
