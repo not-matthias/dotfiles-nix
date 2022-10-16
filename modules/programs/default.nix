@@ -1,6 +1,5 @@
 [
   ./alacritty
-  ./cargo
   ./direnv
   ./discord
   ./firefox

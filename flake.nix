@@ -16,6 +16,11 @@
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -24,6 +29,7 @@
     home-manager,
     nur,
     hyprland,
+    fenix,
     ...
   }: let
     user = "not-matthias";
@@ -32,7 +38,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit inputs nixpkgs home-manager nur user location hyprland;
+        inherit inputs nixpkgs home-manager nur user location hyprland fenix;
       }
     );
   };

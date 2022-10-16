@@ -7,6 +7,7 @@
   user,
   location,
   hyprland,
+  fenix,
   ...
 }: let
   system = "x86_64-linux";
@@ -22,6 +23,7 @@ in {
     inherit system;
     specialArgs = {inherit inputs user location hyprland;};
     modules = [
+      ({...}: {nixpkgs.overlays = [fenix.overlay];})
       ./desktop
       ./configuration.nix
 
@@ -41,6 +43,7 @@ in {
     inherit system;
     specialArgs = {inherit inputs user location hyprland;};
     modules = [
+      ({...}: {nixpkgs.overlays = [fenix.overlay];})
       #   hyprland.nixosModules.default
       ./laptop
       ./configuration.nix
