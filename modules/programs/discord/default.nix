@@ -1,4 +1,13 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
+  home.packages = with pkgs; [
+    discord
+    betterdiscordctl
+  ];
+
   nixpkgs.overlays = [
     # This overlay will pull the latest version of Discord
     (self: super: {

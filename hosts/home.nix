@@ -49,8 +49,6 @@
 
       # User
       signal-desktop
-      discord
-      betterdiscordctl
       obsidian
       anki
       xournalpp
