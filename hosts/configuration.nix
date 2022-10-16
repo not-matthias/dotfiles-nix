@@ -87,12 +87,21 @@
   #   };
   # };
 
+  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "vscode"
+      "clion"
+      "obsidian"
+      "discord"
+    ];
+
   nix = {
     settings = {
-      auto-optimise-store = true;
+      auto-optimise-store = false;
     };
     gc = {
-      automatic = true;
+      automatic = false;
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
@@ -103,18 +112,9 @@
       keep-derivations      = true
     '';
   };
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "vscode"
-      "clion"
-      "obsidian"
-      "discord"
-    ];
-
   system = {
     autoUpgrade = {
-      enable = true;
+      enable = false;
       channel = "https://nixos.org/channels/nixos-unstable";
     };
     stateVersion = "22.05";
