@@ -21,7 +21,12 @@ in {
 
       "pwd" = "pwd | xclip -selection clipboard && pwd";
     };
-    interactiveShellInit = fishPrompt + fishAbbr;
+    interactiveShellInit =
+      ''
+        eval (${pkgs.direnv}/bin/direnv hook fish)
+      ''
+      + fishPrompt
+      + fishAbbr;
     shellInit = ''
       zoxide init --cmd j fish | source
       mcfly init fish | source
