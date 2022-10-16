@@ -13,5 +13,22 @@
     "org/gnome/desktop/peripherals/touchpad" = {
       "tap-to-click" = true;
     };
+
+    # Screenshot via Ctrl+Alt+s
+    "org/gnome/shell/keybindings" = {
+      "show-screenshot-ui" = ["<Shift><Alt>s"];
+    };
+
+    # Custom keybinds
+    "org/gnome/settings-daemon/plugins/media-keys" = {
+      custom-keybindings = [
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+      ];
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+      binding = "<Primary><Alt>t";
+      command = "alacritty";
+      name = "open-terminal";
+    };
   };
 }
