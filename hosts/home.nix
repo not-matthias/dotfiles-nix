@@ -61,6 +61,7 @@
       flameshot
       zotero
       noisetorch
+      libsForQt5.okular
 
       # Dev
       jetbrains-mono
