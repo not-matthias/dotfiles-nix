@@ -35,5 +35,10 @@
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
     };
+
+    # Center new windows
+    "org/gnome/mutter" = {
+      center-new-windows = true;
+    };
   };
 }
