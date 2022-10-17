@@ -17,6 +17,7 @@ in {
       "x" = "exit";
       "find" = "fd";
       "ping" = "gping";
+      "cat" = "bat";
       # TODO: Add the others
 
       "pwd" = "pwd | xclip -selection clipboard && pwd";
