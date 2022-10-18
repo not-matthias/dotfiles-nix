@@ -66,6 +66,7 @@
       # Dev
       jetbrains-mono
       jetbrains.clion
+      jetbrains.datagrip
       wine
       graphviz
       cmake
