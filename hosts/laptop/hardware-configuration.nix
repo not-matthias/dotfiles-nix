@@ -31,7 +31,7 @@
 
   fileSystems."/mnt/data" = {
     device = "/dev/disk/by-uuid/7b3fc74e-9ff1-461f-89ac-a04be0e1d62e";
-    options = ["nosuid" "nodev" "nofail" "x-gvfs-show"];
+    options = ["nosuid" "nodev" "nofail"];
   };
 
   swapDevices = [
