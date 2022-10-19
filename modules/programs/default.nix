@@ -7,6 +7,7 @@
   ./git
   ./hyprland
   ./neovim
+  ./protonvpn
   ./rust
   ./tmux
   ./vscode
