@@ -7,6 +7,8 @@
   location,
   ...
 }: {
+  imports = import ../modules/overlays;
+
   users.defaultUserShell = pkgs.fish;
   users.users.${user} = {
     isNormalUser = true;
