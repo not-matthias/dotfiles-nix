@@ -79,26 +79,7 @@
     package = pkgs.pulseaudioFull;
   };
 
-  # services = {
-  #   pipewire = {
-  #     enable = true;
-  #     alsa = {
-  #       enable = true;
-  #       support32Bit = true;
-  #     };
-  #     pulse.enable = true;
-  #   };
-  # };
-
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "vscode"
-      "clion"
-      "obsidian"
-      "discord"
-    ];
-
   nix = {
     settings = {
       auto-optimise-store = false;
