@@ -4,7 +4,7 @@
     sha256 = "sha256:0gh1nlpiw0qi2vzg81brr8yyjhlrw0ksdkvjzy1afibswz7w6y0d";
   };
   free-emojis = builtins.fetchurl {
-    url = "https://raw.githubusercontent.com/BetterDiscordPlugins/DiscordFreeEmojis/8d34f3f9fc3dafc364fa3d1a3da27feab6f47a0c/DiscordFreeEmojis64px.plugin.js";
+    url = "https://raw.githubusercontent.com/An00nymushun/DiscordFreeEmojis/8d34f3f9fc3dafc364fa3d1a3da27feab6f47a0c/DiscordFreeEmojis64px.plugin.js";
     sha256 = "1f524xc7ih0mzx65rr8wjyfxxh253x2236bxdgrmc4qysdpfggzw";
   };
   hide-disabled-emojis = builtins.fetchurl {
