@@ -60,7 +60,6 @@
       notepadqq
       flameshot
       zotero
-      noisetorch
       evince
 
       # Dev

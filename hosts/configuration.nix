@@ -7,7 +7,7 @@
   location,
   ...
 }: {
-  imports = import ../modules/overlays;
+  imports = (import ../modules/overlays) ++ [(import ../modules/programs/noisetorch)];
 
   users.defaultUserShell = pkgs.fish;
   users.users.${user} = {
