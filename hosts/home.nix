@@ -76,6 +76,8 @@
       papirus-icon-theme
       gnome.adwaita-icon-theme
       gnome.gnome-tweaks
+      gnome.gnome-remote-desktop
+      xdg-desktop-portal-gnome
     ];
 
     stateVersion = "22.05";
