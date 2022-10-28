@@ -1,6 +1,5 @@
 {
   pkgs,
-  user,
   ...
 }: {
   dconf.settings = {

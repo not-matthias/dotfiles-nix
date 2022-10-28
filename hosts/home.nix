@@ -1,8 +1,5 @@
 {
-  nixpkgs,
-  config,
   pkgs,
-  lib,
   user,
   ...
 }: {

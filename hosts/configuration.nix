@@ -1,10 +1,8 @@
 {
   config,
-  lib,
   pkgs,
   inputs,
   user,
-  location,
   ...
 }: {
   imports = (import ../modules/overlays) ++ [(import ../modules/programs/noisetorch)];

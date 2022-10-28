@@ -1,6 +1,4 @@
 {
-  config,
-  pkgs,
   ...
 }: {
   # TODO: https://nixos.wiki/wiki/OneDrive

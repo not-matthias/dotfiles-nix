@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   nixpkgs.overlays = [
     # This overlay will pull the latest version of Discord
-    (self: super: {
+    (_self: super: {
       discord = super.discord.overrideAttrs (
         _: {
           src = builtins.fetchTarball {
@@ -12,7 +12,7 @@
       );
     })
     # Allow opening links via firefox (https://github.com/NixOS/nixpkgs/issues/108995#issuecomment-826358042)
-    (self: super: {
+    (_self: super: {
       discord = super.discord.override {
         nss = pkgs.nss_latest;
       };

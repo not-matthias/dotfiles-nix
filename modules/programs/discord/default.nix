@@ -1,6 +1,5 @@
 {
   pkgs,
-  lib,
   ...
 }: {
   imports = [(import ./betterdiscord.nix)];
