@@ -2,4 +2,15 @@
 - [ ] Neovim IDE: https://github.com/gvolpe/nix-config/tree/master/home/programs/neovim-ide
 - [ ] Firefox:
     - https://github.com/gvolpe/nix-config/blob/master/home/programs/browsers/firefox.nix
+    - https://github.com/hlissner/dotfiles/blob/master/modules/desktop/browsers/firefox.nix
+- [ ] Brave
+    - https://github.com/hlissner/dotfiles/blob/master/modules/desktop/browsers/brave.nix
 - [ ] Nvidia: https://nixos.wiki/wiki/Nvidia
+    - https://github.com/hlissner/dotfiles/blob/master/modules/hardware/nvidia.nix
+- [ ] Move audio to hardware
+    - https://github.com/hlissner/dotfiles/blob/master/modules/hardware/audio.nix
+- [ ] Spotify Desktop
+- [ ] Implement security: https://github.com/hlissner/dotfiles/blob/master/modules/security.nix
+
+
+- [ ] Design dotfiles more like this: https://github.com/hlissner/dotfiles
