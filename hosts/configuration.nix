@@ -74,9 +74,19 @@
   sound.enable = true;
   security.rtkit.enable = true;
 
-  hardware.pulseaudio = {
+  # hardware.pulseaudio = {
+  #   enable = true;
+  #   package = pkgs.pulseaudioFull;
+  # };
+  # or
+  hardware.pulseaudio.enable = false;
+  services.pipewire = {
     enable = true;
-    package = pkgs.pulseaudioFull;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
+    pulse.enable = true;
   };
 
   nixpkgs.config.allowUnfree = true;
