@@ -31,6 +31,7 @@ in {
     shellInit = ''
       zoxide init --cmd j fish | source
       mcfly init fish | source
+      any-nix-shell fish --info-right | source
     '';
     functions = {
       fish_greeting = '''';

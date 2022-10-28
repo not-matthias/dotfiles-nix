@@ -35,6 +35,7 @@
       ouch
       oxipng
       delta # TODO: Set as git default
+      any-nix-shell
 
       # Cargo tools
       cargo-edit
