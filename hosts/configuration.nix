@@ -5,7 +5,7 @@
   user,
   ...
 }: {
-  imports = (import ../modules/overlays) ++ [(import ../modules/hardware/sound)] ++ [(import ../modules/programs/noisetorch)];
+  imports = (import ../modules/overlays) ++ [(import ../modules/hardware)] ++ [(import ../modules/programs/noisetorch)];
 
   users.defaultUserShell = pkgs.fish;
   users.users.${user} = {
