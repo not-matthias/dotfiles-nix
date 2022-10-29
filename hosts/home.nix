@@ -64,7 +64,7 @@
       jetbrains-mono
       jetbrains.clion
       jetbrains.datagrip
-      wine
+      wine64
       graphviz
       cmake
       gitAndTools.gh
