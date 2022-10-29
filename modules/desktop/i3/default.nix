@@ -1,4 +1,4 @@
 [
-  ./compton.nix
+  # ./compton.nix
   ./i3.nix
 ]

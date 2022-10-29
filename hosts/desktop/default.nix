@@ -1,8 +1,8 @@
 {...}: {
   imports =
     [(import ./hardware-configuration.nix)]
-    ++ [(import ../../modules/desktop/gnome)]
-    ++ (import ../../modules/hardware)
+    ++ [(import ../../modules/desktop/sway)]
+    # ++ [(import ../../modules/desktop/gnome)]
     ++ (import ../../modules/desktop/virtualization);
 
   networking = {
