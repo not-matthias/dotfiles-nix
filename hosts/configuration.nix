@@ -90,10 +90,10 @@
   nixpkgs.config.allowUnfree = true;
   nix = {
     settings = {
-      auto-optimise-store = false;
+      auto-optimise-store = true;
     };
     gc = {
-      automatic = false;
+      automatic = true;
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
