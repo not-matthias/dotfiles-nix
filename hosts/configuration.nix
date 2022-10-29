@@ -5,7 +5,7 @@
   user,
   ...
 }: {
-  imports = (import ../modules/overlays) ++ [(import ../modules/programs/noisetorch)];
+  imports = (import ../modules/overlays) ++ [(import ../modules/hardware/sound)] ++ [(import ../modules/programs/noisetorch)];
 
   users.defaultUserShell = pkgs.fish;
   users.users.${user} = {
@@ -66,25 +66,6 @@
       pciutils
       usbutils
     ];
-  };
-
-  # Enable sound with pipewire/pulseaudio.
-  sound.enable = true;
-  security.rtkit.enable = true;
-
-  # hardware.pulseaudio = {
-  #   enable = true;
-  #   package = pkgs.pulseaudioFull;
-  # };
-  # or
-  hardware.pulseaudio.enable = false;
-  services.pipewire = {
-    enable = true;
-    alsa = {
-      enable = true;
-      support32Bit = true;
-    };
-    pulse.enable = true;
   };
 
   nixpkgs.config.allowUnfree = true;
