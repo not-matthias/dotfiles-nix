@@ -19,7 +19,6 @@
       #kanshi
 
       wayland
-      xwayland
       gsettings-desktop-schemas
     ];
     wrapperFeatures.gtk = true;
