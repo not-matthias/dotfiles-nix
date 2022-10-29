@@ -1,6 +1,4 @@
-{
-  ...
-}: {
+{...}: {
   services.redshift = {
     enable = true;
     temperature = {

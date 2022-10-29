@@ -5,9 +5,9 @@
 }: {
   virtualisation = {
     docker = {
-        enable = true;
-        autoPrune.enable = true;
-      };
+      enable = true;
+      autoPrune.enable = true;
+    };
   };
 
   users.groups.docker.members = ["${user}"];

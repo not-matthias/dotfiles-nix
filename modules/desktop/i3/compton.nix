@@ -1,5 +1,5 @@
 # https://github.com/Th0rgal/horus-nix-home/blob/master/packages/compton-unstable.nix
-{ ...}: {
+{...}: {
   services.picom = {
     enable = true;
     # package = pkgs.callPackage ./compton-unstable.nix { };

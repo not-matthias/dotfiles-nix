@@ -1,6 +1,4 @@
-{
-  ...
-}: {
+{...}: {
   #  home.packages = with pkgs; [
   #    wofi
   #    swaybg

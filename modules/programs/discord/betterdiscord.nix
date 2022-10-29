@@ -1,4 +1,4 @@
-{ ...}: let
+{...}: let
   plugin-repo = builtins.fetchurl {
     url = "https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/e27e1b5f0a507d57cea34b793dde8e2555acd1fd/Plugins/PluginRepo/PluginRepo.plugin.js";
     sha256 = "sha256:0gh1nlpiw0qi2vzg81brr8yyjhlrw0ksdkvjzy1afibswz7w6y0d";

@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   dconf.settings = {
     "org/gnome/desktop/applications/terminal" = {
       exec = "${pkgs.alacritty}/bin/alacritty";

@@ -1,6 +1,4 @@
-{
-  ...
-}: {
+{...}: {
   imports =
     [(import ./hardware-configuration.nix)]
     ++ [(import ../../modules/desktop/gnome)]
