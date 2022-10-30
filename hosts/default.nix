@@ -17,6 +17,7 @@ in {
     specialArgs = {inherit inputs user location hyprland;};
     modules = [
       ({...}: {nixpkgs.overlays = [fenix.overlay];})
+      hyprland.nixosModules.default
       ./desktop
       ./configuration.nix
 
