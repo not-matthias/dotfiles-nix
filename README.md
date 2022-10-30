@@ -41,6 +41,7 @@ experimental-features = nix-command flakes
 - https://invidious.namazso.eu/watch?v=AGVXJ-TIv3Y
 - https://ghedam.at/24353/tutorial-getting-started-with-home-manager-for-nix
 - https://ipetkov.dev/blog/tips-and-tricks-for-nix-flakes/
+- https://stel.codes/blog-posts/i3-or-sway-why-not-both/
 
 Dotfiles: 
 - https://github.com/MatthiasBenaets/nixos-config
