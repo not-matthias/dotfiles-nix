@@ -12,8 +12,16 @@
 
     # Remember mount password
     "org/gnome/shell" = {
-      disabled-extensions = [];
       remember-mount-password = true;
+      enabled-extensions = [
+        "dash-to-dock@micxgx.gmail.com"
+        "gnomebedtime@ionutbortis.gmail.com"
+        "clipboard-indicator@tudmotu.com"
+      ];
+      favorite-apps = [
+        "firefox.desktop"
+        "Alacritty.desktop"
+      ];
     };
 
     # Screenshot via Ctrl+Alt+s
