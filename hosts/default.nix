@@ -1,6 +1,7 @@
 {
   inputs,
   nixpkgs,
+  nurpkgs,
   home-manager,
   user,
   location,
@@ -9,6 +10,19 @@
   ...
 }: let
   system = "x86_64-linux";
+
+  pkgs = import nixpkgs {
+    inherit system;
+    config.allowUnfree = true;
+    overlays = [
+      nurpkgs.overlay
+    ];
+  };
+
+  nur = import nurpkgs {
+    inherit pkgs;
+    nurpkgs = pkgs;
+  };
 
   lib = nixpkgs.lib;
 in {
@@ -25,7 +39,10 @@ in {
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.extraSpecialArgs = {inherit user;};
+        home-manager.extraSpecialArgs = {
+          inherit user;
+          addons = nur.repos.rycee.firefox-addons;
+        };
         home-manager.users.${user} = {
           imports = [(import ./home.nix)] ++ [(import ./desktop/home.nix)];
         };
@@ -46,7 +63,10 @@ in {
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.extraSpecialArgs = {inherit user;};
+        home-manager.extraSpecialArgs = {
+          inherit user;
+          addons = nur.repos.rycee.firefox-addons;
+        };
         home-manager.users.${user} = {
           imports = [(import ./home.nix)] ++ [(import ./laptop/home.nix)];
         };

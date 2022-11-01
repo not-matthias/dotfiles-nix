@@ -3,12 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nurpkgs.url = github:nix-community/NUR;
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nurpkgs = {
-      url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -25,6 +22,7 @@
 
   outputs = inputs @ {
     nixpkgs,
+    nurpkgs,
     home-manager,
     nur,
     hyprland,
@@ -37,7 +35,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit inputs nixpkgs home-manager nur user location hyprland fenix;
+        inherit inputs nixpkgs nurpkgs home-manager nur user location hyprland fenix;
       }
     );
   };
