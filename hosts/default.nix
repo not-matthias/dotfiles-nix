@@ -7,6 +7,7 @@
   location,
   hyprland,
   fenix,
+  spicetify-nix,
   ...
 }: let
   system = "x86_64-linux";
@@ -44,7 +45,11 @@ in {
           addons = nur.repos.rycee.firefox-addons;
         };
         home-manager.users.${user} = {
-          imports = [(import ./home.nix)] ++ [(import ./desktop/home.nix)];
+          imports = [
+            ./home.nix
+            ./desktop/home.nix
+            spicetify-nix.homeManagerModule
+          ];
         };
       }
     ];
@@ -64,11 +69,15 @@ in {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit user;
+          inherit user spicetify-nix;
           addons = nur.repos.rycee.firefox-addons;
         };
         home-manager.users.${user} = {
-          imports = [(import ./home.nix)] ++ [(import ./laptop/home.nix)];
+          imports = [
+            ./home.nix
+            ./laptop/home.nix
+            spicetify-nix.homeManagerModule
+          ];
         };
       }
     ];

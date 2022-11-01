@@ -9,6 +9,7 @@
   ./neovim
   ./protonvpn
   ./rust
+  ./spotify
   ./tmux
   ./vscode
 ]

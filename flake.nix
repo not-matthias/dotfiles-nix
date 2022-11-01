@@ -18,6 +18,7 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    spicetify-nix.url = "github:the-argus/spicetify-nix";
   };
 
   outputs = inputs @ {
@@ -27,6 +28,7 @@
     nur,
     hyprland,
     fenix,
+    spicetify-nix,
     ...
   }: let
     user = "not-matthias";
@@ -35,7 +37,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit inputs nixpkgs nurpkgs home-manager nur user location hyprland fenix;
+        inherit inputs nixpkgs nurpkgs home-manager nur user location hyprland fenix spicetify-nix;
       }
     );
   };
