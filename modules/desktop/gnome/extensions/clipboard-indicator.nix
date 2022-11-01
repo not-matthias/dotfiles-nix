@@ -4,9 +4,11 @@
   ];
 
   dconf.settings = {
-    history = 100;
-    toggle-menu = [
-      "<Super>v"
-    ];
+    "org/gnome/shell/extensions/clipboard-indicator" = {
+      history = 100;
+      toggle-menu = [
+        "<Super>v"
+      ];
+    };
   };
 }
