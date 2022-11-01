@@ -73,13 +73,6 @@
 
       # Misc
       papirus-icon-theme
-      gnome.adwaita-icon-theme
-      gnome.gnome-tweaks
-      gnome.gnome-remote-desktop
-      xdg-desktop-portal-gnome
-      gnomeExtensions.paperwm
-      gnomeExtensions.dash-to-dock
-      gnomeExtensions.gnome-bedtime
     ];
 
     stateVersion = "22.05";

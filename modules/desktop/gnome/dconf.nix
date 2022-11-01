@@ -10,6 +10,12 @@
       "tap-to-click" = true;
     };
 
+    # Remember mount password
+    "org/gnome/shell" = {
+      disabled-extensions = [];
+      remember-mount-password = true;
+    };
+
     # Screenshot via Ctrl+Alt+s
     "org/gnome/shell/keybindings" = {
       "show-screenshot-ui" = ["<Shift><Alt>s"];

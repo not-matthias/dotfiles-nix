@@ -1,3 +1,3 @@
 {...}: {
-  imports = [(import ../../modules/desktop/gnome/dconf.nix)];
+  imports = import ../../modules/desktop/gnome/home.nix;
 }

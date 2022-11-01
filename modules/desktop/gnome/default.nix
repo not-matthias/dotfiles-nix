@@ -27,9 +27,12 @@
 
   environment = {
     systemPackages = with pkgs; [
+      xdg-desktop-portal-gnome
       gnome.adwaita-icon-theme
+      gnome.gnome-tweaks
       gnomeExtensions.appindicator
       gnomeExtensions.pop-shell
+      gnomeExtensions.paperwm
     ];
   };
 }
