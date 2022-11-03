@@ -20,7 +20,9 @@ in {
       "cat" = "bat";
       # TODO: Add the others
 
-      "pwd" = "pwd | xclip -selection clipboard && pwd";
+      "gc" = "git commit";
+      "gs" = "git status";
+      "ga" = "git add -A";
     };
     interactiveShellInit =
       ''
