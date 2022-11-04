@@ -41,7 +41,7 @@ in {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit user spicetify-nix;
+          inherit user spicetify-nix hyprland;
           addons = nur.repos.rycee.firefox-addons;
         };
         home-manager.users.${user} = {
@@ -60,7 +60,7 @@ in {
     specialArgs = {inherit inputs user location hyprland;};
     modules = [
       ({...}: {nixpkgs.overlays = [fenix.overlay];})
-      #   hyprland.nixosModules.default
+      hyprland.nixosModules.default
       ./laptop
       ./configuration.nix
 
@@ -69,7 +69,7 @@ in {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit user spicetify-nix;
+          inherit user spicetify-nix hyprland;
           addons = nur.repos.rycee.firefox-addons;
         };
         home-manager.users.${user} = {
