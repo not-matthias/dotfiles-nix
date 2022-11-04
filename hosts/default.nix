@@ -41,7 +41,7 @@ in {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit user;
+          inherit user spicetify-nix;
           addons = nur.repos.rycee.firefox-addons;
         };
         home-manager.users.${user} = {
