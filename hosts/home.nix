@@ -82,5 +82,5 @@
     home-manager.enable = true;
   };
 
-  imports = (import ../modules/programs) ++ (import ../modules/services);
+  imports = (import ../modules/programs) ++ (import ../modules/games) ++ (import ../modules/services);
 }
