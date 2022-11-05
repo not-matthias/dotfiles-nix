@@ -12,4 +12,5 @@
   ./spotify
   ./tmux
   ./vscode
+  ./zsh
 ]
