@@ -1,5 +1,5 @@
 [
   ./sound
   ./bluetooth.nix
-  #  ./nvidia.nix
+  ./nvidia.nix
 ]
