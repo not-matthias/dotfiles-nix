@@ -16,7 +16,7 @@
   idaWrapper = pkgs.buildFHSUserEnv rec {
     name = "ida-wrapper";
     multiPkgs = pkgs:
-      with pkgs; [  
+      with pkgs; [
         atk
         openssl # required for libcrypto.so
         zlib
@@ -70,7 +70,7 @@ in
     pname = "idafree";
     version = "8.1";
     unpackPhase = "true";
-    
+
     nativeBuildInputs = with pkgs; [
       wrapQtAppsHook
     ];
