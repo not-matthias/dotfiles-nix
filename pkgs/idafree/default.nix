@@ -16,31 +16,25 @@
   idaWrapper = pkgs.buildFHSUserEnv rec {
     name = "ida-wrapper";
     multiPkgs = pkgs:
-      with pkgs; [
-        libGL
+      with pkgs; [  
+        atk
+        openssl # required for libcrypto.so
         zlib
+        libGL
         glib
+        gtk3
+        gtk2
+        glib
+        cairo
+        pango
+        libdrm
+        gdk-pixbuf
         freetype
         dbus
         fontconfig
-        # xorg.libXinerama
-        # xorg.libXdamage
-        # xorg.libXcursor
-        # xorg.libXrender
-        # xorg.libXScrnSaver
-        # xorg.libXxf86vm
-        # xorg.libXi
         xorg.libSM
         xorg.libICE
-        # xorg.libXt
-        # xorg.libXmu
-        # xorg.libXcomposite
-        # xorg.libXtst
-        # xorg.libXrandr
-        # xorg.libXext
         xorg.libX11
-        # xorg.libXfixes
-        # xorg.xkeyboardconfig
         xorg.libxcb
         xorg.xcbutil
         xorg.xcbproto
@@ -50,6 +44,22 @@
         xorg.xcbutilkeysyms
         xorg.xcbutilrenderutil
         libxkbcommon
+        # Other libs which might not be needed
+        xorg.libXinerama
+        xorg.libXdamage
+        xorg.libXcursor
+        xorg.libXrender
+        xorg.libXScrnSaver
+        xorg.libXxf86vm
+        xorg.libXi
+        xorg.libXt
+        xorg.libXmu
+        xorg.libXcomposite
+        xorg.libXtst
+        xorg.libXrandr
+        xorg.libXext
+        xorg.libXfixes
+        xorg.xkeyboardconfig
       ];
     runScript = pkgs.writeScript "ida-wrapper" ''
       exec -- "$@"
@@ -57,25 +67,15 @@
   };
 in
   stdenv.mkDerivation {
-    pname = "ida";
-    version = "6.7.1";
+    pname = "idafree";
+    version = "8.1";
     unpackPhase = "true";
-    sourceRoot = ".";
-
-    # We want to run wrapProgram manually (with additional parameters)
-    dontWrapGApps = true;
-    dontWrapQtApps = true;
-
+    
     nativeBuildInputs = with pkgs; [
-      wrapGAppsHook
       wrapQtAppsHook
     ];
+    buildInputs = [qtbase];
 
-    # QT_QPA_PLATFORM_PLUGIN_PATH="${qt5.qtbase.bin}/lib/qt-${qt5.qtbase.version}/plugins";
-    buildInputs = [
-      qtbase
-      # pkgs.qt5.full
-    ];
     installPhase = ''
       mkdir -p $out/bin $out/opt
 
