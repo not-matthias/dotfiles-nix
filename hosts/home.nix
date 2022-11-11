@@ -33,6 +33,7 @@
       oxipng
       delta # TODO: Set as git default
       any-nix-shell
+      duf
 
       # Cargo tools
       cargo-edit
