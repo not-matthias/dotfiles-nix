@@ -61,6 +61,7 @@
       zotero
       evince
       libreoffice
+      elementary-planner
 
       # Dev
       jetbrains-mono
