@@ -13,6 +13,7 @@
     # Remember mount password
     "org/gnome/shell" = {
       remember-mount-password = true;
+      disable-user-extensions = false; # Always enable gnome extensions
       enabled-extensions = [
         "dash-to-dock@micxgx.gmail.com"
         "gnomebedtime@ionutbortis.gmail.com"
