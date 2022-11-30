@@ -11,7 +11,7 @@
     - https://github.com/hlissner/dotfiles/blob/master/modules/security.nix
 - [ ] Migrate dconf to gtk: https://github.com/CatDevz/dotfiles/blob/master/modules/home/desktop/theme.nix#L26
 - [ ] Steam: https://nixos.wiki/wiki/Steam
-- [ ] Spotify: 
+- [x] Spotify: 
     - https://github.com/abba23/spotify-adblock -> create nix flake?
     - https://github.com/the-argus/spicetify-nix
 - [ ] Rofi: https://github.com/hlissner/dotfiles
