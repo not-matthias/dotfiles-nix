@@ -1,6 +1,5 @@
 {pkgs, ...}: let
   fishPrompt = builtins.readFile ./prompt.fish;
-  fishAbbr = builtins.readFile ./abbr.fish;
 in {
   programs.fish = {
     enable = true;
@@ -11,14 +10,31 @@ in {
       }
     ];
     shellAliases = {
+      # Shortcut for "open **F**older with **N**autilus"
+      "nf" = "nautilus . &>/dev/null &";
     };
     shellAbbrs = {
       "c" = "clear";
       "x" = "exit";
+
       "find" = "fd";
+      "diff" = "delta";
       "ping" = "gping";
       "cat" = "bat";
-      # TODO: Add the others
+      "cp" = "fcp";
+      "ls" = "exa";
+      "tree" = "exa --tree";
+      "df" = "duf";
+      "du" = "dust";
+      "k" = "kalker";
+      "xxd" = "hexyl";
+      # "dmesg" = "rmseg";
+      "ida" = "wine64 (zoxide query ida76sp1)/ida64.exe 2>/dev/null &";
+      "ida32" = "wine64 (zoxide query ida76sp1)/ida.exe 2>/dev/null &";
+
+      ".." = "cd ..";
+      "..." = "cd ../..";
+      "...." = "cd ../../..";
 
       "gc" = "git commit";
       "gs" = "git status";
@@ -28,8 +44,7 @@ in {
       ''
         eval (${pkgs.direnv}/bin/direnv hook fish)
       ''
-      + fishPrompt
-      + fishAbbr;
+      + fishPrompt;
     shellInit = ''
       zoxide init --cmd j fish | source
       mcfly init fish | source
