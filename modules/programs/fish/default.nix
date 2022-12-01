@@ -3,20 +3,17 @@
 in {
   programs.fish = {
     enable = true;
-    plugins = [
-      {
-        name = "foreign-env";
-        src = pkgs.fishPlugins.foreign-env.src;
-      }
-    ];
     shellAliases = {
       # Shortcut for "open **F**older with **N**autilus"
       "nf" = "nautilus . &>/dev/null &";
+      "ida" = "wine64 (zoxide query ida76sp1)/ida64.exe 2>/dev/null &";
+      "ida32" = "wine64 (zoxide query ida76sp1)/ida.exe 2>/dev/null &";
     };
     shellAbbrs = {
       "c" = "clear";
       "x" = "exit";
 
+      "ns" = "nix-shell -p";
       "find" = "fd";
       "diff" = "delta";
       "ping" = "gping";
@@ -29,8 +26,6 @@ in {
       "k" = "kalker";
       "xxd" = "hexyl";
       # "dmesg" = "rmseg";
-      "ida" = "wine64 (zoxide query ida76sp1)/ida64.exe 2>/dev/null &";
-      "ida32" = "wine64 (zoxide query ida76sp1)/ida.exe 2>/dev/null &";
 
       ".." = "cd ..";
       "..." = "cd ../..";
