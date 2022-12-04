@@ -31,7 +31,7 @@ in {
     inherit system;
     specialArgs = {inherit inputs user location hyprland;};
     modules = [
-      ({...}: {nixpkgs.overlays = [fenix.overlay];})
+      ({...}: {nixpkgs.overlays = [fenix.overlays.default];})
       hyprland.nixosModules.default
       ./desktop
       ./configuration.nix
@@ -59,7 +59,7 @@ in {
     inherit system;
     specialArgs = {inherit inputs user location hyprland;};
     modules = [
-      ({...}: {nixpkgs.overlays = [fenix.overlay];})
+      ({...}: {nixpkgs.overlays = [fenix.overlays.default];})
       hyprland.nixosModules.default
       ./laptop
       ./configuration.nix
