@@ -10,6 +10,13 @@
     networkmanager.enable = true;
   };
 
+  services.openssh = {
+    enable = true;
+    passwordAuthentication = true;
+    kbdInteractiveAuthentication = false;
+    #permitRootLogin = "yes";
+  };
+  
   virtualisation = {
     vfio = {
       enable = true;
