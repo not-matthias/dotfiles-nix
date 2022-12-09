@@ -9,7 +9,7 @@
 }: let
   installer = pkgs.fetchurl {
     url = "https://out7.hex-rays.com/files/idafree81_linux.run";
-    sha256 = "4QRXQY94Ga0LWzV4s8gSX29D1gkvxJqoco+IyXcS8BU=";
+    sha256 = "42mwgUSAnA2Vt3SHRLnIubjVNY1qIekc894azz7ZA54=";
     executable = true;
   };
 
