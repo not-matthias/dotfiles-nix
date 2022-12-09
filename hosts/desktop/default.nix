@@ -10,6 +10,17 @@
     networkmanager.enable = true;
   };
 
+  virtualisation = {
+    vfio = {
+      # enable = true;
+      # IOMMUType = "amd";
+      # devices = ["1002:687f" "1002:aaf8" "8086:7af0" "10ec:8125" "1b21:2142"];
+      # ignoreMSRs = true;
+      # blacklistNvidia = true;
+      # enableNestedVirt = true;
+    };
+  };
+
   # Lots of these are from the default `configuration.nix`
   boot = {
     # Bootloader.
