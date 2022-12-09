@@ -1,5 +1,3 @@
-# References:
-# https://discourse.nixos.org/t/gpu-passthrough-shows-black-screen/17435
 {
   pkgs,
   user,
@@ -9,11 +7,11 @@
   virtualisation = {
     libvirtd = {
       enable = true;
+      onBoot = "ignore";
+      onShutdown = "shutdown";
       qemu = {
         runAsRoot = false;
-        # verbatimConfig = ''
-        #   nvram = [ "${pkgs.OVMF}/FV/OVMF.fd:${pkgs.OVMF}/FV/OVMF_VARS.fd" ]
-        # '';
+        ovmf.enable = true;
         package = pkgs.qemu_kvm;
       };
     };
