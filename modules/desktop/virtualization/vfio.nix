@@ -1,3 +1,8 @@
+# References:
+# - https://discourse.nixos.org/t/gpu-passthrough-shows-black-screen/17435
+# - https://gist.github.com/CRTified/43b7ce84cd238673f7f24652c85980b3
+# - https://alexbakker.me/post/nixos-pci-passthrough-qemu-vfio.html 
+# - https://astrid.tech/2022/09/22/0/nixos-gpu-vfio/
 {
   lib,
   config,

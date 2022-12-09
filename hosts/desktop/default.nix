@@ -13,12 +13,12 @@
 
   virtualisation = {
     vfio = {
-      # enable = true;
-      # IOMMUType = "amd";
-      # devices = ["1002:687f" "1002:aaf8" "8086:7af0" "10ec:8125" "1b21:2142"];
-      # ignoreMSRs = true;
-      # blacklistNvidia = true;
-      # enableNestedVirt = true;
+      enable = true;
+      IOMMUType = "amd";
+      devices = ["10de:1f08" "10de:10f9" "10de:1ada" "10de:1adb"];
+      ignoreMSRs = true;
+      blacklistNvidia = true;
+      enableNestedVirt = true;
     };
   };
 
