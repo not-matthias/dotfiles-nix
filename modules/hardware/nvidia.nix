@@ -1,4 +1,8 @@
-{lib, config, ...}: let 
+{
+  lib,
+  config,
+  ...
+}: let
   cfg = config.hardware.nvidia;
   nvidia_x11 = config.boot.kernelPackages.nvidiaPackages.legacy_470;
 in {
