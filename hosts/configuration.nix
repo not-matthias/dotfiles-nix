@@ -7,6 +7,8 @@
 }: {
   imports = (import ../modules/overlays) ++ (import ../modules/hardware) ++ [(import ../modules/programs/noisetorch)];
 
+  boot.supportedFilesystems = ["ntfs"];
+
   users.defaultUserShell = pkgs.fish;
   users.users.${user} = {
     isNormalUser = true;
