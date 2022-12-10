@@ -5,6 +5,8 @@
 }: {
   users.groups.libvirtd.members = ["root" "${user}"];
   virtualisation = {
+    lxc.enable = true;
+    lxd.enable = true;
     libvirtd = {
       enable = true;
       onBoot = "ignore";
@@ -23,6 +25,7 @@
       virt-manager
       virt-viewer
       qemu
+      qemu_kvm
       OVMF
       gvfs # Used for shared folders between linux and windows
     ];

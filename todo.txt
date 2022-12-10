@@ -21,3 +21,23 @@
     - Add options to make it a nice list: https://github.com/KubqoA/dotfiles/blob/bc8aec4fb033740ffedf61b8580577902c156d6b/hosts/unacorda/default.nix#L91-L138
     - Home and System folder: https://github.com/gvolpe/nix-config
     - Kinda like this: https://github.com/fufexan/dotfiles/
+
+
+
+---
+
+GPU Offloading: 
+- https://libreddit.mha.fi/r/NixOS/comments/vkgyvz/noob_with_questions_particularly_regarding_nvidia/
+- https://kevincox.ca/2020/12/04/nixos-config-switching/
+```
+hardware.nvidia.modesetting.enable = true;
+hardware.nvidia.prime = {
+    sync.enable = true;
+
+    # Bus IDs are the first three numbers from `lspci`.
+    intelBusId = "PCI:0:2:0";
+    nvidiaBusId = "PCI:1:0:0";
+};
+```
+
+Unstable linux_packages; https://libreddit.mha.fi/r/NixOS/comments/yjqccv/unable_to_start_xorg/

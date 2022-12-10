@@ -84,11 +84,12 @@ in {
         ++ (optionals cfg.blacklistAMD ["amdgpu" "radeon"]);
 
       kernelModules = ["vfio_virqfd" "vfio_pci" "vfio_iommu_type1" "vfio"];
+      initrd.availableKernelModules = [ "vfio-pci" ];
       initrd.kernelModules = [
-        "vfio_virqfd"
-        "vfio_pci"
-        "vfio_iommu_type1"
-        "vfio"
+        # "vfio_virqfd"
+        # "vfio_pci"
+        # "vfio_iommu_type1"
+        # "vfio"
 
         # "nvidia"
         # "nvidia_modeset"
