@@ -1,6 +1,9 @@
+# References:
+# - https://github.com/viperML/dotfiles/blob/62fac868c54b471803f234d1eef8b76b3ed66ba0/modules/nixos/hardware-nvidia.nix
 {
   lib,
   config,
+  pkgs,
   ...
 }: let
   cfg = config.hardware.nvidia;
@@ -16,14 +19,39 @@ in {
 
     hardware = {
       nvidia = {
-        package = nvidia_x11;
-        modesetting.enable = true;
-        nvidiaPersistenced = true;
+        package = config.boot.kernelPackages.nvidiaPackages.latest;
+        powerManagement.enable = true;
+        #        package = nvidia_x11;
+        #modesetting.enable = true;
+        #nvidiaPersistenced = true;
+        #open = true;
       };
       opengl = {
         enable = true;
+        driSupport = true;
         driSupport32Bit = true;
+        extraPackages = with pkgs; [
+          vaapiVdpau
+          libvdpau-va-gl
+          nvidia-vaapi-driver
+        ];
+        extraPackages32 = with pkgs.pkgsi686Linux; [
+          vaapiVdpau
+          libvdpau-va-gl
+          nvidia-vaapi-driver
+        ];
       };
     };
+
+    # Untested:
+    #services.xserver.screenSection = ''
+    #  Option         "UseNvKmsCompositionPipeline" "false"
+    #  Option         "metamodes" "nvidia-auto-select +0+0 {ForceCompositionPipeline=On,AllowGSYNCCompatible=On}"
+    #'';
+    # services.xserver.screenSection = ''
+    #   Option         "metamodes" "nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
+    #   Option         "AllowIndirectGLXProtocol" "off"
+    #   Option         "TripleBuffer" "on"
+    # '';
   };
 }
