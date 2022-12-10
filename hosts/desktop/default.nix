@@ -20,7 +20,7 @@
 
  virtualisation = {
    vfio = {
-     enable = false;
+     enable = true;
      IOMMUType = "amd";
      devices = ["10de:1f08" "10de:10f9"];
      ignoreMSRs = true;
