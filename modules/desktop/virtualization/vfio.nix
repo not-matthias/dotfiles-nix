@@ -4,6 +4,7 @@
 # - https://alexbakker.me/post/nixos-pci-passthrough-qemu-vfio.html
 # - https://astrid.tech/2022/09/22/0/nixos-gpu-vfio/
 # - https://news.ycombinator.com/item?id=22897808
+# - https://forum.level1techs.com/t/nixos-vfio-pcie-passthrough/130916
 {
   lib,
   config,
