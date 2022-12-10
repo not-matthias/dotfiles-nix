@@ -11,7 +11,7 @@
     networkmanager.enable = true;
   };
 
-  # hardware.nvidia.enable = true;
+  hardware.nvidia.enable = true;
   services.openssh = {
     enable = true;
     passwordAuthentication = true;
@@ -19,17 +19,17 @@
     #permitRootLogin = "yes";
   };
 
- virtualisation = {
-   vfio = {
-     enable = true;
-     IOMMUType = "amd";
-     devices = ["10de:1f08" "10de:10f9"];
-     ignoreMSRs = true;
-    #  disableEFIfb = true; # -> Fails to boot
-     blacklistNvidia = true;
-     enableNestedVirt = true;
-   };
- };
+  virtualisation = {
+    single-gpu-passthrough.enable = true;
+    vfio = {
+      enable = true;
+      IOMMUType = "amd";
+      devices = ["10de:1f08" "10de:10f9"];
+      ignoreMSRs = false;
+      blacklistNvidia = false;
+      enableNestedVirt = true;
+    };
+  };
 
   # Lots of these are from the default `configuration.nix`
   boot = {

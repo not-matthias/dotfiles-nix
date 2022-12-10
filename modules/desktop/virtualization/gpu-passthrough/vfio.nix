@@ -53,6 +53,11 @@ in {
       default = false;
       description = "Enables nested virtualization.";
     };
+    loadVfioPci = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Loads the vfio-pci module on boot.";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -85,19 +90,15 @@ in {
         (optionals cfg.blacklistNvidia ["nvidia" "nouveau"])
         ++ (optionals cfg.blacklistAMD ["amdgpu" "radeon"]);
 
-      kernelModules = ["vfio_virqfd" "vfio_pci" "vfio_iommu_type1" "vfio"];
-      initrd.availableKernelModules = [ "vfio-pci" ];
-      initrd.kernelModules = [
-        # "vfio_virqfd"
-        # "vfio_pci"
-        # "vfio_iommu_type1"
-        # "vfio"
-
-        # "nvidia"
-        # "nvidia_modeset"
-        # "nvidia_uvm"
-        # "nvidia_drm"
-      ];
+      # Load the vfio-pci module on boot
+      kernelModules =
+        if loadVfioPci
+        then ["vfio_virqfd" "vfio_pci" "vfio_iommu_type1" "vfio"]
+        else [];
+      initrd.availableKernelModules =
+        if loadVfioPci
+        then ["vfio-pci"]
+        else [];
     };
   };
 }
