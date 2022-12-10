@@ -92,11 +92,11 @@ in {
 
       # Load the vfio-pci module on boot
       kernelModules =
-        if loadVfioPci
+        if cfg.loadVfioPci
         then ["vfio_virqfd" "vfio_pci" "vfio_iommu_type1" "vfio"]
         else [];
       initrd.availableKernelModules =
-        if loadVfioPci
+        if cfg.loadVfioPci
         then ["vfio-pci"]
         else [];
     };
