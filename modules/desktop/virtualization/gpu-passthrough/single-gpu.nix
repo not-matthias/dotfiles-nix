@@ -7,9 +7,10 @@
 {
   pkgs,
   config,
+  lib,
   ...
 }: let
-  cfg = config.virtualization.single-gpu-passthrough;
+  cfg = config.virtualisation.single-gpu-passthrough;
   my-iommu-group = [
     "pci_0000_26_00_0"
     "pci_0000_26_00_1"
@@ -112,8 +113,8 @@
     systemctl start display-manager.service
   '';
 in {
-  options.virtualisation.vfio = {
-    enable = mkEnableOption "Single GPU Passthrough";
+  options.virtualisation.single-gpu-passthrough = {
+    enable = lib.mkEnableOption "Single GPU Passthrough";
   };
 
   config = lib.mkIf cfg.enable {
