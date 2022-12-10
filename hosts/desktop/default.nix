@@ -16,15 +16,16 @@
     kbdInteractiveAuthentication = false;
     #permitRootLogin = "yes";
   };
-  
+
   virtualisation = {
     vfio = {
       enable = true;
       IOMMUType = "amd";
-      devices = ["10de:1f08" "10de:10f9" "10de:1ada" "10de:1adb"];
-      ignoreMSRs = true;
+#      devices = ["10de:1f08" "10de:10f9"];
+#      ignoreMSRs = true;
+#      disableEFIfb = true;
       blacklistNvidia = true;
-      enableNestedVirt = true;
+#      enableNestedVirt = true;
     };
   };
 
