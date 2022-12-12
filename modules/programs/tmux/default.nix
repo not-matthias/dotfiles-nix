@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
+{pkgs, ...}: let
   plugins = pkgs.tmuxPlugins;
   tmuxConf = builtins.readFile ./default.conf;
 in {

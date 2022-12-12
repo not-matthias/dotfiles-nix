@@ -1,3 +1,3 @@
-{
-  # imports = [(import ../../modules/desktop/eduroam/home)];
+{...}: {
+  imports = import ../../modules/desktop/gnome/home.nix;
 }

@@ -1,12 +1,15 @@
 {
   config,
-  lib,
   pkgs,
   inputs,
   user,
-  location,
   ...
 }: {
+  imports = (import ../modules/overlays) ++ (import ../modules/hardware) ++ [(import ../modules/programs/noisetorch)];
+
+  boot.supportedFilesystems = ["ntfs"];
+
+  users.defaultUserShell = pkgs.fish;
   users.users.${user} = {
     isNormalUser = true;
     extraGroups = ["wheel" "video" "audio" "camera" "networkmanager" "kvm" "libvirtd"];
@@ -67,26 +70,7 @@
     ];
   };
 
-  # Enable sound with pipewire/pulseaudio.
-  sound.enable = true;
-  security.rtkit.enable = true;
-
-  hardware.pulseaudio = {
-    enable = true;
-    package = pkgs.pulseaudioFull;
-  };
-
-  # services = {
-  #   pipewire = {
-  #     enable = true;
-  #     alsa = {
-  #       enable = true;
-  #       support32Bit = true;
-  #     };
-  #     pulse.enable = true;
-  #   };
-  # };
-
+  nixpkgs.config.allowUnfree = true;
   nix = {
     settings = {
       auto-optimise-store = true;
@@ -103,20 +87,23 @@
       keep-derivations      = true
     '';
   };
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "vscode"
-      "clion"
-      "obsidian"
-      "discord"
-    ];
-
   system = {
     autoUpgrade = {
-      enable = true;
+      enable = false;
       channel = "https://nixos.org/channels/nixos-unstable";
     };
     stateVersion = "22.05";
+  };
+
+  # Cachix
+  nix.settings = {
+    substituters = [
+      "https://hyprland.cachix.org"
+      "https://devenv.cachix.org"
+    ];
+    trusted-public-keys = [
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+    ];
   };
 }

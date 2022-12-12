@@ -1,4 +1,4 @@
-{config, ...}: {
+{...}: {
   # TODO: Add plugins
 
   programs.vscode = {

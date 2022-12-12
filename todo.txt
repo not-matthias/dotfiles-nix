@@ -1,9 +1,55 @@
-- [ ] Install betterdiscord: https://github.com/LunNova/replugged-nix-flake
-- [ ] fix icons: https://github.com/nix-community/home-manager/issues/1439
-    - Alt+F2 then r seems to fix it: https://github.com/NixOS/nixpkgs/issues/12757#issuecomment-178288669
 - [ ] Hyprland: https://github.com/notusknot/dotfiles-nix/tree/main/modules/hyprland
-- [ ] Rust: https://github.com/tars0x9752/home/blob/main/modules/rust.nix
-- [ ] Dconf: https://github.com/gvolpe/nix-config/tree/master/home/programs/dconf
 - [ ] Neovim IDE: https://github.com/gvolpe/nix-config/tree/master/home/programs/neovim-ide
 - [ ] Firefox:
     - https://github.com/gvolpe/nix-config/blob/master/home/programs/browsers/firefox.nix
+    - https://github.com/hlissner/dotfiles/blob/master/modules/desktop/browsers/firefox.nix
+- [X] Move audio to hardware
+    - https://github.com/hlissner/dotfiles/blob/master/modules/hardware/audio.nix
+- [X] Spotify Desktop
+    - https://github.com/fufexan/dotfiles/blob/main/home/graphical/spicetify.nix
+- [ ] Implement security: https://github.com/hlissner/dotfiles/blob/master/modules/security.nix
+    - https://github.com/hlissner/dotfiles/blob/master/modules/security.nix
+- [ ] Migrate dconf to gtk: https://github.com/CatDevz/dotfiles/blob/master/modules/home/desktop/theme.nix#L26
+- [ ] Steam: https://nixos.wiki/wiki/Steam
+- [x] Spotify: 
+    - https://github.com/abba23/spotify-adblock -> create nix flake?
+    - https://github.com/the-argus/spicetify-nix
+- [ ] Rofi: https://github.com/hlissner/dotfiles
+
+- [ ] Design dotfiles more like this: https://github.com/hlissner/dotfiles
+    - Clear separation between home-manager and nixos (system): https://github.com/Misterio77/nix-starter-configs/tree/main/standard
+    - Add options to make it a nice list: https://github.com/KubqoA/dotfiles/blob/bc8aec4fb033740ffedf61b8580577902c156d6b/hosts/unacorda/default.nix#L91-L138
+    - Home and System folder: https://github.com/gvolpe/nix-config
+    - Kinda like this: https://github.com/fufexan/dotfiles/
+
+
+
+---
+
+GPU Offloading: 
+- https://libreddit.mha.fi/r/NixOS/comments/vkgyvz/noob_with_questions_particularly_regarding_nvidia/
+- https://kevincox.ca/2020/12/04/nixos-config-switching/
+```
+hardware.nvidia.modesetting.enable = true;
+hardware.nvidia.prime = {
+    sync.enable = true;
+
+    # Bus IDs are the first three numbers from `lspci`.
+    intelBusId = "PCI:0:2:0";
+    nvidiaBusId = "PCI:1:0:0";
+};
+```
+
+Unstable linux_packages; https://libreddit.mha.fi/r/NixOS/comments/yjqccv/unable_to_start_xorg/
+
+Modify the kernel: https://forum.level1techs.com/t/nixos-vfio-pcie-passthrough/130916
+
+Override/path qemu: https://discourse.nixos.org/t/libvirt-installing-qemu-hook/385/7
+
+Qemu Config: 
+- https://github.com/viperML/dotfiles/blob/master/modules/nixos/vfio/windows-nvidia.xml
+- https://alexbakker.me/misc/libvirt-nt10.xml
+- https://docs.vrchat.com/docs/using-vrchat-in-a-virtual-machine
+- https://superuser.com/questions/1606898/hiding-qemu-virtualization-in-guest-windows-10
+- https://astrid.tech/2022/09/22/0/nixos-gpu-vfio/
+- 

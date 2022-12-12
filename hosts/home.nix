@@ -1,8 +1,5 @@
 {
-  nixpkgs,
-  config,
   pkgs,
-  lib,
   user,
   ...
 }: {
@@ -35,6 +32,8 @@
       ouch
       oxipng
       delta # TODO: Set as git default
+      any-nix-shell
+      duf
 
       # Cargo tools
       cargo-edit
@@ -49,8 +48,6 @@
 
       # User
       signal-desktop
-      discord
-      betterdiscordctl
       obsidian
       anki
       xournalpp
@@ -62,12 +59,15 @@
       notepadqq
       flameshot
       zotero
-      noisetorch
+      evince
+      libreoffice
+      # elementary-planner
 
       # Dev
       jetbrains-mono
-      #    jetbrains.clion
-      wine
+      jetbrains.clion
+      jetbrains.datagrip
+      wine64
       graphviz
       cmake
       gitAndTools.gh
@@ -75,8 +75,6 @@
 
       # Misc
       papirus-icon-theme
-      gnome.adwaita-icon-theme
-      gnome.gnome-tweaks
     ];
 
     stateVersion = "22.05";
@@ -86,5 +84,5 @@
     home-manager.enable = true;
   };
 
-  imports = (import ../modules/programs) ++ (import ../modules/services);
+  imports = (import ../modules/programs) ++ (import ../modules/games) ++ (import ../modules/services);
 }

@@ -1,6 +1,5 @@
 [
   ./alacritty
-  ./cargo
   ./direnv
   ./discord
   ./firefox
@@ -8,7 +7,10 @@
   ./git
   ./hyprland
   ./neovim
+  ./protonvpn
   ./rust
+  ./spotify
   ./tmux
   ./vscode
+  ./zsh
 ]
