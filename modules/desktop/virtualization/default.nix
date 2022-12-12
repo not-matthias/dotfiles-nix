@@ -1,4 +1,5 @@
 [
   ./docker.nix
   ./qemu.nix
-] ++ (import ./gpu-passthrough)
+]
+++ (import ./gpu-passthrough)
