@@ -74,7 +74,6 @@ in {
         home-manager.users.${user} = {
           imports = [
             ./home.nix
-            ./laptop/home.nix
             spicetify-nix.homeManagerModule
           ];
         };

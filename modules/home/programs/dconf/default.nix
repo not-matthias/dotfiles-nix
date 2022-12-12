@@ -1,5 +1,5 @@
 {pkgs, ...}: {
-  imports = (import ./extensions);
+  imports = import ./extensions;
 
   # programs.dconf.enable = true;
   dconf.settings = {
