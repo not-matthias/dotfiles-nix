@@ -1,10 +1,4 @@
-{
-  pkgs,
-  home,
-  input,
-  lib,
-  ...
-}: {
+{...}: {
   # networking.wireless = {
   #   enable = true;
   #   userControlled.enable = true;

@@ -2,7 +2,6 @@
 # - https://cs.github.com/dustinlacewell/dotfiles/blob/1cfb63eb99c320a9cfdbba6c1886ce0c0cba71c1/modules/nixos/services/ddclient.nix?q=noip+language%3Anix
 {
   config,
-  pkgs,
   lib,
   ...
 }:
