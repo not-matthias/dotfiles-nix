@@ -3,12 +3,16 @@
     [(import ./hardware-configuration.nix)]
     # ++ [(import ../../modules/desktop/sway)]
     ++ [(import ../../modules/desktop/gnome)]
-    ++ (import ../../modules/desktop/virtualization);
+    ++ (import ../../modules/desktop/virtualization)
+    ++ [(import ../../modules/services/vpn/server.nix)]
+    ++ [(import ../../modules/services/vpn/ddns.nix)];
 
   networking = {
     hostName = "desktop";
     networkmanager.enable = true;
   };
+
+  ddns.enable = true;
 
   hardware.nvidia.enable = true;
   services.openssh = {
@@ -21,12 +25,13 @@
   virtualisation = {
     single-gpu-passthrough.enable = true;
     vfio = {
-      enable = true;
+      enable = false;
       IOMMUType = "amd";
-      devices = ["10de:1f08" "10de:10f9"];
-      ignoreMSRs = false;
-      blacklistNvidia = false;
-      enableNestedVirt = true;
+      #      devices = ["10de:1f08" "10de:10f9"];
+      #      ignoreMSRs = true;
+      #      disableEFIfb = true;
+      blacklistNvidia = true;
+      #      enableNestedVirt = true;
     };
   };
 
