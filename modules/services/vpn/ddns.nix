@@ -6,18 +6,16 @@
   lib,
   ...
 }:
-with lib; let
-  secrets = builtins.fromTOML (builtins.readFile /tmp/secrets.toml);
-in {
+with lib; {
   options.ddns.enable = mkEnableOption "Dynamic DNS";
   config = mkIf config.ddns.enable {
     services.ddclient = {
       enable = true;
       protocol = "noip";
-      username = secrets.noip-username;
-      password = secrets.noip-password;
+      username = "not-matthias";
+      passwordFile = "/secrets/ddns-password";
       server = "dynupdate.no-ip.com";
-      domains = ["secrets.noip-hostname"];
+      domains = ["not-matthias.ddns.net"];
     };
   };
 }
