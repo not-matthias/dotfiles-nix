@@ -3,6 +3,8 @@
   user,
   ...
 }: {
+  imports = (import ../modules/home);
+
   home = {
     username = "${user}";
     homeDirectory = "/home/${user}";
@@ -83,6 +85,4 @@
   programs = {
     home-manager.enable = true;
   };
-
-  imports = (import ../modules/programs) ++ (import ../modules/games) ++ (import ../modules/services);
 }

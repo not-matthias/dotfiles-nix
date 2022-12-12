@@ -1,5 +1,6 @@
 [
   ./alacritty
+  ./dconf
   ./direnv
   ./discord
   ./firefox

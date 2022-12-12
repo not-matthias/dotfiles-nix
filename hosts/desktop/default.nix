@@ -1,12 +1,5 @@
 {...}: {
-  imports =
-    [(import ./hardware-configuration.nix)]
-    # ++ [(import ../../modules/desktop/hyprland)]
-    # ++ [(import ../../modules/desktop/sway)]
-    ++ [(import ../../modules/desktop/gnome)]
-    ++ (import ../../modules/desktop/virtualization)
-    ++ [(import ../../modules/services/vpn/server.nix)]
-    ++ [(import ../../modules/services/vpn/ddns.nix)];
+  imports = [(import ./hardware-configuration.nix)] ++ (import ../../modules/system);
 
   networking = {
     hostName = "desktop";
