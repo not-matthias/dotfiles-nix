@@ -74,6 +74,12 @@
       cmake
       gitAndTools.gh
       python3
+      conda
+
+      # Reverse Engineering / CTF
+      file
+      gef
+      gdb
 
       # Misc
       papirus-icon-theme

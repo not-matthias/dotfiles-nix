@@ -26,6 +26,7 @@ in {
       "k" = "kalker";
       "xxd" = "hexyl";
       # "dmesg" = "rmseg";
+      "gdb" = "gef";
 
       ".." = "cd ..";
       "..." = "cd ../..";
