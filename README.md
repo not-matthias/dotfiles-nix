@@ -23,6 +23,8 @@ sudo nix-channel --update
 # Rebuild dotfiles
 ```
 
+See: https://superuser.com/a/1604695
+
 ## Errors
 
 ### Fix home-manager error 
