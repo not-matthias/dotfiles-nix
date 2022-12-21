@@ -15,6 +15,14 @@ nix-collect-garbage -d
 nix store optimise
 ```
 
+## Upgrade
+
+```bash
+sudo nix-channel --add https://nixos.org/channels/nixos-22.11 nixos    
+sudo nix-channel --update
+# Rebuild dotfiles
+```
+
 ## Errors
 
 ### Fix home-manager error 
