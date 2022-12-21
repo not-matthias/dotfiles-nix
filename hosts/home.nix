@@ -3,7 +3,7 @@
   user,
   ...
 }: {
-  imports = import ../modules/home;
+  imports = import ../modules/home ++ import ../modules/overlays;
 
   home = {
     username = "${user}";
@@ -83,6 +83,8 @@
       gef
       gdb
       imhex
+      idafree
+      bytecode-viewer
     ];
 
     stateVersion = "22.11";

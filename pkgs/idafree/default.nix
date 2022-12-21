@@ -2,9 +2,11 @@
 # Run with: nix-build -E 'with import <nixpkgs> { }; pkgs.libsForQt5.callPackage ./default.nix {}'
 {
   pkgs,
+  lib,
   qtbase,
   stdenv,
   wrapQtAppsHook,
+  makeDesktopItem,
   ...
 }: let
   installer = pkgs.fetchurl {
@@ -66,27 +68,56 @@
       exec -- "$@"
     '';
   };
+
+  desktopItem = makeDesktopItem {
+    name = "idafree";
+    exec = "idafree";
+    icon = "idafree";
+    genericName = "IDA Free";
+    desktopName = "IDA Free";
+    categories = ["Development" "IDE"];
+  };
 in
   stdenv.mkDerivation {
     pname = "idafree";
     version = "8.2";
-    unpackPhase = "true";
+    system = builtins.currentSystem;
 
     nativeBuildInputs = with pkgs; [
       wrapQtAppsHook
     ];
     buildInputs = [qtbase];
 
-    installPhase = ''
+    unpackPhase = ''
       mkdir -p $out/bin $out/opt
 
       cat <<EOF > $out/bin/idafree
       #!/bin/sh
       cd $out/opt
-      exec ${idaWrapper}/bin/ida-wrapper ./ida64
+      LD_PRELOAD=${pkgs.libsecret}/lib/libsecret-1.so.0 exec ${idaWrapper}/bin/ida-wrapper ./ida64
       EOF
       chmod +x $out/bin/idafree
 
       ${idaWrapper}/bin/ida-wrapper ${installer} --prefix $out/opt  --mode unattended --installpassword x
     '';
+
+    installPhase = ''
+      mkdir -p $out/share/{applications,icons}
+
+      ln -s ${desktopItem}/share/applications/* $out/share/applications/
+      ln -s $out/opt/appico64.png $out/share/icons/idafree.png
+
+      # for i in 16 32 48 128; do
+      #   mkdir -p $out/share/icons/hicolor/''${i}x''${i}/apps
+      #   ln -s $out/opt/appico64.png $out/share/icons/hicolor/''${i}x''${i}/apps/idafree.png
+      # done
+    '';
+
+    meta = with lib; {
+      description = "The free binary code analysis tool to kickstart your reverse engineering experience.";
+      homepage = "https://hex-rays.com/ida-free/";
+      license = licenses.unfree;
+      platforms = platforms.linux;
+      # maintainers = with maintainers; [tgunnoe];
+    };
   }
