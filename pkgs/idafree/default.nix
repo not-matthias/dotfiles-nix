@@ -8,8 +8,8 @@
   ...
 }: let
   installer = pkgs.fetchurl {
-    url = "https://out7.hex-rays.com/files/idafree81_linux.run";
-    sha256 = "42mwgUSAnA2Vt3SHRLnIubjVNY1qIekc894azz7ZA54=";
+    url = "https://out7.hex-rays.com/files/idafree82_linux.run";
+    sha256 = "Lo0t/F6DUxDK5m3BufxwlThSetMsYXd5zqavXmNyGTY=";
     executable = true;
   };
 
@@ -19,6 +19,7 @@
       with pkgs; [
         atk
         openssl # required for libcrypto.so
+        #        libsecret
         zlib
         libGL
         glib
@@ -68,7 +69,7 @@
 in
   stdenv.mkDerivation {
     pname = "idafree";
-    version = "8.1";
+    version = "8.2";
     unpackPhase = "true";
 
     nativeBuildInputs = with pkgs; [
