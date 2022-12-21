@@ -7,6 +7,7 @@
   };
 
   ddns.enable = true;
+  vpn.enable = true;
 
   hardware.nvidia.enable = true;
   services.openssh = {
