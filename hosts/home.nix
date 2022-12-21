@@ -80,9 +80,6 @@
       file
       gef
       gdb
-
-      # Misc
-      papirus-icon-theme
     ];
 
     stateVersion = "22.05";

@@ -6,6 +6,7 @@
   ./firefox
   ./fish
   ./git
+  ./gtk
   ./hyprland
   ./neovim
   ./protonvpn
