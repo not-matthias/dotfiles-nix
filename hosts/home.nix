@@ -82,6 +82,7 @@
       file
       gef
       gdb
+      imhex
     ];
 
     stateVersion = "22.11";
