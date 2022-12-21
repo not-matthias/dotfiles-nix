@@ -1,10 +1,12 @@
 [
   ./alacritty
+  ./dconf
   ./direnv
   ./discord
   ./firefox
   ./fish
   ./git
+  ./gtk
   ./hyprland
   ./neovim
   ./protonvpn

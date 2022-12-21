@@ -3,6 +3,8 @@
   user,
   ...
 }: {
+  imports = import ../modules/home;
+
   home = {
     username = "${user}";
     homeDirectory = "/home/${user}";
@@ -72,9 +74,12 @@
       cmake
       gitAndTools.gh
       python3
+      conda
 
-      # Misc
-      papirus-icon-theme
+      # Reverse Engineering / CTF
+      file
+      gef
+      gdb
     ];
 
     stateVersion = "22.05";
@@ -83,6 +88,4 @@
   programs = {
     home-manager.enable = true;
   };
-
-  imports = (import ../modules/programs) ++ (import ../modules/games) ++ (import ../modules/services);
 }

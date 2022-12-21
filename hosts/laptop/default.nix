@@ -1,17 +1,11 @@
 {...}: {
-  imports =
-    [(import ./hardware-configuration.nix)]
-    # ++ (import ../../modules/desktop/i3)
-    ++ [(import ../../modules/desktop/gnome)]
-    ++ [(import ../../modules/desktop/eduroam)]
-    ++ [(import ../../modules/programs/protonvpn)]
-    ++ (import ../../modules/hardware)
-    ++ (import ../../modules/desktop/virtualization);
+  imports = [(import ./hardware-configuration.nix)] ++ (import ../../modules/system);
 
   networking = {
     hostName = "laptop";
     networkmanager.enable = true;
   };
+  # hardware.nvidia.enable = true;
 
   # Lots of these are from the default `configuration.nix`
   boot = {

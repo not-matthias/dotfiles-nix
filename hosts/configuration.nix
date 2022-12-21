@@ -5,7 +5,7 @@
   user,
   ...
 }: {
-  imports = (import ../modules/overlays) ++ (import ../modules/hardware) ++ [(import ../modules/programs/noisetorch)];
+  imports = (import ../modules/overlays) ++ (import ../modules/system);
 
   boot.supportedFilesystems = ["ntfs"];
 
