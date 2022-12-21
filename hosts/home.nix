@@ -73,7 +73,9 @@
       graphviz
       cmake
       gitAndTools.gh
-      python3
+      python310
+      python310Packages.pip
+      python310Packages.virtualenv
       conda
 
       # Reverse Engineering / CTF
