@@ -11,7 +11,7 @@
   ./neovim
   ./protonvpn
   ./rust
-  ./spotify
+  # ./spotify
   ./tmux
   ./vscode
   ./zsh
