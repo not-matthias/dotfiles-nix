@@ -17,6 +17,7 @@
     config.allowUnfree = true;
     overlays = [
       nurpkgs.overlay
+      (import ../modules/overlays/idea.nix)
     ];
   };
 

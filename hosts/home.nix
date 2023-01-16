@@ -68,6 +68,7 @@
       # Dev
       jetbrains-mono
       jetbrains.clion
+      jetbrains.idea-ultimate
       jetbrains.datagrip
       wine64
       graphviz
