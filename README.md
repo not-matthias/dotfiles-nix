@@ -8,11 +8,17 @@ ln -s `pwd` ~/.config/nixpkgs
 sudo nixos-rebuild switch --flake .#laptop
 ```
 
-## Optimise
+## Free memory
+
+(Also try to restart your computer before)
 
 ```
 nix-collect-garbage -d
+# or
+nix-collect-garbage --delete-older-than 14d
+
 nix store optimise
+nix store gc
 ```
 
 ## Upgrade
