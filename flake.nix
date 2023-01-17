@@ -3,7 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nurpkgs.url = github:nix-community/NUR;
+    nurpkgs = {
+      url = github:nix-community/NUR;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -18,7 +21,14 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    spicetify-nix.url = "github:the-argus/spicetify-nix";
+    spicetify-nix = {
+      url = "github:the-argus/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    jetbrains-updater = {
+      url = "gitlab:genericnerdyusername/jetbrains-updater";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -29,6 +39,7 @@
     hyprland,
     fenix,
     spicetify-nix,
+    jetbrains-updater,
     ...
   }: let
     user = "not-matthias";
@@ -37,7 +48,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit inputs nixpkgs nurpkgs home-manager nur user location hyprland fenix spicetify-nix;
+        inherit inputs nixpkgs nurpkgs home-manager nur user location hyprland fenix spicetify-nix jetbrains-updater;
       }
     );
   };
