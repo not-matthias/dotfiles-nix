@@ -8,6 +8,7 @@
   hyprland,
   fenix,
   spicetify-nix,
+  jetbrains-updater,
   ...
 }: let
   system = "x86_64-linux";
@@ -17,7 +18,6 @@
     config.allowUnfree = true;
     overlays = [
       nurpkgs.overlay
-      (import ../modules/overlays/idea.nix)
     ];
   };
 
@@ -33,6 +33,7 @@ in {
     specialArgs = {inherit inputs user location hyprland;};
     modules = [
       ({...}: {nixpkgs.overlays = [fenix.overlays.default];})
+      jetbrains-updater.nixosModules.jetbrains-updater
       hyprland.nixosModules.default
       ./desktop
       ./configuration.nix
@@ -59,7 +60,12 @@ in {
     inherit system;
     specialArgs = {inherit inputs user location hyprland;};
     modules = [
-      ({...}: {nixpkgs.overlays = [fenix.overlays.default];})
+      ({...}: {
+        nixpkgs.overlays = [
+          fenix.overlays.default
+        ];
+      })
+      jetbrains-updater.nixosModules.jetbrains-updater
       hyprland.nixosModules.default
       ./laptop
       ./configuration.nix
