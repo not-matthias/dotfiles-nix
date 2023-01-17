@@ -7,6 +7,10 @@
 }: {
   imports = (import ../modules/overlays) ++ (import ../modules/system);
 
+  nixpkgs.overlays = [
+    (import ../modules/overlays/idea.nix)
+  ];
+
   boot.supportedFilesystems = ["ntfs"];
 
   users.defaultUserShell = pkgs.fish;

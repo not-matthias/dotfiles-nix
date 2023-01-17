@@ -5,12 +5,12 @@ final: prev: {
       # Get info from site...
       copilot-plugin-info = final.jetbrains.plugins.getUrl {
         id = "17718";
-        hash = "sha256-Cjt/FMLVKR9RGmnM4pZLxgTuw+STbOkRO91HIEoacZ0=";
+        hash = "sha256-V2DHAjPOEU5HecSqf+h+9xpc6N0ouJX05f0BitY9p7Q=";
       };
       # Actually build the plugin
       copilot-plugin = final.jetbrains.plugins.urlToDrv (final.jetbrains.copilot-plugin-info
         // {
-          hash = "sha256-XuQWI+kbck1BqnTvMfK6o85u9spksBkPhfcmFzs4VvI=";
+          hash = "sha256-emHd2HLNVgeR9yIGidaE76KWTtvilgT1bieMEn6lDIk=";
           extra = {
             inputs = [prev.patchelf prev.glibc prev.gcc-unwrapped];
             commands = let
@@ -57,15 +57,6 @@ final: prev: {
         src = prev.fetchurl {
           url = "https://download.jetbrains.com/idea/ideaIU-${version}-no-jbr.tar.gz";
           sha256 = "dFTX4Lj049jYBd3mRdKLhCEBvXeuqLKRJYgMWS5rjIU=";
-        };
-        plugins = [final.jetbrains.copilot-plugin];
-      });
-
-      clion = prev.jetbrains.clion.overrideAttrs (old: rec {
-        version = "2022.2.3";
-        src = prev.fetchurl {
-          url = "https://download.jetbrains.com/cpp/CLion-${version}.tar.gz";
-          sha256 = "sha256-oNnnetSvu199aeI8+EzPEy7tbq1sOnzUQrM5JOaTFlY=";
         };
         plugins = [final.jetbrains.copilot-plugin];
       });
