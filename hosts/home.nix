@@ -1,6 +1,8 @@
 {
   pkgs,
   user,
+  lib,
+  config,
   ...
 }: {
   imports = import ../modules/home ++ import ../modules/overlays;
@@ -44,9 +46,6 @@
       cargo-update
       cargo-sort
       cargo-criterion
-      cargo-asm
-      #    cargo-aoc
-      cargo-bloat
 
       # User
       signal-desktop
@@ -58,25 +57,19 @@
       krita
       obs-studio
       cava
-      notepadqq
-      flameshot
-      zotero
       evince
       libreoffice
-      # elementary-planner
 
       # Dev
       jetbrains-mono
       jetbrains.clion
-      jetbrains.idea-ultimate
-      jetbrains.datagrip
+      # jetbrains.idea-ultimate
+      #jetbrains.datagrip
       wine64
       graphviz
       cmake
       gitAndTools.gh
       python310
-      python310Packages.pip
-      python310Packages.virtualenv
       conda
 
       # Reverse Engineering / CTF
