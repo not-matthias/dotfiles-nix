@@ -62,6 +62,7 @@
 
       # Dev
       jetbrains-mono
+      idea-copilot
       jetbrains.clion
       # jetbrains.idea-ultimate
       #jetbrains.datagrip
