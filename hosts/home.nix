@@ -1,8 +1,6 @@
 {
   pkgs,
   user,
-  lib,
-  config,
   ...
 }: {
   imports = import ../modules/home ++ import ../modules/overlays;
@@ -80,6 +78,7 @@
       imhex
       idafree
       bytecode-viewer
+      detect-it-easy
     ];
 
     stateVersion = "22.11";

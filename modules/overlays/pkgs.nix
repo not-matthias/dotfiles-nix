@@ -6,8 +6,11 @@
     (_self: super: {
       idafree = super.libsForQt5.callPackage ../../pkgs/idafree/default.nix {};
     })
-     (_self: super: {
+    (_self: super: {
       idea-copilot = super.callPackage ../../pkgs/idea-copilot/default.nix {};
+    })
+    (_self: super: {
+      detect-it-easy = super.callPackage ../../pkgs/detect-it-easy/default.nix {};
     })
   ];
 }
