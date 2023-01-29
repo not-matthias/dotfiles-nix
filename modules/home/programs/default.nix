@@ -9,6 +9,7 @@
   ./gtk
   ./hyprland
   ./neovim
+  ./newsflash
   ./protonvpn
   ./rust
   # ./spotify
