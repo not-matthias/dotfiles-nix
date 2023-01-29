@@ -12,8 +12,10 @@
   hardware.nvidia.enable = true;
   services.openssh = {
     enable = true;
-    passwordAuthentication = true;
-    kbdInteractiveAuthentication = false;
+    settings = {
+      PasswordAuthentication = true;
+      KbdInteractiveAuthentication = false;
+    };
     #permitRootLogin = "yes";
   };
 

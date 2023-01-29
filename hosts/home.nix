@@ -56,7 +56,7 @@
       obs-studio
       cava
       evince
-      libreoffice
+      # libreoffice
 
       # Dev
       jetbrains-mono
