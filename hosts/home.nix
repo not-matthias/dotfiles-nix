@@ -44,6 +44,7 @@
       cargo-update
       cargo-sort
       cargo-criterion
+      cargo-wipe
 
       # User
       signal-desktop
