@@ -80,6 +80,7 @@
       idafree
       bytecode-viewer
       detect-it-easy
+      checksec
     ];
 
     stateVersion = "22.11";
