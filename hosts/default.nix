@@ -9,16 +9,22 @@
   fenix,
   spicetify-nix,
   jetbrains-updater,
+  devenv,
   ...
 }: let
   system = "x86_64-linux";
 
+  overlays = [
+    fenix.overlays.default
+    # nurpkgs.overlay
+    (_: prev: {
+      inherit (devenv.packages."${prev.system}") devenv;
+    })
+  ];
+
   pkgs = import nixpkgs {
-    inherit system;
+    inherit system overlays;
     config.allowUnfree = true;
-    overlays = [
-      nurpkgs.overlay
-    ];
   };
 
   nur = import nurpkgs {
@@ -32,7 +38,9 @@ in {
     inherit system;
     specialArgs = {inherit inputs user location hyprland;};
     modules = [
-      ({...}: {nixpkgs.overlays = [fenix.overlays.default];})
+      {
+        nixpkgs.overlays = overlays;
+      }
       jetbrains-updater.nixosModules.jetbrains-updater
       hyprland.nixosModules.default
       ./desktop

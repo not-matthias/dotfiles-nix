@@ -29,6 +29,10 @@
       url = "gitlab:genericnerdyusername/jetbrains-updater";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    devenv = {
+      url = "github:cachix/devenv/latest";
+    };
   };
 
   outputs = inputs @ {
@@ -40,6 +44,7 @@
     fenix,
     spicetify-nix,
     jetbrains-updater,
+    devenv,
     ...
   }: let
     user = "not-matthias";
@@ -48,7 +53,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit inputs nixpkgs nurpkgs home-manager nur user location hyprland fenix spicetify-nix jetbrains-updater;
+        inherit inputs nixpkgs nurpkgs home-manager nur user location hyprland fenix spicetify-nix jetbrains-updater devenv;
       }
     );
   };

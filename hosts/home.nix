@@ -64,13 +64,15 @@
       idea-copilot
       jetbrains.clion
       # jetbrains.idea-ultimate
-      #jetbrains.datagrip
       wine64
       graphviz
       cmake
       gitAndTools.gh
       python310
       conda
+
+      # Currently not working:
+      # devenv
 
       # Reverse Engineering / CTF
       file
