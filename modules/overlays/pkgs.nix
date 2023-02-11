@@ -12,5 +12,8 @@
     (_self: super: {
       detect-it-easy = super.callPackage ../../pkgs/detect-it-easy/default.nix {};
     })
+    (_self: super: {
+      jetbrains-fleet = super.callPackage ../../pkgs/jetbrains-fleet/default.nix {};
+    })
   ];
 }

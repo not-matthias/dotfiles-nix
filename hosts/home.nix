@@ -54,6 +54,7 @@
       jetbrains-mono
       # jetbrains.idea-ultimate
       jetbrains.clion
+      jetbrains-fleet
       wine64
       graphviz
       cmake
