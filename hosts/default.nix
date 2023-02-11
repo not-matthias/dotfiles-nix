@@ -56,7 +56,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               extraSpecialArgs = {
-                inherit flakes user;
+                inherit flakes user spicetify-nix;
                 addons = nur.repos.rycee.firefox-addons;
               };
               users.${user} = {
