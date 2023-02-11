@@ -87,4 +87,36 @@ in {
       }
     ];
   };
+
+  framework = lib.nixosSystem {
+    inherit system;
+    specialArgs = {inherit inputs user location hyprland;};
+    modules = [
+      ({...}: {
+        nixpkgs.overlays = [
+          fenix.overlays.default
+        ];
+      })
+      jetbrains-updater.nixosModules.jetbrains-updater
+      hyprland.nixosModules.default
+      ./framework
+      ./configuration.nix
+
+      home-manager.nixosModules.home-manager
+      {
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.extraSpecialArgs = {
+          inherit user spicetify-nix hyprland;
+          addons = nur.repos.rycee.firefox-addons;
+        };
+        home-manager.users.${user} = {
+          imports = [
+            ./home.nix
+            spicetify-nix.homeManagerModule
+          ];
+        };
+      }
+    ];
+  };
 }
