@@ -71,7 +71,7 @@
       conda
 
       # Currently not working:
-      # devenv
+      devenv
 
       # Reverse Engineering / CTF
       file
