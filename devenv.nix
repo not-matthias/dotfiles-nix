@@ -15,4 +15,5 @@
   # https://devenv.sh/scripts/
   scripts.bl.exec = "sudo nixos-rebuild switch --flake .#laptop";
   scripts.bd.exec = "sudo nixos-rebuild switch --flake .#desktop";
+  scripts.bf.exec = "sudo nixos-rebuild switch --flake .#framework";
 }
