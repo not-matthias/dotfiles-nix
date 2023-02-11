@@ -3,7 +3,7 @@
   user,
   ...
 }: {
-  imports = import ../modules/home ++ import ../modules/overlays;
+  imports = import ../modules/home;
 
   home = {
     username = "${user}";
@@ -52,7 +52,7 @@
 
       # Dev
       jetbrains-mono
-      jetbrains.idea-ultimate
+      # jetbrains.idea-ultimate
       jetbrains.clion
       wine64
       graphviz

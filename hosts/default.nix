@@ -4,11 +4,9 @@
   nurpkgs,
   home-manager,
   user,
-  location,
   hyprland,
   fenix,
   spicetify-nix,
-  jetbrains-updater,
   devenv,
   ...
 }: let
@@ -32,10 +30,10 @@
   ];
 
   commonModules = [
+    (import ../modules/overlays/pkgs.nix)
     {
       nixpkgs.overlays = overlays;
     }
-    jetbrains-updater.nixosModules.jetbrains-updater
     hyprland.nixosModules.default
     home-manager.nixosModules.home-manager
 
@@ -45,7 +43,7 @@
   nixosBox = arch: base: name:
     base.lib.nixosSystem {
       system = arch;
-      specialArgs = {inherit flakes user location;};
+      specialArgs = {inherit flakes user;};
       modules =
         commonModules
         ++ [

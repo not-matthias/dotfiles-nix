@@ -161,26 +161,6 @@
         "type": "github"
       }
     },
-    "jetbrains-updater": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1675987650,
-        "narHash": "sha256-TdzGR1p2EuVV6wInuon6px6jk0ZRdQCIMoq3vrG4SeQ=",
-        "owner": "genericnerdyusername",
-        "repo": "jetbrains-updater",
-        "rev": "37ce41649a2920327a0d1aa833ae8d8d3220a1c2",
-        "type": "gitlab"
-      },
-      "original": {
-        "owner": "genericnerdyusername",
-        "repo": "jetbrains-updater",
-        "type": "gitlab"
-      }
-    },
     "lowdown-src": {
       "flake": false,
       "locked": {
@@ -348,7 +328,6 @@
         "fenix": "fenix",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
-        "jetbrains-updater": "jetbrains-updater",
         "nixpkgs": "nixpkgs_2",
         "nur": "nur",
         "nurpkgs": "nurpkgs",

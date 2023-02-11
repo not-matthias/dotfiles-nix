@@ -1,3 +1,3 @@
 [
-  ./minecraft
+  # ./minecraft
 ]

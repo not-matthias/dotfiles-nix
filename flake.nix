@@ -16,7 +16,6 @@
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     fenix = {
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -25,14 +24,7 @@
       url = "github:the-argus/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    jetbrains-updater = {
-      url = "gitlab:genericnerdyusername/jetbrains-updater";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    devenv = {
-      url = "github:cachix/devenv/latest";
-    };
+    devenv.url = "github:cachix/devenv/latest";
   };
 
   outputs = {
@@ -43,17 +35,15 @@
     hyprland,
     fenix,
     spicetify-nix,
-    jetbrains-updater,
     devenv,
     ...
   } @ flakes: let
     user = "not-matthias";
-    location = "~/.config/nixpkgs";
   in {
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nurpkgs home-manager nur user location hyprland fenix spicetify-nix jetbrains-updater devenv;
+        inherit flakes nixpkgs nurpkgs home-manager nur user hyprland fenix spicetify-nix devenv;
       }
     );
   };
