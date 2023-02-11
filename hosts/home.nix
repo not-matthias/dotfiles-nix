@@ -61,9 +61,8 @@
 
       # Dev
       jetbrains-mono
-      idea-copilot
+      jetbrains.idea-ultimate
       jetbrains.clion
-      # jetbrains.idea-ultimate
       wine64
       graphviz
       cmake
