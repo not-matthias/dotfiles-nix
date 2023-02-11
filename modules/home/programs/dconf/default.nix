@@ -19,7 +19,6 @@
       disable-user-extensions = false; # Always enable gnome extensions
       enabled-extensions = [
         "dash-to-dock@micxgx.gmail.com"
-        "gnomebedtime@ionutbortis.gmail.com"
         "clipboard-indicator@tudmotu.com"
       ];
       favorite-apps = [
