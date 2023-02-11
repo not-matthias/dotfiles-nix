@@ -37,15 +37,6 @@
       any-nix-shell
       duf
 
-      # Cargo tools
-      cargo-edit
-      cargo-expand
-      cargo-udeps
-      cargo-update
-      cargo-sort
-      cargo-criterion
-      cargo-wipe
-
       # User
       signal-desktop
       obsidian
@@ -69,8 +60,6 @@
       gitAndTools.gh
       python310
       conda
-
-      # Currently not working:
       devenv
 
       # Reverse Engineering / CTF

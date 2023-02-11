@@ -6,6 +6,15 @@
       lldb
       mold
 
+      # Cargo tools
+      cargo-edit
+      cargo-expand
+      cargo-udeps
+      cargo-update
+      cargo-sort
+      cargo-criterion
+      cargo-wipe
+
       (
         with fenix; (fenix.combine [
           fenix.latest.rustc
