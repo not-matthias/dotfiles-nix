@@ -16,6 +16,9 @@
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
 
+  # Fix brightness keys
+  boot.kernelParams = ["module_blacklist=hid_sensor_hub"];
+
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e33d79b0-4de1-47d3-a3fe-ab53c3f7f390";
     fsType = "ext4";
