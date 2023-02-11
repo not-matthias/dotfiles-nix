@@ -1,7 +1,7 @@
 {
   config,
   pkgs,
-  inputs,
+  flakes,
   user,
   ...
 }: {
@@ -70,7 +70,7 @@
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
-    registry.nixpkgs.flake = inputs.nixpkgs;
+    registry.nixpkgs.flake = flakes.nixpkgs;
     extraOptions = ''
       experimental-features = nix-command flakes
       keep-outputs          = true

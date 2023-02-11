@@ -35,7 +35,7 @@
     };
   };
 
-  outputs = inputs @ {
+  outputs = {
     nixpkgs,
     nurpkgs,
     home-manager,
@@ -46,14 +46,14 @@
     jetbrains-updater,
     devenv,
     ...
-  }: let
+  } @ flakes: let
     user = "not-matthias";
     location = "~/.config/nixpkgs";
   in {
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit inputs nixpkgs nurpkgs home-manager nur user location hyprland fenix spicetify-nix jetbrains-updater devenv;
+        inherit flakes nixpkgs nurpkgs home-manager nur user location hyprland fenix spicetify-nix jetbrains-updater devenv;
       }
     );
   };
