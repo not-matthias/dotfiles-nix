@@ -6,6 +6,7 @@
   ./firefox
   ./fish
   ./git
+  ./github-copilot
   ./gtk
   ./hyprland
   ./neovim
