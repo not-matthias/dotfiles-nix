@@ -12,6 +12,7 @@
   users.defaultUserShell = pkgs.fish;
   users.users.${user} = {
     isNormalUser = true;
+    description = "${user}";
     extraGroups = ["wheel" "video" "audio" "camera" "networkmanager" "kvm" "libvirtd"];
     shell = pkgs.fish;
   };

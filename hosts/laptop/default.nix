@@ -7,7 +7,6 @@
   };
   # hardware.nvidia.enable = true;
 
-  # Lots of these are from the default `configuration.nix`
   boot = {
     # Bootloader.
     loader = {
