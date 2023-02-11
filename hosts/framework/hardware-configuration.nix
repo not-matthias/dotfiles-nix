@@ -2,11 +2,13 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
+  pkgs,
   config,
   lib,
   modulesPath,
   ...
 }: {
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
