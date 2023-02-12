@@ -2,7 +2,7 @@
   imports = [(import ./hardware-configuration.nix)] ++ (import ../../modules/system);
 
   networking = {
-    hostName = "laptop";
+    hostName = "laptop-old";
     networkmanager.enable = true;
   };
   # hardware.nvidia.enable = true;

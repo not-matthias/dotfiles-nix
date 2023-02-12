@@ -2,7 +2,7 @@
   imports = [(import ./hardware-configuration.nix)] ++ (import ../../modules/system);
 
   networking = {
-    hostName = "desktop";
+    hostName = "laptop";
     networkmanager.enable = true;
   };
 
