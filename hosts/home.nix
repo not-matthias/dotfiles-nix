@@ -49,6 +49,7 @@
       cava
       evince
       # libreoffice
+      stretchly
 
       # Dev
       jetbrains-mono
