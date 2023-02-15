@@ -26,6 +26,16 @@
     };
   };
   services.fprintd.enable = true;
+  services.thermald.enable = true;
+  services.tlp = {
+    enable = false;
+    settings = {
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+      START_CHARGE_THRESH_BAT1 = 75;
+      STOP_CHARGE_THRESH_BAT1 = 80;
+    };
+  };
 
   #temporary bluetooth fix
   systemd.tmpfiles.rules = [

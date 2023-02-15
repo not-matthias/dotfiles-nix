@@ -8,18 +8,18 @@
   modulesPath,
   ...
 }: {
-  boot.kernelPackages = pkgs.linuxPackages_latest;
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "nvme" "usb_storage" "usbhid" "sd_mod"];
   boot.initrd.kernelModules = [];
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
 
-  # Fix brightness keys
-  boot.kernelParams = ["module_blacklist=hid_sensor_hub"];
+  # Fix brightness keys and enable deep sleep
+  boot.kernelParams = ["module_blacklist=hid_sensor_hub" "mem_sleep_default=deep"];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e33d79b0-4de1-47d3-a3fe-ab53c3f7f390";
@@ -44,6 +44,10 @@
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlp166s0.useDHCP = lib.mkDefault true;
 
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+  powerManagement = {
+    enable = true;
+    powertop.enable = true;
+    cpuFreqGovernor = lib.mkDefault "ondemand";
+  };
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
