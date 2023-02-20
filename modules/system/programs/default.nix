@@ -1,3 +1,4 @@
 [
   ./noisetorch
+  ./nix-ld
 ]
