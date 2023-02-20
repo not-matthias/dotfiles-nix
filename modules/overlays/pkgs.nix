@@ -15,5 +15,8 @@
     (_self: super: {
       jetbrains-fleet = super.callPackage ../../pkgs/jetbrains-fleet/default.nix {};
     })
+    (_self: super: {
+      workrave-qt = super.libsForQt5.callPackage ../../pkgs/workrave-qt/default.nix {};
+    })
   ];
 }

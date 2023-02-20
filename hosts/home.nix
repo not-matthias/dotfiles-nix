@@ -49,7 +49,7 @@
       cava
       evince
       libreoffice
-      stretchly
+      workrave-qt
 
       # Dev
       jetbrains-mono
