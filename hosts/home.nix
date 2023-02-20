@@ -48,7 +48,7 @@
       obs-studio
       cava
       evince
-      # libreoffice
+      libreoffice
       stretchly
 
       # Dev
