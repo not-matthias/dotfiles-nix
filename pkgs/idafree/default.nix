@@ -1,123 +1,95 @@
-# https://github.com/nix-community/nur-combined/blob/master/repos/htr/pkgs/idafree/default.nix
 # Run with: nix-build -E 'with import <nixpkgs> { }; pkgs.libsForQt5.callPackage ./default.nix {}'
+# References:
+# - https://github.com/nix-community/nur-combined/blob/master/repos/htr/pkgs/idafree/default.nix
+# - https://cs.github.com/marenz2569/nix-configs/blob/f8f8bc8a03b391f2b7fd8d269c3d69ef19c56adb/overlays/ida-free/default.nix?q=idafree+language%3Anix
 {
-  pkgs,
-  lib,
-  qtbase,
   stdenv,
-  wrapQtAppsHook,
-  makeDesktopItem,
-  ...
+  lib,
+  dbus,
+  autoPatchelfHook,
+  xorg,
+  libGL,
+  libxkbcommon,
+  libglibutil,
+  cairo,
+  libdrm,
+  pango,
+  gdk-pixbuf,
+  gtk3,
+  krb5,
+  libsForQt5,
+  pkgs,
 }: let
-  installer = pkgs.fetchurl {
-    url = "https://out7.hex-rays.com/files/idafree82_linux.run";
-    sha256 = "sha256-BNVdggVBbKyVy6SKVTCoVjuybNh7YaNmKRQuHin/NmA=";
-    executable = true;
-  };
+  pname = "idafree";
+  version = "82";
 
-  idaWrapper = pkgs.buildFHSUserEnv rec {
-    name = "ida-wrapper";
-    multiPkgs = pkgs:
-      with pkgs; [
-        atk
-        openssl # required for libcrypto.so
-        #        libsecret
-        zlib
-        libGL
-        glib
-        gtk3
-        gtk2
-        glib
-        cairo
-        pango
-        libdrm
-        gdk-pixbuf
-        freetype
-        dbus
-        fontconfig
-        xorg.libSM
-        xorg.libICE
-        xorg.libX11
-        xorg.libxcb
-        xorg.xcbutil
-        xorg.xcbproto
-        xorg.xcbutilwm
-        xorg.xcbutilimage
-        xorg.xcbutilerrors
-        xorg.xcbutilkeysyms
-        xorg.xcbutilrenderutil
-        libxkbcommon
-        # Other libs which might not be needed
-        xorg.libXinerama
-        xorg.libXdamage
-        xorg.libXcursor
-        xorg.libXrender
-        xorg.libXScrnSaver
-        xorg.libXxf86vm
-        xorg.libXi
-        xorg.libXt
-        xorg.libXmu
-        xorg.libXcomposite
-        xorg.libXtst
-        xorg.libXrandr
-        xorg.libXext
-        xorg.libXfixes
-        xorg.xkeyboardconfig
-      ];
-    runScript = pkgs.writeScript "ida-wrapper" ''
-      exec -- "$@"
-    '';
-  };
+  binary = "${pname}${version}_linux.run";
 
-  desktopItem = makeDesktopItem {
-    name = "idafree";
-    exec = "idafree";
-    icon = "idafree";
-    genericName = "IDA Free";
-    desktopName = "IDA Free";
-    categories = ["Development" "IDE"];
-  };
-in
-  stdenv.mkDerivation {
-    pname = "idafree";
-    version = "8.2";
-    system = builtins.currentSystem;
+  installer = stdenv.mkDerivation rec {
+    inherit version;
 
-    nativeBuildInputs = with pkgs; [
-      wrapQtAppsHook
-    ];
-    buildInputs = [qtbase];
+    pname = "idafree-installer";
 
-    unpackPhase = ''
-      mkdir -p $out/bin $out/opt
+    src = builtins.fetchurl {
+      url = "https://out7.hex-rays.com/files/${binary}";
+      sha256 = "sha256:17rbdfpq8al6vc2gp42g91asswzfnmy8j420b5n9a57xrpq9pk55";
+    };
 
-      cat <<EOF > $out/bin/idafree
-      #!/bin/sh
-      cd $out/opt
-      LD_PRELOAD=${pkgs.libsecret}/lib/libsecret-1.so.0 exec ${idaWrapper}/bin/ida-wrapper ./ida64
-      EOF
-      chmod +x $out/bin/idafree
-
-      ${idaWrapper}/bin/ida-wrapper ${installer} --prefix $out/opt  --mode unattended --installpassword x
-    '';
+    phases = ["installPhase"];
 
     installPhase = ''
-      mkdir -p $out/share/{applications,icons}
+      mkdir -p $out/bin/
+      cp $src $out/bin/${binary}
+      chmod +wx $out/bin/${binary}
+      patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" "$out/bin/${binary}"
+    '';
+  };
+in
+  stdenv.mkDerivation rec {
+    inherit pname;
+    inherit version;
 
-      ln -s ${desktopItem}/share/applications/* $out/share/applications/
-      ln -s $out/opt/appico64.png $out/share/icons/idafree.png
+    src = installer;
 
-      # for i in 16 32 48 128; do
-      #   mkdir -p $out/share/icons/hicolor/''${i}x''${i}/apps
-      #   ln -s $out/opt/appico64.png $out/share/icons/hicolor/''${i}x''${i}/apps/idafree.png
-      # done
+    nativeBuildInputs = [autoPatchelfHook libsForQt5.qt5.wrapQtAppsHook];
+
+    buildInputs = with pkgs; [
+      stdenv.cc.cc.lib
+      dbus
+      xorg.libxcb
+      xorg.libX11
+      xorg.libSM
+      xorg.libICE
+      xorg.xcbutilimage
+      xorg.xcbutilkeysyms
+      xorg.xcbutilrenderutil
+      xorg.xcbutilwm
+      libGL
+      libxkbcommon
+      libglibutil
+      cairo
+      libdrm
+      pango
+      gdk-pixbuf
+      gtk3
+      krb5
+      libsecret
+      libsForQt5.qt5.qtbase
+    ];
+
+    installPhase = ''
+      mkdir -p $out/bin
+      $src/bin/${binary} --prefix $out --mode unattended
+    '';
+
+    postFixup = ''
+      ln -s $out/ida64 $out/bin/idafree
     '';
 
     meta = with lib; {
-      description = "The free binary code analysis tool to kickstart your reverse engineering experience.";
+      description = "IDA Freeware - The free binary code analysis tool to kickstart your reverse engineering experience.";
       homepage = "https://hex-rays.com/ida-free/";
       license = licenses.unfree;
-      platforms = platforms.linux;
-      # maintainers = with maintainers; [tgunnoe];
+      platforms = ["x86_64-linux"];
     };
   }
