@@ -19,6 +19,7 @@
   krb5,
   libsForQt5,
   pkgs,
+  makeDesktopItem,
 }: let
   pname = "idafree";
   version = "82";
@@ -77,9 +78,21 @@ in
       libsForQt5.qt5.qtbase
     ];
 
+    desktopItem = makeDesktopItem {
+      name = "idafree";
+      exec = "idafree";
+      icon = "idafree";
+      genericName = "IDA Free";
+      desktopName = "IDA Free";
+      categories = ["Development" "IDE"];
+    };
     installPhase = ''
       mkdir -p $out/bin
       $src/bin/${binary} --prefix $out --mode unattended
+
+      mkdir -p $out/share/{applications,icons}
+      ln -s ${desktopItem}/share/applications/* $out/share/applications/
+      ln -s $out/opt/appico64.png $out/share/icons/idafree.png
     '';
 
     postFixup = ''
