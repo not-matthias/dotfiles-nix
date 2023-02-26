@@ -46,14 +46,12 @@
       vlc
       krita
       obs-studio
-      cava
       evince
       libreoffice
       workrave-qt
 
       # Dev
       jetbrains-mono
-      # jetbrains.idea-ultimate
       jetbrains.clion
       jetbrains-fleet
       wine64
@@ -71,6 +69,7 @@
       imhex
       idafree
       bytecode-viewer
+      recaf
       detect-it-easy
       checksec
     ];

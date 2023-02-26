@@ -18,5 +18,8 @@
     (_self: super: {
       workrave-qt = super.libsForQt5.callPackage ../../pkgs/workrave-qt/default.nix {};
     })
+    (_self: super: {
+      recaf = super.callPackage ../../pkgs/recaf/default.nix {};
+    })
   ];
 }
