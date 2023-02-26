@@ -5,7 +5,7 @@
 
   dconf.settings = {
     "org/gnome/shell/extensions/dash-to-dock" = {
-      dock-position = "LEFT";
+      dock-position = "BOTTOM";
       autohide-in-fullscreen = false;
       intellihide-mode = "MAXIMIZED_WINDOWS";
       dash-max-icon-size = 36;
