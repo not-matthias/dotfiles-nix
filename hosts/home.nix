@@ -49,6 +49,7 @@
       evince
       libreoffice
       workrave-qt
+      amberol
 
       # Dev
       jetbrains-mono
