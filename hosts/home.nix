@@ -65,14 +65,18 @@
 
       # Reverse Engineering / CTF
       file
+      binwalk
       gef
       gdb
       imhex
+      detect-it-easy
+      checksec
       idafree
       bytecode-viewer
       recaf
-      detect-it-easy
-      checksec
+      dex2jar
+      # jadx
+      # avalonia-ilspy
     ];
 
     stateVersion = "22.11";
