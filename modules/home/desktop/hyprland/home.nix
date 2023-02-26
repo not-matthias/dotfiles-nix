@@ -5,8 +5,6 @@
 
   home.file = {
     ".config/hypr/hyprland.conf".text = ''
-
-
       #workspace=DP-2,1
       #workspace=HDMI-A-2,2
       #workspace=HDMI-A-1,3
