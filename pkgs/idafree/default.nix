@@ -76,6 +76,7 @@ in
       krb5
       libsecret
       libsForQt5.qt5.qtbase
+      openssl # required for libcrypto.so
     ];
 
     desktopItem = makeDesktopItem {
