@@ -4,7 +4,6 @@
   nurpkgs,
   home-manager,
   user,
-  hyprland,
   fenix,
   spicetify-nix,
   devenv,
@@ -34,7 +33,6 @@
     {
       nixpkgs.overlays = overlays;
     }
-    hyprland.nixosModules.default
     home-manager.nixosModules.home-manager
 
     ./configuration.nix

@@ -12,10 +12,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     fenix = {
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -35,7 +31,6 @@
     nurpkgs,
     home-manager,
     nur,
-    hyprland,
     fenix,
     spicetify-nix,
     devenv,
@@ -46,7 +41,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nurpkgs home-manager nur user hyprland fenix spicetify-nix devenv;
+        inherit flakes nixpkgs nurpkgs home-manager nur user fenix spicetify-nix devenv;
       }
     );
   };
