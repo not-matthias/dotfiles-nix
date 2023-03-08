@@ -54,7 +54,6 @@
       # Dev
       jetbrains-mono
       jetbrains.clion
-      jetbrains.idea-community
       jetbrains-fleet
       wine64
       graphviz
