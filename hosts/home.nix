@@ -62,6 +62,7 @@
       python310
       conda
       devenv
+      bless
 
       # Reverse Engineering / CTF
       file
