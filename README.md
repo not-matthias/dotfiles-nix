@@ -33,6 +33,15 @@ See: https://superuser.com/a/1604695
 
 ## Errors
 
+### unable to open database file at /run/current-system/sw/bin/command-not-foun
+
+You need to update the system channel (run with sudo!) not your user's channel. 
+
+```
+sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos
+sudo nix-channel --update
+```
+
 ### Fix home-manager error 
 
 ```
