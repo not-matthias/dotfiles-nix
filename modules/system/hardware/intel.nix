@@ -12,8 +12,10 @@ in {
 
   config = lib.mkIf cfg.enable {
     boot = {
+      # enable_psr: prevents screen flickering
+      # enable_dc: disable gpu power management to prevent freezes
       extraModprobeConfig = ''
-        options i915 enable_guc=3 enable_fbc=1
+        options i915 enable_guc=3 enable_fbc=1 enable_dc=0 enable_psr=0
       '';
       initrd.kernelModules = ["i915"];
     };
