@@ -14,6 +14,7 @@ in {
     boot = {
       # enable_psr: prevents screen flickering
       # enable_dc: disable gpu power management to prevent freezes
+      # enable_fbc: Framebuffer compression to reduce power consumption
       extraModprobeConfig = ''
         options i915 enable_guc=3 enable_fbc=1 enable_dc=0 enable_psr=0
       '';
