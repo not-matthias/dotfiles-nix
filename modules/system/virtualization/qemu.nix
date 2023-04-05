@@ -12,7 +12,7 @@
       onBoot = "ignore";
       onShutdown = "shutdown";
       qemu = {
-        runAsRoot = false;
+        runAsRoot = true;
         ovmf.enable = true;
         package = pkgs.qemu_kvm;
       };
