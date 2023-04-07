@@ -50,6 +50,7 @@
       libreoffice
       workrave-qt
       amberol
+      weektodo
 
       # Dev
       jetbrains-mono
