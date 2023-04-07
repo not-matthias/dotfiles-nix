@@ -50,6 +50,7 @@
       libreoffice
       workrave-qt
       amberol
+      gwenview
       weektodo
 
       # Dev
