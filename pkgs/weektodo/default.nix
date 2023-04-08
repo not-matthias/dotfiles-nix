@@ -20,11 +20,14 @@ in
     extraInstallCommands = ''
       mv $out/bin/${name} $out/bin/${pname}
       install -m 444 -D ${appimageContents}/weektodo.desktop -t $out/share/applications
+
+      mkdir -p $out/share/icons
+      cp ${appimageContents}/weektodo.png $out/share/icons
       cp -r ${appimageContents}/usr/share/icons $out/share
     '';
 
     meta = with lib; {
-      description = "TODO";
+      description = "Free and Open Source Minimalist Weekly Planner and To Do list App focused on privacy.";
       homepage = "https://github.com/manuelernestog/WeekToDo";
       sourceProvenance = with sourceTypes; [binaryNativeCode];
       license = licenses.gpl3;
