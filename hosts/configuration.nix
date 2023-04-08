@@ -16,6 +16,7 @@
     extraGroups = ["wheel" "video" "audio" "camera" "networkmanager" "kvm" "libvirtd"];
     shell = pkgs.fish;
   };
+  programs.fish.enable = true;
   security.sudo.wheelNeedsPassword = false;
 
   time.timeZone = "Europe/Vienna";
