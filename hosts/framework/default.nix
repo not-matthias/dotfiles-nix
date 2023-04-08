@@ -5,7 +5,7 @@
     hostName = "laptop";
     networkmanager.enable = true;
   };
-  hardware.intel.enable = false;
+  hardware.intel.enable = true;
 
   boot = {
     # Bootloader.

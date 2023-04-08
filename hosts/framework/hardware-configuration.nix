@@ -47,7 +47,7 @@
   powerManagement = {
     enable = true;
     powertop.enable = true;
-    cpuFreqGovernor = lib.mkDefault "ondemand";
+    cpuFreqGovernor = lib.mkDefault "performance";
   };
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

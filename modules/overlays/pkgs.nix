@@ -21,5 +21,8 @@
     (_self: super: {
       recaf = super.callPackage ../../pkgs/recaf/default.nix {};
     })
+    (_self: super: {
+      weektodo = super.callPackage ../../pkgs/weektodo/default.nix {};
+    })
   ];
 }

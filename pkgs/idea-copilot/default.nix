@@ -1,4 +1,5 @@
 # Based on this: https://github.com/NixOS/nixpkgs/pull/201518
+# Update can be found here: https://plugins.jetbrains.com/plugin/17718-github-copilot/versions/stable/302026
 {
   stdenv,
   lib,
@@ -7,14 +8,14 @@
 }:
 stdenv.mkDerivation rec {
   pname = "github-copilot-intellij-agent";
-  version = "1.2.3.2385";
+  version = "1.2.4.2459";
 
   src = let
-    updateId = 290180;
+    updateId = 302026;
   in
     builtins.fetchurl {
       url = "https://plugins.jetbrains.com/plugin/download?updateId=${toString updateId}";
-      sha256 = "sha256:1dpi6zcws2j3wbsck5r4cvq16myj4gr445b8bxqpxwii9ngnkjvk";
+      sha256 = "sha256:0gnzrws51xd5xwkhxp5k0x7ay0z4pf93vb6z49v506qly5s0kxim";
     };
 
   nativeBuildInputs = [unzip];

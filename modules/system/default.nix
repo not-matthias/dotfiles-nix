@@ -5,3 +5,4 @@
 ++ (import ./programs)
 ++ (import ./virtualization)
 ++ (import ./vpn)
+++ [(import ./flatpak)]

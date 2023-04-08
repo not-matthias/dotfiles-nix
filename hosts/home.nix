@@ -39,6 +39,7 @@
 
       # User
       signal-desktop
+      tdesktop
       obsidian
       anki
       xournalpp
@@ -47,21 +48,24 @@
       krita
       obs-studio
       evince
-      libreoffice
+      # libreoffice
       workrave-qt
       amberol
+      gwenview
+      weektodo
 
       # Dev
       jetbrains-mono
       jetbrains.clion
       jetbrains-fleet
-      wine64
       graphviz
       cmake
       gitAndTools.gh
       python310
-      conda
       devenv
+      bless
+      wineWowPackages.stable # 32-bit and 64-bit
+      winetricks
 
       # Reverse Engineering / CTF
       file
