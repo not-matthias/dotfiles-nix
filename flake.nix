@@ -24,6 +24,11 @@
       url = "github:cachix/devenv/latest";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -34,6 +39,7 @@
     fenix,
     spicetify-nix,
     devenv,
+    hyprland,
     ...
   } @ flakes: let
     user = "not-matthias";
@@ -41,7 +47,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nurpkgs home-manager nur user fenix spicetify-nix devenv;
+        inherit flakes nixpkgs nurpkgs home-manager nur user fenix spicetify-nix devenv hyprland;
       }
     );
   };

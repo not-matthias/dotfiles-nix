@@ -1,3 +1,4 @@
 [
   (import ./gnome)
+  (import ./hyprland)
 ]

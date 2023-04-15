@@ -7,6 +7,7 @@
   fenix,
   spicetify-nix,
   devenv,
+  hyprland,
   ...
 }: let
   system = "x86_64-linux";
@@ -34,6 +35,7 @@
       nixpkgs.overlays = overlays;
     }
     home-manager.nixosModules.home-manager
+    hyprland.nixosModules.default
 
     ./configuration.nix
   ];
@@ -61,6 +63,7 @@
                 imports = [
                   ./home.nix
                   spicetify-nix.homeManagerModule
+                  hyprland.homeManagerModules.default
                 ];
               };
             };
