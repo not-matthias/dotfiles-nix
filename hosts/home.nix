@@ -48,7 +48,7 @@
       krita
       obs-studio
       evince
-      # libreoffice
+      libreoffice
       workrave-qt
       amberol
       gwenview
