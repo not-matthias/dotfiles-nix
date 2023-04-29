@@ -24,5 +24,8 @@
     (_self: super: {
       weektodo = super.callPackage ../../pkgs/weektodo/default.nix {};
     })
+    (_self: super: {
+      binary-ninja = super.callPackage ../../pkgs/binary-ninja/default.nix {};
+    })
   ];
 }
