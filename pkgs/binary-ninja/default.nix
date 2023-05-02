@@ -14,6 +14,13 @@
       sha256 = "SGMVj+LR1bsSK+0Yeh1JXEokTHQl580n1M0IuMmE2xk=";
     };
 
+    # myZipFile = ./binaryninja.zip;
+    # # myZipFile = ./BinaryNinja-personal.zip;
+    # src = fetchzip {
+    #   url = "file://${myZipFile}";
+    #   sha256 = "sha256-c1MYJ8F3Ef5p7Zg/y7kvnWayr2Tenka3HDu8lvKGmTE=";
+    # };
+
     installPhase = ''
       mkdir -p $out/bin
       mkdir -p $out/opt/binaryninja
