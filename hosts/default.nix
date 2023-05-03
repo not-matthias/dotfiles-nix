@@ -21,8 +21,15 @@
     nurpkgs = pkgs;
   };
 
+  fontsOverlay = import (
+    builtins.fetchTarball {
+      url = "https://github.com/dimitarnestorov/nix-google-fonts-overlay/archive/master.tar.gz";
+      sha256 = "sha256:1ay7y6l0h8849md36ljc4mgpj7gkfvbimz17vzbm92kl4p7grm1g";
+    }
+  );
   overlays = [
     fenix.overlays.default
+    fontsOverlay
     (_: prev: {
       inherit (devenv.packages."${prev.system}") devenv;
     })

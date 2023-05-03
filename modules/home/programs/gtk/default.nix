@@ -1,20 +1,31 @@
+# https://github.com/slwst/dotfiles/blob/3bddfc490f09ed1b0b8db90bf31074eafc3906ed/home/slwst/modules/desktop/gtk.nix#L18
 {pkgs, ...}: {
   gtk = {
-    enable = false;
+    enable = true;
 
     font = {
-      name = "Roboto";
-      package = pkgs.roboto;
+      name = "Poppins";
+      package = pkgs.google-fonts-poppins;
     };
 
     iconTheme = {
-      name = "Papirus-Dark";
+      name = "Papirus";
       package = pkgs.papirus-icon-theme;
     };
 
+    # https://github.com/catppuccin/gtk
     theme = {
       name = "Catppuccin-Orange-Dark-Compact";
-      package = pkgs.catppuccin-gtk.override {size = "compact";};
+      package = pkgs.catppuccin-gtk.override {
+        size = "compact";
+        variant = "frappe";
+      };
+    };
+
+    # https://github.com/PapirusDevelopmentTeam/papirus-icon-theme
+    cursorTheme = {
+      package = pkgs.catppuccin-cursors.frappeDark;
+      name = "Catppuccin-Frappe-Dark-Cursors";
     };
   };
 }

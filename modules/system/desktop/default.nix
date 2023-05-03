@@ -1,3 +1,4 @@
 [
   (import ./gnome)
+  ./fonts.nix
 ]

@@ -9,17 +9,16 @@
     name = "binaryninja";
     nativeBuildInputs = [makeWrapper];
 
-    src = fetchzip {
-      url = "https://cdn.binary.ninja/installers/BinaryNinja-demo.zip";
-      sha256 = "SGMVj+LR1bsSK+0Yeh1JXEokTHQl580n1M0IuMmE2xk=";
-    };
-
-    # myZipFile = ./binaryninja.zip;
-    # # myZipFile = ./BinaryNinja-personal.zip;
     # src = fetchzip {
-    #   url = "file://${myZipFile}";
-    #   sha256 = "sha256-c1MYJ8F3Ef5p7Zg/y7kvnWayr2Tenka3HDu8lvKGmTE=";
+    #   url = "https://cdn.binary.ninja/installers/BinaryNinja-demo.zip";
+    #   sha256 = "SGMVj+LR1bsSK+0Yeh1JXEokTHQl580n1M0IuMmE2xk=";
     # };
+
+    file = ./BinaryNinja-personal-dev.zip;
+    src = fetchzip {
+      url = "file://${file}";
+      sha256 = "sha256-sOY4w5qE3XO7wwi+xje7SVVmP7vMuNNPmcsD9ARrt1Y=";
+    };
 
     installPhase = ''
       mkdir -p $out/bin
