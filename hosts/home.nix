@@ -53,6 +53,7 @@
       amberol
       gwenview
       weektodo
+      syncthing
 
       # Dev
       jetbrains.clion
