@@ -26,7 +26,7 @@
       luks.devices."luks-482bfe5c-c987-4a97-9c07-b8cd312cabb5".keyFile = "/crypto_keyfile.bin";
     };
   };
-  services.fprintd.enable = true;
+
   services.thermald.enable = true;
   services.tlp = {
     enable = false;
