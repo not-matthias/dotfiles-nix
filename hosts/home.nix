@@ -56,6 +56,7 @@
       syncthing
 
       # Dev
+      jetbrains-mono
       jetbrains.clion
       jetbrains-fleet
       graphviz
