@@ -54,6 +54,7 @@
       gwenview
       weektodo
       syncthing
+      activitywatch
 
       # Dev
       jetbrains-mono

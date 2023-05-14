@@ -27,5 +27,8 @@
     (_self: super: {
       binary-ninja = super.callPackage ../../pkgs/binary-ninja/default.nix {};
     })
+    (_self: super: {
+      activitywatch = super.callPackage ../../pkgs/activitywatch/default.nix {};
+    })
   ];
 }
