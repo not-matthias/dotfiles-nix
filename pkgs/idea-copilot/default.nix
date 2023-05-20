@@ -8,14 +8,14 @@
 }:
 stdenv.mkDerivation rec {
   pname = "github-copilot-intellij-agent";
-  version = "1.2.4.2459";
+  version = "1.2.6.2594";
 
   src = let
-    updateId = 302026;
+    updateId = 331908;
   in
     builtins.fetchurl {
       url = "https://plugins.jetbrains.com/plugin/download?updateId=${toString updateId}";
-      sha256 = "sha256:0gnzrws51xd5xwkhxp5k0x7ay0z4pf93vb6z49v506qly5s0kxim";
+      sha256 = "sha256:1yghyl4py3kq3sc04afqjqijppzz0v7cmdr9d331qxdgya3qdv9r";
     };
 
   nativeBuildInputs = [unzip];
