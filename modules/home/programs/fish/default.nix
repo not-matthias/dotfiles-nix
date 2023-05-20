@@ -36,7 +36,7 @@ in {
       "gs" = "git status";
       "ga" = "git add -A";
       "gp" = "git pull";
-      "gps" = "git pull";
+      "gps" = "git push";
     };
     interactiveShellInit =
       ''
