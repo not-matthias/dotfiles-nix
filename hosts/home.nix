@@ -52,9 +52,8 @@
       workrave-qt
       amberol
       gwenview
-      weektodo
       syncthing
-      activitywatch
+      exodus
 
       # Dev
       jetbrains-mono
