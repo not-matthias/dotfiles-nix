@@ -1,4 +1,5 @@
 [
   ./flatpak
   ./fprintd
+  ./printing
 ]
