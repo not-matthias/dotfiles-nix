@@ -18,7 +18,7 @@
   boot.extraModulePackages = [];
 
   # Fix brightness keys and enable deep sleep
-  boot.kernelParams = ["module_blacklist=hid_sensor_hub" "mem_sleep_default=deep"];
+  # boot.kernelParams = ["module_blacklist=hid_sensor_hub" "mem_sleep_default=deep"];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e33d79b0-4de1-47d3-a3fe-ab53c3f7f390";

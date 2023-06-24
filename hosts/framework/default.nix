@@ -37,6 +37,7 @@
       STOP_CHARGE_THRESH_BAT1 = 80;
     };
   };
+  services.auto-cpufreq.enable = true;
 
   #temporary bluetooth fix
   systemd.tmpfiles.rules = [

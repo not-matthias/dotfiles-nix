@@ -36,6 +36,7 @@
       delta # TODO: Set as git default
       any-nix-shell
       duf
+      wl-clipboard
 
       # User
       signal-desktop
