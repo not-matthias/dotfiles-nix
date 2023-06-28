@@ -7,7 +7,12 @@
 }: {
   imports = (import ../modules/overlays) ++ (import ../modules/system);
 
-  boot.supportedFilesystems = ["ntfs"];
+  boot = {
+    supportedFilesystems = ["ntfs"];
+
+    # Disable security mitigations. Don't use this on servers/multi-user systems.
+    kernelParams = ["mitigations=off"];
+  };
 
   users.defaultUserShell = pkgs.fish;
   users.users.${user} = {
