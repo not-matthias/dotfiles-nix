@@ -1,4 +1,5 @@
 [
+  ./firewall.nix
 ]
 ++ (import ./desktop)
 ++ (import ./hardware)
