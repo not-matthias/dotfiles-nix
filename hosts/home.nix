@@ -81,7 +81,7 @@
       bytecode-viewer
       recaf
       dex2jar
-      binary-ninja
+      # binary-ninja
       # jadx
       # avalonia-ilspy
     ];
