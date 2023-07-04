@@ -4,6 +4,10 @@
   networking = {
     hostName = "desktop";
     networkmanager.enable = true;
+    firewall = {
+      # Allow RDP
+      allowedTCPPorts = [3389];
+    };
   };
 
   # ddns.enable = true;
