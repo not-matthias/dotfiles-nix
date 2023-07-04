@@ -5,8 +5,8 @@
     hostName = "desktop";
     networkmanager.enable = true;
     firewall = {
-      # Allow RDP
-      allowedTCPPorts = [3389];
+      # Allow RDP and VNC
+      allowedTCPPorts = [3389 5900];
     };
   };
 
@@ -26,12 +26,13 @@
   virtualisation = {
     single-gpu-passthrough.enable = true;
     vfio = {
-      enable = false;
+      enable = true;
       IOMMUType = "amd";
       #      devices = ["10de:1f08" "10de:10f9"];
       #      ignoreMSRs = true;
       #      disableEFIfb = true;
-      blacklistNvidia = true;
+      loadVfioPci = true;
+      # blacklistNvidia = true;
       #      enableNestedVirt = true;
     };
   };
