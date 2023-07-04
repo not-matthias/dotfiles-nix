@@ -26,6 +26,7 @@
     "drm"
   ];
 
+  # https://github.com/PassthroughPOST/VFIO-Tools/blob/master/libvirt_hooks/qemu
   qemuEntrypoint = pkgs.writeShellScript "qemu" ''
     # Author: Sebastiaan Meijer (sebastiaan@passthroughpo.st)
     export PATH="$PATH:${pkgs.findutils}/bin:${pkgs.bash}/bin:${pkgs.util-linux}/bin"
@@ -42,15 +43,13 @@
     set -e # If a script exits with an error, we should as well.
 
     # check if it's a non-empty executable file
-    if [ -f "$HOOKPATH" ] && [ -s "$HOOKPATH"] && [ -x "$HOOKPATH" ]; then
+    if [ -f "$HOOKPATH" ] && [ -s "$HOOKPATH" ] && [ -x "$HOOKPATH" ]; then
         eval \"$HOOKPATH\" "$@"
     elif [ -d "$HOOKPATH" ]; then
         while read file; do
             # check for null string
             if [ ! -z "$file" ]; then
-              # Log the hook execution
-              mkdir -p /var/log/libvirt/hooks
-              script /var/log/libvirt/hooks/$GUEST_NAME-$HOOK_NAME-$STATE_NAME.log bash -c "$file $@"
+              eval \"$file\" "$@"
             fi
         done <<< "$(find -L "$HOOKPATH" -maxdepth 1 -type f -executable -print;)"
     fi
