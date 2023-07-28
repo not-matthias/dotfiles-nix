@@ -6,6 +6,11 @@
     networkmanager.enable = true;
   };
   hardware.intel.enable = true;
+  virtualisation.vfio = {
+    enable = true;
+    IOMMUType = "intel";
+    enableNestedVirt = true;
+  };
 
   boot = {
     # Bootloader.
