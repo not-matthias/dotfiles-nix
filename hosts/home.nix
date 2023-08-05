@@ -41,6 +41,7 @@
       # User
       signal-desktop
       tdesktop
+      slack
       obsidian
       anki
       xournalpp
