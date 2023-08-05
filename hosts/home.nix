@@ -42,6 +42,7 @@
       signal-desktop
       tdesktop
       slack
+      notion-app-enhanced
       obsidian
       anki
       xournalpp
