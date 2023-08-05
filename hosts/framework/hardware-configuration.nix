@@ -2,7 +2,6 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
-  pkgs,
   config,
   lib,
   modulesPath,
@@ -12,14 +11,14 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPackages = pkgs.linuxPackages_latest; # Can't use latest kernel because of vmware
   boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "nvme" "usb_storage" "usbhid" "sd_mod"];
   boot.initrd.kernelModules = [];
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
 
   # Fix brightness keys and enable deep sleep
-  boot.kernelParams = ["module_blacklist=hid_sensor_hub" "mem_sleep_default=deep"];
+  # boot.kernelParams = ["module_blacklist=hid_sensor_hub" "mem_sleep_default=deep"];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e33d79b0-4de1-47d3-a3fe-ab53c3f7f390";

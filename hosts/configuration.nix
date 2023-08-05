@@ -7,7 +7,12 @@
 }: {
   imports = (import ../modules/overlays) ++ (import ../modules/system);
 
-  boot.supportedFilesystems = ["ntfs"];
+  boot = {
+    supportedFilesystems = ["ntfs"];
+
+    # Disable security mitigations. Don't use this on servers/multi-user systems.
+    kernelParams = ["mitigations=off"];
+  };
 
   users.defaultUserShell = pkgs.fish;
   users.users.${user} = {
@@ -29,22 +34,6 @@
     keyMap = "us";
   };
 
-  fonts.fonts = with pkgs; [
-    # Fonts
-    carlito # NixOS
-    vegur # NixOS
-    source-code-pro
-    jetbrains-mono
-    font-awesome # Icons
-    corefonts # MS
-    (nerdfonts.override {
-      # Nerdfont Icons override
-      fonts = [
-        "FiraCode"
-      ];
-    })
-  ];
-
   environment = {
     variables = {
       TERMINAL = "alacritty";
@@ -60,6 +49,9 @@
       usbutils
     ];
   };
+
+  # Use system76-scheduler instead of default one
+  services.system76-scheduler.enable = true;
 
   nixpkgs.config.allowUnfree = true;
   nix = {

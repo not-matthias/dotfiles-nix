@@ -36,10 +36,13 @@
       delta # TODO: Set as git default
       any-nix-shell
       duf
+      wl-clipboard
 
       # User
       signal-desktop
       tdesktop
+      slack
+      notion-app-enhanced
       obsidian
       anki
       xournalpp
@@ -48,11 +51,12 @@
       krita
       obs-studio
       evince
-      # libreoffice
+      libreoffice
       workrave-qt
       amberol
       gwenview
-      weektodo
+      syncthing
+      exodus
 
       # Dev
       jetbrains-mono
@@ -79,6 +83,7 @@
       bytecode-viewer
       recaf
       dex2jar
+      # binary-ninja
       # jadx
       # avalonia-ilspy
     ];

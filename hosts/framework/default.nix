@@ -6,6 +6,11 @@
     networkmanager.enable = true;
   };
   hardware.intel.enable = true;
+  virtualisation.vfio = {
+    enable = true;
+    IOMMUType = "intel";
+    enableNestedVirt = true;
+  };
 
   boot = {
     # Bootloader.
@@ -26,7 +31,7 @@
       luks.devices."luks-482bfe5c-c987-4a97-9c07-b8cd312cabb5".keyFile = "/crypto_keyfile.bin";
     };
   };
-  services.fprintd.enable = true;
+
   services.thermald.enable = true;
   services.tlp = {
     enable = false;
@@ -37,6 +42,7 @@
       STOP_CHARGE_THRESH_BAT1 = 80;
     };
   };
+  services.auto-cpufreq.enable = true;
 
   #temporary bluetooth fix
   systemd.tmpfiles.rules = [
