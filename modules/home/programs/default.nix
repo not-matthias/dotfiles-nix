@@ -8,7 +8,6 @@
   ./git
   ./github-copilot
   ./gtk
-  ./hyprland
   ./neovim
   ./newsflash
   ./protonvpn

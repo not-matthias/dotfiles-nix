@@ -7,6 +7,7 @@
   fenix,
   spicetify-nix,
   devenv,
+  hyprland,
   ...
 }: let
   system = "x86_64-linux";
@@ -41,6 +42,7 @@
       nixpkgs.overlays = overlays;
     }
     home-manager.nixosModules.home-manager
+    hyprland.nixosModules.default
 
     ./configuration.nix
   ];
@@ -48,7 +50,9 @@
   nixosBox = arch: base: name:
     base.lib.nixosSystem {
       system = arch;
-      specialArgs = {inherit flakes user;};
+      specialArgs = {
+        inherit flakes user hyprland;
+      };
       modules =
         commonModules
         ++ [
@@ -68,6 +72,7 @@
                 imports = [
                   ./home.nix
                   spicetify-nix.homeManagerModule
+                  hyprland.homeManagerModules.default
                 ];
               };
             };
