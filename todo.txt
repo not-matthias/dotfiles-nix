@@ -1,4 +1,23 @@
 - [ ] Hyprland: https://github.com/notusknot/dotfiles-nix/tree/main/modules/hyprland
+    - https://github.com/F4NT0/FantoDocs_Rice
+    - https://github.com/MatthiasBenaets/nixos-config
+
+
+Dunst: 
+- https://github.com/fufexan/dotfiles/blob/main/home/programs/dunst.nix
+
+Eww: 
+- https://github.com/fufexan/dotfiles/blob/main/home/programs/eww/default.nix
+
+
+Swaybg/swayidle/swaylock:
+- https://github.com/fufexan/dotfiles/blob/main/home/wayland/swaybg.nix
+
+Waybar: 
+- https://github.com/cjbassi/config/blob/master/.config/waybar/config
+
+
+
 - [ ] Neovim IDE: https://github.com/gvolpe/nix-config/tree/master/home/programs/neovim-ide
 - [ ] Firefox:
     - https://github.com/gvolpe/nix-config/blob/master/home/programs/browsers/firefox.nix

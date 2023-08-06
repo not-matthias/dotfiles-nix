@@ -49,18 +49,19 @@
     swaylock
     wl-clipboard
     wlr-randr
+    # https://github.com/ryan4yin/nix-config/blob/e39b79c5085a3555a754972ca88f5451f82638f4/modules/nixos/hyprland.nix#L70-L94
   ];
 
   services = {
     xserver = {
       enable = true;
-      #displayManager = {
-      #  defaultSession = "hyprland";
-      #  gdm = {
-      #    enable = true;
-      #     wayland = true;
-      #   };
-      # };
+      displayManager = {
+        defaultSession = "hyprland";
+        gdm = {
+          enable = true;
+          wayland = true;
+        };
+      };
       # desktopManager = {
       #   gnome = {
       #     enable = true;
