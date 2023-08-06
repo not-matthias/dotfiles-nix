@@ -8,7 +8,8 @@ Dunst:
 
 Eww: 
 - https://github.com/fufexan/dotfiles/blob/main/home/programs/eww/default.nix
-
+- https://github.com/saimoomedits/eww-widgets/blob/main/eww/bar/launch_bar
+- https://github.com/elkowar/eww/tree/master/examples/eww-bar
 
 Swaybg/swayidle/swaylock:
 - https://github.com/fufexan/dotfiles/blob/main/home/wayland/swaybg.nix
@@ -16,6 +17,17 @@ Swaybg/swayidle/swaylock:
 Waybar: 
 - https://github.com/cjbassi/config/blob/master/.config/waybar/config
 
+
+
+Wofi: 
+- https://github.com/notusknot/dotfiles-nix/blob/a034dcb6daff31ce50cdbc74a5972b1ef56ef3d7/modules/wofi/default.nix
+
+Dunst: 
+- https://github.com/notusknot/dotfiles-nix/blob/a034dcb6daff31ce50cdbc74a5972b1ef56ef3d7/modules/dunst/default.nix
+
+
+
+- [ ] Smarter tmux sessions: https://www.joshmedeski.com/posts/smart-tmux-sessions-with-zoxide-and-fzf/
 
 
 - [ ] Neovim IDE: https://github.com/gvolpe/nix-config/tree/master/home/programs/neovim-ide

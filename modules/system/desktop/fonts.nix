@@ -11,6 +11,7 @@
         # Nerdfont Icons override
         fonts = [
           "FiraCode"
+          "RobotoMono"
         ];
       })
     ];

@@ -165,9 +165,13 @@
       # Run once on startup
       #
       # TODO: Move this to script file
-      exec-once=waybar &
+
+      # exec-once=swaybg -i $NIXOS_CONFIG_DIR/pics/wallpaper.png
+
       exec-once=nm-applet --indicator & # network manager
-      exec-once=dunst & # notifications
+      exec-once=dunst
+      exec-once=eww daemon
+      exec-once=eww open bar
     '';
   };
 }

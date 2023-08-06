@@ -3,6 +3,7 @@
   ./dconf
   ./direnv
   ./discord
+  ./eww
   ./firefox
   ./fish
   ./git
