@@ -1,5 +1,6 @@
 # https://codeberg.org/totoroot/dotfiles/src/branch/main/modules/desktop/hyprland.nix
 # https://github.com/MatthiasBenaets/nixos-config/blob/1a31b9eae7e7349b52488476ca5642f1997cbdb1/modules/desktop/hyprland/default.nix
+# https://github.com/linuxmobile/kaku/blob/main/home/wayland/default.nix
 {
   pkgs,
   hyprland,
@@ -14,9 +15,7 @@
       package = hyprland.packages.${pkgs.system}.default;
     };
 
-    xwayland = {
-      enable = true;
-    };
+    xwayland.enable = true;
   };
 
   environment = {
@@ -42,33 +41,30 @@
     kitty
     wofi
 
-    grim
-    mpvpaper
-    slurp
-    swappy
     swaylock
     wl-clipboard
     wlr-randr
-    # https://github.com/ryan4yin/nix-config/blob/e39b79c5085a3555a754972ca88f5451f82638f4/modules/nixos/hyprland.nix#L70-L94
+
+    # TODO: https://github.com/ryan4yin/nix-config/blob/e39b79c5085a3555a754972ca88f5451f82638f4/modules/nixos/hyprland.nix#L70-L94
   ];
 
-  services = {
-    xserver = {
-      enable = true;
-      displayManager = {
-        defaultSession = "hyprland";
-        gdm = {
-          enable = true;
-          wayland = true;
-        };
-      };
-      # desktopManager = {
-      #   gnome = {
-      #     enable = true;
-      #   };
-      # };
-    };
-  };
+  # services = {
+  #   xserver = {
+  #     enable = true;
+  # displayManager = {
+  #   defaultSession = "hyprland";
+  #   gdm = {
+  #     enable = true;
+  #     wayland = true;
+  #   };
+  # };
+  # desktopManager = {
+  #   gnome = {
+  #     enable = true;
+  #   };
+  # };
+  #   };
+  # };
 
   xdg.portal = {
     enable = true;
@@ -90,6 +86,13 @@
     AllowSuspendThenHibernate=no
     AllowHybridSleep=yes
   '';
+
+  nixpkgs.overlays = [
+    # Waybar with experimental features
+    (_: _: {
+      waybar = hyprland.packages.${pkgs.system}.waybar-hyprland;
+    })
+  ];
 
   nix.settings = {
     substituters = ["https://hyprland.cachix.org"];

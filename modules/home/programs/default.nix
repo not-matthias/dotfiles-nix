@@ -3,7 +3,7 @@
   ./dconf
   ./direnv
   ./discord
-  ./eww
+  # ./eww
   ./firefox
   ./fish
   ./git
@@ -16,5 +16,5 @@
   ./spotify
   ./tmux
   ./vscode
-  ./zsh
+  ./waybar
 ]

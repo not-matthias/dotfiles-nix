@@ -1,0 +1,77 @@
+* {
+    border: none;
+    border-radius: 0px;
+    font-family: "RobotoMono Nerd Font";
+    font-size: 14px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(16, 18, 19, 0.8);
+}
+
+#window {
+    background: #11111B;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 16px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-weight: normal;
+    font-style: normal;
+}
+
+#tray,
+#pulseaudio,
+#network,
+#battery {
+    background: #11111B;
+    font-weight: bold;
+    margin: 5px 0px;
+}
+
+#tray,
+#pulseaudio,
+#network,
+#battery {
+    color: #f5f5f5;
+    border-radius: 10px 24px 10px 24px;
+    padding: 0 20px;
+    margin-left: 7px;
+}
+
+#workspaces {
+    background: #11111B;
+    margin: 5px 5px;
+    padding: 8px 5px;
+    border-radius: 16px;
+    color: #cba6f7
+}
+
+#workspaces button {
+    padding: 0px 5px;
+    margin: 0px 3px;
+    border-radius: 16px;
+    /* color: transparent; */
+    color: gray;
+    background-color: #2f354a;
+    transition: all 0.3s ease-in-out;
+}
+
+#workspaces button.active {
+    background-color: #89b4fa;
+    color: #11111B;
+    border-radius: 16px;
+    min-width: 50px;
+    background-size: 400% 400%;
+    transition: all 0.3s ease-in-out;
+
+}
+
+#workspaces button:hover {
+    background-color: #f5f5f5;
+    color: #11111B;
+    border-radius: 16px;
+    min-width: 50px;
+    background-size: 400% 400%;
+}

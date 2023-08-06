@@ -1,0 +1,42 @@
+* {
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    font-size: 11px;
+}
+
+window#waybar {
+    background: #11111B;
+    color: white;
+}
+
+/* Workspaces */
+#workspaces button {
+    padding: 0px 10px;
+    color: white;
+    transition: all 0.3s ease-in-out;
+}
+
+#workspaces button.active {
+    background-color: #302f2f;
+    color: white;
+    transition: all 0.3s ease-in-out;
+}
+
+#workspaces button:hover {
+    background-color: #f5f5f5;
+    color: #11111B;
+}
+
+/* Different widgets */
+#clock,
+#bluetooth,
+#language,
+#tray,
+#pulseaudio,
+#network,
+#battery {
+    padding: 0px 10px;
+    border-left: 1px solid lightgray;
+}
