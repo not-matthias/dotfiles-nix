@@ -40,6 +40,8 @@
   environment.systemPackages = with pkgs; [
     kitty
     wofi
+    dunst
+    swww
 
     swaylock
     wl-clipboard
