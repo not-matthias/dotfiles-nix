@@ -7,7 +7,7 @@
   system,
   ...
 }: {
-  # imports = [ ../../programs/waybar.nix ];
+  imports = [./home.nix];
 
   programs = {
     hyprland = {
@@ -42,6 +42,7 @@
     wofi
     dunst
     swww
+    dolphin
 
     swaylock
     wl-clipboard

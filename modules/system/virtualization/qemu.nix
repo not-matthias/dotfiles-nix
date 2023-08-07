@@ -6,7 +6,7 @@
   users.groups.libvirtd.members = ["root" "${user}"];
   virtualisation = {
     lxc.enable = true;
-    lxd.enable = true;
+    # lxd.enable = true;
     libvirtd = {
       enable = true;
       onBoot = "ignore";

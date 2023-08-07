@@ -20,6 +20,7 @@
       modules-right = [
         "hyprland/language"
         "bluetooth"
+        "battery"
         "pulseaudio"
         "clock"
         "tray"
@@ -38,16 +39,13 @@
       };
 
       battery = {
+        format = "{capacity}% {icon}";
+        format-icons = ["" "" "" "" ""];
         states = {
           good = 95;
           warning = 30;
           critical = 15;
         };
-        format = "{icon}  {capacity}%";
-        format-charging = "  {capacity}%";
-        format-plugged = " {capacity}% ";
-        format-alt = "{icon} {time}";
-        format-icons = ["" "" "" "" ""];
       };
       clock = {
         format = "{:%Y-%m-%d %H:%M}";
@@ -74,8 +72,6 @@
         spacing = 8;
       };
       bluetooth = {
-        format = "{icon}";
-
         on-click = "blueman-manager";
       };
       pulseaudio = {
@@ -86,7 +82,7 @@
         };
         # on-scroll-up= "bash ~/.scripts/volume up";
         # on-scroll-down= "bash ~/.scripts/volume down";
-        scroll-step = 5;
+        scroll-step = 1;
         on-click = "pavucontrol";
       };
     };

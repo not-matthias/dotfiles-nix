@@ -3,5 +3,6 @@
   # ./redshift # Replaced with gnome nightlight
   ./activitywatch.nix
   ./onedrive
+  ./swayidle
   ./swww
 ]

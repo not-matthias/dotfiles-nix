@@ -3,10 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nurpkgs = {
-      url = github:nix-community/NUR;
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nurpkgs.url = github:nix-community/NUR;
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";

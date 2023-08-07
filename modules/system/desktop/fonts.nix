@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       carlito # NixOS
       vegur # NixOS
       source-code-pro
