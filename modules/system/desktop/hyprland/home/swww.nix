@@ -8,6 +8,9 @@
 }: {
   home.file.".wallpaper.png".source = ./wallpaper.png;
 
+  home.packages = with pkgs; [
+    swww
+  ];
   systemd.user.services.swww = {
     Unit = {
       Description = "Wayland wallpaper daemon";

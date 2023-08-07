@@ -39,9 +39,6 @@
 
   environment.systemPackages = with pkgs; [
     kitty
-    wofi
-    dunst
-    swww
     dolphin
 
     swaylock

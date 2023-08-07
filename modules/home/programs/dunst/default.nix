@@ -1,9 +1,5 @@
 # https://github.com/fufexan/dotfiles/blob/main/home/programs/dunst.nix
 {pkgs, ...}: {
-  # home.packages = with pkgs; [
-  #     dunst
-  # ];
-
   services.dunst = {
     enable = true;
     iconTheme = {

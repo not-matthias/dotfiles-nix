@@ -1,32 +1,10 @@
+framwork stuff: https://github.com/smravec/nixos-config/blob/main/nixos/hardware-optimization/framework-specific.nix
+
 - [ ] Hyprland: https://github.com/notusknot/dotfiles-nix/tree/main/modules/hyprland
     - https://github.com/F4NT0/FantoDocs_Rice
     - https://github.com/MatthiasBenaets/nixos-config
 
-
-Dunst: 
-- https://github.com/fufexan/dotfiles/blob/main/home/programs/dunst.nix
-
-Eww: 
-- https://github.com/fufexan/dotfiles/blob/main/home/programs/eww/default.nix
-- https://github.com/saimoomedits/eww-widgets/blob/main/eww/bar
-- https://github.com/elkowar/eww/tree/master/examples/eww-bar
-- https://github.com/elkowar/eww
-
-Swaybg/swayidle/swaylock:
-- https://github.com/fufexan/dotfiles/blob/main/home/wayland/swaybg.nix
-
-Waybar: 
-- https://github.com/cjbassi/config/blob/master/.config/waybar/config
-
 wlsunset: https://github.com/johnae/world/blob/49405f7865ae7f2cb6962d45de26bac4da8dc84f/users/profiles/wlsunset.nix
-mako: https://github.com/johnae/world/blob/49405f7865ae7f2cb6962d45de26bac4da8dc84f/users/profiles/mako.nix
-
-Wofi: 
-- https://github.com/notusknot/dotfiles-nix/blob/a034dcb6daff31ce50cdbc74a5972b1ef56ef3d7/modules/wofi/default.nix
-
-Dunst: 
-- https://github.com/notusknot/dotfiles-nix/blob/a034dcb6daff31ce50cdbc74a5972b1ef56ef3d7/modules/dunst/default.nix
-
 
 qutebrowser: 
 - https://github.com/johnae/world/blob/49405f7865ae7f2cb6962d45de26bac4da8dc84f/users/profiles/qutebrowser.nix

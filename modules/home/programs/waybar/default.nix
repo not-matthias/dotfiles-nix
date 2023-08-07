@@ -3,6 +3,7 @@
 # https://github.com/linuxmobile/hyprland-dots/blob/Sakura/.config/waybar/config.jsonc
 # https://github.com/adomixaszvers/dotfiles-nix/blob/519ce8dcc1d272a7ec719ddf8fe21a230c012e47/profiles/wm/hyprland/default.nix
 # https://github.com/smravec/nixos-config/blob/main/home-manager/config/waybar.nix
+# https://github.com/cjbassi/config/blob/master/.config/waybar/config
 {pkgs, ...}: {
   home.packages = with pkgs; [
     pavucontrol
@@ -90,54 +91,3 @@
     style = builtins.readFile ./style.css;
   };
 }
-# #workspaces {
-#     background: #${background};
-#     margin: 5px 5px;
-#     padding: 8px 5px;
-#     border-radius: 16px;
-#     color: #${primary_accent}
-# }
-# #workspaces button {
-#     padding: 0px 5px;
-#     margin: 0px 3px;
-#     border-radius: 16px;
-#     color: transparent;
-#     background-color: #2f354a;
-#     transition: all 0.3s ease-in-out;
-# }
-# #workspaces button.active {
-#     background-color: #${secondary_accent};
-#     color: #${background};
-#     border-radius: 16px;
-#     min-width: 50px;
-#     background-size: 400% 400%;
-#     transition: all 0.3s ease-in-out;
-# }
-# #workspaces button:hover {
-#     background-color: #${tertiary_accent};
-#     color: #${background};
-#     border-radius: 16px;
-#     min-width: 50px;
-#     background-size: 400% 400%;
-# }
-# #tray, #pulseaudio, #network, #battery {
-#     background: #${background};
-#     font-weight: bold;
-#     margin: 5px 0px;
-# }
-# #tray, #pulseaudio, #network, #battery{
-#     color: #${tertiary_accent};
-#     border-radius: 10px 24px 10px 24px;
-#     padding: 0 20px;
-#     margin-left: 7px;
-# }
-# #clock {
-#     color: #${tertiary_accent};
-#     background-color: #${background};
-#     border-radius: 0px 0px 0px 40px;
-#     padding: 10px 10px 15px 25px;
-#     margin-left: 7px;
-#     font-weight: bold;
-#     font-size: 16px;
-# }
-

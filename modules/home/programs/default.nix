@@ -18,4 +18,5 @@
   ./tmux
   ./vscode
   ./waybar
+  ./wofi
 ]
