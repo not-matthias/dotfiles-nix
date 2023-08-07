@@ -3,7 +3,6 @@
     enable = true;
     settings = {
       window = {
-        opacity = 0.85;
         dimensions = {
           columns = 100;
           lines = 25;
@@ -26,6 +25,9 @@
         args = ["-l" "-c" "tmux attach || tmux"];
       };
       live_config_reload = true;
+
+      # Black background
+      colors.primary.background = "#000000";
     };
   };
 }
