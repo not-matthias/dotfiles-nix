@@ -39,7 +39,7 @@
 
   environment.systemPackages = with pkgs; [
     kitty
-    dolphin
+    gnome.nautilus
 
     swaylock
     wl-clipboard
