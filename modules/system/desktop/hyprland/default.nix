@@ -7,7 +7,7 @@
   system,
   ...
 }: {
-  imports = [./home.nix];
+  imports = [./home/default.nix];
 
   programs = {
     hyprland = {
