@@ -1,4 +1,18 @@
+framwork stuff: https://github.com/smravec/nixos-config/blob/main/nixos/hardware-optimization/framework-specific.nix
+
 - [ ] Hyprland: https://github.com/notusknot/dotfiles-nix/tree/main/modules/hyprland
+    - https://github.com/F4NT0/FantoDocs_Rice
+    - https://github.com/MatthiasBenaets/nixos-config
+
+wlsunset: https://github.com/johnae/world/blob/49405f7865ae7f2cb6962d45de26bac4da8dc84f/users/profiles/wlsunset.nix
+
+qutebrowser: 
+- https://github.com/johnae/world/blob/49405f7865ae7f2cb6962d45de26bac4da8dc84f/users/profiles/qutebrowser.nix
+
+
+- [ ] Smarter tmux sessions: https://www.joshmedeski.com/posts/smart-tmux-sessions-with-zoxide-and-fzf/
+
+
 - [ ] Neovim IDE: https://github.com/gvolpe/nix-config/tree/master/home/programs/neovim-ide
 - [ ] Firefox:
     - https://github.com/gvolpe/nix-config/blob/master/home/programs/browsers/firefox.nix

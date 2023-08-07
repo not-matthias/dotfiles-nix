@@ -3,12 +3,13 @@
   ./dconf
   ./direnv
   ./discord
+  ./dunst
+  # ./eww
   ./firefox
   ./fish
   ./git
   ./github-copilot
   ./gtk
-  ./hyprland
   ./neovim
   ./newsflash
   ./protonvpn
@@ -16,5 +17,6 @@
   ./spotify
   ./tmux
   ./vscode
-  ./zsh
+  ./waybar
+  ./wofi
 ]
