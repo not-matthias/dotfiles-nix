@@ -18,7 +18,15 @@
   boot.extraModulePackages = [];
 
   # Fix brightness keys and enable deep sleep
-  # boot.kernelParams = ["module_blacklist=hid_sensor_hub" "mem_sleep_default=deep"];
+  boot.kernelParams = [
+    "module_blacklist=hid_sensor_hub"
+    # For Power consumption
+    # https://kvark.github.io/linux/framework/2021/10/17/framework-nixos.html
+    "mem_sleep_default=deep"
+    # For Power consumption
+    # https://community.frame.work/t/linux-battery-life-tuning/6665/156
+    "nvme.noacpi=1"
+  ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e33d79b0-4de1-47d3-a3fe-ab53c3f7f390";
