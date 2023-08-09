@@ -10,6 +10,14 @@
       pamixer # for volume control
       brightnessctl # for brightness control
       playerctl # for media control
+
+      wofi-emoji
+
+      # screenshot tools
+      grim
+      slurp
+      swappy
+      tesseract
     ];
 
     home.file.".config/hypr/env.conf".text = builtins.readFile ./conf/env.conf;
