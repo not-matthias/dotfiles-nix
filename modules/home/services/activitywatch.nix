@@ -17,7 +17,7 @@
       Service = {
         Type = "simple";
         ExecStart = "${pkgs.aw-server-rust}/bin/aw-server";
-        Restart = "on-abort";
+        Restart = "always";
       };
 
       Install = {WantedBy = ["default.target"];};
@@ -28,7 +28,7 @@
       Service = {
         Type = "simple";
         ExecStart = "${pkgs.activitywatch}/bin/aw-watcher-afk";
-        Restart = "on-abort";
+        Restart = "always";
       };
       Install.WantedBy = ["default.target"];
     };
@@ -38,7 +38,7 @@
       Service = {
         Type = "simple";
         ExecStart = "${pkgs.activitywatch}/bin/aw-watcher-window";
-        Restart = "on-abort";
+        Restart = "always";
         RestartSec = 5;
       };
       Install.WantedBy = ["default.target"];
