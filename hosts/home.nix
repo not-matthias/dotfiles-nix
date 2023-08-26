@@ -18,7 +18,6 @@
       tokei
       alejandra
       zoxide
-      mcfly
       fcp
       tealdeer
       treefmt

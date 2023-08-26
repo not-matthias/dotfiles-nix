@@ -45,7 +45,7 @@ in {
       + fishPrompt;
     shellInit = ''
       zoxide init --cmd j fish | source
-      mcfly init fish | source
+      atuin gen-completions --shell fish | source
       any-nix-shell fish --info-right | source
     '';
     functions = {

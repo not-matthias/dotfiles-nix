@@ -1,5 +1,6 @@
 [
   ./alacritty
+  ./atuin
   ./dconf
   ./direnv
   ./discord
