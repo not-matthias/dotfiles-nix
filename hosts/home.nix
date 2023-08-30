@@ -43,7 +43,7 @@
       slack
       notion-app-enhanced
       obsidian
-      anki
+      #anki # removed for now because it's not cached
       xournalpp
       calibre
       vlc

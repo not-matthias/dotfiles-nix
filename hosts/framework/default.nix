@@ -1,5 +1,5 @@
 {...}: {
-  imports = [(import ./hardware-configuration.nix)] ++ (import ../../modules/system);
+  imports = [(import ./hardware-configuration.nix)];
 
   networking = {
     hostName = "laptop";
