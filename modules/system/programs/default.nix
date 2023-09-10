@@ -1,5 +1,5 @@
 [
   ./noisetorch
   ./nix-ld
-  ./steam
+  # ./steam
 ]

@@ -19,8 +19,8 @@ in {
       "ping" = "gping";
       "cat" = "bat";
       "cp" = "fcp";
-      "ls" = "exa";
-      "tree" = "exa --tree";
+      "ls" = "eza";
+      "tree" = "eza --tree";
       "df" = "duf";
       "du" = "dust";
       "k" = "kalker";

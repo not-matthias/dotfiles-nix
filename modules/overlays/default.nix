@@ -1,4 +1,4 @@
 [
-  ./discord.nix
+  # ./discord.nix
   ./pkgs.nix
 ]

@@ -12,7 +12,7 @@
     packages = with pkgs; [
       # Tools
       bat
-      exa
+      eza
       bottom
       btop
       tokei
@@ -39,9 +39,7 @@
 
       # User
       signal-desktop
-      tdesktop
       slack
-      notion-app-enhanced
       obsidian
       #anki # removed for now because it's not cached
       xournalpp

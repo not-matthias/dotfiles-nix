@@ -3,7 +3,7 @@
   ./atuin
   ./dconf
   ./direnv
-  ./discord
+  # ./discord
   ./dunst
   # ./eww
   ./firefox
@@ -12,8 +12,8 @@
   ./github-copilot
   ./gtk
   ./neovim
-  ./newsflash
-  ./protonvpn
+  # ./newsflash
+  # ./protonvpn
   ./rust
   ./spotify
   ./tmux
