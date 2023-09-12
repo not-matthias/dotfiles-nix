@@ -16,7 +16,7 @@
       position = "top";
       height = 20;
       modules-left = [
-        "wlr/workspaces"
+        "hyprland/workspaces"
       ];
       modules-right = [
         "hyprland/language"
@@ -31,8 +31,8 @@
         format-de = "de";
       };
 
-      "wlr/workspaces" = {
-        format = "{icon}";
+      "hyprland/workspaces" = {
+        format = "{name}";
         on-scroll-up = "hyprctl dispatch workspace e-1";
         on-scroll-down = "hyprctl dispatch workspace e+1";
         on-click = "activate";
