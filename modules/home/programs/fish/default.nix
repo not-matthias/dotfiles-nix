@@ -46,6 +46,7 @@ in {
     shellInit = ''
       zoxide init --cmd j fish | source
       atuin gen-completions --shell fish | source
+      atuin init fish --disable-up-arrow | source
       any-nix-shell fish --info-right | source
     '';
     functions = {
