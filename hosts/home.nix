@@ -54,6 +54,7 @@
       gwenview
       syncthing
       exodus
+      marktext
 
       # Dev
       jetbrains-mono
