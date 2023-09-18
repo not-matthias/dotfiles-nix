@@ -10,6 +10,7 @@
       pamixer # for volume control
       brightnessctl # for brightness control
       playerctl # for media control
+      networkmanagerapplet # for network control
 
       wofi-emoji
 
