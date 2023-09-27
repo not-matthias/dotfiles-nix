@@ -19,7 +19,7 @@
 }:
 stdenv.mkDerivation rec {
   pname = "jetbrains-fleet";
-  version = "1.13.92";
+  version = "1.23.175";
 
   # See: https://aur.archlinux.org/packages/jetbrains-fleet
   src = fetchzip {
