@@ -36,6 +36,7 @@
       any-nix-shell
       duf
       wl-clipboard
+      kooha
 
       # User
       signal-desktop
