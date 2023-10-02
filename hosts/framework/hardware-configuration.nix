@@ -31,6 +31,8 @@
     # https://community.frame.work/t/periodic-1sec-mouse-pointer-freeze-events/13155
     # https://community.frame.work/t/periodic-stuttering-on-fresh-gnome-40-wayland-install-on-arch-linux/3912
     "i915.enable_psr=0"
+    # https://askubuntu.com/questions/763413/how-can-i-get-rid-of-mouse-lag-under-ubuntu
+    "usbhid.mousepoll=1"
   ];
 
   fileSystems."/" = {
