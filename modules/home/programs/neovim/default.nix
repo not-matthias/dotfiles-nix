@@ -1,19 +1,11 @@
-{pkgs, ...}: let
-  # https://github.com/azuwis/nix-config/blob/885e77f74bd730f37d715c6a7ed1a9269a619f7d/common/neovim/nvchad.nix
-  nvchad = pkgs.vimUtils.buildVimPluginFrom2Nix {
-    pname = "nvchad";
-    version = "unstable-2022-12-24";
-    src = pkgs.fetchFromGitHub {
-      owner = "NvChad";
-      repo = "NvChad";
-      rev = "e6a230129ac16f23120424f4cee35fedcb6bf774";
-      sha256 = "1kamjv7gnc7jbhi10cnpgpa2m3xw8a9j8yvgadcqfcw9kigiw5v4";
-    };
-    meta.homepage = "https://github.com/NvChad/NvChad/";
-  };
-in {
+# References:
+# https://github.com/azuwis/nix-config/blob/885e77f74bd730f37d715c6a7ed1a9269a619f7d/common/neovim/nvchad.nix
+{pkgs, ...}: {
   home.packages = with pkgs; [
     neovide
+
+    # lsp
+    rnix-lsp
   ];
 
   # https://github.com/tars0x9752/home/blob/main/modules/neovim/default.nix
@@ -24,7 +16,7 @@ in {
     extraConfig =
       builtins.readFile ./init.vim;
     plugins = with pkgs.vimPlugins; [
-      nvchad
+      #nvchad
 
       vim-airline
       vim-gitgutter
@@ -65,6 +57,10 @@ in {
         plugin = telescope-nvim;
         config = "lua require('telescope').setup()";
       }
+      {
+        plugin = toggleterm-nvim;
+        config = "lua require('toggleterm').setup()";
+      }
 
       telescope-zoxide
 
@@ -91,6 +87,5 @@ in {
   };
 
   xdg.configFile."nvim/init.lua".text = ''
-    vim.cmd [[source ${nvchad}/init.lua]]
   '';
 }
