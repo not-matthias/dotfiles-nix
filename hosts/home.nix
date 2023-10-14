@@ -56,6 +56,7 @@
       syncthing
       exodus
       marktext
+      gnome.file-roller
 
       # Dev
       jetbrains-mono
