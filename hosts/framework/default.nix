@@ -1,4 +1,4 @@
-{...}: {
+{lib, ...}: {
   imports = [(import ./hardware-configuration.nix)];
 
   networking = {
@@ -37,13 +37,32 @@
   services.tlp = {
     enable = true;
     settings = {
-      CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-      START_CHARGE_THRESH_BAT1 = 75;
-      STOP_CHARGE_THRESH_BAT1 = 80;
+      CPU_BOOST_ON_BAT = 0;
+      CPU_SCALING_GOVERNOR_ON_BATTERY = "powersave";
+      START_CHARGE_THRESH_BAT0 = 90;
+      STOP_CHARGE_THRESH_BAT0 = 97;
+      RUNTIME_PM_ON_BAT = "auto";
     };
   };
-  services.auto-cpufreq.enable = true;
+  services.auto-cpufreq = {
+    enable = true;
+    # https://github.com/AdnanHodzic/auto-cpufreq/blob/master/auto-cpufreq.conf-example
+    settings = {
+      charger = {
+        governor = "performance";
+        turbo = "auto";
+      };
+      battery = {
+        governor = "powersave";
+        turbo = "auto";
+      };
+    };
+  };
+  powerManagement = {
+    enable = true;
+    powertop.enable = true;
+    cpuFreqGovernor = lib.mkDefault "powersave";
+  };
 
   #temporary bluetooth fix
   systemd.tmpfiles.rules = [
