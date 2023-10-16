@@ -14,6 +14,7 @@
       networkmanagerapplet # for network control
 
       wofi-emoji
+      wtype
 
       # screenshot tools
       grim
