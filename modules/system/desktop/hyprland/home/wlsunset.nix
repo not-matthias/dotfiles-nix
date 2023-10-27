@@ -8,4 +8,5 @@
       night = 2700;
     };
   };
+  systemd.user.services.wlsunset.Install.WantedBy = ["default.target"];
 }
