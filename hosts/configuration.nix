@@ -40,6 +40,7 @@
       BROWSER = "firefox";
       EDITOR = "nvim";
       VISUAL = "nvim";
+      NIXPKGS_ALLOW_UNFREE = "1";
     };
     systemPackages = with pkgs; [
       nano
