@@ -57,11 +57,11 @@
       exodus
       marktext
       gnome.file-roller
+      gnome-text-editor
 
       # Dev
       jetbrains-mono
-      jetbrains.clion
-      jetbrains-fleet
+      jetbrains.rust-rover
       graphviz
       cmake
       gitAndTools.gh
@@ -70,6 +70,9 @@
       bless
       wineWowPackages.stable # 32-bit and 64-bit
       winetricks
+
+      # Useful tools
+      unzip
 
       # Reverse Engineering / CTF
       file
