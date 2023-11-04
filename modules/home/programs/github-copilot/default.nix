@@ -12,6 +12,7 @@
     with jetbrains; {
       "JetBrains/IntelliJIdea" = idea-ultimate;
       "JetBrains/CLion" = clion;
+      "JetBrains/RustRover" = rust-rover;
     };
     copilotAgent = "${pkgs.idea-copilot}/bin/copilot-agent";
   in
