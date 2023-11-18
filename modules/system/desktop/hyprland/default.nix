@@ -38,7 +38,6 @@
   };
 
   environment.systemPackages = with pkgs; [
-    kitty
     gnome.nautilus
 
     swaylock
