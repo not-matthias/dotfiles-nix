@@ -46,16 +46,13 @@
       xournalpp
       calibre
       vlc
-      krita
       obs-studio
       evince
       libreoffice
-      workrave-qt
       amberol
       gwenview
       syncthing
       exodus
-      marktext
       gnome.file-roller
       gnome-text-editor
 
@@ -73,6 +70,7 @@
 
       # Useful tools
       unzip
+      zip
 
       # Reverse Engineering / CTF
       file
@@ -84,8 +82,8 @@
       checksec
       idafree
       bytecode-viewer
-      recaf
       dex2jar
+      # recaf
       # binary-ninja
       # jadx
       # avalonia-ilspy
