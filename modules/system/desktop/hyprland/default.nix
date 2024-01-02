@@ -66,6 +66,9 @@
       xdg-desktop-portal-gtk
       # xdg-desktop-portal-hyprland is automatically pulled by flake
     ];
+
+    # TODO: Set portal backend
+    config.common.default = "*";
   };
 
   security.pam.services.swaylock = {

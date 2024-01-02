@@ -34,6 +34,11 @@
 
   services.fstrim.enable = true;
   services.thermald.enable = true;
+
+  # TODO: Further configs
+  # https://github.com/nzbr/nixos/blob/cd219d6e0bd968f749cd74a9289800b9e67775c0/module/pattern/laptop.nix#L13-L22
+  # https://github.com/krebs/stockholm/blob/40f103e9ccf99dc36c92e2e008ed7a0b3dca1f48/makefu/2configs/hw/tp-x2x0.nix#L41-L50
+
   services.tlp = {
     enable = true;
     settings = {
