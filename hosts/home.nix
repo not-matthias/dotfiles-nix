@@ -41,7 +41,7 @@
       # User
       signal-desktop
       slack
-      obsidian
+      # obsidian
       #anki # removed for now because it's not cached
       xournalpp
       calibre
