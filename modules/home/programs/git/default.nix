@@ -4,7 +4,9 @@
     userEmail = "26800596+not-matthias@users.noreply.github.com";
     userName = "not-matthias";
 
+    delta.enable = true;
     extraConfig = {
+      init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;
       credential.helper = "${
