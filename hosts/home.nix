@@ -52,7 +52,7 @@
       amberol
       gwenview
       syncthing
-      exodus
+      #exodus
       gnome.file-roller
       gnome-text-editor
 

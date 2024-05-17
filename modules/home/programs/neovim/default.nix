@@ -5,7 +5,6 @@
     neovide
 
     # lsp
-    rnix-lsp
   ];
 
   # https://github.com/tars0x9752/home/blob/main/modules/neovim/default.nix

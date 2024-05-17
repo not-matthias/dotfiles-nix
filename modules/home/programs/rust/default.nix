@@ -10,7 +10,7 @@
       cargo-edit
       cargo-expand
       cargo-udeps
-      cargo-update
+      #cargo-update
       cargo-sort
       cargo-criterion
       cargo-wipe

@@ -3,9 +3,13 @@
     enable = true;
     userEmail = "26800596+not-matthias@users.noreply.github.com";
     userName = "not-matthias";
+
     extraConfig = {
       pull.rebase = true;
       push.autoSetupRemote = true;
+      credential.helper = "${
+        pkgs.git.override {withLibsecret = true;}
+      }/bin/git-credential-libsecret";
       credential."https://github.com" = {
         helper = "!${pkgs.gitAndTools.gh}/bin/gh auth git-credential";
       };
