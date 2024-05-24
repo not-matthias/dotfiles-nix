@@ -48,9 +48,8 @@
   ];
 
   services = {
-    displayManager = {
-      defaultSession = "hyprland";
-    };
+    dbus.enable = true;
+    displayManager.defaultSession = "hyprland";
     xserver = {
       enable = true;
       displayManager = {
@@ -69,7 +68,6 @@
       # xdg-desktop-portal-hyprland is automatically pulled by flake
     ];
 
-    # TODO: Set portal backend
     config.common.default = "*";
   };
 
