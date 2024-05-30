@@ -33,7 +33,7 @@ See: https://superuser.com/a/1604695
 
 ## Errors
 
-### unable to open database file at /run/current-system/sw/bin/command-not-foun
+### unable to open database file at /run/current-system/sw/bin/command-not-found
 
 You need to update the system channel (run with sudo!) not your user's channel. 
 
@@ -58,6 +58,13 @@ Add to /etc/nix/nix.conf:
 ```
 # https://nixos.wiki/wiki/Flakes
 experimental-features = nix-command flakes
+```
+
+
+### Random: No such file or directory
+
+```
+nix-store --verify --check-contents
 ```
 
 
