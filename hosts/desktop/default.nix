@@ -10,14 +10,10 @@
     };
   };
 
-  desktop.gnome.enable = false;
   desktop.hyprland = {
     enable = true;
     useNvidia = true;
   };
-
-  # ddns.enable = true;
-  # vpn.enable = true;
 
   hardware.nvidia.enable = true;
   services.openssh = {
@@ -34,12 +30,12 @@
     vfio = {
       enable = true;
       IOMMUType = "amd";
-      #      devices = ["10de:1f08" "10de:10f9"];
-      #      ignoreMSRs = true;
-      #      disableEFIfb = true;
+      # devices = ["10de:1f08" "10de:10f9"];
+      # ignoreMSRs = true;
+      # disableEFIfb = true;
       loadVfioPci = true;
       # blacklistNvidia = true;
-      #      enableNestedVirt = true;
+      # enableNestedVirt = true;
     };
   };
 

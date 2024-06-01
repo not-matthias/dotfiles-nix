@@ -14,7 +14,6 @@
       bat
       eza
       bottom
-      btop
       tokei
       alejandra
       zoxide
@@ -80,7 +79,6 @@
       imhex
       detect-it-easy
       checksec
-      idafree
       bytecode-viewer
       dex2jar
       # recaf

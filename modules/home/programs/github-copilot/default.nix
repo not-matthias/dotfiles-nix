@@ -5,7 +5,7 @@
   ...
 }: {
   home.packages = with pkgs; [
-    idea-copilot
+    github-copilot-intellij-agent
   ];
   xdg.dataFile = let
     ideDataDirectories = with pkgs;
@@ -14,7 +14,7 @@
       "JetBrains/CLion" = clion;
       "JetBrains/RustRover" = rust-rover;
     };
-    copilotAgent = "${pkgs.idea-copilot}/bin/copilot-agent";
+    copilotAgent = "${pkgs.github-copilot-intellij-agent}/bin/copilot-agent";
   in
     lib.mapAttrs' (name: package:
       lib.nameValuePair "${name}${
