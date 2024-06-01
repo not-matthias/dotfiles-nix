@@ -18,12 +18,11 @@ in {
 
     hardware = {
       nvidia = {
-        package = config.boot.kernelPackages.nvidiaPackages.latest;
+        package = config.boot.kernelPackages.nvidiaPackages.stable;
         powerManagement.enable = true;
-        #        package = nvidia_x11;
-        #modesetting.enable = true;
-        #nvidiaPersistenced = true;
-        #open = true;
+        modesetting.enable = true;
+        open = false;
+        nvidiaSettings = true;
       };
       opengl = {
         enable = true;
