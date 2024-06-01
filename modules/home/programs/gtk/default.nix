@@ -3,10 +3,11 @@
   gtk = {
     enable = true;
 
-    font = {
-      name = "Poppins";
-      package = pkgs.google-fonts-poppins;
-    };
+    # FIXME: Adding this breaks gnome-shell (no icons, text, bar, ...)
+    # font = {
+    #   name = "Poppins";
+    #   package = pkgs.google-fonts-poppins;
+    # };
 
     iconTheme = {
       name = "Papirus";
