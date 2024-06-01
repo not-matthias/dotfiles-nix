@@ -33,6 +33,15 @@ See: https://superuser.com/a/1604695
 
 ## Errors
 
+### Cached failure of attribute '
+
+Run with:
+```
+--option eval-cache false
+```
+
+https://discourse.nixos.org/t/cant-switch-to-flakes-error-cached-failure-of-attribute/42933/5
+
 ### unable to open database file at /run/current-system/sw/bin/command-not-found
 
 You need to update the system channel (run with sudo!) not your user's channel. 

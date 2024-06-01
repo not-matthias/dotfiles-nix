@@ -10,6 +10,12 @@
     };
   };
 
+  desktop.gnome.enable = false;
+  desktop.hyprland = {
+    enable = true;
+    useNvidia = true;
+  };
+
   # ddns.enable = true;
   # vpn.enable = true;
 

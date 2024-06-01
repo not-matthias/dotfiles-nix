@@ -14,11 +14,18 @@ in {
 
   config = lib.mkIf cfg.enable {
     services.xserver.videoDrivers = ["nvidia"];
-    boot.blacklistedKernelModules = ["nouveau"];
+
+    boot = {
+      blacklistedKernelModules = ["nouveau"];
+
+      # Use nvidia framebuffer
+      # https://wiki.gentoo.org/wiki/NVIDIA/nvidia-drivers#Kernel_module_parameters for more info.
+      kernelParams = ["nvidia-drm.fbdev=1"];
+    };
 
     hardware = {
       nvidia = {
-        package = config.boot.kernelPackages.nvidiaPackages.stable;
+        package = config.boot.kernelPackages.nvidiaPackages.latest;
         powerManagement.enable = true;
         modesetting.enable = true;
         open = false;
