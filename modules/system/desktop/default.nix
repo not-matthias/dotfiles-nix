@@ -1,4 +1,4 @@
 [
-  (import ./hyprland)
+  (import ./gnome)
   ./fonts.nix
 ]

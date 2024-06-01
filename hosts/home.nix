@@ -40,15 +40,14 @@
 
       # User
       signal-desktop
-      slack
-      # obsidian
+      obsidian
       #anki # removed for now because it's not cached
       xournalpp
       calibre
       vlc
       obs-studio
       evince
-      libreoffice
+      #libreoffice
       amberol
       gwenview
       syncthing
@@ -62,7 +61,7 @@
       graphviz
       cmake
       gitAndTools.gh
-      python310
+      python3
       devenv
       bless
       wineWowPackages.stable # 32-bit and 64-bit
@@ -89,7 +88,7 @@
       # avalonia-ilspy
     ];
 
-    stateVersion = "23.11";
+    stateVersion = "24.05";
   };
 
   programs = {
