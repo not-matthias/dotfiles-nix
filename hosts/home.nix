@@ -56,6 +56,7 @@
       gnome-text-editor
 
       # Dev
+      zed-editor
       jetbrains-mono
       jetbrains.rust-rover
       graphviz
