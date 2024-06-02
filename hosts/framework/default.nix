@@ -11,6 +11,7 @@
     IOMMUType = "intel";
     enableNestedVirt = true;
   };
+  desktop.hyprland.enable = true;
 
   boot = {
     # Bootloader.
