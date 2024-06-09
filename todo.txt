@@ -3,7 +3,7 @@ framwork stuff: https://github.com/smravec/nixos-config/blob/main/nixos/hardware
 
 wlsunset: https://github.com/johnae/world/blob/49405f7865ae7f2cb6962d45de26bac4da8dc84f/users/profiles/wlsunset.nix
 
-qutebrowser: 
+qutebrowser:
 - https://github.com/johnae/world/blob/49405f7865ae7f2cb6962d45de26bac4da8dc84f/users/profiles/qutebrowser.nix
 
 wofi emoji: https://github.com/end-4/dots-hyprland/blob/m3ww/Import%20Manually/execs%20(add%20to%20path)/wofi-emoji
@@ -16,6 +16,7 @@ wofi emoji: https://github.com/end-4/dots-hyprland/blob/m3ww/Import%20Manually/e
 - [ ] Firefox:
     - https://github.com/gvolpe/nix-config/blob/master/home/programs/browsers/firefox.nix
     - https://github.com/hlissner/dotfiles/blob/master/modules/desktop/browsers/firefox.nix
+    - https://github.com/BhasherBEL/dotfiles-nix/blob/master/home/shared/pc/apps/desktop/firefox.nix
 - [X] Move audio to hardware
     - https://github.com/hlissner/dotfiles/blob/master/modules/hardware/audio.nix
 - [X] Spotify Desktop
@@ -24,7 +25,7 @@ wofi emoji: https://github.com/end-4/dots-hyprland/blob/m3ww/Import%20Manually/e
     - https://github.com/hlissner/dotfiles/blob/master/modules/security.nix
 - [ ] Migrate dconf to gtk: https://github.com/CatDevz/dotfiles/blob/master/modules/home/desktop/theme.nix#L26
 - [ ] Steam: https://nixos.wiki/wiki/Steam
-- [x] Spotify: 
+- [x] Spotify:
     - https://github.com/abba23/spotify-adblock -> create nix flake?
     - https://github.com/the-argus/spicetify-nix
 - [ ] Rofi: https://github.com/hlissner/dotfiles
@@ -39,7 +40,7 @@ wofi emoji: https://github.com/end-4/dots-hyprland/blob/m3ww/Import%20Manually/e
 
 ---
 
-GPU Offloading: 
+GPU Offloading:
 - https://libreddit.mha.fi/r/NixOS/comments/vkgyvz/noob_with_questions_particularly_regarding_nvidia/
 - https://kevincox.ca/2020/12/04/nixos-config-switching/
 ```
@@ -59,10 +60,10 @@ Modify the kernel: https://forum.level1techs.com/t/nixos-vfio-pcie-passthrough/1
 
 Override/path qemu: https://discourse.nixos.org/t/libvirt-installing-qemu-hook/385/7
 
-Qemu Config: 
+Qemu Config:
 - https://github.com/viperML/dotfiles/blob/master/modules/nixos/vfio/windows-nvidia.xml
 - https://alexbakker.me/misc/libvirt-nt10.xml
 - https://docs.vrchat.com/docs/using-vrchat-in-a-virtual-machine
 - https://superuser.com/questions/1606898/hiding-qemu-virtualization-in-guest-windows-10
 - https://astrid.tech/2022/09/22/0/nixos-gpu-vfio/
-- 
+-
