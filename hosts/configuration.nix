@@ -3,6 +3,7 @@
   pkgs,
   flakes,
   user,
+  lib,
   ...
 }: {
   imports = (import ../modules/overlays) ++ (import ../modules/system);
@@ -12,6 +13,8 @@
 
     # Disable security mitigations. Don't use this on servers/multi-user systems.
     kernelParams = ["mitigations=off"];
+
+    tmp.cleanOnBoot = lib.mkDefault true;
   };
 
   users.defaultUserShell = pkgs.fish;
