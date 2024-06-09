@@ -4,6 +4,8 @@
 # - https://stackoverflow.com/a/58244114
 # - https://unix.stackexchange.com/questions/564443/what-does-restart-on-abort-mean-in-a-systemd-service
 # - https://discourse.nixos.org/t/nixos-22-11-systemd-user-services-dont-start-automatically-but-global-ones-do/24809
+# - https://github.com/BhasherBEL/dotfiles-nix/blob/2ec5624c323ed4e2635a643311f92576519a25a6/home/shared/pc/apps/desktop/activitywatch.nix#L13
+# - https://github.com/foo-dogsquared/nixos-config/blob/8e7a3e6277362d4830b8b13bb8aa02bc7ae5ca6b/configs/home-manager/foo-dogsquared/modules/setups/desktop.nix#L39
 {pkgs, ...}: {
   home.packages = with pkgs; [
     aw-server-rust
@@ -11,37 +13,12 @@
     aw-watcher-window
   ];
 
-  systemd.user.services = {
-    activitywatch = {
-      Unit.Description = "ActivityWatch Server (Rust implementation)";
-      Service = {
-        Type = "simple";
-        ExecStart = "${pkgs.aw-server-rust}/bin/aw-server";
-        Restart = "always";
-      };
-
-      Install = {WantedBy = ["default.target"];};
-    };
-
-    activitywatch-afk = {
-      Unit.Description = "ActivityWatch Watcher AFK";
-      Service = {
-        Type = "simple";
-        ExecStart = "${pkgs.activitywatch}/bin/aw-watcher-afk";
-        Restart = "always";
-      };
-      Install.WantedBy = ["default.target"];
-    };
-
-    activitywatch-window = {
-      Unit.Description = "ActivityWatch Watcher Window";
-      Service = {
-        Type = "simple";
-        ExecStart = "${pkgs.activitywatch}/bin/aw-watcher-window";
-        Restart = "always";
-        RestartSec = 5;
-      };
-      Install.WantedBy = ["default.target"];
+  services.activitywatch = {
+    enable = true;
+    package = pkgs.aw-server-rust;
+    watchers = {
+      aw-watcher-afk.package = pkgs.activitywatch;
+      aw-watcher-window.package = pkgs.activitywatch;
     };
   };
 }
