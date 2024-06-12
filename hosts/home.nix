@@ -40,7 +40,7 @@
       # User
       signal-desktop
       obsidian
-      #anki # removed for now because it's not cached
+      anki
       xournalpp
       calibre
       vlc
