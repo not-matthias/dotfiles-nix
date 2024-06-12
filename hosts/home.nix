@@ -53,6 +53,7 @@
       #exodus
       gnome.file-roller
       gnome-text-editor
+      termusic
 
       # Dev
       zed-editor
