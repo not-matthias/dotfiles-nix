@@ -5,34 +5,39 @@
   config,
   lib,
   modulesPath,
+  pkgs,
   ...
 }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  # boot.kernelPackages = pkgs.linuxPackages_latest; # Can't use latest kernel because of vmware
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "nvme" "usb_storage" "usbhid" "sd_mod"];
   boot.initrd.kernelModules = [];
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
 
-  # Fix brightness keys and enable deep sleep
   boot.kernelParams = [
+    # Fix brightness keys
     "module_blacklist=hid_sensor_hub"
+
     # For Power consumption
     # https://kvark.github.io/linux/framework/2021/10/17/framework-nixos.html
     "mem_sleep_default=deep"
+
     # For Power consumption
     # https://community.frame.work/t/linux-battery-life-tuning/6665/156
     "nvme.noacpi=1"
-    # https://community.frame.work/t/solved-bluetooth-mouse-lag-linux-autosuspend/26763
-    "btusb.enable_autosuspend=n"
+
     # https://community.frame.work/t/periodic-1sec-mouse-pointer-freeze-events/13155
     # https://community.frame.work/t/periodic-stuttering-on-fresh-gnome-40-wayland-install-on-arch-linux/3912
     "i915.enable_psr=0"
-    # https://askubuntu.com/questions/763413/how-can-i-get-rid-of-mouse-lag-under-ubuntu
-    "usbhid.mousepoll=1"
+
+    # https://community.frame.work/t/solved-bluetooth-mouse-lag-linux-autosuspend/26763
+    # Powertop also recommends to disable this
+    # Also fixes USB mouse lag
+    "btusb.enable_autosuspend=n"
   ];
 
   fileSystems."/" = {

@@ -5,4 +5,5 @@
   ./intel.nix
   ./nvidia.nix
   ./opengl.nix
+  ./powersave.nix
 ]
