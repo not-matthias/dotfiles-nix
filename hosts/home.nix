@@ -54,6 +54,7 @@
       gnome.file-roller
       gnome-text-editor
       termusic
+      jan
 
       # Dev
       zed-editor

@@ -8,6 +8,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   cfg = config.hardware.powersave;
@@ -17,6 +18,10 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      powertop
+    ];
+
     boot = {
       # snd_hda_intel: Audio Power saving
       extraModprobeConfig = ''
