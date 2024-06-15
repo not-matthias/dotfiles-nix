@@ -7,7 +7,7 @@
   pinnedPkgs =
     import (fetchTarball {
       url = "https://github.com/NixOS/nixpkgs/archive/nixos-24.05.tar.gz";
-      sha256 = "sha256:0g0nl5dprv52zq33wphjydbf3xy0kajp0yix7xg2m0qgp83pp046";
+      sha256 = "sha256:0rq68grxip54v1wgbv6jskk3abk52r5ilz0mv7wi8gvg5006sbai";
     }) {
       inherit system;
 
