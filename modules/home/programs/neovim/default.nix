@@ -9,58 +9,58 @@
 
   # https://github.com/tars0x9752/home/blob/main/modules/neovim/default.nix
   # https://github.com/notusknot/dotfiles-nix/blob/main/modules/nvim/default.nix
-  programs.neovim = {
-    enable = false;
-    vimAlias = true;
-    extraConfig =
-      builtins.readFile ./init.vim;
-    plugins = with pkgs.vimPlugins; [
-      nvchad
+  # programs.neovim = {
+  #   enable = false;
+  #   vimAlias = true;
+  #   extraConfig =
+  #     builtins.readFile ./init.vim;
+  #   plugins = with pkgs.vimPlugins; [
+  #     nvchad
 
-      vim-commentar
-      vim-ormolu
-      vim-nix
-      vim-autoformat
-      vim-nix
-      vim-nixhash
-      vim-yaml
-      vim-toml
+  #     vim-commentar
+  #     vim-ormolu
+  #     vim-nix
+  #     vim-autoformat
+  #     vim-nix
+  #     vim-nixhash
+  #     vim-yaml
+  #     vim-toml
 
-      fzf-vim
+  #     fzf-vim
 
-      {
-        plugin = nvim-lspconfig;
-        config = ''
-          lua << EOF
-          require('lspconfig').rust_analyzer.setup{}
-          require('lspconfig').rnix.setup{}
-          EOF
-        '';
-      }
+  #     {
+  #       plugin = nvim-lspconfig;
+  #       config = ''
+  #         lua << EOF
+  #         require('lspconfig').rust_analyzer.setup{}
+  #         require('lspconfig').rnix.setup{}
+  #         EOF
+  #       '';
+  #     }
 
-      # coc
-      coc-json
-      coc-yaml
-      coc-html
-      coc-tsserver
-      coc-eslint
-      coc-pairs
-      coc-prettier
-      coc-rls
-      coc-rust-analyzer
-    ];
-    coc = {
-      enable = true;
-      settings = {
-        suggest = {
-          noselect = true;
-          enablePreview = true;
-          enablePreselect = true;
-          disableKind = true;
-        };
-      };
-    };
-  };
+  #     # coc
+  #     coc-json
+  #     coc-yaml
+  #     coc-html
+  #     coc-tsserver
+  #     coc-eslint
+  #     coc-pairs
+  #     coc-prettier
+  #     coc-rls
+  #     coc-rust-analyzer
+  #   ];
+  #   coc = {
+  #     enable = true;
+  #     settings = {
+  #       suggest = {
+  #         noselect = true;
+  #         enablePreview = true;
+  #         enablePreselect = true;
+  #         disableKind = true;
+  #       };
+  #     };
+  #   };
+  # };
 
   programs.nixvim = {
     enable = true;
@@ -163,13 +163,13 @@
       cmp-emoji.enable = true;
 
       # git
-      trouble.enable = true;
+      # trouble.enable = true;
       gitsigns = {
-        enable = true;
-        settings = {
-          current_line_blame = true;
-          trouble = true;
-        };
+        enable = false;
+        # settings = {
+        #   current_line_blame = true;
+        #   trouble = true;
+        # };
       };
 
       # tree-sitter
