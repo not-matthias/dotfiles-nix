@@ -8,6 +8,7 @@
   spicetify-nix,
   devenv,
   hyprland,
+  nixvim,
   ...
 }: let
   system = "x86_64-linux";
@@ -51,7 +52,7 @@
     base.lib.nixosSystem {
       system = arch;
       specialArgs = {
-        inherit flakes user hyprland;
+        inherit flakes user hyprland nixvim;
       };
       modules =
         commonModules
@@ -65,7 +66,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               extraSpecialArgs = {
-                inherit flakes user spicetify-nix;
+                inherit flakes user spicetify-nix nixvim;
                 addons = nur.repos.rycee.firefox-addons;
               };
               users.${user} = {
@@ -73,6 +74,7 @@
                   ./home.nix
                   spicetify-nix.homeManagerModule
                   hyprland.homeManagerModules.default
+                  nixvim.homeManagerModules.nixvim
                 ];
               };
             };

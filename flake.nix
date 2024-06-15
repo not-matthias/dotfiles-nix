@@ -26,6 +26,11 @@
       url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -37,6 +42,7 @@
     spicetify-nix,
     devenv,
     hyprland,
+    nixvim,
     ...
   } @ flakes: let
     user = "not-matthias";
@@ -44,7 +50,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nurpkgs home-manager nur user fenix spicetify-nix devenv hyprland;
+        inherit flakes nixpkgs nurpkgs home-manager nur user fenix spicetify-nix devenv hyprland nixvim;
       }
     );
   };
