@@ -10,15 +10,14 @@
   # https://github.com/tars0x9752/home/blob/main/modules/neovim/default.nix
   # https://github.com/notusknot/dotfiles-nix/blob/main/modules/nvim/default.nix
   programs.neovim = {
-    enable = true;
+    enable = false;
     vimAlias = true;
     extraConfig =
       builtins.readFile ./init.vim;
     plugins = with pkgs.vimPlugins; [
-      #nvchad
+      nvchad
 
-      vim-airline
-      vim-gitgutter
+      vim-commentar
       vim-ormolu
       vim-nix
       vim-autoformat
@@ -28,21 +27,7 @@
       vim-toml
 
       fzf-vim
-      nerdtree
 
-      {
-        plugin = nvim-treesitter;
-        config = ''
-          lua << EOF
-          require('nvim-treesitter.configs').setup {
-              highlight = {
-                  enable = true,
-                  additional_vim_regex_highlighting = false,
-              },
-          }
-          EOF
-        '';
-      }
       {
         plugin = nvim-lspconfig;
         config = ''
@@ -52,16 +37,6 @@
           EOF
         '';
       }
-      {
-        plugin = telescope-nvim;
-        config = "lua require('telescope').setup()";
-      }
-      {
-        plugin = toggleterm-nvim;
-        config = "lua require('toggleterm').setup()";
-      }
-
-      telescope-zoxide
 
       # coc
       coc-json
@@ -71,6 +46,8 @@
       coc-eslint
       coc-pairs
       coc-prettier
+      coc-rls
+      coc-rust-analyzer
     ];
     coc = {
       enable = true;
@@ -82,6 +59,131 @@
           disableKind = true;
         };
       };
+    };
+  };
+
+  programs.nixvim = {
+    enable = true;
+    defaultEditor = true;
+
+    colorschemes.catppuccin.enable = true;
+    clipboard = {
+      providers.wl-copy.enable = true;
+      register = "unnamedplus";
+    };
+    opts = {
+      number = true;
+      relativenumber = true;
+
+      updatetime = 100; # faster completion
+
+      # Intent
+      expandtab = true; # \t to space conversion
+      autoindent = true;
+      smartindent = true;
+      tabstop = 4;
+      shiftwidth = 4;
+    };
+
+    extraPlugins = with pkgs.vimPlugins; [
+    ];
+
+    plugins = {
+      auto-save.enable = true;
+      lightline.enable = true;
+      commentary.enable = true;
+      comment.enable = true;
+
+      # Visual
+      airline.enable = true; # Status bar
+
+      toggleterm = {
+        enable = true;
+        settings = {
+          open_mapping = "[[<C-t>]]";
+          start_in_insert = false;
+        };
+      };
+      nvim-tree = {
+        enable = true;
+        openOnSetup = true;
+        openOnSetupFile = true;
+        autoReloadOnWrite = true;
+      };
+
+      # Rust stuff
+      rustaceanvim = {
+        enable = true;
+        settings.server.settings = {
+          cargo = {
+            buildScripts = {
+              enable = true;
+            };
+          };
+          procMacro = {
+            enable = true;
+          };
+        };
+      };
+      crates-nvim.enable = true;
+
+      # Language servers
+      lsp = {
+        enable = true;
+        servers = {
+          rust-analyzer = {
+            enable = true;
+            installRustc = true;
+            installCargo = true;
+          };
+          typst-lsp.enable = true;
+          pylsp.enable = true;
+        };
+      };
+      lsp-format.enable = true;
+
+      # Copilot
+      copilot-lua = {
+        enable = true;
+
+        suggestion.enabled = false;
+        panel.enabled = false;
+      };
+      copilot-cmp.enable = true;
+
+      # cmp plugins
+      cmp.enable = true;
+      cmp-nvim-lsp.enable = true;
+      cmp-path.enable = true;
+      cmp-buffer.enable = true;
+      cmp-git.enable = true;
+      cmp-clippy.enable = true;
+      cmp-spell.enable = true;
+      cmp-tmux.enable = true;
+      cmp-emoji.enable = true;
+
+      # git
+      trouble.enable = true;
+      gitsigns = {
+        enable = true;
+        settings = {
+          current_line_blame = true;
+          trouble = true;
+        };
+      };
+
+      # tree-sitter
+      treesitter = {
+        enable = true;
+        nixGrammars = true;
+        indent = true;
+      };
+      treesitter-context = {
+        enable = true;
+        settings = {max_lines = 2;};
+      };
+      rainbow-delimiters.enable = true;
+      nvim-autopairs.enable = true;
     };
   };
 
