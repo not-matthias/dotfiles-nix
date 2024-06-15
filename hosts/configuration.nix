@@ -84,6 +84,7 @@
 
   # Cachix
   nix.settings = {
+    trusted-users = ["root" "${user}"];
     substituters = [
       "https://devenv.cachix.org"
     ];
