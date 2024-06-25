@@ -16,7 +16,7 @@
 
     # https://github.com/catppuccin/gtk
     theme = {
-      name = "Catppuccin-Orange-Dark-Compact";
+      name = "Catppuccin-Orange-Light-Compact";
       package = pkgs.catppuccin-gtk.override {
         size = "compact";
         variant = "frappe";
@@ -26,7 +26,7 @@
     # https://github.com/PapirusDevelopmentTeam/papirus-icon-theme
     cursorTheme = {
       package = pkgs.catppuccin-cursors.frappeDark;
-      name = "Catppuccin-Frappe-Dark-Cursors";
+      name = "Catppuccin-Frappe-Light-Cursors";
     };
   };
 }
