@@ -5,7 +5,6 @@
   home-manager,
   user,
   fenix,
-  spicetify-nix,
   devenv,
   hyprland,
   nixvim,
@@ -66,13 +65,12 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               extraSpecialArgs = {
-                inherit flakes user spicetify-nix nixvim;
+                inherit flakes user nixvim;
                 addons = nur.repos.rycee.firefox-addons;
               };
               users.${user} = {
                 imports = [
                   ./home.nix
-                  spicetify-nix.homeManagerModule
                   hyprland.homeManagerModules.default
                   nixvim.homeManagerModules.nixvim
                 ];
@@ -87,4 +85,5 @@ in {
   desktop = nixosBox "x86_64-linux" nixpkgs "desktop";
   laptop = nixosBox "x86_64-linux" nixpkgs "laptop";
   framework = nixosBox "x86_64-linux" nixpkgs "framework";
+  travel = nixosBox "x86_64-linux" nixpkgs "travel";
 }

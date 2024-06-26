@@ -1,6 +1,22 @@
 # dotfiles-nix
 NixOS dotfiles and hardware configurations
 
+## Setup new device
+
+```
+nix-shell -p git vscode
+
+git clone github.com/not-matthias/dotfiles-nix
+cd dotfiles-nix
+code .
+```
+
+Then create a new folder inside `hosts` and configure it:
+```
+cp /etc/nixos/configuration.nix ./hosts/<name>
+cp /etc/nixos/hardware-configuration.nix ./hosts/<name>
+```
+
 ## Installation
 
 ```
