@@ -15,7 +15,6 @@
   # ./newsflash
   # ./protonvpn
   ./rust
-  ./spotify
   ./tmux
   ./vscode
   ./waybar
