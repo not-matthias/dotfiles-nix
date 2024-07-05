@@ -74,8 +74,6 @@ in {
     };
 
     environment.systemPackages = with pkgs; [
-      gnome.nautilus
-
       swaylock
       wl-clipboard
       wlr-randr

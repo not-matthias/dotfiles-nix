@@ -51,7 +51,8 @@
       gwenview
       syncthing
       #exodus
-      gnome.file-roller
+      nautilus
+      file-roller
       gnome-text-editor
       termusic
       jan

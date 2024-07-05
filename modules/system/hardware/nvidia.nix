@@ -31,8 +31,10 @@ in {
         open = false;
         nvidiaSettings = true;
       };
-      opengl = {
+      graphics = {
         enable = true;
+      };
+      opengl = {
         driSupport = true;
         driSupport32Bit = true;
         extraPackages = with pkgs; [
