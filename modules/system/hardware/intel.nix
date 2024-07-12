@@ -26,9 +26,9 @@ in {
       vaapiIntel = pkgs.vaapiIntel.override {enableHybridCodec = true;};
     };
 
-    hardware.opengl = {
+    hardware.graphics = {
       enable = true;
-      driSupport32Bit = true;
+      enable32Bit = true;
       extraPackages = with pkgs; [
         intel-media-driver
         # (vaapiIntel.override {enableHybridCodec = true;})
@@ -36,8 +36,8 @@ in {
         vaapiVdpau
         libvdpau-va-gl
       ];
+      extraPackages32 = with pkgs.pkgsi686Linux; [vaapiIntel];
     };
-    hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [vaapiIntel];
 
     # services.xserver.videoDrivers = ["intel"];
   };
