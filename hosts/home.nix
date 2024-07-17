@@ -39,7 +39,7 @@
 
       # User
       signal-desktop
-      obsidian
+      # obsidian
       anki
       xournalpp
       calibre
@@ -56,6 +56,7 @@
       gnome-text-editor
       termusic
       jan
+      zotero
 
       # Dev
       zed-editor

@@ -68,7 +68,7 @@ in {
     };
 
     services.auto-cpufreq = {
-      enable = true;
+      enable = false;
       # https://github.com/AdnanHodzic/auto-cpufreq/blob/master/auto-cpufreq.conf-example
       settings = {
         charger = {

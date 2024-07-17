@@ -114,7 +114,7 @@
       # Rust stuff
       rustaceanvim = {
         enable = true;
-        settings.server.settings = {
+        settings.server.default_settings = {
           cargo = {
             buildScripts = {
               enable = true;
