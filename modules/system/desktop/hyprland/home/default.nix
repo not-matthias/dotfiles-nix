@@ -8,7 +8,7 @@
     ];
 
     home.packages = with pkgs; [
-      pamixer # for volume control
+      alsa-utils # for volume control
       brightnessctl # for brightness control
       playerctl # for media control
       networkmanagerapplet # for network control
