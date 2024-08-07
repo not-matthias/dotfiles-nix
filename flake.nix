@@ -17,12 +17,6 @@
       url = "github:cachix/devenv/latest";
       # inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    hyprland = {
-      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,7 +30,6 @@
     nur,
     fenix,
     devenv,
-    hyprland,
     nixvim,
     ...
   } @ flakes: let
@@ -45,7 +38,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nurpkgs home-manager nur user fenix devenv hyprland nixvim;
+        inherit flakes nixpkgs nurpkgs home-manager nur user fenix devenv nixvim;
       }
     );
   };

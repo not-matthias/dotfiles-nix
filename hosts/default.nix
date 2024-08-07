@@ -6,7 +6,6 @@
   user,
   fenix,
   devenv,
-  hyprland,
   nixvim,
   ...
 }: let
@@ -42,7 +41,6 @@
       nixpkgs.overlays = overlays;
     }
     home-manager.nixosModules.home-manager
-    hyprland.nixosModules.default
 
     ./configuration.nix
   ];
@@ -51,7 +49,7 @@
     base.lib.nixosSystem {
       system = arch;
       specialArgs = {
-        inherit flakes user hyprland nixvim;
+        inherit flakes user nixvim;
       };
       modules =
         commonModules
@@ -71,7 +69,6 @@
               users.${user} = {
                 imports = [
                   ./home.nix
-                  hyprland.homeManagerModules.default
                   nixvim.homeManagerModules.nixvim
                 ];
               };

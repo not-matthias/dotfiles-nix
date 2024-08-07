@@ -8,7 +8,6 @@
 #
 {
   pkgs,
-  hyprland,
   lib,
   config,
   ...
@@ -31,14 +30,7 @@ in {
   # FIXME: Conditionally import this
   config = lib.mkIf cfg.enable {
     programs = {
-      hyprland = {
-        enable = true;
-
-        # FIXME: This uses the dev version!!!
-        # FIXME: remove this
-        # package = hyprland.packages.${pkgs.system}.default;
-      };
-
+      hyprland.enable = true;
       xwayland.enable = true;
     };
 
