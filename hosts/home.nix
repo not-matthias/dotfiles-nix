@@ -56,6 +56,7 @@
       gnome-text-editor
       termusic
       jan
+      msty
       zotero
 
       # Dev
