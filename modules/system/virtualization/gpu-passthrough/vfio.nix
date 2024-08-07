@@ -60,7 +60,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    hardware.opengl.enable = true;
+    hardware.graphics.enable = true;
 
     boot = {
       kernelParams =
