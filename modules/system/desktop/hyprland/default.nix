@@ -9,7 +9,6 @@
 {
   pkgs,
   hyprland,
-  system,
   lib,
   config,
   ...
@@ -34,7 +33,10 @@ in {
     programs = {
       hyprland = {
         enable = true;
-        package = hyprland.packages.${pkgs.system}.default;
+
+        # FIXME: This uses the dev version!!!
+        # FIXME: remove this
+        # package = hyprland.packages.${pkgs.system}.default;
       };
 
       xwayland.enable = true;
