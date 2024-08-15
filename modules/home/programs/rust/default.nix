@@ -19,7 +19,6 @@
         with fenix; (fenix.combine [
           fenix.latest.rustc
           fenix.latest.toolchain
-          fenix.targets."wasm32-unknown-unknown".latest.rust-std
           fenix.targets."x86_64-pc-windows-gnu".latest.rust-std
         ])
       )

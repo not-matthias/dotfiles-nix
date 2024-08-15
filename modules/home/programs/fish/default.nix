@@ -18,7 +18,6 @@ in {
       "diff" = "delta";
       "ping" = "gping";
       "cat" = "bat";
-      "cp" = "fcp";
       "ls" = "eza";
       "tree" = "eza --tree";
       "df" = "duf";
@@ -33,6 +32,7 @@ in {
       "...." = "cd ../../..";
 
       "gc" = "git commit";
+      "gcm" = "git commit -m";
       "gs" = "git status";
       "ga" = "git add -A";
       "gp" = "git pull";
