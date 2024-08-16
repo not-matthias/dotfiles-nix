@@ -51,10 +51,9 @@
       gwenview
       syncthing
       #exodus
-      nautilus
-      file-roller
+      gnome.nautilus
+      gnome.file-roller
       gnome-text-editor
-      termusic
       jan
       msty
       zotero
@@ -62,7 +61,6 @@
       # Dev
       zed-editor
       jetbrains-mono
-      jetbrains.rust-rover
       graphviz
       cmake
       gitAndTools.gh
@@ -79,13 +77,13 @@
       # Reverse Engineering / CTF
       file
       binwalk
-      gef
-      gdb
-      imhex
-      detect-it-easy
-      checksec
-      bytecode-viewer
-      dex2jar
+      # gef
+      # gdb
+      # imhex
+      # detect-it-easy
+      # checksec
+      # bytecode-viewer
+      # dex2jar
       # recaf
       # binary-ninja
       # jadx

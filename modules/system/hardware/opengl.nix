@@ -5,5 +5,5 @@
 # -
 {
   # Needed for winit/imgui/egui/other rust applications
-  hardware.graphics.enable = true;
+  hardware.opengl.enable = true;
 }
