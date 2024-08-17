@@ -1,6 +1,9 @@
 # https://github.com/hlissner/dotfiles/blob/master/modules/desktop/browsers/firefox.nix
 # settings taken from here:
 # https://github.com/gvolpe/nix-config/blob/master/home/programs/firefox/default.nix
+# https://github.com/brainfucksec/brainfucksec.github.io/blob/f98e18da8a393d3c4cd2f7da123368eb5a936ff6/_posts/2022-03-21-firefox-hardening-guide.md?plain=1#L378
+# TODO:
+# https://github.com/pyllyukko/user.js/
 {
   pkgs,
   addons,
@@ -49,9 +52,6 @@ in {
         "privacy.donottrackheader.value" = 1;
         "privacy.purge_trackers.enabled" = true;
 
-        # Don't use the built-in password manager.
-        "signon.rememberSignons" = false;
-
         # Do not check if Firefox is the default browser
         "browser.shell.checkDefaultBrowser" = false;
 
@@ -74,14 +74,12 @@ in {
         # https://gecko.readthedocs.org/en/latest/browser/browser/DirectoryLinksProvider.html#browser-newtabpage-directory-ping
         "browser.newtabpage.enhanced" = false;
         "browser.newtabpage.introShown" = true;
-        "browser.newtab.preload" = false;
         "browser.newtabpage.directory.ping" = "";
         "browser.newtabpage.directory.source" = "data:text/plain,{}";
 
         # Reduce search engine noise in the urlbar's completion window. The
         # shortcuts and suggestions will still work, but Firefox won't clutter
         # its UI with reminders that they exist.
-        "browser.urlbar.suggest.searches" = false;
         "browser.urlbar.shortcuts.bookmarks" = false;
         "browser.urlbar.shortcuts.history" = false;
         "browser.urlbar.shortcuts.tabs" = false;
@@ -93,8 +91,21 @@ in {
         "browser.urlbar.quickactions.showPrefs" = false;
         "browser.urlbar.shortcuts.quickactions" = false;
         "browser.urlbar.suggest.quickactions" = false;
+        "browser.urlbar.suggest.trending" = false;
+        "browser.search.suggest.enabled" = false;
+
+        # Disable suggestions in urlbar
+        "browser.urlbar.suggest.history" = false;
+        "browser.urlbar.suggest.bookmark" = false;
+        "browser.urlbar.suggest.clipboard" = false;
+        "browser.urlbar.suggest.openpage" = false;
+        "browser.urlbar.suggest.engines" = false;
+        "browser.urlbar.suggest.searches" = false;
+        "browser.urlbar.suggest.weather" = false;
+        "browser.urlbar.suggest.topsites" = false;
 
         # https://blog.mozilla.org/data/2021/09/15/data-and-firefox-suggest/
+        "browser.urlbar.suggest.quicksuggest" = false;
         "browser.urlbar.suggest.quicksuggest.nonsponsored" = false;
         "browser.urlbar.suggest.quicksuggest.sponsored" = false;
 
@@ -212,10 +223,16 @@ in {
         # Other settings #
         ##################
 
-        "browser.toolbars.bookmarks.visibility" = "newtab";
+        # Disable disk cache entirely
+        "browser.cache.disk.enable" = false;
+
+        # Never show bookmarks bar
+        "browser.toolbars.bookmarks.visibility" = "never";
 
         # integrated calculator
         "browser.urlbar.suggest.calculator" = true;
+        "browser.urlbar.unitConversion.enabled" = true;
+        "browser.urlbar.trending.featureGate" = true;
 
         "browser.newtabpage.pinned" = [
           {
@@ -224,24 +241,64 @@ in {
           }
           {
             title = "OpenWebUI";
-            url = "http://localhost:11434";
+            url = "http://localhost:11435";
           }
         ];
 
-        # "doh-rollout.disable-heuristics" = true;
-        # "dom.security.https_only_mode" = true;
-        # "dom.security.https_only_mode_ever_enabled" = true;
+        "browser.compactmode.show" = true;
+        "signon.firefoxRegalay.feature" = "disabled";
+
         # "media.eme.enabled" = true;
         # "network.cookie.cookieBehavior" = 1;
+
+        # DNS-over-HTTPS
         # "network.trr.mode" = 5;
+
         # "privacy.donottrackheader.enabled" = true;
         # "privacy.globalprivacycontrol.enabled" = true;
         # "privacy.globalprivacycontrol.was_ever_enabled" = true;
-        # "signon.autofillForms" = false;
-        # "signon.firefoxRegalay.feature" = "disabled";
-        # "signon.generation.enabled" = false;
-        # "signon.management.page.breach-alerts.enabled" = false;
-        # "signon.rememberSignons" = false;
+
+        "signon.autofillForms" = false;
+        "signon.generation.enabled" = false;
+        "signon.management.page.breach-alerts.enabled" = false;
+        "signon.rememberSignons" = false; # Don't use the built-in password manager.
+
+        "findbar.highlightAll" = true;
+
+        # Remove 'Firefox View' tab
+        "browser.tabs.firefox-view" = false;
+
+        ####################
+        # FastFox settings #
+        ####################
+
+        "nglayout.initialpaint.delay" = 5; # default: 250
+
+        # PREF: new tab preload
+        # [WARNING] Disabling this may cause a delay when opening a new tab in Firefox.
+        # [1] https://wiki.mozilla.org/Tiles/Technical_Documentation#Ping
+        # [2] https://github.com/arkenfox/user.js/issues/1556
+        "browser.newtab.preload" = true;
+
+        # PREF: lazy load iframes
+        "dom.iframe_lazy_loading.enabled" = true; # DEFAULT [FF121+]
+
+        # PREF: Webrender tweaks
+        # [1] https://searchfox.org/mozilla-central/rev/6e6332bbd3dd6926acce3ce6d32664eab4f837e5/modules/libpref/init/StaticPrefList.yaml#6202-6219
+        # [2] https://hacks.mozilla.org/2017/10/the-whole-web-at-maximum-fps-how-webrender-gets-rid-of-jank/
+        # [3] https://www.reddit.com/r/firefox/comments/tbphok/is_setting_gfxwebrenderprecacheshaders_to_true/i0bxs2r/
+        # [4] https://www.reddit.com/r/firefox/comments/z5auzi/comment/ixw65gb?context=3
+        # [5] https://gist.github.com/RubenKelevra/fd66c2f856d703260ecdf0379c4f59db?permalink_comment_id=4532937#gistcomment-4532937
+        "gfx.webrender.all" = true; # enables WR + additional features
+        "gfx.webrender.precache-shaders" = true; # longer initial startup time
+        "gfx.webrender.compositor.force-enabled" = true; # enforce
+
+        # PREF: compression level for cached JavaScript bytecode [FF102+]
+        # [1] https://github.com/yokoffing/Betterfox/issues/247
+        # 0 = do not compress (default)
+        # 1 = minimal compression
+        # 9 = maximal compression
+        "browser.cache.jsbc_compression_level" = 3;
       };
       extensions = with addons; [
         bitwarden
