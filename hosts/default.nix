@@ -62,6 +62,7 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
+              backupFileExtension = "backup";
               extraSpecialArgs = {
                 inherit flakes user nixvim;
                 addons = nur.repos.rycee.firefox-addons;
