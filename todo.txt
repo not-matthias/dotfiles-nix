@@ -12,8 +12,8 @@ wofi emoji: https://github.com/end-4/dots-hyprland/blob/m3ww/Import%20Manually/e
 - [ ] Smarter tmux sessions: https://www.joshmedeski.com/posts/smart-tmux-sessions-with-zoxide-and-fzf/
 
 
-- [ ] Neovim IDE: https://github.com/gvolpe/nix-config/tree/master/home/programs/neovim-ide
-- [ ] Firefox:
+- [x] Neovim IDE: https://github.com/gvolpe/nix-config/tree/master/home/programs/neovim-ide
+- [x] Firefox:
     - https://github.com/gvolpe/nix-config/blob/master/home/programs/browsers/firefox.nix
     - https://github.com/hlissner/dotfiles/blob/master/modules/desktop/browsers/firefox.nix
     - https://github.com/BhasherBEL/dotfiles-nix/blob/master/home/shared/pc/apps/desktop/firefox.nix
@@ -65,3 +65,6 @@ Qemu Config:
 - https://superuser.com/questions/1606898/hiding-qemu-virtualization-in-guest-windows-10
 - https://astrid.tech/2022/09/22/0/nixos-gpu-vfio/
 -
+
+
+- [ ] homepage dashboard: https://github.com/mrjones2014/dotfiles/blob/8e514187dae6adf3f732b1d790141441352cb2f4/hosts/server/homepage.nix
