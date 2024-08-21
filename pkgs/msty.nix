@@ -9,7 +9,7 @@
   src = fetchurl {
     url = "https://assets.msty.app/Msty_x86_64.AppImage";
     name = "Msty_x86_64.AppImage";
-    hash = "sha256-jrutR5tbF7F3dfXYzevvUZaNxBxjmXzjqnbjr3oWMz4=";
+    hash = "sha256-pD+EH/EwmOh2K7bGwg9GtlJBBHuoJnTnu9craFjInRs=";
   };
 
   appimageContents = appimageTools.extractType2 {inherit pname version src;};
