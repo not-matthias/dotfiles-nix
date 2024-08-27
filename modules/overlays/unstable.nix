@@ -6,7 +6,7 @@
   unstabledPkgs =
     import (fetchTarball {
       url = "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
-      sha256 = "sha256:0awagdjzv2fsy5v7a0wxz1hd642gsglib2gk4lnqm0iybly7kf0s";
+      sha256 = "sha256:1vc8bzz04ni7l15a9yd1x7jn0bw2b6rszg1krp6bcxyj3910pwb7";
     }) {
       inherit system;
 

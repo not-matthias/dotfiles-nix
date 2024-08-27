@@ -6,7 +6,7 @@
   unstable =
     import (fetchTarball {
       url = "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
-      sha256 = "sha256:0awagdjzv2fsy5v7a0wxz1hd642gsglib2gk4lnqm0iybly7kf0s";
+      sha256 = "sha256:1vc8bzz04ni7l15a9yd1x7jn0bw2b6rszg1krp6bcxyj3910pwb7";
     }) {
       system = "x86_64-linux";
 
@@ -20,19 +20,38 @@ in {
     unstable.ollama
   ];
 
+  networking.firewall.allowedTCPPorts = [
+    #config.services.ollama.port
+    config.services.open-webui.port
+  ];
+
   services.ollama = {
     enable = true;
     package = unstable.ollama;
-    # host = "0.0.0.0";
-    # port = 11434;
+    #host = "0.0.0.0";
+    #port = 11434;
+    acceleration = "cuda";
   };
 
   services.open-webui = {
     enable = true;
-    # host = "0.0.0.0";
+    package = unstable.open-webui;
+    host = "0.0.0.0";
     port = 11435;
     environment = {
       OLLAMA_API_BASE_URL = "http://127.0.0.1:11434";
+
+      # SCARF_NO_ANALYTICS = "True";
+      # DO_NOT_TRACK = "True";
+      # ANONYMIZED_TELEMETRY = "False";
+
+      #ENABLE_COMMUNITY_SHARING = "False";
+      #ENABLE_ADMIN_EXPORT = "False";
+
+      #WEBUI_AUTH = "False";
+      #ENABLE_SIGNUP = "False";
+      #WEBUI_AUTH_TRUSTED_EMAIL_HEADER = "X-Email";
+      #DEFAULT_USER_ROLE = "user";
     };
   };
 }
