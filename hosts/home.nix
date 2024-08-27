@@ -66,9 +66,9 @@
       gitAndTools.gh
       python3
       devenv
-      bless
-      wineWowPackages.stable # 32-bit and 64-bit
-      winetricks
+      #bless
+      #wineWowPackages.stable # 32-bit and 64-bit
+      #winetricks
 
       # Useful tools
       unzip

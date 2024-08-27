@@ -5,38 +5,59 @@
   config,
   lib,
   modulesPath,
-  pkgs,
   ...
 }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
   boot.initrd.kernelModules = [];
   boot.kernelModules = ["kvm-amd"];
   boot.extraModulePackages = [];
 
+  # Configure ZFS
+  boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+  boot.supportedFilesystems = ["zfs"];
+  boot.zfs.forceImportRoot = false;
+  networking.hostId = "d6e46ab6";
+  boot.kernelParams = ["zfs.zfs_arc_max=12884901888"];
+  boot.extraModprobeConfig = ''
+    options zfs l2arc_noprefetch=0 l2arc_write_boost=33554432 l2arc_write_max=16777216 zfs_arc_max=2147483648
+  '';
+  services.zfs.autoScrub.enable = true;
+  services.zfs.trim.enable = true;
+  boot.zfs.devNodes = "/dev/disk/by-partuuid"; # Makes sure the device can be found on boot
+  #boot.zfs.forceImportAll = true;
+
+  # TODO: Automatic snapshots using:
+  # services.sanoid
+
+  # fileSystems."/mnt/data/personal" =
+  #   { device = "storage-pool/personal";
+  #     fsType = "zfs";
+  #   };
+
+  # fileSystems."/mnt/data/technical" =
+  #   { device = "storage-pool/technical";
+  #     fsType = "zfs";
+  #   };
+
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/fb325da5-2df3-4d63-805a-34fd4ce021cb";
+    device = "/dev/disk/by-uuid/a470e6c4-55ec-40c8-ab57-45954d23b35d";
     fsType = "ext4";
   };
 
-  boot.initrd.luks.devices."luks-b434fc68-7488-4b24-9586-64873440d712".device = "/dev/disk/by-uuid/b434fc68-7488-4b24-9586-64873440d712";
+  boot.initrd.luks.devices."luks-3657bc7a-4bff-43e2-826d-c4d6edc59b96".device = "/dev/disk/by-uuid/3657bc7a-4bff-43e2-826d-c4d6edc59b96";
 
-  fileSystems."/boot/efi" = {
-    device = "/dev/disk/by-uuid/0EC0-04C0";
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/69A5-E578";
     fsType = "vfat";
-  };
-
-  fileSystems."/mnt/data" = {
-    device = "/dev/disk/by-uuid/fe746159-de1a-4c40-bb9a-de824c3e9066";
-    options = ["nosuid" "nodev" "nofail" "x-gvfs-show"];
+    options = ["fmask=0022" "dmask=0022"];
   };
 
   swapDevices = [
-    {device = "/dev/disk/by-uuid/848a0d20-aa8a-40e3-a78b-69710323ae5d";}
+    {device = "/dev/disk/by-uuid/5911ac7d-bdab-42ac-b35b-868bec124f66";}
   ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
@@ -46,5 +67,6 @@
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp34s0.useDHCP = lib.mkDefault true;
 
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
