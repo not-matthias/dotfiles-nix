@@ -1,3 +1,7 @@
+# NVIDIA Docker:
+# - https://discourse.nixos.org/t/gpu-enabled-docker-containers-in-nixos/23870
+# - https://old.reddit.com/r/NixOS/comments/1ctb8w1/state_of_docker_with_nvidia/
+# - https://github.com/NVIDIA/nvidia-docker/issues/942
 {
   pkgs,
   user,
@@ -7,6 +11,9 @@
     docker = {
       enable = true;
       autoPrune.enable = true;
+
+      # TODO: Make this depend on nvidia hardware
+      enableNvidia = true;
     };
   };
 

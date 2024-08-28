@@ -24,6 +24,9 @@ in {
     };
 
     hardware = {
+      # Enable the nvidia-container-toolkit for Docker
+      nvidia-container-toolkit.enable = true;
+
       nvidia = {
         package = config.boot.kernelPackages.nvidiaPackages.stable;
         powerManagement.enable = true;
