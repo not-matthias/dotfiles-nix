@@ -39,20 +39,9 @@
     config.http.server_port = 8123;
   };
 
-  services.tailscale = {
-    enable = true;
-  };
-
   networking = {
     hostName = "desktop";
     networkmanager.enable = true;
-    firewall = {
-      allowedTCPPorts = [
-        # Allow RDP and VNC
-        3389
-        5900
-      ];
-    };
   };
 
   desktop.hyprland = {

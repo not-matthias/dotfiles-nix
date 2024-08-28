@@ -57,6 +57,9 @@
   # Use system76-scheduler instead of default one
   services.system76-scheduler.enable = true;
 
+  # Enable Tailscale on all machines
+  services.tailscale.enable = true;
+
   nixpkgs.config.allowUnfree = true;
   nix = {
     optimise.automatic = true;
