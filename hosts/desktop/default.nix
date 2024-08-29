@@ -39,6 +39,36 @@
     config.http.server_port = 8123;
   };
 
+  # Keep track of SMART data
+  services.scrutiny = {
+    enable = true;
+    collector.enable = true;
+    settings.web.listen.port = 11428;
+    settings.notify.urls = [
+      "ntfy://ntfy.sh/desktop-zfs"
+    ];
+  };
+
+  # Don't need this because of scrutiny
+  # services.smartd = {
+  #   enable = true;
+  #   autodetect = true;
+  #   extraOptions = ["--interval=7200"];
+  #   notifications.test = true;
+  #   notifications.wall.enable = true;
+  #   notifications.x11.enable = true;
+  # };
+
+  # TODO: Works with free version as well
+  # services.ntfy-sh = {
+  #   enable = true;
+  #   # https://docs.ntfy.sh/config/#config-options
+  #   settings = {
+  #     listen-http = "127.0.0.1:2586";
+  #     base-url = "http://localhost";
+  #   };
+  # };
+
   networking = {
     hostName = "desktop";
     networkmanager.enable = true;
