@@ -22,16 +22,28 @@
   boot.zfs.forceImportRoot = false;
   networking.hostId = "d6e46ab6";
   boot.kernelParams = ["zfs.zfs_arc_max=12884901888"];
+
+  # zfs_arc_max = use ARC up to 2GiB
   boot.extraModprobeConfig = ''
     options zfs l2arc_noprefetch=0 l2arc_write_boost=33554432 l2arc_write_max=16777216 zfs_arc_max=2147483648
   '';
-  services.zfs.autoScrub.enable = true;
-  services.zfs.trim.enable = true;
   boot.zfs.devNodes = "/dev/disk/by-partuuid"; # Makes sure the device can be found on boot
   #boot.zfs.forceImportAll = true;
 
-  # TODO: Automatic snapshots using:
-  # services.sanoid
+  services.zfs = {
+    autoScrub.enable = true;
+    trim.enable = true;
+
+    # https://github.com/openzfs/zfs/blob/master/cmd/zed/zed.d/zed.rc
+    zed.settings = {
+      ZED_DEBUG_LOG = "/tmp/zed.debug.log";
+      ZED_NOTIFY_INTERVAL_SECS = 3600;
+      ZED_NOTIFY_VERBOSE = true;
+
+      ZED_NTFY_TOPIC = "desktop-zfs";
+      ZED_NTFY_URL = "https://ntfy.sh";
+    };
+  };
 
   # fileSystems."/mnt/data/personal" =
   #   { device = "storage-pool/personal";
