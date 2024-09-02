@@ -89,22 +89,22 @@
         #];
       };
 
-      jobs = [
-        # TODO: 15min snapshots?
+      jobs = let
+        # Test with: `zrepl test filesystems`
+        # https://zrepl.github.io/configuration/filter_syntax.html
+        fs = {
+          "storage-pool/personal<" = false;
+          "storage-pool/personal/phone" = true;
+          "storage-pool/personal/photography" = true;
 
+          "storage-pool/technical<" = true;
+        };
+      in [
         # Snapshot job
         {
           name = "daily-snapshot";
           type = "snap";
-
-          # Test with: `zrepl test filesystems`
-          filesystems = {
-            "<" = false;
-            "storage-pool<" = false;
-            "storage-pool/personal<" = true;
-            "storage-pool/personal/phone<" = true;
-            "storage-pool/personal/photography<" = true;
-          };
+          filesystems = fs;
           snapshotting = {
             type = "periodic";
             interval = "15m";
@@ -143,34 +143,19 @@
         # Backup job (push to drive)
         #
         # We need this so we can invoke it by cmd:
-        # `zrepl signal wakeup push_to_drive`
+        # `zrepl signal wakeup push-to-drive`
         #
         {
           name = "push-to-drive";
           type = "push";
-
           connect = {
             type = "local";
             listener_name = "backup_listener";
             client_identity = "desktop";
           };
-
-          # TODO: Merge this with the push job
-          # Test with: `zrepl test filesystems`
-          # https://zrepl.github.io/configuration/filter_syntax.html
-          filesystems = {
-            "<" = false;
-            "storage-pool<" = false;
-            "storage-pool/personal<" = true;
-            "storage-pool/personal/phone<" = true;
-            "storage-pool/personal/photography<" = true;
-          };
-
-          # TODO: What does this do?
-          # send = {
-          #   encrypted = true;
-          # };
-
+          filesystems = fs;
+          send.encrypted = false;
+          snapshotting.type = "manual";
           replication.protection = {
             initial = "guarantee_resumability";
             # Downgrade protection to guarantee_incremental which uses zfs bookmarks instead of zfs holds.
@@ -180,11 +165,6 @@
             # - and because we still have the bookmarks created by `guarantee_incremental`, we can still do incremental replication of `from`->`to2` in the future
             incremental = "guarantee_incremental";
           };
-
-          snapshotting = {
-            type = "manual";
-          };
-
           pruning = {
             # no-op prune rule on sender (keep all snapshots), job `snapshot` takes care of this
             keep_sender = [
@@ -215,11 +195,12 @@
         {
           name = "backup_sink";
           type = "sink";
-          root_fs = "backup-pool/zrepl/sink";
+          root_fs = "backup-pool";
           serve = {
             type = "local";
             listener_name = "backup_listener";
           };
+          recv.placeholder.encryption = "inherit";
         }
       ];
     };
