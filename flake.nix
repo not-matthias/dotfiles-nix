@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nurpkgs.url = github:nix-community/NUR;
     home-manager.url = "github:nix-community/home-manager/release-24.05";
 
@@ -16,6 +17,7 @@
 
   outputs = {
     nixpkgs,
+    nixpkgs-unstable,
     nurpkgs,
     home-manager,
     nur,
@@ -29,7 +31,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nurpkgs home-manager nur user fenix devenv nixvim;
+        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager nur user fenix devenv nixvim;
       }
     );
   };

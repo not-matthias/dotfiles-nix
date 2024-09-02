@@ -1,6 +1,7 @@
 {
   flakes,
   nixpkgs,
+  nixpkgs-unstable,
   nurpkgs,
   home-manager,
   user,
@@ -12,6 +13,11 @@
   system = "x86_64-linux";
 
   pkgs = import nixpkgs {
+    inherit system overlays;
+    config.allowUnfree = true;
+  };
+
+  unstable = import nixpkgs-unstable {
     inherit system overlays;
     config.allowUnfree = true;
   };
@@ -49,7 +55,7 @@
     base.lib.nixosSystem {
       system = arch;
       specialArgs = {
-        inherit flakes user nixvim;
+        inherit flakes user nixvim unstable;
       };
       modules =
         commonModules
@@ -64,7 +70,7 @@
               useUserPackages = true;
               backupFileExtension = "backup";
               extraSpecialArgs = {
-                inherit flakes user nixvim;
+                inherit flakes user nixvim unstable;
                 addons = nur.repos.rycee.firefox-addons;
               };
               users.${user} = {

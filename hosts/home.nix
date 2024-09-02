@@ -1,5 +1,6 @@
 {
   pkgs,
+  unstable,
   user,
   ...
 }: {
@@ -59,7 +60,7 @@
       zotero
 
       # Dev
-      zed-editor
+      unstable.zed-editor
       jetbrains-mono
       graphviz
       cmake
