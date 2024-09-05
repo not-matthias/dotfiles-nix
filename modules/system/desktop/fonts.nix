@@ -14,6 +14,7 @@
           "RobotoMono"
         ];
       })
+      (google-fonts.override {fonts = ["Poppins"];})
     ];
 
     fontconfig = {
