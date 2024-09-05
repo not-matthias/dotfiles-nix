@@ -28,7 +28,6 @@
     options zfs l2arc_noprefetch=0 l2arc_write_boost=33554432 l2arc_write_max=16777216 zfs_arc_max=2147483648
   '';
   boot.zfs.devNodes = "/dev/disk/by-partuuid"; # Makes sure the device can be found on boot
-  #boot.zfs.forceImportAll = true;
 
   services.zfs = {
     autoScrub.enable = true;

@@ -4,6 +4,11 @@
 # https://github.com/brainfucksec/brainfucksec.github.io/blob/f98e18da8a393d3c4cd2f7da123368eb5a936ff6/_posts/2022-03-21-firefox-hardening-guide.md?plain=1#L378
 # TODO:
 # https://github.com/pyllyukko/user.js/
+# TODO: Set search engine in Firefox:
+# - https://mozilla.github.io/policy-templates/
+# - https://mozilla.github.io/policy-templates/#searchengines--add
+# - https://mozilla.github.io/policy-templates/#searchengines--default
+#
 {
   pkgs,
   addons,
