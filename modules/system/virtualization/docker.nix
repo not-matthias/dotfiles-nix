@@ -11,9 +11,6 @@
     docker = {
       enable = true;
       autoPrune.enable = true;
-
-      # TODO: Make this depend on nvidia hardware
-      enableNvidia = true;
     };
   };
 
