@@ -5,9 +5,7 @@ in {
     enable = true;
     shellAliases = {
       # Shortcut for "open **F**older with **N**autilus"
-      "nf" = "nautilus . &>/dev/null &";
-      "ida" = "wine64 (zoxide query ida76sp1)/ida64.exe 2>/dev/null &";
-      "ida32" = "wine64 (zoxide query ida76sp1)/ida.exe 2>/dev/null &";
+      "nf" = "nautilus . > /dev/null 2>&1 &";
     };
     shellAbbrs = {
       "c" = "clear";
@@ -37,6 +35,7 @@ in {
       "ga" = "git add -A";
       "gp" = "git pull";
       "gps" = "git push";
+      "btm" = "btm --battery";
     };
     interactiveShellInit =
       ''
