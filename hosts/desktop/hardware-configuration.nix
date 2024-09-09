@@ -16,18 +16,27 @@
   boot.kernelModules = ["kvm-amd"];
   boot.extraModulePackages = [];
 
-  # Configure ZFS
+  # =============================== ZFS START ===============================
+
   boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
   boot.supportedFilesystems = ["zfs"];
-  boot.zfs.forceImportRoot = false;
-  networking.hostId = "d6e46ab6";
-  boot.kernelParams = ["zfs.zfs_arc_max=12884901888"];
+  boot.zfs = {
+    forceImportRoot = false; # Enabled by default, recommended to turn off.
 
+    allowHibernation = true;
+    extraPools = [
+      "backup-pool"
+      "storage-pool"
+    ];
+    devNodes = "/dev/disk/by-partuuid"; # Makes sure the device can be found on boot
+  };
+  networking.hostId = "d6e46ab6";
+
+  #boot.kernelParams = ["zfs.zfs_arc_max=12884901888"];
   # zfs_arc_max = use ARC up to 2GiB
-  boot.extraModprobeConfig = ''
-    options zfs l2arc_noprefetch=0 l2arc_write_boost=33554432 l2arc_write_max=16777216 zfs_arc_max=2147483648
-  '';
-  boot.zfs.devNodes = "/dev/disk/by-partuuid"; # Makes sure the device can be found on boot
+  # boot.extraModprobeConfig = ''
+  #   options zfs l2arc_noprefetch=0 l2arc_write_boost=33554432 l2arc_write_max=16777216 zfs_arc_max=2147483648
+  # '';
 
   services.zfs = {
     autoScrub.enable = true;
@@ -44,15 +53,22 @@
     };
   };
 
-  # fileSystems."/mnt/data/personal" =
-  #   { device = "storage-pool/personal";
-  #     fsType = "zfs";
-  #   };
+  #fileSystems."/mnt/backup" = {
+  #  device = "backup-pool";
+  #  fsType = "zfs";
+  #};
 
-  # fileSystems."/mnt/data/technical" =
-  #   { device = "storage-pool/technical";
-  #     fsType = "zfs";
-  #   };
+  #  fileSystems."/mnt/data/personal" =
+  #    { device = "storage-pool/personal";
+  #      fsType = "zfs";
+  #    };
+
+  #  fileSystems."/mnt/data/technical" =
+  #    { device = "storage-pool/technical";
+  #      fsType = "zfs";
+  #    };
+
+  # =============================== ZFS END ===============================
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/a470e6c4-55ec-40c8-ab57-45954d23b35d";
