@@ -14,7 +14,7 @@
   ./neovim
   # ./newsflash
   # ./protonvpn
-  ./rust
+  # ./rust
   ./tmux
   ./vscode
   ./waybar

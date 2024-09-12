@@ -8,6 +8,7 @@
 #
 {
   pkgs,
+  unstable,
   lib,
   config,
   ...
@@ -30,7 +31,10 @@ in {
   # FIXME: Conditionally import this
   config = lib.mkIf cfg.enable {
     programs = {
-      hyprland.enable = true;
+      hyprland = {
+        enable = true;
+        package = unstable.hyprland;
+      };
       xwayland.enable = true;
     };
 

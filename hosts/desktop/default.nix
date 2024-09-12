@@ -1,4 +1,8 @@
-{...}: {
+{
+  unstable,
+  pkgs,
+  ...
+}: {
   imports = [(import ./hardware-configuration.nix)];
 
   # TODO: Move to self-hosted folder
@@ -9,7 +13,9 @@
 
   services.outline = {
     enable = false;
-    port = 11431;
+    port = 11424;
+    storage.storageType = "local";
+    forceHttps = false;
   };
 
   services.gitea = {
@@ -18,25 +24,65 @@
   };
 
   services.adguardhome = {
-    enable = false;
+    enable = true;
     host = "0.0.0.0";
     port = 11429;
+    mutableSettings = true;
     # TODO: openFirewall?
   };
 
-  services.jellyfin = {
-    enable = true;
-    # openFirewall
-    #port = 11429;
-  };
-  services.jellyseerr = {
-    enable = true;
-    port = 5055;
-  };
+  # services.jellyfin = {
+  #   enable = true;
+  #   # openFirewall
+  #   # default port: 8096
+  # };
+  # services.jellyseerr = {
+  #   enable = true;
+  #   port = 11424;
+  # };
 
   services.home-assistant = {
     enable = true;
     config.http.server_port = 8123;
+  };
+
+  # services.uptime-kuma = {
+  #   enable = true;
+  #   settings = {
+  #     HOST = "0.0.0.0";
+  #     PORT = "???";
+  #   };
+  # };
+
+  systemd.services.netdata.path = [pkgs.linuxPackages.nvidia_x11];
+  services.netdata = {
+    enable = true;
+    package = unstable.netdata.override {
+      withCloudUi = true;
+    };
+    configDir."python.d.conf" = pkgs.writeText "python.d.conf" ''
+      nvidia_smi: yes
+    '';
+    config = {
+      global = {
+        "default port" = "11427";
+        "bind to" = "*";
+        # 7 days
+        "history" = "604800";
+        "error log" = "syslog";
+        "debug log" = "syslog";
+      };
+    };
+  };
+
+  services.firefly-iii = {
+    enable = false;
+    # port = 11426;
+  };
+
+  services.ntopng = {
+    enable = false;
+    httpPort = 11425;
   };
 
   # Keep track of SMART data
@@ -97,7 +143,7 @@
           "storage-pool/personal/phone" = true;
           "storage-pool/personal/photography" = true;
 
-          "storage-pool/technical<" = true;
+          #"storage-pool/technical<" = true;
         };
       in [
         # Snapshot job
@@ -208,7 +254,7 @@
 
   ## monitoring
   services.grafana = {
-    enable = true;
+    enable = false;
     settings.server = {
       enable_gzip = true;
       http_port = 1230;
@@ -216,7 +262,7 @@
   };
 
   services.prometheus = {
-    enable = true;
+    enable = false;
     scrapeConfigs = [
     ];
     rules = [
