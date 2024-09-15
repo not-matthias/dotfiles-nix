@@ -4,4 +4,5 @@
   ./vpn.nix
   ./ollama.nix
   ./tailscale.nix
+  ./selfhosted.nix
 ]
