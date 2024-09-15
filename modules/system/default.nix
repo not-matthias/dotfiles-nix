@@ -6,4 +6,3 @@
 ++ (import ./programs)
 ++ (import ./services)
 ++ (import ./virtualization)
-++ (import ./vpn)

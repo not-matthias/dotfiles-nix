@@ -1,7 +1,5 @@
 [
-  ./flatpak
-  ./fprintd
-  ./printing
+  ./fprintd.nix
   ./rss.nix
   ./vpn.nix
   ./ollama.nix

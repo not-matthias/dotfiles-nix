@@ -15,3 +15,7 @@ https://jellyfin.org/docs/general/networking/
 8920 = jellyfin https
 
 8123 = home-assistant
+
+docker-compose ports:
+2283 = immich
+8001 = archivebox

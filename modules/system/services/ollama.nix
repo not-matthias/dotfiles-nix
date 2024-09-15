@@ -1,36 +1,46 @@
 {
   unstable,
   config,
-  pkgs,
+  lib,
   ...
-}: {
-  networking.firewall.allowedTCPPorts = [
-    #config.services.ollama.port
-    config.services.open-webui.port
-  ];
-
-  services.ollama = {
-    enable = true;
-    package = unstable.ollama;
-    #host = "0.0.0.0";
-    #port = 11434;
-    acceleration = "cuda";
+}: let
+  cfg = config.services.ollama;
+in {
+  options.services.ollama = {
+    useNvidia = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      example = true;
+      description = "Whether to use NVIDIA for inference";
+    };
   };
 
-  services.open-webui = {
-    enable = true;
-    package = pkgs.open-webui;
-    host = "0.0.0.0";
-    port = 11435;
-    environment = {
-      OLLAMA_API_BASE_URL = "http://127.0.0.1:11434";
+  # Only enable if ollama is enabled
+  config = lib.mkIf cfg.enable {
+    services.ollama = {
+      # enable = false; # This will be enabled by the user.
+      package = unstable.ollama;
+      acceleration =
+        if cfg.useNvidia
+        then "cuda"
+        else "";
+    };
 
-      SCARF_NO_ANALYTICS = "True";
-      DO_NOT_TRACK = "True";
-      ANONYMIZED_TELEMETRY = "False";
+    services.open-webui = {
+      enable = cfg.enable;
+      package = unstable.open-webui;
+      host = "0.0.0.0";
+      port = 11435;
+      environment = {
+        OLLAMA_API_BASE_URL = "http://127.0.0.1:11434";
 
-      #ENABLE_COMMUNITY_SHARING = "False";
-      #ENABLE_ADMIN_EXPORT = "False";
+        SCARF_NO_ANALYTICS = "True";
+        DO_NOT_TRACK = "True";
+        ANONYMIZED_TELEMETRY = "False";
+
+        #ENABLE_COMMUNITY_SHARING = "False";
+        #ENABLE_ADMIN_EXPORT = "False";
+      };
     };
   };
 }

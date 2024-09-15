@@ -3,20 +3,15 @@
   ./atuin
   ./dconf
   ./direnv
-  # ./discord
   ./dunst
-  # ./eww
   ./firefox
   ./fish
   ./git
   ./github-copilot
   ./gtk
   ./neovim
-  # ./newsflash
-  # ./protonvpn
-  # ./rust
+  ./rust
   ./tmux
-  ./vscode
   ./waybar
   ./wofi
 ]

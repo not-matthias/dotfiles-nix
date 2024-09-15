@@ -40,7 +40,7 @@ nix store gc
 ## Upgrade
 
 ```bash
-sudo nix-channel --add https://nixos.org/channels/nixos-22.11 nixos    
+sudo nix-channel --add https://nixos.org/channels/nixos-22.11 nixos
 sudo nix-channel --update
 # Rebuild dotfiles
 ```
@@ -51,6 +51,11 @@ See: https://superuser.com/a/1604695
 
 ### Cached failure of attribute '
 
+Error trace:
+```
+error: cached failure of attribute 'nixosConfigurations.framework.config.system.build.toplevel'
+```
+
 Run with:
 ```
 --option eval-cache false
@@ -60,14 +65,14 @@ https://discourse.nixos.org/t/cant-switch-to-flakes-error-cached-failure-of-attr
 
 ### unable to open database file at /run/current-system/sw/bin/command-not-found
 
-You need to update the system channel (run with sudo!) not your user's channel. 
+You need to update the system channel (run with sudo!) not your user's channel.
 
 ```
 sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos
 sudo nix-channel --update
 ```
 
-### Fix home-manager error 
+### Fix home-manager error
 
 ```
 nix-env --set-flag priority 0 nix-2.11.0
@@ -100,7 +105,7 @@ nix-store --verify --check-contents
 - https://ipetkov.dev/blog/tips-and-tricks-for-nix-flakes/
 - https://stel.codes/blog-posts/i3-or-sway-why-not-both/
 
-Dotfiles: 
+Dotfiles:
 - https://github.com/MatthiasBenaets/nixos-config
 - https://github.com/yrashk/nix-home
 - https://github.com/Th0rgal/horus-nix-home

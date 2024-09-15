@@ -1,5 +1,0 @@
-problem;
-error: cached failure of attribute 'nixosConfigurations.framework.config.system.build.toplevel'
-
-solution: 
-sudo nixos-rebuild build --flake .#framework --option eval-cache false
