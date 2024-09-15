@@ -23,7 +23,7 @@
   boot.zfs = {
     forceImportRoot = false; # Enabled by default, recommended to turn off.
 
-    allowHibernation = true;
+    allowHibernation = false;
     extraPools = [
       "backup-pool"
       "storage-pool"
