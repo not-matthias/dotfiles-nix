@@ -5,6 +5,12 @@
   # TODO
   # };
 in {
+  services.navidrome = {
+    enable = true;
+    settings.Port = 11424;
+    settings.Address = "0.0.0.0";
+  };
+
   services.paperless = {
     enable = true;
     port = 11432;
