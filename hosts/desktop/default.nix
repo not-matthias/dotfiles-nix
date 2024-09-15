@@ -5,6 +5,7 @@
   #
   services = {
     ollama.enable = true;
+    self-hosted.enable = true;
   };
 
   networking = {
