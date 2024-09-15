@@ -23,7 +23,7 @@ in {
       acceleration =
         if cfg.useNvidia
         then "cuda"
-        else "";
+        else null;
     };
 
     services.open-webui = {

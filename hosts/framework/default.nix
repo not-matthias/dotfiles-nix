@@ -18,6 +18,7 @@
   hardware = {
     powersave.enable = true;
     intel.enable = true;
+    bluetooth.enable = true;
   };
   virtualisation.vfio = {
     enable = true;
