@@ -6,6 +6,11 @@
     system76-scheduler.enable = true;
   };
 
+  services.system76-scheduler = {
+    enable = true;
+  };
+  hardware.system76.enableAll = true;
+
   programs = {
     noisetorch.enable = true;
     #vscode.enable = true;

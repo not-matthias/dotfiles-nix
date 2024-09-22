@@ -9,8 +9,8 @@
   ./git
   ./github-copilot
   ./gtk
-  ./neovim
-  ./rust
+  #./neovim
+  #./rust
   ./tmux
   ./waybar
   ./wofi
