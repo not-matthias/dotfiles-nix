@@ -40,9 +40,9 @@
       # oxipng
 
       # User
-      signal-desktop
-      anki
-      calibre
+      #signal-desktop
+      #anki
+      #calibre
       vlc
       evince
       gwenview

@@ -1,11 +1,11 @@
 [
   ./sound
   ./bluetooth.nix
+  ./fingerprint.nix
   ./firmware.nix
   ./intel.nix
   ./nvidia.nix
   ./opengl.nix
   ./powersave.nix
-  ./ssd.nix
   ./zfs.nix
 ]

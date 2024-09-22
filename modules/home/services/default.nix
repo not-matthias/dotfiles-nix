@@ -1,3 +1,3 @@
 [
-  ./activitywatch.nix
+  #./activitywatch.nix
 ]

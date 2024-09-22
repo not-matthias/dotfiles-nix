@@ -1,5 +1,4 @@
 [
-  ./fprintd.nix
   ./rss.nix
   ./vpn.nix
   ./ollama.nix

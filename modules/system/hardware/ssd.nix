@@ -3,10 +3,10 @@
   config,
   ...
 }: let
-  cfg = config.hardware.ssd;
+  cfg = config.custom.hardware.ssd;
 in {
-  options.hardware.sdd = {
-    enable = lib.mkEnableOption "Intel Configuration";
+  options.custom.hardware.sdd = {
+    enable = lib.mkEnableOption "SSD Configuration";
   };
 
   config = lib.mkIf cfg.enable {

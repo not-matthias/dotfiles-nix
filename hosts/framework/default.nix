@@ -20,6 +20,7 @@
     intel.enable = true;
     bluetooth.enable = true;
     ssd.enable = true;
+    fingerprint.enable = true;
   };
   virtualisation.vfio = {
     enable = true;

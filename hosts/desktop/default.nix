@@ -22,7 +22,7 @@
   hardware = {
     nvidia.enable = true;
     zfs.enable = true;
-    ssd.enable = true;
+    # ssd.enable = true;
   };
 
   services.openssh = {
