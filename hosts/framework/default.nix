@@ -1,10 +1,10 @@
 {...}: {
   imports = [(import ./hardware-configuration.nix)];
 
-  # https://wiki.archlinux.org/title/Solid_state_drive#TRIM
-  # - SSDs benefit from informing the disk controller when blocks of memory are free to be reused
-  services.fstrim.enable = true;
-  services.printing.enable = true;
+  services = {
+    printing.enable = true;
+    system76-scheduler.enable = true;
+  };
 
   programs = {
     noisetorch.enable = true;
@@ -19,6 +19,7 @@
     powersave.enable = true;
     intel.enable = true;
     bluetooth.enable = true;
+    ssd.enable = true;
   };
   virtualisation.vfio = {
     enable = true;

@@ -26,44 +26,41 @@
       ripgrep
       du-dust
       topgrade
-      hyperfine
       hexyl
       fd
       gping
-      ouch
-      oxipng
       delta # TODO: Set as git default
       any-nix-shell
       duf
       wl-clipboard
-      kooha
+      # Others:
+      # ouch
+      # kooha
+      # hyperfine
+      # oxipng
 
       # User
       signal-desktop
-      # obsidian
       anki
-      xournalpp
       calibre
       vlc
-      obs-studio
       evince
-      #libreoffice
-      amberol
       gwenview
-      syncthing
-      #exodus
       gnome.nautilus
       gnome.file-roller
       gnome-text-editor
-      jan
-      msty
-      zotero
+      # zotero
+      # obs-studio
+      # xournalpp
+      # libreoffice
+      # amberol
+      # syncthing
+      # exodus
 
       # Dev
       unstable.zed-editor
       jetbrains-mono
       graphviz
-      cmake
       gitAndTools.gh
       python3
       devenv
@@ -76,8 +73,8 @@
       zip
 
       # Reverse Engineering / CTF
-      file
-      binwalk
+      # file
+      # binwalk
       # gef
       # gdb
       # imhex

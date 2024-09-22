@@ -18,7 +18,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     services.paperless = {
-      enable = true;
+      enable = false;
       port = 11432;
     };
 
@@ -30,13 +30,13 @@ in {
     };
 
     services.gitea = {
-      enable = true;
+      enable = false;
       settings.server.HTTP_HOST = "0.0.0.0";
       settings.server.HTTP_PORT = 11430;
     };
 
     services.adguardhome = {
-      enable = true;
+      enable = false;
       host = "0.0.0.0";
       port = 11429;
       mutableSettings = true;
@@ -54,7 +54,7 @@ in {
     #};
 
     services.home-assistant = {
-      enable = true;
+      enable = false;
       config.http.server_port = 8123;
     };
 

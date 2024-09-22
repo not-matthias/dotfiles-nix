@@ -5,6 +5,7 @@
   #
   services = {
     ollama.enable = true;
+    miniflux.enable = true;
     self-hosted.enable = true;
   };
 
@@ -21,6 +22,7 @@
   hardware = {
     nvidia.enable = true;
     zfs.enable = true;
+    ssd.enable = true;
   };
 
   services.openssh = {
