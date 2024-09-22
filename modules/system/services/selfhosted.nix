@@ -1,6 +1,8 @@
 {
   lib,
   config,
+  unstable,
+  pkgs,
   ...
 }: let
   # Define ports map
@@ -23,6 +25,8 @@ in {
     services.outline = {
       enable = false;
       port = 11431;
+      storage.storageType = "local";
+      forceHttps = false;
     };
 
     services.gitea = {
@@ -32,21 +36,22 @@ in {
     };
 
     services.adguardhome = {
-      enable = false;
+      enable = true;
       host = "0.0.0.0";
       port = 11429;
+      mutableSettings = true;
       # TODO: openFirewall?
     };
 
-    services.jellyfin = {
-      enable = true;
-      # openFirewall
-      #port = 11429;
-    };
-    services.jellyseerr = {
-      enable = true;
-      port = 5055;
-    };
+    # services.jellyfin = {
+    # enable = true;
+    # # openFirewall
+    # #port = 11429;
+    # };
+    #services.jellyseerr = {
+    #  enable = true;
+    #  port = 5055;
+    #};
 
     services.home-assistant = {
       enable = true;
@@ -72,6 +77,37 @@ in {
     #   notifications.wall.enable = true;
     #   notifications.x11.enable = true;
     # };
+
+    systemd.services.netdata.path = [pkgs.linuxPackages.nvidia_x11];
+    services.netdata = {
+      enable = true;
+      package = unstable.netdata.override {
+        withCloudUi = true;
+      };
+      configDir."python.d.conf" = pkgs.writeText "python.d.conf" ''
+        nvidia_smi: yes
+      '';
+      config = {
+        global = {
+          "default port" = "11427";
+          "bind to" = "*";
+          # 7 days
+          "history" = "604800";
+          "error log" = "syslog";
+          "debug log" = "syslog";
+        };
+      };
+    };
+
+    services.firefly-iii = {
+      enable = false;
+      # port = 11426;
+    };
+
+    services.ntopng = {
+      enable = false;
+      httpPort = 11425;
+    };
 
     # TODO: Works with free version as well
     # services.ntfy-sh = {
