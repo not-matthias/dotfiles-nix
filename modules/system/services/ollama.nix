@@ -18,6 +18,7 @@ in {
   # Only enable if ollama is enabled
   config = lib.mkIf cfg.enable {
     services.ollama = {
+      #enable = true;
       # enable = false; # This will be enabled by the user.
       package = unstable.ollama;
       acceleration =
@@ -27,7 +28,7 @@ in {
     };
 
     services.open-webui = {
-      enable = cfg.enable;
+      enable = true;
       package = unstable.open-webui;
       host = "0.0.0.0";
       port = 11435;
