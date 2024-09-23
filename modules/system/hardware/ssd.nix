@@ -3,9 +3,9 @@
   config,
   ...
 }: let
-  cfg = config.custom.hardware.ssd;
+  cfg = config.hardware.ssd;
 in {
-  options.custom.hardware.sdd = {
+  options.hardware.ssd = {
     enable = lib.mkEnableOption "SSD Configuration";
   };
 

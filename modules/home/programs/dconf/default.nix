@@ -1,7 +1,6 @@
 {pkgs, ...}: {
   imports = import ./extensions;
 
-  # programs.dconf.enable = true;
   dconf.settings = {
     "org/gnome/desktop/applications/terminal" = {
       exec = "${pkgs.alacritty}/bin/alacritty";

@@ -3,7 +3,6 @@
 
   services = {
     printing.enable = true;
-    system76-scheduler.enable = true;
   };
 
   services.system76-scheduler = {
@@ -27,6 +26,7 @@
     ssd.enable = true;
     fingerprint.enable = true;
   };
+
   virtualisation.vfio = {
     enable = true;
     IOMMUType = "intel";

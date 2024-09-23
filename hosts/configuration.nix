@@ -25,6 +25,7 @@
     shell = pkgs.fish;
   };
   programs.fish.enable = true;
+  programs.dconf.enable = true;
   security.sudo.wheelNeedsPassword = false;
 
   time.timeZone = "Europe/Vienna";

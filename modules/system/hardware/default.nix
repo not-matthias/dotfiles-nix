@@ -7,5 +7,6 @@
   ./nvidia.nix
   ./opengl.nix
   ./powersave.nix
+  ./ssd.nix
   ./zfs.nix
 ]
