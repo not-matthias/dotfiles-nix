@@ -8,7 +8,6 @@
 #
 {
   pkgs,
-  unstable,
   lib,
   config,
   ...
@@ -33,7 +32,7 @@ in {
     programs = {
       hyprland = {
         enable = true;
-        package = unstable.hyprland;
+        package = pkgs.hyprland;
       };
       xwayland.enable = true;
     };
@@ -97,7 +96,7 @@ in {
       enable = true;
       extraPortals = with pkgs; [
         xdg-desktop-portal-gtk
-        # xdg-desktop-portal-hyprland is automatically pulled by flake
+        xdg-desktop-portal-hyprland
       ];
 
       config.common.default = "*";
