@@ -15,7 +15,7 @@
   };
 
   desktop.hyprland = {
-    enable = true;
+    enable = false;
     useNvidia = true;
   };
 
