@@ -12,12 +12,28 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    environment.systemPackages = [
+      pkgs.fprintd
+    ];
+
+    # https://discourse.nixos.org/t/fprintd-on-t440p/1350/3
     services.fprintd = {
       enable = true;
       tod = {
         enable = true;
         driver = pkgs.libfprint-2-tod1-goodix;
       };
+    };
+
+    # start the driver at boot
+    systemd.services.fprintd = {
+      wantedBy = ["multi-user.target"];
+      serviceConfig.Type = "simple";
+    };
+
+    security.pam.services = {
+      login.fprintAuth = true;
+      xscreensaver.fprintAuth = true;
     };
   };
 }

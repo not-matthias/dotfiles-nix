@@ -40,7 +40,7 @@ in {
     environment = {
       loginShellInit = ''
         if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
-         exec dbus-launch Hyprland
+         dbus-run-session Hyprland
         fi
       '';
       variables = {
@@ -74,15 +74,26 @@ in {
       swaylock
       wl-clipboard
       wlr-randr
-
-      # TODO: https://github.com/ryan4yin/nix-config/blob/e39b79c5085a3555a754972ca88f5451f82638f4/modules/nixos/hyprland.nix#L70-L94
     ];
 
     services = {
+      libinput.enable = true;
       dbus.enable = true;
+      gvfs.enable = true;
+      gnome = {
+        sushi.enable = true;
+        gnome-keyring.enable = true;
+      };
+
       displayManager.defaultSession = "hyprland";
       xserver = {
         enable = true;
+
+        xkb = {
+          layout = "us";
+          options = "";
+        };
+
         displayManager = {
           gdm = {
             enable = true;
@@ -92,20 +103,27 @@ in {
       };
     };
 
-    xdg.portal = {
-      enable = true;
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-gtk
-        xdg-desktop-portal-hyprland
-      ];
+    xdg = {
+      autostart.enable = true;
+      portal = {
+        enable = true;
+        wlr.enable = true;
+        extraPortals = with pkgs; [
+          xdg-desktop-portal-gtk
+          xdg-desktop-portal-hyprland
+        ];
 
-      config.common.default = "*";
+        config.common.default = "*";
+      };
     };
 
-    security.pam.services.swaylock = {
-      text = ''
-        auth include login
-      '';
+    security = {
+      polkit.enable = true;
+      pam.services.swaylock = {
+        text = ''
+          auth include login
+        '';
+      };
     };
 
     systemd.sleep.extraConfig = ''
