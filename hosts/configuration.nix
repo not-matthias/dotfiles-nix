@@ -50,6 +50,7 @@
       nano
       vim
       wget
+      usbutils
     ];
   };
 
