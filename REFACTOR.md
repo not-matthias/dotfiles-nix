@@ -1,14 +1,26 @@
 - [ ] make everything optional
   - programs: remove+optional
 - [ ] remove old configs
-- [ ] remove `folder/defaut.nix`
-- [ ] check if nix-ld is needed
-- [ ] redshift vs wlsunset?
+- [x] remove `folder/defaut.nix`
+- [x] check if nix-ld is needed
+- [x] redshift vs wlsunset?
+
+TODO: Make optional:
+- tailscale?
+- qemu/nested virt
+- programs:
+  - waybar
+  - alacritty
+  - dunst
+  - firefox
+  - github-copilot
+  - gtk
+  - wofi
 
 desktop doesn't need:
 - [ ] alacritty
 - [x] hyprland
-- [ ] printing/sound/bluetooth/fingerprint
+- [x] printing/sound/bluetooth/fingerprint
 - [ ] fonts
 
 laptop only needs:

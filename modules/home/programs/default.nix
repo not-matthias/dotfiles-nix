@@ -1,17 +1,19 @@
 [
-  ./alacritty
-  ./atuin
   ./dconf
-  ./direnv
-  ./dunst
-  ./firefox
   ./fish
-  ./git
-  ./github-copilot
-  ./gtk
-  #./neovim
-  #./rust
   ./tmux
   ./waybar
-  ./wofi
+
+  ./alacritty.nix
+  ./atuin.nix
+  ./direnv.nix
+  ./dunst.nix
+  ./firefox.nix
+  ./git.nix
+  ./github-copilot.nix
+  ./gtk.nix
+  ./neovim.nix
+  ./wofi.nix
+
+  # ./rust
 ]

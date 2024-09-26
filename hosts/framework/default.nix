@@ -32,6 +32,7 @@
     powersave.enable = true;
     intel.enable = true;
     bluetooth.enable = true;
+    sound.enable = true;
     ssd.enable = true;
     fingerprint.enable = true;
     system76.enableAll = true;
