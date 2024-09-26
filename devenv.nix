@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   # https://devenv.sh/packages/
-  packages = [pkgs.git];
+  packages = [pkgs.treefmt];
 
   # https://devenv.sh/languages/
   languages.nix.enable = true;

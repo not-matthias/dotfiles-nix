@@ -1,6 +1,5 @@
 {
   pkgs,
-  unstable,
   user,
   ...
 }: {
@@ -11,17 +10,13 @@
     homeDirectory = "/home/${user}";
 
     packages = with pkgs; [
-      # Tools
+      # Rust tools
       bat
       eza
       bottom
-      tokei
-      alejandra
       zoxide
       fcp
       tealdeer
-      treefmt
-      fzf
       kalker
       ripgrep
       du-dust
@@ -29,26 +24,31 @@
       hexyl
       fd
       gping
-      delta # TODO: Set as git default
+      delta
       any-nix-shell
       duf
       wl-clipboard
+
+      # Useful tools
+      gitAndTools.gh
+      unzip
+      zip
+      python3
+      devenv
+
       # Others:
       # ouch
       # kooha
       # hyperfine
       # oxipng
+      # fzf
+      # tokei
+      # alejandra
+      # treefmt
 
       # User
-      #signal-desktop
-      #anki
-      #calibre
-      vlc
-      evince
-      gwenview
-      gnome.nautilus
-      gnome.file-roller
-      gnome-text-editor
+      # anki
+      # calibre
       # zotero
       # obs-studio
       # xournalpp
@@ -58,20 +58,9 @@
       # exodus
 
       # Dev
-      unstable.zed-editor
-      jetbrains-mono
-      graphviz
-      gitAndTools.gh
-      python3
-      devenv
-      #bless
-      #wineWowPackages.stable # 32-bit and 64-bit
-      #winetricks
-
-      # Useful tools
-      unzip
-      zip
-
+      # graphviz
+      # bless
+      #
       # Reverse Engineering / CTF
       # file
       # binwalk

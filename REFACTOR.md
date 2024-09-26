@@ -6,18 +6,18 @@
 - [ ] redshift vs wlsunset?
 
 desktop doesn't need:
-- alacritty
-- hyprland
-- printing/sound/bluetooth/fingerprint
-- fonts
+- [ ] alacritty
+- [x] hyprland
+- [ ] printing/sound/bluetooth/fingerprint
+- [ ] fonts
 
 laptop only needs:
-- fprint
-- bluetooth
-- noisetorch
+- [x] fprint
+- [x] bluetooth
+- [x] noisetorch
 
 laptop doesn't need:
-- miniflux
+- [x] miniflux
 
 fix this:
 - fingerprint

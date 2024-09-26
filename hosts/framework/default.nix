@@ -1,30 +1,40 @@
-{...}: {
+{
+  pkgs,
+  unstable,
+  user,
+  ...
+}: {
   imports = [(import ./hardware-configuration.nix)];
+
+  home-manager.users.${user}.home.packages = with pkgs; [
+    signal-desktop
+    unstable.zed-editor
+
+    vlc
+    evince
+    gwenview
+    gnome.nautilus
+    gnome.file-roller
+    gnome-text-editor
+  ];
 
   services = {
     printing.enable = true;
+    system76-scheduler.enable = true;
   };
-
-  services.system76-scheduler = {
-    enable = true;
-  };
-  hardware.system76.enableAll = true;
 
   programs = {
     noisetorch.enable = true;
     #vscode.enable = true;
   };
 
-  networking = {
-    hostName = "laptop";
-    networkmanager.enable = true;
-  };
   hardware = {
     powersave.enable = true;
     intel.enable = true;
     bluetooth.enable = true;
     ssd.enable = true;
     fingerprint.enable = true;
+    system76.enableAll = true;
   };
 
   virtualisation.vfio = {
@@ -33,6 +43,11 @@
     enableNestedVirt = true;
   };
   desktop.hyprland.enable = true;
+
+  networking = {
+    hostName = "laptop";
+    networkmanager.enable = true;
+  };
 
   boot = {
     # Bootloader.
