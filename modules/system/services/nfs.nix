@@ -21,8 +21,8 @@ in {
       # TODO: Make this configurable
       # TODO: Dedup
       exports = let
-        commonOptions = "insecure,ro,sync,no_subtree_check";
-        clients = [
+        options = "insecure,ro,sync,no_subtree_check";
+        allowIpRanges = [
           # "127.0.0.1/24"
           # "100.121.111.38"
           # "100.64.120.57"
@@ -30,17 +30,20 @@ in {
           "192.168.0.1/24" # Local network
           "100.100.100.100/8" # Tailscale
         ];
-        mountPoints = [
+        fileSystems = [
           "/mnt/data"
           "/mnt/data/personal"
           "/mnt/data/technical"
           "/mnt/data/test"
         ];
       in ''
-        ${builtins.concatStringsSep "\n" (builtins.map (
-            mountPoint: "${mountPoint} ${builtins.concatStringsSep " " (builtins.map (client: "${client}(${commonOptions})") clients)}"
-          )
-          mountPoints)}
+        ${
+          map (fs: ''
+            ${fs} ${join (map (r: "${r}(${options})") allowIpRanges)}
+          '')
+          fileSystems
+        }
+
       '';
     };
 
