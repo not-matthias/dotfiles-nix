@@ -68,3 +68,11 @@ Qemu Config:
 
 
 - [ ] homepage dashboard: https://github.com/mrjones2014/dotfiles/blob/8e514187dae6adf3f732b1d790141441352cb2f4/hosts/server/homepage.nix
+
+
+
+better modules:
+- https://github.com/edmundmiller/dotfiles/blob/25c5845109299e028ab730d9fada56a9fd9e2982/hosts/framework/default.nix#L55
+- add fs module for sdd, zfs, ...
+- modules inside a single folder: https://github.com/edmundmiller/dotfiles/tree/main/modules
+- security: https://github.com/edmundmiller/dotfiles/blob/main/modules/security.nix
