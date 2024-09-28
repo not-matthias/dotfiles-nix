@@ -33,8 +33,7 @@ in {
           "100.100.100.100/8" # Tailscale
         ];
 
-        isMounted = path: lib.hasAttr path config.fileSystems;
-        fileSystems = lib.filter isMounted [
+        fileSystems = [
           "/mnt/data"
           "/mnt/data/personal"
           "/mnt/data/technical"
@@ -51,7 +50,6 @@ in {
             fileSystems
           )
         }
-
       '';
     };
 
