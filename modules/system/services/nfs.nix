@@ -44,10 +44,12 @@ in {
         join = lib.concatStringsSep " ";
       in ''
         ${
-          map (fs: ''
-            ${fs} ${join (map (r: "${r}(${options})") allowIpRanges)}
-          '')
-          fileSystems
+          join (
+            map (fs: ''
+              ${fs} ${join (map (r: "${r}(${options})") allowIpRanges)}
+            '')
+            fileSystems
+          )
         }
 
       '';
