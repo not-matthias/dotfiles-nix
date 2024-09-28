@@ -1,3 +1,5 @@
+# References:
+# - https://github.com/edmundmiller/dotfiles/blob/25c5845109299e028ab730d9fada56a9fd9e2982/hosts/unas/nas.nix#L34
 {
   config,
   lib,
@@ -30,7 +32,9 @@ in {
           "192.168.0.1/24" # Local network
           "100.100.100.100/8" # Tailscale
         ];
-        fileSystems = [
+
+        isMounted = path: lib.hasAttr path config.fileSystems;
+        fileSystems = lib.filter isMounted [
           "/mnt/data"
           "/mnt/data/personal"
           "/mnt/data/technical"
