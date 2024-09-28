@@ -36,6 +36,8 @@ in {
           "/mnt/data/technical"
           "/mnt/data/test"
         ];
+
+        join = lib.concatStringsSep " ";
       in ''
         ${
           map (fs: ''
