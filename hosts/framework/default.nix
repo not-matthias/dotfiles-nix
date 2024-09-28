@@ -9,6 +9,7 @@
   home-manager.users.${user}.home.packages = with pkgs; [
     signal-desktop
     unstable.zed-editor
+    vscodium
 
     vlc
     evince
@@ -25,7 +26,7 @@
 
   programs = {
     noisetorch.enable = true;
-    #vscode.enable = true;
+    steam.enable = false;
   };
 
   hardware = {
