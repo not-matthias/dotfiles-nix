@@ -23,7 +23,7 @@ in {
       # TODO: Make this configurable
       # TODO: Dedup
       exports = let
-        options = "insecure,ro,sync,no_subtree_check";
+        options = "insecure,rw,sync,no_subtree_check";
         allowIpRanges = [
           # "127.0.0.1/24"
           # "100.121.111.38"
