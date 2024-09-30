@@ -6,19 +6,29 @@
 # - https://discourse.nixos.org/t/nixos-22-11-systemd-user-services-dont-start-automatically-but-global-ones-do/24809
 # - https://github.com/BhasherBEL/dotfiles-nix/blob/2ec5624c323ed4e2635a643311f92576519a25a6/home/shared/pc/apps/desktop/activitywatch.nix#L13
 # - https://github.com/foo-dogsquared/nixos-config/blob/8e7a3e6277362d4830b8b13bb8aa02bc7ae5ca6b/configs/home-manager/foo-dogsquared/modules/setups/desktop.nix#L39
-{pkgs, ...}: {
-  home.packages = with pkgs; [
-    aw-server-rust
-    aw-watcher-afk
-    aw-watcher-window
-  ];
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.services.activitywatch;
+in {
+  config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [
+      aw-server-rust
+      aw-watcher-afk
+      aw-watcher-window
+    ];
 
-  services.activitywatch = {
-    enable = true;
-    package = pkgs.aw-server-rust;
-    watchers = {
-      aw-watcher-afk.package = pkgs.activitywatch;
-      aw-watcher-window.package = pkgs.activitywatch;
+    services.activitywatch = {
+      # Note: This will be set by the user of the module.
+      # enable = true;
+      package = pkgs.aw-server-rust;
+      watchers = {
+        aw-watcher-afk.package = pkgs.activitywatch;
+        aw-watcher-window.package = pkgs.activitywatch;
+      };
     };
   };
 }

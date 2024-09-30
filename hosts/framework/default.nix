@@ -6,18 +6,22 @@
 }: {
   imports = [(import ./hardware-configuration.nix)];
 
-  home-manager.users.${user}.home.packages = with pkgs; [
-    signal-desktop
-    unstable.zed-editor
-    vscodium
+  home-manager.users.${user} = {
+    home.packages = with pkgs; [
+      signal-desktop
+      unstable.zed-editor
+      vscodium
 
-    vlc
-    evince
-    gwenview
-    gnome.nautilus
-    gnome.file-roller
-    gnome-text-editor
-  ];
+      vlc
+      evince
+      gwenview
+      gnome.nautilus
+      gnome.file-roller
+      gnome-text-editor
+    ];
+
+    services.activitywatch.enable = true;
+  };
 
   services = {
     printing.enable = true;

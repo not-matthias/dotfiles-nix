@@ -76,3 +76,4 @@ better modules:
 - add fs module for sdd, zfs, ...
 - modules inside a single folder: https://github.com/edmundmiller/dotfiles/tree/main/modules
 - security: https://github.com/edmundmiller/dotfiles/blob/main/modules/security.nix
+    - disable ipv6?
