@@ -43,11 +43,16 @@ in {
       # TODO: openFirewall?
     };
 
-    # services.jellyfin = {
-    # enable = true;
-    # # openFirewall
-    # #port = 11429;
-    # };
+    environment.systemPackages = [
+      pkgs.jellyfin
+      pkgs.jellyfin-web
+      pkgs.jellyfin-ffmpeg
+    ];
+    services.jellyfin = {
+      enable = true;
+      # openFirewall
+      #port = 11429;
+    };
     #services.jellyseerr = {
     #  enable = true;
     #  port = 5055;
