@@ -19,6 +19,7 @@ in {
       aw-server-rust
       aw-watcher-afk
       aw-watcher-window
+      aw-watcher-window-wayland
     ];
 
     services.activitywatch = {
@@ -28,6 +29,7 @@ in {
       watchers = {
         aw-watcher-afk.package = pkgs.activitywatch;
         aw-watcher-window.package = pkgs.activitywatch;
+        aw-watcher-window-wayland.package = pkgs.activitywatch;
       };
     };
   };
