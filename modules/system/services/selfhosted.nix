@@ -43,13 +43,13 @@ in {
       # TODO: openFirewall?
     };
 
-    environment.systemPackages = [
-      pkgs.jellyfin
-      pkgs.jellyfin-web
-      pkgs.jellyfin-ffmpeg
-    ];
+    #environment.systemPackages = [
+    #  pkgs.jellyfin
+    #  pkgs.jellyfin-web
+    #  pkgs.jellyfin-ffmpeg
+    #];
     services.jellyfin = {
-      enable = true;
+      enable = false;
       # openFirewall
       #port = 11429;
     };
@@ -83,9 +83,14 @@ in {
     #   notifications.x11.enable = true;
     # };
 
+    # References:
+    # - https://github.com/jakubgs/nixos-config/blob/7e5e89c43274d58699c1ad9630df5b756af3255e/roles/netdata.nix#L11:w
+
+    # TODO: Only enable when Nvidia GPU is available
     systemd.services.netdata.path = [pkgs.linuxPackages.nvidia_x11];
     services.netdata = {
       enable = true;
+      enableAnalyticsReporting = false;
       package = unstable.netdata.override {
         withCloudUi = true;
       };
@@ -99,7 +104,38 @@ in {
           # 7 days
           "history" = "604800";
           "error log" = "syslog";
-          "debug log" = "syslog";
+          "debug log" = "none";
+          "update every" = 5;
+          "memory mode" = "ram";
+        };
+        plugins = {
+          "tc" = "no"; # Linux traffic control operations
+          "idlejitter" = "no";
+          "checks" = "no";
+          "apps" = "no";
+          "node.d" = "no";
+          "python.d" = "no";
+          "charts.d" = "no";
+          "go.d" = "yes";
+          "cgroups" = "yes";
+        };
+
+        ml = {"enabled" = "no";};
+        "health" = {"enabled" = "no";};
+        "statsd" = {"enabled" = "no";};
+        "plugin:apps" = {"update every" = 10;};
+        "plugin:proc:diskspace" = {
+          "update every" = 10;
+          "check for new mount points every" = 0;
+        };
+        "plugin:proc" = {
+          "/proc/net/snmp" = "no";
+          "/proc/net/snmp6" = "no";
+          "/proc/net/ip_vs/stats" = "no";
+          "/proc/net/stat/synproxy" = "no";
+          "/proc/net/stat/nf_conntrack" = "no";
+          "/proc/interrupts" = "no";
+          "/proc/softirqs" = "no";
         };
       };
     };
