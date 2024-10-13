@@ -18,6 +18,7 @@
       gnome.nautilus
       gnome.file-roller
       gnome-text-editor
+      obs-studio
     ];
 
     services.activitywatch.enable = true;
