@@ -19,6 +19,7 @@
       gnome.file-roller
       gnome-text-editor
       obs-studio
+      anki
     ];
 
     services.activitywatch.enable = true;
