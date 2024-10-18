@@ -24,7 +24,10 @@
     ];
 
     home.file.".config/hypr/env.conf".text = builtins.readFile ./conf/env.conf;
-    home.file.".config/hypr/hyprland.conf".text = builtins.readFile ./conf/hyprland.conf;
+    home.file.".config/hypr/hyprland.conf".text =
+      builtins.readFile ./conf/hyprland.conf
+      + "\n"
+      + builtins.readFile ./conf/fcitx5.conf;
     home.file.".config/hypr/keybinds.conf".text = builtins.readFile ./conf/keybinds.conf;
     home.file.".config/hypr/startup.conf".text = builtins.readFile ./conf/startup.conf;
     home.file.".config/hypr/windowrule.conf".text = builtins.readFile ./conf/windowrule.conf;
