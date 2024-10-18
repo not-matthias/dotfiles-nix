@@ -20,6 +20,7 @@
       gnome-text-editor
       obs-studio
       anki
+      calibre
     ];
 
     services.activitywatch.enable = true;

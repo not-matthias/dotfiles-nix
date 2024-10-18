@@ -1,3 +1,3 @@
 [
-  #./minecraft.nix
+  ./minecraft.nix
 ]
