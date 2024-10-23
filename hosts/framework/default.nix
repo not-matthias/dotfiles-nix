@@ -19,8 +19,9 @@
       gnome.file-roller
       gnome-text-editor
       obs-studio
-      anki
+      unstable.anki
       calibre
+      zotero
     ];
 
     services.activitywatch.enable = true;
