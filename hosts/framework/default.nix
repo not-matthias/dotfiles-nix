@@ -30,6 +30,7 @@
   services = {
     printing.enable = true;
     system76-scheduler.enable = true;
+    ollama.enable = true;
   };
 
   programs = {
