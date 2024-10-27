@@ -4,7 +4,10 @@
   # Only enable the services here, the settings are configured in the 'services/' folder.
   #
   services = {
-    ollama.enable = true;
+    ollama = {
+      enable = true;
+      useNvidia = true;
+    };
     miniflux.enable = true;
     self-hosted.enable = true;
     nfs.enable = true;

@@ -20,7 +20,10 @@ in {
     services.ollama = {
       #enable = true;
       # enable = false; # This will be enabled by the user.
-      package = unstable.ollama;
+      package =
+        if cfg.useNvidia
+        then unstable.ollama-cuda
+        else unstable.ollama;
       acceleration =
         if cfg.useNvidia
         then "cuda"
