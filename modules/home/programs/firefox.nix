@@ -310,14 +310,12 @@ in {
         vimium
         firefox-translations
         refined-github
-        darkreader
 
         leechblock-ng
         ublock-origin
         sponsorblock
         istilldontcareaboutcookies
 
-        duckduckgo-privacy-essentials
         privacy-badger
         clearurls
         libredirect
@@ -327,6 +325,8 @@ in {
         # modern for hacker news
         # modern for twitter
         # modern for wikipedia
+        # zotero
+        # unhook.app
       ];
     };
 

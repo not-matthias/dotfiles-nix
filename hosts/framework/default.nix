@@ -11,6 +11,7 @@
       signal-desktop
       unstable.zed-editor
       vscodium
+      beeper
 
       vlc
       evince
