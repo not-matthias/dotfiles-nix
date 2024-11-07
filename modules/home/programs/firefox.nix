@@ -10,7 +10,7 @@
 # - https://mozilla.github.io/policy-templates/#searchengines--default
 #
 {
-  pkgs,
+  unstable,
   addons,
   ...
 }: let
@@ -22,12 +22,55 @@
   '';
 in {
   programs.firefox = {
-    package = pkgs.firefox-wayland;
+    package = unstable.firefox-beta;
     enable = true;
     policies = {
-      DontCheckDefaultBrowser = true;
-      DisablePocket = true;
+      NoDefaultBookmarks = true;
       DisableAppUpdate = true;
+      AutofillAddressEnabled = false;
+      AutofillCreditCardEnabled = false;
+      DisableFirefoxStudies = true;
+      DisableMasterPasswordCreation = true;
+      DisablePocket = true;
+      DisableProfileImport = true;
+      DisableProfileRefresh = true;
+      DisableTelemetry = true;
+      DontCheckDefaultBrowser = true;
+      OfferToSaveLogins = false;
+      UserMessaging = {
+        ExtensionRecommendations = false;
+        FeatureRecommendations = false;
+        UrlbarInterventions = false;
+        SkipOnboarding = false;
+        MoreFromMozilla = false;
+      };
+      ExtensionSettings = {
+        # TODO: https://github.com/kivikakk/vyxos/blob/43bbb767fc6a6a8eecf6e81a71bd5a10553df7fe/modules/desktop/firefox.nix#L39C1-L39C32
+      };
+      FirefoxHome = {
+        Highlights = false;
+        Pocket = false;
+        Snippets = false;
+        SponsporedPocket = false;
+        SponsporedTopSites = false;
+      };
+
+      SearchEngines = {
+        Add = [
+          {
+            Name = "Brave";
+            URLTemplate = "https://search.brave.com/search?q={searchTerms}";
+            Method = "GET";
+            Alias = "brave";
+          }
+        ];
+        Default = "Brave";
+        Remove = [
+          "Bing"
+          "eBay"
+          "Google"
+        ];
+      };
     };
 
     profiles.default = {
