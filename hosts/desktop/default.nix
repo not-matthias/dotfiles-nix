@@ -67,8 +67,11 @@
       network = {
         enable = true;
         ssh = {
-          enable = true;
+          enable = false;
           port = 22;
+          # TODO:
+          # authorizedKeys = [ "ssh-rsa AAAAyourpublic-key-here..." ];
+          # hostKeys = [ "/etc/secrets/initrd/ssh_host_rsa_key" ];
         };
       };
 
