@@ -60,8 +60,19 @@
       efi.canTouchEfiVariables = true;
     };
 
-    # Enable swap on luks
     initrd = {
+      # Remote disk unlocking: https://nixos.wiki/wiki/Remote_disk_unlocking#Usage
+      availableKernelModules = ["r8169"]; # Find with: lspci -v | grep -iA8 'network\|ethernet'
+      systemd.users.root.shell = "/bin/cryptsetup-askpass";
+      network = {
+        enable = true;
+        ssh = {
+          enable = true;
+          port = 22;
+        };
+      };
+
+      # Enable swap on luks
       luks.devices."luks-0d6a9387-fa29-4abb-b966-f619b3ababfc".device = "/dev/disk/by-uuid/0d6a9387-fa29-4abb-b966-f619b3ababfc";
     };
   };
