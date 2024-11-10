@@ -100,7 +100,7 @@
         enable = true;
         settings = {
           open_mapping = "[[<C-t>]]";
-          start_in_insert = false;
+          start_in_insert = true;
         };
       };
       nvim-tree = {
