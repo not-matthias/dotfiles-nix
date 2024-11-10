@@ -2,13 +2,13 @@
   pkgs,
   unstable,
   user,
+  lib,
   ...
 }: {
   imports = [(import ./hardware-configuration.nix)];
 
   home-manager.users.${user} = {
     home.packages = with pkgs; [
-      signal-desktop
       unstable.zed-editor
       vscodium
       beeper
@@ -19,8 +19,8 @@
       gnome.nautilus
       gnome.file-roller
       gnome-text-editor
-      obs-studio
       unstable.anki
+      obs-studio
       calibre
       zotero
     ];
@@ -40,12 +40,12 @@
 
   hardware = {
     powersave.enable = true;
-    intel.enable = true;
+    # FIXME: Do we even need this with nixos-hardware?
+    # intel.enable = true;
     bluetooth.enable = true;
     sound.enable = true;
     ssd.enable = true;
     fingerprint.enable = true;
-    system76.enableAll = true;
   };
 
   virtualisation.vfio = {
@@ -58,6 +58,12 @@
   networking = {
     hostName = "laptop";
     networkmanager.enable = true;
+
+    # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+    # (the default) this is the recommended approach. When using systemd-networkd it's
+    # still possible to use this option, but it's recommended to use it in conjunction
+    # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+    useDHCP = lib.mkDefault true;
   };
 
   boot = {

@@ -13,6 +13,7 @@
     };
     devenv.url = "github:cachix/devenv/latest";
     nixvim.url = "github:nix-community/nixvim/nixos-24.05";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
   outputs = {
@@ -24,6 +25,7 @@
     fenix,
     devenv,
     nixvim,
+    nixos-hardware,
     ...
   } @ flakes: let
     user = "not-matthias";
@@ -31,7 +33,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager nur user fenix devenv nixvim;
+        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager nur user fenix devenv nixvim nixos-hardware;
       }
     );
   };

@@ -8,6 +8,7 @@
   fenix,
   devenv,
   nixvim,
+  nixos-hardware,
   ...
 }: let
   system = "x86_64-linux";
@@ -55,7 +56,7 @@
     base.lib.nixosSystem {
       system = arch;
       specialArgs = {
-        inherit flakes user nixvim unstable;
+        inherit flakes user nixvim unstable nixos-hardware;
       };
       modules =
         commonModules

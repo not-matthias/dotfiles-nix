@@ -26,20 +26,24 @@ in {
       vaapiIntel = pkgs.vaapiIntel.override {enableHybridCodec = true;};
     };
 
+    # TODO: Merge this with nixos-hardware
+
     hardware.opengl = {
       enable = true;
       driSupport = true;
       driSupport32Bit = true;
       extraPackages = with pkgs; [
-        intel-media-driver
+        # intel-media-driver
         # (vaapiIntel.override {enableHybridCodec = true;})
-        vaapiIntel
-        vaapiVdpau
-        libvdpau-va-gl
+        # vaapiIntel
+        # vaapiVdpau
+        # libvdpau-va-gl
       ];
-      extraPackages32 = with pkgs.pkgsi686Linux; [vaapiIntel];
+      # extraPackages32 = with pkgs.pkgsi686Linux; [vaapiIntel];
     };
 
     # services.xserver.videoDrivers = ["intel"];
+
+    hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
 }
