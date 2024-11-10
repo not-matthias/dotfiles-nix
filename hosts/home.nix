@@ -30,9 +30,6 @@
       wl-clipboard
 
       # Useful tools
-      gitAndTools.gh
-      unzip
-      zip
       python3
       devenv
 

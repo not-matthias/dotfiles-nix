@@ -10,6 +10,7 @@
   ./dunst.nix
   ./firefox.nix
   ./git.nix
+  ./minecraft.nix
   ./github-copilot.nix
   ./gtk.nix
   ./neovim.nix

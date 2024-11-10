@@ -5,19 +5,25 @@
 {
   pkgs,
   user,
+  lib,
+  config,
   ...
-}: {
-  virtualisation = {
-    docker = {
-      enable = true;
-      autoPrune.enable = true;
-      enableNvidia = true;
+}: let
+  cfg = config.virtualisation.docker;
+in {
+  config = lib.mkIf cfg.enable {
+    virtualisation = {
+      docker = {
+        # enable = true;
+        autoPrune.enable = true;
+        enableNvidia = true;
+      };
     };
+
+    users.groups.docker.members = ["${user}"];
+
+    environment.systemPackages = with pkgs; [
+      docker-compose
+    ];
   };
-
-  users.groups.docker.members = ["${user}"];
-
-  environment.systemPackages = with pkgs; [
-    docker-compose
-  ];
 }

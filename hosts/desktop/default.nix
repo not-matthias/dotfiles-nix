@@ -39,19 +39,22 @@
     #permitRootLogin = "yes";
   };
 
-  # virtualisation = {
-  #   single-gpu-passthrough.enable = true;
-  #   vfio = {
-  #     enable = true;
-  #     IOMMUType = "amd";
-  #     # devices = ["10de:1f08" "10de:10f9"];
-  #     # ignoreMSRs = true;
-  #     # disableEFIfb = true;
-  #     loadVfioPci = true;
-  #     # blacklistNvidia = true;
-  #     # enableNestedVirt = true;
-  #   };
-  # };
+  virtualisation = {
+    docker.enable = true;
+
+    # qemu.enable = false;
+    # single-gpu-passthrough.enable = false;
+    # vfio = {
+    #   enable = false;
+    #   IOMMUType = "amd";
+    #   # devices = ["10de:1f08" "10de:10f9"];
+    #   # ignoreMSRs = true;
+    #   # disableEFIfb = true;
+    #   loadVfioPci = true;
+    #   # blacklistNvidia = true;
+    #   # enableNestedVirt = true;
+    # };
+  };
 
   # Lots of these are from the default `configuration.nix`
   boot = {
