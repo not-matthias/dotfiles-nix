@@ -35,11 +35,28 @@ in {
       settings.server.HTTP_PORT = 11430;
     };
 
+    # TODO: https://github.com/ddervisis/dotnix/blob/0ad558ef5bff41a5d3bec296b122ee76981fed80/modules/services/adguardhome.nix#L13
     services.adguardhome = {
-      enable = false;
+      enable = true;
       host = "0.0.0.0";
       port = 11429;
       mutableSettings = true;
+      settings = {
+        dns = {
+          bind_host = "0.0.0.0";
+          bind_hosts = ["0.0.0.0"];
+          bootstrap_dns = [
+            "1.1.1.1"
+            "1.0.0.1"
+          ];
+          upstream_dns = [
+            "1.1.1.1"
+            "1.0.0.1"
+            "8.8.8.8"
+            "8.8.4.4"
+          ];
+        };
+      };
       # TODO: openFirewall?
     };
 
