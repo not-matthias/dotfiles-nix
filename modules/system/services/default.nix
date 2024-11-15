@@ -1,4 +1,5 @@
 [
+  ./adguard.nix
   ./nfs.nix
   ./rss.nix
   ./vpn.nix

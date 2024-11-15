@@ -31,6 +31,7 @@
   services = {
     printing.enable = true;
     system76-scheduler.enable = true;
+    adguard.enableDns = true;
   };
 
   programs = {
