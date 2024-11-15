@@ -16,7 +16,6 @@ in {
       docker = {
         # enable = true;
         autoPrune.enable = true;
-        enableNvidia = true;
       };
     };
 

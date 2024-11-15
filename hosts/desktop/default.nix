@@ -40,7 +40,10 @@
   };
 
   virtualisation = {
-    docker.enable = true;
+    docker = {
+      enable = true;
+      enableNvidia = true;
+    };
 
     # qemu.enable = false;
     # single-gpu-passthrough.enable = false;

@@ -48,10 +48,16 @@
     fingerprint.enable = true;
   };
 
-  virtualisation.vfio = {
-    enable = true;
-    IOMMUType = "intel";
-    enableNestedVirt = true;
+  virtualisation = {
+    docker = {
+      enable = true;
+      enableNvidia = false;
+    };
+    vfio = {
+      enable = true;
+      IOMMUType = "intel";
+      enableNestedVirt = true;
+    };
   };
   desktop.hyprland.enable = true;
 
