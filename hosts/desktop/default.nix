@@ -10,7 +10,7 @@
     };
     miniflux.enable = true;
     self-hosted.enable = true;
-    nfs.enable = true;
+    nfs.enable = false;
   };
 
   networking = {

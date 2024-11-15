@@ -43,8 +43,8 @@ in {
       mutableSettings = true;
       settings = {
         dns = {
-          bind_host = "0.0.0.0";
-          bind_hosts = ["0.0.0.0"];
+          #bind_host = "0.0.0.0";
+          #bind_hosts = ["0.0.0.0"];
           bootstrap_dns = [
             "1.1.1.1"
             "1.0.0.1"
@@ -52,8 +52,6 @@ in {
           upstream_dns = [
             "1.1.1.1"
             "1.0.0.1"
-            "8.8.8.8"
-            "8.8.4.4"
           ];
         };
       };
