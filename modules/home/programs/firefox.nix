@@ -161,7 +161,6 @@ in {
         "browser.disableResetPrompt" = true; # "Looks like you haven't started Firefox in a while."
         "browser.onboarding.enabled" = false; # "New to Firefox? Let's get started!" tour
         "browser.aboutConfig.showWarning" = false; # Warning when opening about:config
-        "extensions.pocket.enabled" = false;
         "extensions.unifiedExtensions.enabled" = false;
         "extensions.shield-recipe-client.enabled" = false;
         "reader.parse-on-load.enabled" = false; # "reader view"
@@ -347,6 +346,25 @@ in {
         # 1 = minimal compression
         # 9 = maximal compression
         "browser.cache.jsbc_compression_level" = 3;
+
+        # Fully disable Pocket. See
+        # https://www.reddit.com/r/linux/comments/zabm2a.
+        "extensions.pocket.enabled" = false;
+        "extensions.pocket.api" = "0.0.0.0";
+        "extensions.pocket.loggedOutVariant" = "";
+        "extensions.pocket.oAuthConsumerKey" = "";
+        "extensions.pocket.onSaveRecs" = false;
+        "extensions.pocket.onSaveRecs.locales" = "";
+        "extensions.pocket.showHome" = false;
+        "extensions.pocket.site" = "0.0.0.0";
+        "browser.newtabpage.activity-stream.pocketCta" = "";
+        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
+        "browser.newtabpage.activity-stream.feeds.section.topstorie" = false;
+
+        # Set to false if you use sync
+        "services.sync.prefs.sync.browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
+        "services.sync.prefs.sync-seen.services.sync.prefs.sync.browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
+        "services.sync.prefs.sync.browser.newtabpage.activity-stream.feeds.section.topstories" = false;
       };
       extensions = with addons; [
         bitwarden
