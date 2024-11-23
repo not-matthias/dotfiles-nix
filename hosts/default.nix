@@ -9,6 +9,7 @@
   devenv,
   nixvim,
   nixos-hardware,
+  arion,
   ...
 }: let
   system = "x86_64-linux";
@@ -48,6 +49,7 @@
       nixpkgs.overlays = overlays;
     }
     home-manager.nixosModules.home-manager
+    arion.nixosModules.arion
 
     ./configuration.nix
   ];

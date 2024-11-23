@@ -135,9 +135,9 @@ in {
           "cgroups" = "yes";
         };
 
-        ml = {"enabled" = "no";};
-        "health" = {"enabled" = "no";};
-        "statsd" = {"enabled" = "no";};
+        ml = {"enabled" = "true";};
+        health = {"enabled" = "no";};
+        statsd = {"enabled" = "no";};
         "plugin:apps" = {"update every" = 10;};
         "plugin:proc:diskspace" = {
           "update every" = 10;
@@ -157,6 +157,15 @@ in {
 
     services.firefly-iii = {
       enable = false;
+      settings = {
+        APP_KEY_FILE = "TODO";
+        DB_CONNECTION = "pgsql";
+        DB_DATABASE = "firefly";
+        DB_HOST = "localhost";
+        DB_USERNAME = "firefly-iii";
+      };
+      enableNginx = true;
+      virtualHost = "http://localhost";
       # port = 11426;
     };
 

@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   flakes,
   user,

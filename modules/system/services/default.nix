@@ -6,4 +6,5 @@
   ./ollama.nix
   ./tailscale.nix
   ./selfhosted.nix
+  ./traggo.nix
 ]
