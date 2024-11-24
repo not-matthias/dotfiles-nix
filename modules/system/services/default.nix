@@ -1,5 +1,6 @@
 [
   ./adguard.nix
+  ./navidrome.nix
   ./nfs.nix
   ./rss.nix
   ./vpn.nix

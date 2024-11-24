@@ -183,12 +183,5 @@ in {
     #     base-url = "http://localhost";
     #   };
     # };
-
-    services.navidrome = {
-      enable = false;
-      settings.Port = 11424;
-      settings.Address = "0.0.0.0";
-      settings.MusicFolder = "/mnt/data/personal/music";
-    };
   };
 }

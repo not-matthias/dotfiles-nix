@@ -23,6 +23,7 @@
       obs-studio
       calibre
       zotero
+      mission-center
     ];
 
     services.activitywatch.enable = true;
@@ -32,6 +33,7 @@
     printing.enable = true;
     system76-scheduler.enable = true;
     adguard.enableDns = true;
+    navidrome.enable = true;
   };
 
   programs = {

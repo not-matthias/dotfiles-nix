@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  ...
 }: let
   cfg = config.services.traggo;
 in {
