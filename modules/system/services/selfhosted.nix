@@ -155,20 +155,6 @@ in {
       };
     };
 
-    services.firefly-iii = {
-      enable = false;
-      settings = {
-        APP_KEY_FILE = "TODO";
-        DB_CONNECTION = "pgsql";
-        DB_DATABASE = "firefly";
-        DB_HOST = "localhost";
-        DB_USERNAME = "firefly-iii";
-      };
-      enableNginx = true;
-      virtualHost = "http://localhost";
-      # port = 11426;
-    };
-
     services.ntopng = {
       enable = false;
       httpPort = 11425;

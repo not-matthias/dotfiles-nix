@@ -34,6 +34,7 @@
     system76-scheduler.enable = true;
     adguard.enableDns = true;
     navidrome.enable = true;
+    firefly-iii.enable = true;
   };
 
   programs = {

@@ -27,17 +27,17 @@ in {
       options = ["bind" "perms=444"];
     };
 
-    services.nginx.enable = true;
-    services.nginx.virtualHosts."navidrome" = {
-      serverAliases = [
-        "navidrome.lan"
-        "music"
-        "music.lan"
-        "music.local"
-      ];
+    # services.nginx.enable = true;
+    # services.nginx.virtualHosts."navidrome" = {
+    #   serverAliases = [
+    #     "navidrome.lan"
+    #     "music"
+    #     "music.lan"
+    #     "music.local"
+    #   ];
 
-      locations."/".proxyPass = "http://localhost:11424";
-      locations."/".proxyWebsockets = true;
-    };
+    #   locations."/".proxyPass = "http://localhost:11424";
+    #   locations."/".proxyWebsockets = true;
+    # };
   };
 }

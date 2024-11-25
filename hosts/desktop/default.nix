@@ -9,6 +9,7 @@
       useNvidia = true;
     };
     miniflux.enable = true;
+    firefly-iii.enable = true;
     self-hosted.enable = true;
     nfs.enable = false;
   };

@@ -1,5 +1,6 @@
 [
   ./adguard.nix
+  ./firefly-iii.nix
   ./navidrome.nix
   ./nfs.nix
   ./rss.nix
