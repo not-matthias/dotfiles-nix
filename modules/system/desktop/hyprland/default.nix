@@ -44,8 +44,7 @@ in {
         fi
       '';
       variables = {
-        # Workaround for Nvidia issues
-        WLR_RENDERER_ALLOW_SOFTWARE = "1";
+        #WLR_RENDERER_ALLOW_SOFTWARE = "1"; # Workaround for Nvidia issues
         XDG_CURRENT_DESKTOP = "Hyprland";
         XDG_SESSION_TYPE = "wayland";
         XDG_SESSION_DESKTOP = "Hyprland";
@@ -132,6 +131,12 @@ in {
       AllowSuspendThenHibernate=no
       AllowHybridSleep=yes
     '';
+
+    # services.hypridle.enable = true;
+    # https://github.com/atimofeev/nixos-config/blob/e331eb04eb292e7f343bf18d57e3f29e3626b43c/home/desktop/hyprland/hyprpaper.nix
+    # programs.hyprpaper.enable = true;
+    # https://github.com/atimofeev/nixos-config/blob/e331eb04eb292e7f343bf18d57e3f29e3626b43c/home/desktop/hyprland/hyprlock.nix
+    # programs.hyprlock.enable = true;
 
     nix.settings = {
       substituters = ["https://hyprland.cachix.org"];
