@@ -109,6 +109,7 @@
         openOnSetupFile = true;
         autoReloadOnWrite = true;
       };
+      web-devicons.enable = true;
 
       # Rust stuff
       rustaceanvim = {
@@ -130,12 +131,7 @@
       lsp = {
         enable = true;
         servers = {
-          rust-analyzer = {
-            enable = true;
-            installRustc = true;
-            installCargo = true;
-          };
-          typst-lsp.enable = true;
+          typst_lsp.enable = true;
           pylsp.enable = true;
         };
       };
@@ -175,7 +171,7 @@
       treesitter = {
         enable = true;
         nixGrammars = true;
-        indent = true;
+        settings.indent.enable = true;
       };
       treesitter-context = {
         enable = true;

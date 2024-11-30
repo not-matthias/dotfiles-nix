@@ -26,7 +26,7 @@
       #   args = ["-l" "-c" "tmux attach || tmux"];
       # };
 
-      live_config_reload = true;
+      general.live_config_reload = true;
 
       # Black background
       colors.primary.background = "#000000";

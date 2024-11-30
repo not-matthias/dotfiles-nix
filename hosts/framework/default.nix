@@ -11,13 +11,12 @@
     home.packages = with pkgs; [
       unstable.zed-editor
       vscodium
-      beeper
 
       vlc
       evince
       gwenview
-      gnome.nautilus
-      gnome.file-roller
+      nautilus
+      file-roller
       gnome-text-editor
       unstable.anki
       obs-studio
@@ -35,7 +34,7 @@
     system76-scheduler.enable = true;
     adguard.enableDns = true;
     navidrome.enable = true;
-    firefly-iii.enable = true;
+    firefly-iii.enable = false;
   };
 
   programs = {

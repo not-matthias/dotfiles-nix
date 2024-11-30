@@ -32,7 +32,7 @@ in {
     };
 
     security.pam.services = {
-      login.fprintAuth = true;
+      login.fprintAuth = lib.mkForce true;
       xscreensaver.fprintAuth = true;
     };
   };
