@@ -24,6 +24,7 @@
       calibre
       zotero
       mission-center
+      unstable.feishin # Music player
     ];
 
     services.activitywatch.enable = true;
