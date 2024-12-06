@@ -23,7 +23,7 @@
       calibre
       zotero
       mission-center
-      unstable.feishin # Music player
+      unstable.feishin
     ];
 
     services.activitywatch.enable = true;
@@ -34,18 +34,14 @@
     system76-scheduler.enable = true;
     adguard.enableDns = true;
     navidrome.enable = true;
-    firefly-iii.enable = false;
   };
 
   programs = {
     noisetorch.enable = true;
-    steam.enable = false;
   };
 
   hardware = {
     powersave.enable = true;
-    # FIXME: Do we even need this with nixos-hardware?
-    # intel.enable = true;
     bluetooth.enable = true;
     sound.enable = true;
     ssd.enable = true;

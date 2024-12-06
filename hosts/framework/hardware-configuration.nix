@@ -3,7 +3,7 @@
 # to /etc/nixos/configuration.nix instead.
 {
   modulesPath,
-  pkgs,
+  unstable,
   nixos-hardware,
   ...
 }: {
@@ -12,20 +12,8 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelPackages = unstable.linuxPackages_latest;
   boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "nvme" "usb_storage" "usbhid" "sd_mod"];
-
-  boot.kernelParams = [
-    # TODO: Remove this
-    # # For Power consumption
-    # # https://community.frame.work/t/linux-battery-life-tuning/6665/156
-    # "nvme.noacpi=1"
-
-    # https://community.frame.work/t/solved-bluetooth-mouse-lag-linux-autosuspend/26763
-    # Powertop also recommends to disable this
-    # Also fixes USB mouse lag
-    # "btusb.enable_autosuspend=n"
-  ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e33d79b0-4de1-47d3-a3fe-ab53c3f7f390";
