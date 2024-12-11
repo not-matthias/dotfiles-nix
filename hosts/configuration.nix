@@ -51,6 +51,9 @@
       wget
       usbutils
     ];
+
+    # Remove perl, rsync and strace
+    defaultPackages = lib.mkForce [];
   };
 
   nixpkgs.config.allowUnfree = true;

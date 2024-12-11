@@ -1,9 +1,11 @@
 [
   ./adguard.nix
+  ./audiobookshelf.nix
   ./firefly-iii.nix
   ./navidrome.nix
   ./nfs.nix
   ./rss.nix
+  ./security.nix
   ./vpn.nix
   ./ollama.nix
   ./tailscale.nix

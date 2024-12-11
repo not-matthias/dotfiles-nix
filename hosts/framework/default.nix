@@ -10,7 +10,6 @@
   home-manager.users.${user} = {
     home.packages = with pkgs; [
       unstable.zed-editor
-      vscodium
 
       vlc
       evince
@@ -24,6 +23,7 @@
       zotero
       mission-center
       unstable.feishin
+      unstable.vscode
     ];
 
     services.activitywatch.enable = true;
@@ -34,6 +34,7 @@
     system76-scheduler.enable = true;
     adguard.enableDns = true;
     navidrome.enable = true;
+    ollama.enable = true;
   };
 
   programs = {
