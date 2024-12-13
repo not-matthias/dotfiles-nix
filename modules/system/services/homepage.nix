@@ -34,8 +34,8 @@
             "AdGuard Home" = {
               description = "AdGuard Home";
               icon = "adguard-home";
-              href = "https://adguard.server.local";
-              siteMonitor = "https://adguard.server.local";
+              href = "https://adguard.desktop.local";
+              siteMonitor = "https://adguard.desktop.local";
             };
           }
           {
