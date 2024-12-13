@@ -32,9 +32,11 @@
   services = {
     printing.enable = true;
     system76-scheduler.enable = true;
-    adguard.enableDns = true;
     navidrome.enable = true;
     ollama.enable = true;
+    memos.enable = true;
+    scrutiny.enable = true;
+    adguard.useDns = true;
   };
 
   programs = {
@@ -63,6 +65,7 @@
   desktop.hyprland.enable = true;
 
   networking = {
+    domain = "localhost";
     hostName = "laptop";
     networkmanager.enable = true;
 

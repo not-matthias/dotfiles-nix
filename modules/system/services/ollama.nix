@@ -2,6 +2,7 @@
   unstable,
   config,
   lib,
+  domain,
   ...
 }: let
   cfg = config.services.ollama;
@@ -46,5 +47,9 @@ in {
         #ENABLE_ADMIN_EXPORT = "False";
       };
     };
+
+    services.caddy.virtualHosts."ollama.${domain}".extraConfig = ''
+      reverse_proxy http://127.0.0.1:11435
+    '';
   };
 }

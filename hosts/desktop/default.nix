@@ -9,9 +9,12 @@
       useNvidia = true;
     };
     miniflux.enable = true;
-    firefly-iii.enable = true;
+    firefly-iii.enable = false;
     self-hosted.enable = true;
     nfs.enable = false;
+    adguard.enable = true;
+    scrutiny.enable = true;
+    netdata.enable = true;
   };
 
   networking = {

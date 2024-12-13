@@ -18,7 +18,7 @@ in {
         ADMIN_PASSWORD=miniflux
       '';
       config = {
-        LISTEN_ADDR = "0.0.0.0:4242";
+        LISTEN_ADDR = "127.0.0.1:4242";
         CLEANUP_FREQUENCY = "48";
       };
     };
@@ -28,5 +28,11 @@ in {
     #   enable = true;
     #   config.system.enabled_bridges = ["*"];
     # };
+
+    services.caddy.virtualHosts."rss.${config.domain}".extraConfig = ''
+      encode zstd gzip
+
+      reverse_proxy http://localhost:4242
+    '';
   };
 }

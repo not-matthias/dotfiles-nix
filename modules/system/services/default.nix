@@ -5,12 +5,14 @@
   ./firefly-iii.nix
   ./memos.nix
   ./navidrome.nix
+  ./netdata.nix
   ./nfs.nix
-  ./rss.nix
-  ./security.nix
-  ./vpn.nix
   ./ollama.nix
+  ./rss.nix
+  ./scrutiny.nix
+  ./security.nix
   ./tailscale.nix
   ./selfhosted.nix
   ./traggo.nix
+  ./vpn.nix
 ]

@@ -3,6 +3,7 @@
   lib,
   unstable,
   user,
+  domain,
   ...
 }: let
   cfg = config.services.navidrome;
@@ -18,8 +19,11 @@ in {
   config = lib.mkIf cfg.enable {
     services.navidrome = {
       package = unstable.navidrome;
-      settings.Port = 11424;
-      settings.Address = "0.0.0.0";
+      settings = {
+        Port = 11424;
+        Address = "127.0.0.1";
+        ReverseProxyWhitelist = "127.0.0.1/32";
+      };
     };
 
     fileSystems."/var/lib/navidrome/music" = {
@@ -27,14 +31,18 @@ in {
       options = ["bind" "perms=444"];
     };
 
-    # services.nginx.enable = true;
-    # services.nginx.virtualHosts."navidrome" = {
-    #   serverAliases = [
-    #     "navidrome.lan"
-    #     "music"
-    #     "music.lan"
-    #     "music.local"
-    #   ];
+    # FIXME: This doesn't yet work
+    services.caddy = {
+      virtualHosts."music.${domain}" = {
+        extraConfig = ''
+          encode zstd gzip
+          reverse_proxy http://127.0.0.1:11424
+        '';
+        serverAliases = [
+          "music.local"
+        ];
+      };
+    };
 
     #   locations."/".proxyPass = "http://localhost:11424";
     #   locations."/".proxyWebsockets = true;
