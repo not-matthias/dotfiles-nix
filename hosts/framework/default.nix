@@ -36,7 +36,6 @@
     ollama.enable = true;
     scrutiny.enable = true;
     adguardhome.useDns = true;
-    adguardhome.enable = true;
   };
 
   programs = {
