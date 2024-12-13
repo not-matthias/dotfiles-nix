@@ -12,7 +12,7 @@
     firefly-iii.enable = false;
     self-hosted.enable = true;
     nfs.enable = false;
-    adguard.enable = true;
+    adguardhome.enable = true;
     memos.enable = true;
     scrutiny.enable = true;
     netdata.enable = true;

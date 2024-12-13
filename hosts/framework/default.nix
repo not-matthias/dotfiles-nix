@@ -34,9 +34,9 @@
     system76-scheduler.enable = true;
     navidrome.enable = true;
     ollama.enable = true;
-    memos.enable = true;
     scrutiny.enable = true;
-    adguard.useDns = true;
+    adguardhome.useDns = true;
+    adguardhome.enable = true;
   };
 
   programs = {

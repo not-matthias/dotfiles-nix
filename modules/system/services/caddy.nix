@@ -6,6 +6,7 @@
       "laptop.local"
       "test.laptop.local"
 
+      "home.laptop.local"
       "ollama.laptop.local"
       "memos.laptop.local"
       "music.laptop.local"
@@ -18,6 +19,7 @@
       "desktop.local"
       "test.desktop.local"
 
+      "home.desktop.local"
       "ollama.desktop.local"
       "memos.desktop.local"
       "music.desktop.local"
