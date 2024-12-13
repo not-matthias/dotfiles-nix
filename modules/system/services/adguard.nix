@@ -39,10 +39,7 @@ in {
 
     (lib.mkIf cfg.useDns {
       services.resolved.enable = true;
-      networking.nameservers =
-        if cfg.useDns
-        then lib.mkForce ["100.64.120.57"]
-        else [];
+      networking.nameservers = lib.mkForce ["100.64.120.57"];
     })
   ];
 }
