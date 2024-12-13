@@ -1,7 +1,9 @@
 [
   ./adguard.nix
   ./audiobookshelf.nix
+  ./caddy.nix
   ./firefly-iii.nix
+  ./memos.nix
   ./navidrome.nix
   ./nfs.nix
   ./rss.nix
