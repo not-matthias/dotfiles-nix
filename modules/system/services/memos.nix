@@ -31,15 +31,6 @@ in {
       virtualHosts."memos.${domain}".extraConfig = ''
         reverse_proxy http://localhost:5230
 
-        log {
-            format console
-            output file /logs/memos.log {
-            roll_size 10mb
-            roll_keep 20
-            roll_keep_for 7d
-            }
-        }
-
         encode {
             zstd
             gzip

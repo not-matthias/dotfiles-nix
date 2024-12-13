@@ -14,7 +14,7 @@ in {
     (lib.mkIf cfg.enable {
       services.adguardhome = {
         # TODO: https://github.com/ddervisis/dotnix/blob/0ad558ef5bff41a5d3bec296b122ee76981fed80/modules/services/adguardhome.nix#L13
-        host = "127.0.0.1";
+        host = "0.0.0.0"; # Note: don't change to localhost otherwise it won't work (?)
         port = 11429;
         mutableSettings = true;
         settings = {
