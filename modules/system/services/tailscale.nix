@@ -14,4 +14,8 @@
     tsd = "tailscale down";
     tss = "tailscale status";
   };
+
+  networking.extraHosts = ''
+    100.64.120.57 desktop.local
+  '';
 }

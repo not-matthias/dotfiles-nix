@@ -54,11 +54,11 @@
     ./configuration.nix
   ];
 
-  nixosBox = arch: base: name:
+  nixosBox = arch: base: name: domain:
     base.lib.nixosSystem {
       system = arch;
       specialArgs = {
-        inherit flakes user nixvim unstable nixos-hardware;
+        inherit flakes user domain nixvim unstable nixos-hardware;
       };
       modules =
         commonModules
@@ -86,11 +86,11 @@
           }
         ];
     };
-
-  lib = nixpkgs.lib;
 in {
-  desktop = nixosBox "x86_64-linux" nixpkgs "desktop";
-  laptop = nixosBox "x86_64-linux" nixpkgs "laptop";
-  framework = nixosBox "x86_64-linux" nixpkgs "framework";
-  travel = nixosBox "x86_64-linux" nixpkgs "travel";
+  desktop = nixosBox "x86_64-linux" nixpkgs "desktop" "desktop.local";
+  framework = nixosBox "x86_64-linux" nixpkgs "framework" "laptop.local";
+
+  # Old configs:
+  # laptop = nixosBox "x86_64-linux" nixpkgs "laptop" "localhost";
+  # travel = nixosBox "x86_64-linux" nixpkgs "travel" "localhost";
 }
