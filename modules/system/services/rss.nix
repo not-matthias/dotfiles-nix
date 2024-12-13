@@ -4,6 +4,7 @@
   pkgs,
   lib,
   config,
+  domain,
   ...
 }: let
   cfg = config.services.miniflux;
@@ -29,7 +30,7 @@ in {
     #   config.system.enabled_bridges = ["*"];
     # };
 
-    services.caddy.virtualHosts."rss.${config.domain}".extraConfig = ''
+    services.caddy.virtualHosts."rss.${domain}".extraConfig = ''
       encode zstd gzip
 
       reverse_proxy http://localhost:4242
