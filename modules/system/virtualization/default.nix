@@ -1,5 +1,6 @@
 [
   ./docker.nix
+  ./oci.nix
   ./qemu.nix
   ./vagrant.nix
 ]
