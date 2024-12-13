@@ -33,7 +33,7 @@ in {
     services.caddy.virtualHosts."rss.${domain}".extraConfig = ''
       encode zstd gzip
 
-      reverse_proxy http://localhost:4242
+      reverse_proxy http://127.0.0.1:4242
     '';
   };
 }

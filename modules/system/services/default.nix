@@ -3,6 +3,7 @@
   ./audiobookshelf.nix
   ./caddy.nix
   ./firefly-iii.nix
+  ./homepage.nix
   ./memos.nix
   ./navidrome.nix
   ./netdata.nix
