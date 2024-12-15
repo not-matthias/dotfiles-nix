@@ -29,6 +29,7 @@
     programs = {
       alacritty.enable = true;
       waybar.enable = true;
+      firefox.enable = true;
     };
 
     services = {
@@ -40,7 +41,6 @@
   programs = {
     noisetorch.enable = true;
     fcitx5.enable = true;
-    firefox.enable = true;
     neovim.enable = true;
   };
 
