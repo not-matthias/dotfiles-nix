@@ -13,6 +13,7 @@
     self-hosted.enable = true;
     nfs.enable = false;
     adguardhome.enable = true;
+    adguardhome.useDns = false;
     memos.enable = true;
     scrutiny.enable = true;
     netdata.enable = true;
@@ -65,6 +66,8 @@
   };
 
   # Lots of these are from the default `configuration.nix`
+  boot.kernelParams = ["ip=dhcp"];
+  networking.nameservers = ["1.1.1.1" "1.0.0.1"];
   boot = {
     loader = {
       systemd-boot.enable = true;
@@ -78,11 +81,14 @@
       network = {
         enable = true;
         ssh = {
-          enable = false;
+          enable = true;
           port = 22;
-          # TODO:
-          # authorizedKeys = [ "ssh-rsa AAAAyourpublic-key-here..." ];
-          # hostKeys = [ "/etc/secrets/initrd/ssh_host_rsa_key" ];
+          authorizedKeys = [
+            "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDvED6PbgTV9/yjDymEci/ATe6vQDb9c11hqUwNyEStvFmkDr5ili7+2fiUhTrNaefTX5RaDIRaKBu4jl+kjSn5tfv+lvdYbl/UM8yMN8YODcM4JbAUo5cyX76s5BXaBrqQH0TGEXhKlLkVdxCJCBLm9tpakkxgLruj0qEwSoSGruM/QCYgbhXrh9NcEtOBaOBZ39DUhT3MEKgZJBlbqIXqyeHN5L1GLBEgBN73dZhh7fsJdIpfaezqzIeu8FQnAnL94eOFlDx7PXm1Wiacpcb5S7GsIFnd1iEc/TlYyaXKN+12VK2qPe6KMZfF7lBvgnjEU868sHiU8OXpWkYWQ3RJs0uQqSylQum8jsJAOWcygavVRrOO+zDxzNkPXa+7H3Jah9XoywaKjz8rsPTs0qu/AWZG/KyV7EeQu+J6oIOXGv2OBcndRuQTBKIimHCdnGEnpgkAzw9gs14oc0MN97k1izb5zyK6zf4jsD8cHl+64Hevapto28yqcCanQk9p9+M= not-matthias@laptop"
+          ];
+          hostKeys = [
+            "/etc/ssh/ssh_host_rsa_key"
+          ];
         };
       };
 
