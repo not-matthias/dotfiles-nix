@@ -29,17 +29,15 @@
     services.activitywatch.enable = true;
   };
 
-  services = {
-    printing.enable = true;
-    system76-scheduler.enable = true;
-    navidrome.enable = true;
-    ollama.enable = true;
-    scrutiny.enable = true;
-    adguardhome.useDns = true;
-  };
-
   programs = {
     noisetorch.enable = true;
+  };
+
+  services = {
+    printing.enable = true;
+    navidrome.enable = true;
+    ollama.enable = true;
+    adguardhome.useDns = true;
   };
 
   hardware = {

@@ -22,7 +22,7 @@
   '';
 in {
   programs.firefox = {
-    package = unstable.firefox-beta;
+    package = unstable.firefox;
     enable = true;
     policies = {
       NoDefaultBookmarks = true;
