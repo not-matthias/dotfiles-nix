@@ -1,6 +1,5 @@
 {...}: {
   programs.alacritty = {
-    enable = true;
     settings = {
       window = {
         dimensions = {

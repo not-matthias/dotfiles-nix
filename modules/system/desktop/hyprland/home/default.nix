@@ -29,8 +29,6 @@ in {
         slurp
         swappy
         tesseract
-
-        jetbrains.rust-rover
       ];
 
       home.file.".config/hypr/env.conf".text = builtins.readFile ./conf/env.conf;

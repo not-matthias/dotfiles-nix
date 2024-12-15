@@ -23,7 +23,6 @@
 in {
   programs.firefox = {
     package = unstable.firefox;
-    enable = true;
     policies = {
       NoDefaultBookmarks = true;
       DisableAppUpdate = true;

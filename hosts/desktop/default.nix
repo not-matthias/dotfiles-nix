@@ -17,6 +17,11 @@
     memos.enable = true;
     scrutiny.enable = true;
     netdata.enable = true;
+    caddy.enable = true;
+  };
+
+  programs = {
+    neovim.enable = true;
   };
 
   networking = {

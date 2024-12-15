@@ -26,11 +26,22 @@
       unstable.vscode
     ];
 
-    services.activitywatch.enable = true;
+    programs = {
+      alacritty.enable = true;
+      waybar.enable = true;
+    };
+
+    services = {
+      activitywatch.enable = true;
+      dunst.enable = true;
+    };
   };
 
   programs = {
     noisetorch.enable = true;
+    fcitx5.enable = true;
+    firefox.enable = true;
+    neovim.enable = true;
   };
 
   services = {
@@ -38,6 +49,7 @@
     navidrome.enable = true;
     ollama.enable = true;
     adguardhome.useDns = true;
+    homepage-dashboard.enable = true;
   };
 
   hardware = {
@@ -59,7 +71,10 @@
       enableNestedVirt = true;
     };
   };
-  desktop.hyprland.enable = true;
+  desktop = {
+    hyprland.enable = true;
+    fonts.enable = true;
+  };
 
   networking = {
     domain = "localhost";

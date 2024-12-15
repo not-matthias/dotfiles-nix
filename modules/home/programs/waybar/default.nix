@@ -5,13 +5,17 @@
 # https://github.com/smravec/nixos-config/blob/main/home-manager/config/waybar.nix
 # https://github.com/cjbassi/config/blob/master/.config/waybar/config
 #  hyprctl dispatch exec kitty
-{pkgs, ...}: {
-  home.packages = with pkgs; [
-    pavucontrol
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: {
+  home.packages = lib.mkIf config.programs.waybar.enable [
+    pkgs.pavucontrol
   ];
 
   programs.waybar = {
-    enable = true;
     settings.mainbar = {
       layer = "top";
       position = "top";

@@ -3,7 +3,6 @@
   # - https://github.com/walkxcode/Dashboard-Icons/tree/main/svg
   # - https://gethomepage.dev/configs/services/#icons
   services.homepage-dashboard = {
-    enable = true;
     listenPort = 7676;
 
     settings = {
