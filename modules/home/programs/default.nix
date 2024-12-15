@@ -3,7 +3,6 @@
   ./fish
   ./tmux
   ./waybar
-
   ./alacritty.nix
   ./atuin.nix
   ./direnv.nix
@@ -11,10 +10,9 @@
   ./firefox.nix
   ./git.nix
   ./minecraft.nix
-  ./github-copilot.nix
   ./gtk.nix
+  ./idea-copilot.nix
   ./neovim.nix
   ./wofi.nix
-
   # ./rust
 ]
