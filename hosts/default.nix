@@ -12,49 +12,49 @@
   arion,
   ...
 }: let
-  system = "x86_64-linux";
+  nixosBox = arch: base: name: domain: let
+    system = arch;
 
-  pkgs = import nixpkgs {
-    inherit system overlays;
-    config.allowUnfree = true;
-  };
+    pkgs = import nixpkgs {
+      inherit system overlays;
+      config.allowUnfree = true;
+    };
 
-  unstable = import nixpkgs-unstable {
-    inherit system overlays;
-    config.allowUnfree = true;
-  };
+    unstable = import nixpkgs-unstable {
+      inherit system overlays;
+      config.allowUnfree = true;
+    };
 
-  nur = import nurpkgs {
-    inherit pkgs;
-    nurpkgs = pkgs;
-  };
+    nur = import nurpkgs {
+      inherit pkgs;
+      nurpkgs = pkgs;
+    };
 
-  fontsOverlay = import (
-    builtins.fetchTarball {
-      url = "https://github.com/dimitarnestorov/nix-google-fonts-overlay/archive/master.tar.gz";
-      sha256 = "sha256:1ay7y6l0h8849md36ljc4mgpj7gkfvbimz17vzbm92kl4p7grm1g";
-    }
-  );
-  overlays = [
-    fenix.overlays.default
-    fontsOverlay
-    (_: prev: {
-      inherit (devenv.packages."${prev.system}") devenv;
-    })
-  ];
+    fontsOverlay = import (
+      builtins.fetchTarball {
+        url = "https://github.com/dimitarnestorov/nix-google-fonts-overlay/archive/master.tar.gz";
+        sha256 = "sha256:1ay7y6l0h8849md36ljc4mgpj7gkfvbimz17vzbm92kl4p7grm1g";
+      }
+    );
+    overlays = [
+      fenix.overlays.default
+      fontsOverlay
+      (_: prev: {
+        inherit (devenv.packages."${prev.system}") devenv;
+      })
+    ];
 
-  commonModules = [
-    (import ../modules/overlays/pkgs.nix)
-    {
-      nixpkgs.overlays = overlays;
-    }
-    home-manager.nixosModules.home-manager
-    arion.nixosModules.arion
+    commonModules = [
+      (import ../modules/overlays/pkgs.nix)
+      {
+        nixpkgs.overlays = overlays;
+      }
+      home-manager.nixosModules.home-manager
+      arion.nixosModules.arion
 
-    ./configuration.nix
-  ];
-
-  nixosBox = arch: base: name: domain:
+      ./configuration.nix
+    ];
+  in
     base.lib.nixosSystem {
       system = arch;
       specialArgs = {
