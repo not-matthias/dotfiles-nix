@@ -9,10 +9,11 @@
   ./dunst.nix
   ./firefox.nix
   ./git.nix
+  ./idea-copilot.nix
   ./minecraft.nix
   ./gtk.nix
-  ./idea-copilot.nix
   ./neovim.nix
   ./wofi.nix
+
   # ./rust
 ]

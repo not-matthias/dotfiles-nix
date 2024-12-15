@@ -4,22 +4,34 @@
 {
   lib,
   modulesPath,
+  pkgs,
   ...
 }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = [];
+  boot = {
+    #kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
+    initrd.availableKernelModules = ["xhci_pci" "usbhid" "usb_storage"];
+    loader = {
+      grub.enable = false;
+      generic-extlinux-compatible.enable = true;
+    };
+  };
+
   boot.initrd.kernelModules = [];
   boot.kernelModules = [];
   boot.extraModulePackages = [];
 
+
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/44444444-4444-4444-8888-888888888888";
-    fsType = "ext4";
+      device = "/dev/disk/by-label/NIXOS_SD";
+      fsType = "ext4";
+      #options = [ "noatime" ];
   };
 
+    #device = "/dev/disk/by-uuid/44444444-4444-4444-8888-888888888888";
   swapDevices = [];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

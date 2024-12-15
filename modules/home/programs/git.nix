@@ -9,9 +9,9 @@
       init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;
-      credential.helper = "${
-        pkgs.git.override {withLibsecret = true;}
-      }/bin/git-credential-libsecret";
+      #credential.helper = "${
+      #  pkgs.git.override {withLibsecret = true;}
+      #}/bin/git-credential-libsecret";
       credential."https://github.com" = {
         helper = "!${pkgs.gitAndTools.gh}/bin/gh auth git-credential";
       };
