@@ -89,8 +89,9 @@
 in {
   desktop = nixosBox "x86_64-linux" nixpkgs "desktop" "desktop.local";
   framework = nixosBox "x86_64-linux" nixpkgs "framework" "laptop.local";
+  raspi = nixosBox "aarch64" nixpkgs "raspi" "raspi.local";
 
   # Old configs:
-  # laptop = nixosBox "x86_64-linux" nixpkgs "laptop" "localhost";
+  # laptop = nixosBox "aarch64" nixpkgs "laptop" "localhost";
   # travel = nixosBox "x86_64-linux" nixpkgs "travel" "localhost";
 }
