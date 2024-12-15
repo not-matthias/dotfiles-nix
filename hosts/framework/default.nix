@@ -77,7 +77,6 @@
   };
 
   networking = {
-    domain = "localhost";
     hostName = "laptop";
     networkmanager.enable = true;
 
