@@ -47,7 +47,6 @@
   services = {
     printing.enable = true;
     navidrome.enable = true;
-    ollama.enable = true;
     adguardhome.useDns = true;
     homepage-dashboard.enable = true;
   };
