@@ -18,6 +18,7 @@
     scrutiny.enable = true;
     netdata.enable = true;
     caddy.enable = true;
+    homepage-dashboard.enable = true;
   };
 
   programs = {
