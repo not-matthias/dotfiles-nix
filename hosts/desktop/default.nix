@@ -16,7 +16,7 @@
     adguardhome.useDns = false;
     memos.enable = true;
     scrutiny.enable = true;
-    netdata.enable = true;
+    #netdata.enable = true;
     caddy.enable = true;
     homepage-dashboard.enable = true;
   };
