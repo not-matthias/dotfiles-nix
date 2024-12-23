@@ -1,3 +1,4 @@
+# https://wiki.nixos.org/wiki/Paperless
 {
   config,
   lib,
