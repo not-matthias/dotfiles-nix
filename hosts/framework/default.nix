@@ -34,7 +34,7 @@
     };
 
     services = {
-      activitywatch.enable = true;
+      activitywatch.enable = false;
       dunst.enable = true;
     };
   };
