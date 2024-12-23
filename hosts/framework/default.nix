@@ -49,6 +49,8 @@
     navidrome.enable = true;
     adguardhome.useDns = true;
     homepage-dashboard.enable = true;
+    ollama.enable = true;
+    caddy.enable = true;
   };
 
   hardware = {

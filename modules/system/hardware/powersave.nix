@@ -65,8 +65,9 @@ in {
         STOP_CHARGE_THRESH_BAT0 = 97;
         RUNTIME_PM_ON_BAT = "auto";
 
-        INTEL_GPU_MIN_FREQ_ON_AC = 500;
-        INTEL_GPU_MIN_FREQ_ON_BAT = 500;
+        # tlp-stat -g
+        # INTEL_GPU_MIN_FREQ_ON_AC = 500;
+        # INTEL_GPU_MIN_FREQ_ON_BAT = 500;
       };
     };
 
