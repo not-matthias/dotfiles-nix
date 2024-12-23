@@ -10,7 +10,7 @@ in {
   config = lib.mkIf cfg.enable {
     services.paperless = {
       port = 11432;
-      # address = "0.0.0.0";
+      address = "0.0.0.0";
       settings.PAPERLESS_OCR_LANGUAGE = "deu+eng";
     };
 
