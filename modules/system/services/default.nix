@@ -9,6 +9,7 @@
   ./netdata.nix
   ./nfs.nix
   ./ollama.nix
+  ./paperless.nix
   ./rss.nix
   ./scrutiny.nix
   ./security.nix

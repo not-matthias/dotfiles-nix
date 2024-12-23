@@ -15,11 +15,6 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    services.paperless = {
-      enable = true;
-      port = 11432;
-    };
-
     services.outline = {
       enable = false;
       port = 11431;

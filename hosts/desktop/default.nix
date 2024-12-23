@@ -19,6 +19,7 @@
     #netdata.enable = true;
     caddy.enable = true;
     homepage-dashboard.enable = true;
+    paperless.enable = true;
   };
 
   programs = {

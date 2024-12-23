@@ -30,6 +30,7 @@
       "immich.desktop.local"
       "rss.desktop.local"
       "adguard.desktop.local"
+      "paperless.desktop.local"
     ];
   };
 

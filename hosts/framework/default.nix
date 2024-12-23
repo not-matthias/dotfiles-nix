@@ -30,6 +30,7 @@
       alacritty.enable = true;
       waybar.enable = true;
       firefox.enable = true;
+      minecraft.enable = true;
     };
 
     services = {
