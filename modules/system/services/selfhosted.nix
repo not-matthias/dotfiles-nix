@@ -22,12 +22,6 @@ in {
       forceHttps = false;
     };
 
-    services.gitea = {
-      enable = false;
-      settings.server.HTTP_HOST = "0.0.0.0";
-      settings.server.HTTP_PORT = 11430;
-    };
-
     #environment.systemPackages = [
     #  pkgs.jellyfin
     #  pkgs.jellyfin-web

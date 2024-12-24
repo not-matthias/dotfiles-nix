@@ -52,6 +52,10 @@
     homepage-dashboard.enable = true;
     ollama.enable = true;
     caddy.enable = true;
+    watchyourlan = {
+      enable = true;
+      ifaces = "wlp166s0";
+    };
   };
 
   hardware = {

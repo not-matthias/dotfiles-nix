@@ -3,6 +3,7 @@
   ./audiobookshelf.nix
   ./caddy.nix
   ./firefly-iii.nix
+  ./gitea.nix
   ./homepage.nix
   ./memos.nix
   ./navidrome.nix
@@ -17,4 +18,5 @@
   ./selfhosted.nix
   ./traggo.nix
   ./vpn.nix
+  ./watchyourlan.nix
 ]

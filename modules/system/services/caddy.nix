@@ -11,6 +11,7 @@
       "memos.laptop.local"
       "music.laptop.local"
       "scrutiny.laptop.local"
+      "lan.laptop.local"
 
       # Custom only for laptop:
       "music.local"
@@ -25,12 +26,14 @@
       "music.desktop.local"
       "scrutiny.desktop.local"
       "netdata.desktop.local"
+      "lan.desktop.local"
 
       # Server-only:
       "immich.desktop.local"
       "rss.desktop.local"
       "adguard.desktop.local"
       "paperless.desktop.local"
+      "git.desktop.local"
     ];
   };
 

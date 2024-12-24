@@ -20,6 +20,11 @@
     caddy.enable = true;
     homepage-dashboard.enable = true;
     paperless.enable = true;
+    gitea.enable = true;
+    watchyourlan = {
+      enable = true;
+      ifaces = "enp34s0";
+    };
   };
 
   programs = {
