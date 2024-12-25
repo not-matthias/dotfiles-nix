@@ -59,6 +59,7 @@
       ifaces = "enp34s0";
     };
     restic.server.enable = true;
+    calibre-web.enable = true;
   };
 
   networking = {

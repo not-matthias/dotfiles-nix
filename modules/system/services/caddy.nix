@@ -34,6 +34,7 @@
       "adguard.desktop.local"
       "paperless.desktop.local"
       "git.desktop.local"
+      "books.desktop.local"
     ];
   };
 
