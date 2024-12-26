@@ -6,26 +6,37 @@
 }: {
   imports = [(import ./hardware-configuration.nix)];
 
-  home-manager.users.${user} = {
-    # Only enable when using Hyprland
-    home.packages = with pkgs; [
-      unstable.zed-editor
-      vlc
-      evince
-      gwenview
-      nautilus
-      file-roller
-    ];
-
-    programs = {
-      alacritty.enable = true;
-      minecraft.enable = true;
-      neovim.enable = true;
-    };
-  };
+  # Only disable when using a desktop environment:
+  # desktop = {
+  #   hyprland = {
+  #     enable = true;
+  #     useNvidia = true;
+  #   };
+  #   fonts.enable = true;
+  # };
+  #
+  # home-manager.users.${user} = {
+  #   home.packages = with pkgs; [
+  #     unstable.zed-editor
+  #
+  #     vlc
+  #     evince
+  #     gwenview
+  #     nautilus
+  #     file-roller
+  #     gnome-text-editor
+  #     mission-center
+  #   ];
+  #
+  #   programs = {
+  #     neovim.enable = true;
+  #     alacritty.enable = true;
+  #     waybar.enable = true;
+  #     firefox.enable = true;
+  #   };
+  # };
 
   # Only enable the services here, the settings are configured in the 'services/' folder.
-  #
   services = {
     caddy.enable = true;
     ollama = {
@@ -47,20 +58,13 @@
       enable = true;
       ifaces = "enp34s0";
     };
+    restic.server.enable = true;
     stump.enable = true;
   };
 
   networking = {
     hostName = "desktop";
     networkmanager.enable = true;
-  };
-
-  desktop = {
-    hyprland = {
-      enable = true;
-      useNvidia = true;
-    };
-    fonts.enable = true;
   };
 
   hardware = {

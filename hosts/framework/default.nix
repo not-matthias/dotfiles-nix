@@ -82,6 +82,12 @@
     fonts.enable = true;
   };
 
+  # Backup the important folders
+  services.restic.backups.nas.paths = [
+    "/home/${user}/Documents"
+    "/home/${user}/Pictures"
+  ];
+
   networking = {
     hostName = "laptop";
     networkmanager.enable = true;
