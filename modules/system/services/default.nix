@@ -2,7 +2,6 @@
   ./adguard.nix
   ./audiobookshelf.nix
   ./caddy.nix
-  ./calibre-web.nix
   ./firefly-iii.nix
   ./gitea.nix
   ./homepage.nix
