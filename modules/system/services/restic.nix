@@ -66,10 +66,9 @@ in {
         repository = "rest:http://desktop.local:11417/";
         passwordFile = "/var/lib/restic/remote-rest-password"; # See Bitwarden
         timerConfig = {
-          OnCalendar = "*:0/15"; # every 1 minute
-          # OnCalendar = "hourly";
+          OnCalendar = "hourly";
           Persistent = true;
-          # RandomizedDelaySec = "20m";
+          RandomizedDelaySec = "20m";
         };
         exclude = exclude;
         pruneOpts = pruneOpts;
