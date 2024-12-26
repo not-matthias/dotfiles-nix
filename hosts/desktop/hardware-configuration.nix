@@ -4,6 +4,7 @@
 {
   config,
   lib,
+  pkgs,
   modulesPath,
   ...
 }: {
@@ -18,7 +19,7 @@
 
   # =============================== ZFS START ===============================
 
-  boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+  boot.kernelPackages = pkgs.linuxPackages;
   boot.supportedFilesystems = ["zfs"];
   boot.zfs = {
     forceImportRoot = false; # Enabled by default, recommended to turn off.
