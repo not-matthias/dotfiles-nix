@@ -1,40 +1,96 @@
-{
-  # The setup:
-  # - Server has a folder: /backup
-  # - Laptop and Server can copy and folders into that
+{pkgs, ...}: let
+  exclude = [
+    ".cache"
+    "cache"
+    ".tmp"
+    ".temp"
+    "tmp"
+    "temp"
+    ".log"
+    "log"
+    ".Trash"
+    ".git"
+    "node_modules"
+    "target"
+    "build"
+    "result"
+    ".devenv"
+    "*.iso"
+    "*.img"
+    "*.deb"
+    "Cache"
+    "CachedData"
+    "cache"
+    ".mozilla/firefox"
+  ];
+
+  pruneOpts = [
+    # "--keep-within-hourly 18h"
+    # "--keep-within-daily 7d"
+    # "--keep-within-weekly 35d"
+    # "--keep-within-monthly 12m"
+    # "--keep-within-yearly 75y"
+    # "--max-unused 10G"
+
+    "--keep-daily 5"
+    "--keep-weekly 1"
+    "--keep-monthly 1"
+  ];
+  extraBackupArgs = [
+    "--exclude-if-present=.nobak"
+    "--exclude-caches"
+  ];
+in {
+  environment.systemPackages = with pkgs; [
+    restic
+  ];
 
   services.restic = {
-    # https://francis.begyn.be/blog/nixos-restic-backups
+    # Enable the Restic REST server.
+    # See: https://restic.readthedocs.io/en/stable/030_preparing_a_new_repo.html#rest-server
+    #
+    server = {
+      # enable = ?;
+      privateRepos = true;
+      dataDir = "/mnt/data/restic";
+      listenAddress = "11417";
+      extraFlags = [
+        "--no-auth"
+      ];
+      appendOnly = true;
+    };
+
     backups = {
-      gdrive = {
-        user = "backups";
-        repository = "rclone:gdrive:/backups";
-        initialize = true; # initializes the repo, don't set if you want manual control
-        passwordFile = "<path>";
+      nas = {
+        initialize = true;
+        repository = "rest:http://desktop.local:11417/";
+        passwordFile = "/var/lib/restic/remote-rest-password"; # See Bitwarden
         timerConfig = {
-          onCalendar = "saturday 23:00";
+          OnCalendar = "*:0/15"; # every 1 minute
+          # OnCalendar = "hourly";
+          Persistent = true;
+          # RandomizedDelaySec = "20m";
         };
+        exclude = exclude;
+        pruneOpts = pruneOpts;
+        extraBackupArgs = extraBackupArgs;
       };
 
-      remote = {
-        paths = [
-          # "/home/${adminUser.name}/Development"
-          # "/home/${adminUser.name}/Documents"
-          # "/home/${adminUser.name}/Sync"
-          # "/home/${adminUser.name}/Photos"
-        ];
-        # environmentFile = config.age.secrets.restic-env.path;
-        # passwordFile = config.age.secrets.restic-pw.path;
-        initialize = true;
-        timerConfig.OnCalendar = "*-*-* *:00:00";
-        timerConfig.RandomizedDelaySec = "5m";
-        extraBackupArgs = [
-          "--exclude=\".direnv\""
-          "--exclude=\".terraform\""
-          "--exclude=\"node_modules/*\""
-          "--exclude=\"target/*\""
-        ];
-      };
+      # Backup to a local folder:
+      # local = {
+      #   initialize = true;
+      #   repository = "/var/lib/restic/local-backup";
+      #   passwordFile = "/var/lib/restic/password";
+      #   timerConfig = {
+      #     OnCalendar = "hourly";
+      #     # OnCalendar = "*-*-* 0..23/1:00:00";
+      #     Persistent = true;
+      #     RandomizedDelaySec = "20m";
+      #   };
+      #   exclude = excludePatterns;
+      #   pruneOpts = pruneOpts;
+      #   extraBackupArgs = extraBackupArgs;
+      # };
     };
   };
 }

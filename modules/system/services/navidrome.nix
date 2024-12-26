@@ -43,9 +43,5 @@ in {
         ];
       };
     };
-
-    #   locations."/".proxyPass = "http://localhost:11424";
-    #   locations."/".proxyWebsockets = true;
-    # };
   };
 }

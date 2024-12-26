@@ -11,6 +11,7 @@
   ./nfs.nix
   ./ollama.nix
   ./paperless.nix
+  ./restic.nix
   ./rss.nix
   ./scrutiny.nix
   ./security.nix

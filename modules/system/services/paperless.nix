@@ -34,5 +34,7 @@ in {
       encode zstd gzip
       reverse_proxy http://127.0.0.1:11432
     '';
+
+    services.restic.backups.nas.paths = ["/var/lib/paperless"];
   };
 }

@@ -25,6 +25,6 @@ in {
       reverse_proxy http://127.0.0.1:11430
     '';
 
-    services.restic.backups.default.paths = ["/var/lib/gitea"];
+    services.restic.backups.nas.paths = ["/var/lib/gitea"];
   };
 }
