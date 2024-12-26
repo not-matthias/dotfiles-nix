@@ -47,7 +47,7 @@
       enable = true;
       ifaces = "enp34s0";
     };
-    calibre-web.enable = true;
+    stump.enable = true;
   };
 
   networking = {

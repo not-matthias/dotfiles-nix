@@ -2,7 +2,6 @@
   ./adguard.nix
   ./audiobookshelf.nix
   ./caddy.nix
-  ./calibre-web.nix
   ./firefly-iii.nix
   ./gitea.nix
   ./homepage.nix
@@ -17,6 +16,7 @@
   ./security.nix
   ./tailscale.nix
   ./selfhosted.nix
+  ./stump.nix
   ./traggo.nix
   ./vpn.nix
   ./watchyourlan.nix
