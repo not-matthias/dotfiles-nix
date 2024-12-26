@@ -64,9 +64,9 @@ in {
       nas = {
         initialize = true;
         repository = "rest:http://desktop.local:11417/";
-        passwordFile = "/var/lib/restic/remote-rest-password"; # See Bitwarden
+        passwordFile = "/var/lib/restic/remote-rest-password"; # TODO: Use secret management
         timerConfig = {
-          OnCalendar = "hourly";
+          OnCalendar = "daily";
           Persistent = true;
           RandomizedDelaySec = "20m";
         };
