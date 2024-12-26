@@ -58,6 +58,7 @@
               description = "Miniflux";
               icon = "miniflux";
               href = "https://rss.desktop.local";
+              siteMonitor = "https://rss.desktop.local";
             };
           }
           {
@@ -90,6 +91,30 @@
               icon = "immich";
               href = "https://immich.desktop.local";
               siteMonitor = "https://immich.desktop.local";
+            };
+          }
+          {
+            Paperless = {
+              description = "Paperless";
+              icon = "paperless";
+              href = "https://paperless.desktop.local";
+              siteMonitor = "https://paperless.desktop.local";
+            };
+          }
+          {
+            Gitea = {
+              description = "Gitea";
+              icon = "gitea";
+              href = "https://git.desktop.local";
+              siteMonitor = "https://git.desktop.local";
+            };
+          }
+          {
+            Stump = {
+              description = "Stump";
+              icon = "stump";
+              href = "https://books.desktop.local";
+              siteMonitor = "https://books.desktop.local";
             };
           }
         ];
