@@ -8,15 +8,13 @@
 in {
   config = lib.mkIf cfg.enable {
     services.immich = {
-      port = 2283;
+      port = 2284;
       database.enable = true;
       redis.enable = true;
       machine-learning.enable = true;
       machine-learning.environment = {};
-      # TODO:
-      # mediaLocation = "/data/images";
+      mediaLocation = "/mnt/data/immich-test"; # TODO:
       secretsFile = null;
-      settings.server.externalDomain = "https://${config.hostnames.photos}";
       environment = {
         IMMICH_ENV = "production";
         IMMICH_LOG_LEVEL = "log";

@@ -1,5 +1,39 @@
-{user, ...}: {
+{
+  user,
+  pkgs,
+  unstable,
+  ...
+}: {
   imports = [(import ./hardware-configuration.nix)];
+
+  desktop = {
+    hyprland = {
+      enable = true;
+      useNvidia = true;
+    };
+    fonts.enable = true;
+  };
+
+  home-manager.users.${user} = {
+    home.packages = with pkgs; [
+      unstable.zed-editor
+
+      vlc
+      evince
+      gwenview
+      nautilus
+      file-roller
+      gnome-text-editor
+      mission-center
+    ];
+
+    programs = {
+      neovim.enable = true;
+      alacritty.enable = true;
+      waybar.enable = true;
+      firefox.enable = true;
+    };
+  };
 
   # Only enable the services here, the settings are configured in the 'services/' folder.
   #
@@ -25,20 +59,12 @@
       enable = true;
       ifaces = "enp34s0";
     };
-  };
-
-  programs = {
-    neovim.enable = true;
+    restic.server.enable = true;
   };
 
   networking = {
     hostName = "desktop";
     networkmanager.enable = true;
-  };
-
-  desktop.hyprland = {
-    enable = false;
-    useNvidia = true;
   };
 
   hardware = {
