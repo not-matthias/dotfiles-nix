@@ -16,7 +16,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     i18n.inputMethod = {
-      enabled = "fcitx5";
+      type = "fcitx5";
       fcitx5 = {
         waylandFrontend = true;
         addons = with pkgs; [

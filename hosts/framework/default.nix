@@ -84,8 +84,9 @@
 
   # Backup the important folders
   services.restic.backups.nas.paths = [
-    "/home/${user}/Documents"
-    "/home/${user}/Pictures"
+    # "/home/${user}/Documents/temp"
+    # "/home/${user}/Pictures"
+    # TODO: What to backup?
   ];
 
   networking = {
