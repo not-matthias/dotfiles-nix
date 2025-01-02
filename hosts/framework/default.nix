@@ -22,15 +22,16 @@
       calibre
       zotero
       mission-center
-      unstable.feishin
+      feishin
       unstable.vscode
+      ungoogled-chromium
     ];
 
     programs = {
       alacritty.enable = true;
       waybar.enable = true;
       firefox.enable = true;
-      minecraft.enable = true;
+      minecraft.enable = false;
     };
 
     services = {
@@ -50,7 +51,6 @@
     navidrome.enable = true;
     adguardhome.useDns = true;
     homepage-dashboard.enable = true;
-    ollama.enable = true;
     caddy.enable = true;
     watchyourlan = {
       enable = true;
