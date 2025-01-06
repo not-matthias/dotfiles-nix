@@ -24,13 +24,12 @@
       mission-center
       feishin
       unstable.vscode
-      ungoogled-chromium
     ];
 
     programs = {
       alacritty.enable = true;
       waybar.enable = true;
-      firefox.enable = true;
+      firefox.enable = false;
       minecraft.enable = false;
     };
 
@@ -44,6 +43,7 @@
     noisetorch.enable = true;
     fcitx5.enable = true;
     neovim.enable = true;
+    steam.enable = true;
   };
 
   services = {
