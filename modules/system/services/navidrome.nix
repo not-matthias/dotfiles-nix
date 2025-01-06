@@ -22,7 +22,6 @@ in {
       settings = {
         Port = 11424;
         Address = "127.0.0.1";
-        ReverseProxyWhitelist = "127.0.0.1/32";
       };
     };
 
@@ -31,17 +30,11 @@ in {
       options = ["bind" "perms=444"];
     };
 
-    # FIXME: This doesn't yet work
-    services.caddy = {
-      virtualHosts."music.${domain}" = {
-        extraConfig = ''
-          encode zstd gzip
-          reverse_proxy http://127.0.0.1:11424
-        '';
-        serverAliases = [
-          "music.local"
-        ];
-      };
+    services.caddy.virtualHosts."music.${domain}" = {
+      extraConfig = ''
+        encode zstd gzip
+        reverse_proxy http://127.0.0.1:11424
+      '';
     };
   };
 }
