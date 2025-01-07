@@ -117,6 +117,14 @@
               siteMonitor = "https://books.desktop.local";
             };
           }
+          {
+            Maloja = {
+              description = "Maloja";
+              icon = "maloja";
+              href = "https://maloja.desktop.local";
+              siteMonitor = "https://maloja.desktop.local";
+            };
+          }
         ];
       }
     ];
