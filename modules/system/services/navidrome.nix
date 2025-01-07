@@ -21,7 +21,7 @@ in {
       package = unstable.navidrome;
       settings = {
         Port = 11424;
-        Address = "127.0.0.1";
+        Address = "0.0.0.0";
       };
     };
 

@@ -1,9 +1,4 @@
-{
-  user,
-  pkgs,
-  unstable,
-  ...
-}: {
+{user, ...}: {
   imports = [(import ./hardware-configuration.nix)];
 
   # Only disable when using a desktop environment:
@@ -60,6 +55,11 @@
     };
     restic.server.enable = true;
     stump.enable = true;
+    traggo.enable = true;
+    navidrome = {
+      enable = true;
+      musicFolder = "/mnt/data/personal/music";
+    };
   };
 
   networking = {
