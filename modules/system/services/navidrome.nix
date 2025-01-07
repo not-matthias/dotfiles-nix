@@ -14,6 +14,12 @@ in {
       default = "/home/${user}/Music/";
       description = "The path to the music folder";
     };
+
+    # Requires /1/ at the end!
+    scrobblerUrl = lib.mkOption {
+      type = lib.types.str;
+      description = "The URL to the ListenBrainz API";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -22,6 +28,9 @@ in {
       settings = {
         Port = 11424;
         Address = "0.0.0.0";
+
+        ListenBrainz.BaseURL = cfg.scrobblerUrl;
+        ListenBrainz.Enabled = cfg.scrobblerUrl != "";
       };
     };
 

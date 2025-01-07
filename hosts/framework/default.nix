@@ -48,7 +48,10 @@
 
   services = {
     printing.enable = true;
-    navidrome.enable = true;
+    navidrome = {
+      enable = true;
+      scrobblerUrl = "http://desktop.local:42010/apis/listenbrainz/1/";
+    };
     adguardhome.useDns = true;
     homepage-dashboard.enable = true;
     caddy.enable = true;

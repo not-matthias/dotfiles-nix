@@ -5,6 +5,7 @@
   ./firefly-iii.nix
   ./gitea.nix
   ./homepage.nix
+  ./maloja.nix
   ./memos.nix
   ./navidrome.nix
   ./netdata.nix

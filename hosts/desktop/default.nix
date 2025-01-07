@@ -59,7 +59,9 @@
     navidrome = {
       enable = true;
       musicFolder = "/mnt/data/personal/music";
+      scrobblerUrl = "http://localhost:42010/apis/listenbrainz/1/";
     };
+    maloja.enable = true;
   };
 
   networking = {
