@@ -29,7 +29,7 @@
     programs = {
       alacritty.enable = true;
       waybar.enable = true;
-      firefox.enable = false;
+      firefox.enable = true;
       minecraft.enable = false;
     };
 
@@ -74,6 +74,7 @@
       enable = true;
       enableNvidia = false;
     };
+    qemu.enable = true;
     vfio = {
       enable = true;
       IOMMUType = "intel";

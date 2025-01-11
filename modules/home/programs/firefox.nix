@@ -22,7 +22,7 @@
   '';
 in {
   programs.firefox = {
-    package = unstable.firefox;
+    package = unstable.firefox-wayland;
     policies = {
       NoDefaultBookmarks = true;
       DisableAppUpdate = true;
