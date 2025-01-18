@@ -19,7 +19,7 @@ in {
         ADMIN_PASSWORD=miniflux
       '';
       config = {
-        LISTEN_ADDR = "127.0.0.1:4242";
+        LISTEN_ADDR = "0.0.0.0:4242";
         CLEANUP_FREQUENCY = "48";
       };
     };
