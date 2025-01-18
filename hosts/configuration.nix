@@ -50,6 +50,7 @@
       vim
       wget
       usbutils
+      flakes.agenix.packages.${system}.default
     ];
 
     # Remove perl, rsync and strace

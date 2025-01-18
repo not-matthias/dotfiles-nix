@@ -23,6 +23,7 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix.url = "github:ryantm/agenix";
   };
 
   outputs = {
@@ -35,6 +36,7 @@
     nixvim,
     nixos-hardware,
     arion,
+    agenix,
     ...
   } @ flakes: let
     user = "not-matthias";
@@ -42,7 +44,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix devenv nixvim nixos-hardware arion;
+        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix devenv nixvim nixos-hardware arion agenix;
       }
     );
   };

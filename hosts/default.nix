@@ -10,6 +10,7 @@
   nixvim,
   nixos-hardware,
   arion,
+  agenix,
   ...
 }: let
   nixosBox = arch: base: name: domain: let
@@ -51,6 +52,7 @@
       }
       home-manager.nixosModules.home-manager
       arion.nixosModules.arion
+      agenix.nixosModules.default
 
       ./configuration.nix
     ];
@@ -80,6 +82,7 @@
                 imports = [
                   ./home.nix
                   nixvim.homeManagerModules.nixvim
+                  agenix.homeManagerModules.age
                 ];
               };
             };
