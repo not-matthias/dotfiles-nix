@@ -22,7 +22,7 @@
       calibre
       zotero
       mission-center
-      feishin
+      unstable.feishin
       unstable.vscode
     ];
 
@@ -47,6 +47,7 @@
   };
 
   services = {
+    safeeyes.enable = true;
     printing.enable = true;
     navidrome = {
       enable = true;
@@ -92,6 +93,13 @@
     # "/home/${user}/Pictures"
     # TODO: What to backup?
   ];
+
+  # age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
+  # home.sessionVariables = {
+  #                  SECRET_VALUE = ''
+  #                    $(${pkgs.coreutils}/bin/cat ${config.age.secrets.secret1.path})
+  #                  '';
+  #                };
 
   networking = {
     hostName = "laptop";

@@ -37,6 +37,11 @@ nix store optimise
 nix store gc
 ```
 
+To delete the derivations, you need `sudo`:
+```
+sudo nix-collect-garbage -d
+```
+
 ## Upgrade
 
 ```bash
@@ -46,6 +51,17 @@ sudo nix-channel --update
 ```
 
 See: https://superuser.com/a/1604695
+
+## Agenix
+
+```
+nix run github:ryantm/agenix -- -e test.ages
+```
+
+Encrypt existing file:
+```
+cat file.txt | agenix -e file.age
+```
 
 ## Errors
 
