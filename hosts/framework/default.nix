@@ -3,6 +3,7 @@
   unstable,
   user,
   lib,
+  flakes,
   ...
 }: {
   imports = [(import ./hardware-configuration.nix)];
@@ -22,8 +23,10 @@
       calibre
       zotero
       mission-center
-      unstable.feishin
+      feishin
       unstable.vscode
+
+      flakes.zen-browser.packages."${system}".default # beta
     ];
 
     programs = {
