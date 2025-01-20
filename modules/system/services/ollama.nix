@@ -1,5 +1,6 @@
 {
   unstable,
+  pkgs,
   config,
   lib,
   domain,
@@ -23,8 +24,8 @@ in {
       # enable = false; # This will be enabled by the user.
       package =
         if cfg.useNvidia
-        then unstable.ollama-cuda
-        else unstable.ollama;
+        then pkgs.ollama-cuda
+        else pkgs.ollama;
       acceleration =
         if cfg.useNvidia
         then "cuda"
