@@ -19,14 +19,15 @@ in {
           PGID = "1000";
 
           # https://www.stumpapp.dev/guides/configuration/server-options
-          ENABLE_UPLOAD = "true";
+          STUMP_ENABLE_UPLOAD = "true";
           STUMP_PORT = "10801";
+          STUMP_MAX_FILE_UPLOAD_SIZE = "83886080"; # 80MB
         };
         ports = [
           "10801:10801/tcp"
         ];
         volumes = [
-          "/var/lib/memos/config:/config"
+          "/var/lib/stump/config:/config"
           "/mnt/data/personal/books:/data"
         ];
       };
