@@ -23,7 +23,7 @@
       calibre
       zotero
       mission-center
-      feishin
+      unstable.feishin
       unstable.vscode
 
       flakes.zen-browser.packages."${system}".default

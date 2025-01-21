@@ -18,12 +18,22 @@
 
     pkgs = import nixpkgs {
       inherit system overlays;
-      config.allowUnfree = true;
+      config = {
+        allowUnfree = true;
+        permittedInsecurePackages = [
+          "electron-31.7.7"
+        ];
+      };
     };
 
     unstable = import nixpkgs-unstable {
       inherit system overlays;
-      config.allowUnfree = true;
+      config = {
+        allowUnfree = true;
+        permittedInsecurePackages = [
+          "electron-31.7.7"
+        ];
+      };
     };
 
     nur = import nurpkgs {
