@@ -62,6 +62,7 @@
       scrobblerUrl = "http://localhost:42010/apis/listenbrainz/1/";
     };
     maloja.enable = true;
+    crm.enable = true;
   };
 
   networking = {

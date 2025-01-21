@@ -26,7 +26,7 @@
       feishin
       unstable.vscode
 
-      flakes.zen-browser.packages."${system}".default # beta
+      flakes.zen-browser.packages."${system}".default
     ];
 
     programs = {
@@ -50,6 +50,7 @@
   };
 
   services = {
+    vpn.enable = true;
     safeeyes.enable = true;
     printing.enable = true;
     navidrome = {

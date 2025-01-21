@@ -36,6 +36,7 @@
       "git.desktop.local"
       "books.desktop.local"
       "maloja.desktop.local"
+      "crm.desktop.local"
     ];
   };
 
