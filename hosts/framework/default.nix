@@ -11,6 +11,8 @@
   home-manager.users.${user} = {
     home.packages = with pkgs; [
       unstable.zed-editor
+      unstable.feishin
+      unstable.vscode
 
       vlc
       evince
@@ -23,8 +25,6 @@
       calibre
       zotero
       mission-center
-      unstable.feishin
-      unstable.vscode
 
       flakes.zen-browser.packages."${system}".default
     ];
@@ -34,7 +34,6 @@
       alacritty.enable = true;
       waybar.enable = true;
       firefox.enable = true;
-      minecraft.enable = false;
     };
 
     services = {
@@ -47,7 +46,6 @@
     noisetorch.enable = true;
     fcitx5.enable = true;
     neovim.enable = true;
-    steam.enable = true;
   };
 
   services = {
@@ -59,12 +57,7 @@
       scrobblerUrl = "http://desktop.local:42010/apis/listenbrainz/1/";
     };
     adguardhome.useDns = true;
-    homepage-dashboard.enable = true;
     caddy.enable = true;
-    watchyourlan = {
-      enable = true;
-      ifaces = "wlp166s0";
-    };
   };
 
   hardware = {

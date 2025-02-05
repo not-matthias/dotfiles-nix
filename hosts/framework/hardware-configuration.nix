@@ -12,7 +12,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.kernelPackages = unstable.linuxPackages_zen;
+  boot.kernelPackages = unstable.linuxPackages_latest;
   boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "nvme" "usb_storage" "usbhid" "sd_mod"];
 
   fileSystems."/" = {
