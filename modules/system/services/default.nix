@@ -7,6 +7,7 @@
   ./firefly-iii.nix
   ./gitea.nix
   ./homepage.nix
+  ./kokoro.nix
   ./maloja.nix
   ./memos.nix
   ./navidrome.nix

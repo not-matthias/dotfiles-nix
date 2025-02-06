@@ -63,6 +63,7 @@
     };
     maloja.enable = true;
     crm.enable = true;
+    kokoro.enable = true;
   };
 
   networking = {
