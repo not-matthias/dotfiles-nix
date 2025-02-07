@@ -1,6 +1,5 @@
 {
   unstable,
-  pkgs,
   config,
   lib,
   domain,
@@ -24,12 +23,13 @@ in {
       # enable = false; # This will be enabled by the user.
       package =
         if cfg.useNvidia
-        then pkgs.ollama-cuda
-        else pkgs.ollama;
+        then unstable.ollama-cuda
+        else unstable.ollama;
       acceleration =
         if cfg.useNvidia
         then "cuda"
         else null;
+      host = "0.0.0.0";
     };
 
     services.open-webui = {
