@@ -24,7 +24,7 @@ in {
     };
     version = lib.mkOption {
       type = lib.types.str;
-      default = "v0.2.0";
+      default = "v0.2.2";
       description = "Version of the Kokoro TTS";
     };
   };
