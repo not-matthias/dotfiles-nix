@@ -50,7 +50,7 @@
     paperless.enable = true;
     gitea.enable = true;
     watchyourlan = {
-      enable = true;
+      enable = false;
       ifaces = "enp34s0";
     };
     restic.server.enable = true;
@@ -63,7 +63,10 @@
     };
     maloja.enable = true;
     crm.enable = true;
-    kokoro.enable = true;
+    kokoro = {
+      enable = false;
+      useGpu = true;
+    };
   };
 
   networking = {
