@@ -58,6 +58,7 @@
     };
     adguardhome.useDns = true;
     caddy.enable = true;
+    kokoro.enable = false;
   };
 
   hardware = {

@@ -7,5 +7,13 @@
   hardware.enableRedistributableFirmware = true;
 
   # Enable firmware update service
-  services.fwupd.enable = true;
+  services.fwupd = {
+    enable = true;
+    extraRemotes = [
+      "lvfs-testing"
+    ];
+    uefiCapsuleSettings = {
+      DisableCapsuleUpdateOnDisk = true;
+    };
+  };
 }
