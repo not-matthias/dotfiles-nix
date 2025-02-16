@@ -13,6 +13,7 @@ in {
   config = lib.mkIf cfg.enable {
     fonts = {
       packages = with pkgs; [
+        newcomputermodern
         carlito # NixOS
         vegur # NixOS
         source-code-pro
