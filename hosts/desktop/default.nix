@@ -67,6 +67,7 @@
       enable = false;
       useGpu = true;
     };
+    tandoor-recipes.enable = true;
   };
 
   networking = {

@@ -20,6 +20,7 @@
   ./scrutiny.nix
   ./security.nix
   ./tailscale.nix
+  ./tandoor.nix
   ./selfhosted.nix
   ./stump.nix
   ./traggo.nix
