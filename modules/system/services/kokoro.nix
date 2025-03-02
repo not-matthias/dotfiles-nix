@@ -50,7 +50,7 @@ in {
       };
 
       kokoro-ui = {
-        image = "ghcr.io/remsky/kokoro-fastapi-ui:v0.1.0";
+        image = "ghcr.io/remsky/kokoro-fastapi-ui:${cfg.version}";
         ports = ["${toString cfg.ui-port}:7860"];
         volumes = ["/var/lib/kokoro/data:/app/ui/data"];
         environment = {
