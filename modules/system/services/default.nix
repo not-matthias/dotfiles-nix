@@ -26,4 +26,5 @@
   ./traggo.nix
   ./vpn.nix
   ./watchyourlan.nix
+  ./yubikey.nix
 ]

@@ -59,6 +59,7 @@
     adguardhome.useDns = true;
     caddy.enable = true;
     kokoro.enable = false;
+    yubikey.enable = true;
   };
 
   hardware = {
