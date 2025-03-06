@@ -8,10 +8,11 @@
     extraConfig = {
       init.defaultBranch = "main";
       pull.rebase = true;
+      rebase.updateRefs = true;
       push.autoSetupRemote = true;
-      #credential.helper = "${
-      #  pkgs.git.override {withLibsecret = true;}
-      #}/bin/git-credential-libsecret";
+      absorb.autoStageIfNothingStaged = true;
+      absorb.oneFixupPerCommit = true;
+      absorb.maxStack = 50;
       credential."https://github.com" = {
         helper = "!${pkgs.gitAndTools.gh}/bin/gh auth git-credential";
       };
