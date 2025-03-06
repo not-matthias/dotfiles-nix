@@ -21,5 +21,11 @@ in {
       pkgs.yubikey-personalization
     ];
     services.pcscd.enable = true;
+
+    # GPG agent
+    programs.gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
   };
 }

@@ -9,7 +9,7 @@ in {
   config = lib.mkIf cfg.enable {
     programs.gpg.enable = true;
     services.gpg-agent = {
-      enableSSHSupport = true;
+      enableSshSupport = true;
       enableExtraSocket = true;
       pinentryPackage = pkgs.pinentry-qt;
     };

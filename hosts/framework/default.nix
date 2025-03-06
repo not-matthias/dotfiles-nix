@@ -47,6 +47,7 @@
     noisetorch.enable = true;
     fcitx5.enable = true;
     neovim.enable = true;
+    nix-ld.enable = true;
   };
 
   services = {

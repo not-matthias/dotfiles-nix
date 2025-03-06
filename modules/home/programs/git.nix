@@ -3,7 +3,7 @@
     enable = true;
     userEmail = "26800596+not-matthias@users.noreply.github.com";
     userName = "not-matthias";
-
+    lfs.enable = true;
     delta.enable = true;
     extraConfig = {
       init.defaultBranch = "main";
