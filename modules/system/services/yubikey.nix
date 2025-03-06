@@ -14,8 +14,6 @@ in {
     environment.systemPackages = with pkgs; [
       yubioath-flutter
       yubikey-manager
-
-      granted
     ];
 
     # Yubikey management

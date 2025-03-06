@@ -13,7 +13,6 @@
   ./minecraft.nix
   ./gtk.nix
   ./neovim.nix
+  ./rust.nix
   ./wofi.nix
-
-  # ./rust
 ]
