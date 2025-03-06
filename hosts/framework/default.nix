@@ -39,6 +39,7 @@
     services = {
       activitywatch.enable = false;
       dunst.enable = true;
+      gpg-agent.enable = true;
     };
   };
 
