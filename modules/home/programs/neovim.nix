@@ -2,8 +2,7 @@
 # https://github.com/azuwis/nix-config/blob/885e77f74bd730f37d715c6a7ed1a9269a619f7d/common/neovim/nvchad.nix
 {pkgs, ...}: {
   home.packages = with pkgs; [
-    # neovide
-    # lsp
+    neovide
   ];
 
   # https://github.com/tars0x9752/home/blob/main/modules/neovim/default.nix
@@ -63,7 +62,6 @@
 
   programs.nixvim = {
     defaultEditor = true;
-
     colorschemes.catppuccin.enable = true;
     clipboard = {
       providers.wl-copy.enable = true;
@@ -92,6 +90,21 @@
       commentary.enable = true;
       comment.enable = true;
 
+      # Fuzzy finder
+      telescope = {
+        enable = true;
+        autoLoad = true;
+        keymaps = {
+          "<C-p>" = {
+            action = "git_files";
+            options = {
+              desc = "Telescope Git Files";
+            };
+          };
+          "<leader>fg" = "live_grep";
+        };
+      };
+
       # Visual
       airline.enable = true; # Status bar
 
@@ -113,16 +126,16 @@
       # Rust stuff
       rustaceanvim = {
         enable = true;
-        settings.server.default_settings = {
-          cargo = {
-            buildScripts = {
-              enable = true;
-            };
-          };
-          procMacro = {
-            enable = true;
-          };
-        };
+        # settings.server.default_settings = {
+        #   cargo = {
+        #     buildScripts = {
+        #       enable = true;
+        #     };
+        #   };
+        #   procMacro = {
+        #     enable = true;
+        #   };
+        # };
       };
       crates-nvim.enable = true;
 
@@ -130,7 +143,7 @@
       lsp = {
         enable = true;
         servers = {
-          typst_lsp.enable = true;
+          # typst_lsp.enable = true;
           pylsp.enable = true;
         };
       };
@@ -140,8 +153,8 @@
       copilot-lua = {
         enable = true;
 
-        suggestion.enabled = false;
-        panel.enabled = false;
+        suggestion.enabled = true;
+        panel.enabled = true;
       };
       copilot-cmp.enable = true;
 
@@ -157,9 +170,9 @@
       cmp-emoji.enable = true;
 
       # git
-      # trouble.enable = true;
+      trouble.enable = true;
       gitsigns = {
-        enable = false;
+        enable = true;
         # settings = {
         #   current_line_blame = true;
         #   trouble = true;
