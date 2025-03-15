@@ -7,59 +7,6 @@
 
   # https://github.com/tars0x9752/home/blob/main/modules/neovim/default.nix
   # https://github.com/notusknot/dotfiles-nix/blob/main/modules/nvim/default.nix
-  # programs.neovim = {
-  #   enable = false;
-  #   vimAlias = true;
-  #   extraConfig =
-  #     builtins.readFile ./init.vim;
-  #   plugins = with pkgs.vimPlugins; [
-  #     nvchad
-
-  #     vim-commentar
-  #     vim-ormolu
-  #     vim-nix
-  #     vim-autoformat
-  #     vim-nix
-  #     vim-nixhash
-  #     vim-yaml
-  #     vim-toml
-
-  #     fzf-vim
-
-  #     {
-  #       plugin = nvim-lspconfig;
-  #       config = ''
-  #         lua << EOF
-  #         require('lspconfig').rust_analyzer.setup{}
-  #         require('lspconfig').rnix.setup{}
-  #         EOF
-  #       '';
-  #     }
-
-  #     # coc
-  #     coc-json
-  #     coc-yaml
-  #     coc-html
-  #     coc-tsserver
-  #     coc-eslint
-  #     coc-pairs
-  #     coc-prettier
-  #     coc-rls
-  #     coc-rust-analyzer
-  #   ];
-  #   coc = {
-  #     enable = true;
-  #     settings = {
-  #       suggest = {
-  #         noselect = true;
-  #         enablePreview = true;
-  #         enablePreselect = true;
-  #         disableKind = true;
-  #       };
-  #     };
-  #   };
-  # };
-
   programs.nixvim = {
     defaultEditor = true;
     colorschemes.catppuccin.enable = true;
@@ -74,38 +21,77 @@
       updatetime = 100; # faster completion
 
       # Intent
-      expandtab = true; # \t to space conversion
+      expandtab = true; # tab to space
       autoindent = true;
       smartindent = true;
       tabstop = 4;
       shiftwidth = 4;
     };
-
-    extraPlugins = with pkgs.vimPlugins; [
+    keymaps = [
+      # {
+      #   action = ":NvimTreeToggle<CR>";
+      #   key = "<C-n>";
+      #   options = {
+      #     noremap = true;
+      #     silent = true;
+      #   };
+      # }
     ];
-
+    performance = {
+      byteCompileLua = {
+        enable = true;
+        configs = true;
+        initLua = true;
+        nvimRuntime = true;
+        plugins = true;
+      };
+    };
     plugins = {
       auto-save.enable = true;
       lightline.enable = true;
       commentary.enable = true;
       comment.enable = true;
+      todo-comments.enable = true;
+      rainbow-delimiters.enable = true;
+      autoclose.enable = true;
+      direnv.enable = true;
+
+      # Misc
+      dashboard.enable = true;
+      obsidian = {
+        enable = true;
+        settings = {
+          completion = {
+            min_chars = 2;
+            nvim_cmp = true;
+          };
+          workspaces = [
+            {
+              name = "temp";
+              path = "~/Documents/temp";
+            }
+          ];
+        };
+      };
 
       # Fuzzy finder
       telescope = {
         enable = true;
         autoLoad = true;
         keymaps = {
-          "<C-p>" = {
-            action = "git_files";
-            options = {
-              desc = "Telescope Git Files";
-            };
-          };
-          "<leader>fg" = "live_grep";
+          # l = live_grep
+          # f = find_files
+          # a = file_browser
+          # g = git_commits
+          "<C-p>" = "find_files";
+          "<C-l>" = "live_grep";
+          "<space>ff" = "find_files";
+          "<space>fg" = "live_grep";
         };
       };
 
       # Visual
+      fidget.enable = true; # LSP status
       airline.enable = true; # Status bar
 
       toggleterm = {
@@ -118,45 +104,152 @@
       nvim-tree = {
         enable = true;
         openOnSetup = true;
-        openOnSetupFile = true;
-        autoReloadOnWrite = true;
+        # TODO: Setup keybinds + don't show per default
       };
       web-devicons.enable = true;
 
       # Rust stuff
+      # TODO: Allow inline hints + copilot
       rustaceanvim = {
         enable = true;
-        # settings.server.default_settings = {
-        #   cargo = {
-        #     buildScripts = {
-        #       enable = true;
-        #     };
-        #   };
-        #   procMacro = {
-        #     enable = true;
-        #   };
-        # };
+        settings.server.default_settings = {
+          rust-analyzer = {
+            cargo = {
+              buildScripts.enable = true;
+              features = "all";
+            };
+
+            diagnostics = {
+              enable = true;
+              styleLints.enable = true;
+            };
+
+            checkOnSave = true;
+            check = {
+              command = "clippy";
+              features = "all";
+            };
+
+            files = {
+              excludeDirs = [
+                ".cargo"
+                ".direnv"
+                ".git"
+                "node_modules"
+                "target"
+              ];
+            };
+
+            inlayHints = {
+              bindingModeHints.enable = true;
+              closureStyle = "rust_analyzer";
+              closureReturnTypeHints.enable = "always";
+              discriminantHints.enable = "always";
+              expressionAdjustmentHints.enable = "always";
+              implicitDrops.enable = true;
+              lifetimeElisionHints.enable = "always";
+              rangeExclusiveHints.enable = true;
+            };
+
+            procMacro = {
+              enable = true;
+            };
+
+            rustc.source = "discover";
+          };
+        };
       };
-      crates-nvim.enable = true;
+      crates.enable = true;
 
       # Language servers
       lsp = {
         enable = true;
+        inlayHints = true;
         servers = {
-          # typst_lsp.enable = true;
+          nixd.enable = true;
           pylsp.enable = true;
+          beancount.enable = true;
+          # rust_analyzer.enable = true;
         };
       };
-      lsp-format.enable = true;
+      lsp-format = {
+        enable = false;
+        settings = {
+          nix = {};
+          rust = {};
+        };
+      };
+
+      conform-nvim = {
+        enable = true;
+        settings = {
+          format_on_save = {
+            lsp_format = "fallback";
+            timeout_ms = 500;
+          };
+          formatters_by_ft = {
+            nix = ["alejandra"];
+            rust = ["rustfmt"];
+            sh = ["shfmt"];
+            javascript = ["prettier"];
+            javascriptreact = ["prettier"];
+            typescript = ["prettier"];
+            typescriptreact = ["prettier"];
+            svelte = ["prettier"];
+            css = ["prettier"];
+            html = ["prettier"];
+            json = ["prettier"];
+            yaml = ["prettier"];
+            markdown = ["prettier"];
+            typst = ["typstfmt"];
+          };
+        };
+      };
 
       # Copilot
+      avante = {
+        enable = false;
+        settings = {
+          provider = "copilot";
+          auto_suggestions_frequency = "copilot";
+          copilot = {
+            model = "claude-3.5-sonnet";
+          };
+          file_selector = {
+            provider = "fzf";
+            provider_opts = {};
+          };
+        };
+      };
       copilot-lua = {
         enable = true;
-
-        suggestion.enabled = true;
-        panel.enabled = true;
+        settings.suggestion = {
+          enabled = true;
+          auto_trigger = true;
+          debounce = 90;
+          keymap = {
+            accept = "<Tab>";
+          };
+        };
+        settings.panel.enable = false;
       };
-      copilot-cmp.enable = true;
+      # copilot-cmp.enable = true;
+
+      # blink-cmp = {
+      #   enable = true;
+      #   settings.sources.default = [
+      #     "lsp"
+      #     "path"
+      #     "luasnip"
+      #     "buffer"
+      #     "copilot"
+      #   ];
+      # };
+      # blink-cmp-copilot.enable = true;
+      # blink-cmp-dictionary.enable = true;
+      # blink-cmp-git.enable = true;
+      # blink-cmp-spell.enable = true;
+      # blink-compat.enable = true;
 
       # cmp plugins
       cmp.enable = true;
@@ -169,27 +262,25 @@
       cmp-tmux.enable = true;
       cmp-emoji.enable = true;
 
+      nix.enable = true;
+
       # git
       trouble.enable = true;
-      gitsigns = {
-        enable = true;
-        # settings = {
-        #   current_line_blame = true;
-        #   trouble = true;
-        # };
-      };
+      gitsigns.enable = true;
 
       # tree-sitter
       treesitter = {
         enable = true;
-        nixGrammars = true;
-        settings.indent.enable = true;
+        folding = true;
+        settings = {
+          highlight.enable = true;
+          indent.enable = true;
+        };
       };
       treesitter-context = {
         enable = true;
         settings = {max_lines = 2;};
       };
-      rainbow-delimiters.enable = true;
       nvim-autopairs.enable = true;
     };
   };
