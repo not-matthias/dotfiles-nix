@@ -25,6 +25,7 @@
       calibre
       zotero
       mission-center
+      slack
 
       flakes.zen-browser.packages."${system}".default
     ];
@@ -32,8 +33,10 @@
     programs = {
       gitui.enable = true;
       alacritty.enable = true;
+      kitty.enable = true;
       waybar.enable = true;
       firefox.enable = true;
+      nixvim.enable = true;
     };
 
     services = {
@@ -46,7 +49,6 @@
   programs = {
     noisetorch.enable = true;
     fcitx5.enable = true;
-    neovim.enable = true;
     nix-ld.enable = true;
   };
 
@@ -74,9 +76,10 @@
 
   virtualisation = {
     docker = {
-      enable = true;
+      enable = false;
       enableNvidia = false;
     };
+    podman.enable = true;
     qemu.enable = true;
     vfio = {
       enable = true;

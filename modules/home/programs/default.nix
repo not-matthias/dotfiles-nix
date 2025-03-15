@@ -10,6 +10,7 @@
   ./firefox.nix
   ./git.nix
   ./idea-copilot.nix
+  ./kitty.nix
   ./minecraft.nix
   ./gtk.nix
   ./neovim.nix
