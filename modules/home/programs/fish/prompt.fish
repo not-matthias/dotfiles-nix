@@ -1,5 +1,11 @@
 function fish_prompt
-    echo -n -s (set_color brblack) "["(date "+%H:%M")"] " (set_color white) (whoami):
+    echo -n -s (set_color brblack) "["(date "+%H:%M")"] " (set_color white) (whoami)
+
+    # Distrobox
+    if [ -n "$CONTAINER_ID" ]
+        echo -n -s "@$CONTAINER_ID"
+    end
+    echo -n :
 
     # set -g fish_prompt_pwd_dir_length 0
     # echo -n -s (set_color bryellow) (basename $PWD)
