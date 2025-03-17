@@ -26,6 +26,7 @@
       zotero
       mission-center
       slack
+      fastfetch
 
       flakes.zen-browser.packages."${system}".default
     ];
