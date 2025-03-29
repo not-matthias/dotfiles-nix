@@ -28,7 +28,7 @@ in {
     #  pkgs.jellyfin-ffmpeg
     #];
     services.jellyfin = {
-      enable = false;
+      enable = true;
       # openFirewall
       #port = 11429;
     };

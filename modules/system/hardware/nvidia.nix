@@ -28,7 +28,7 @@ in {
       nvidia-container-toolkit.enable = true;
 
       nvidia = {
-        package = config.boot.kernelPackages.nvidiaPackages.stable;
+        package = config.boot.kernelPackages.nvidiaPackages.latest;
         powerManagement.enable = true;
         modesetting.enable = true;
         open = false;

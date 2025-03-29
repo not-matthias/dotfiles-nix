@@ -10,26 +10,26 @@
   #   fonts.enable = true;
   # };
   #
-  # home-manager.users.${user} = {
-  #   home.packages = with pkgs; [
-  #     unstable.zed-editor
-  #
-  #     vlc
-  #     evince
-  #     gwenview
-  #     nautilus
-  #     file-roller
-  #     gnome-text-editor
-  #     mission-center
-  #   ];
-  #
-  #   programs = {
-  #     neovim.enable = true;
-  #     alacritty.enable = true;
-  #     waybar.enable = true;
-  #     firefox.enable = true;
-  #   };
-  # };
+  home-manager.users.${user} = {
+    #   home.packages = with pkgs; [
+    #     unstable.zed-editor
+    #
+    #     vlc
+    #     evince
+    #     gwenview
+    #     nautilus
+    #     file-roller
+    #     gnome-text-editor
+    #     mission-center
+    #   ];
+    #
+    programs = {
+      nixvim.enable = true;
+      #alacritty.enable = true;
+      #waybar.enable = true;
+      #firefox.enable = true;
+    };
+  };
 
   # Only enable the services here, the settings are configured in the 'services/' folder.
   services = {
