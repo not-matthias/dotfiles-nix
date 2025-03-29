@@ -1,4 +1,8 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  unstable,
+  ...
+}: let
   fishPrompt = builtins.readFile ./prompt.fish;
 in {
   programs.fish = {
@@ -60,6 +64,12 @@ in {
         	mkdir -p $path
         	and cd $path
         end
+      '';
+
+      assume = ''
+        set -x GRANTED_ALIAS_CONFIGURED "true"
+        source ${unstable.granted}/share/assume.fish $argv
+        set -e GRANTED_ALIAS_CONFIGURED
       '';
     };
   };

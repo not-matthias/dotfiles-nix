@@ -3,6 +3,7 @@
   flakes,
   user,
   lib,
+  config,
   ...
 }: {
   imports = (import ../modules/overlays) ++ (import ../modules/system);
@@ -49,6 +50,7 @@
       wget
       usbutils
       flakes.agenix.packages.${system}.default
+      config.boot.kernelPackages.perf
     ];
 
     # Remove perl, rsync and strace
