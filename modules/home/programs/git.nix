@@ -18,6 +18,10 @@
       };
       # https://stackoverflow.com/questions/16906161/git-push-hangs-when-pushing-to-github
       http.postBuffer = 524288000;
+
+      # Sign by default
+      commit.gpgsign = true;
+      user.signingKey = "D1B0E3E8E62928DD";
     };
   };
 }
