@@ -11,7 +11,7 @@
   home-manager.users.${user} = {
     home.packages = with pkgs; [
       unstable.zed-editor
-      unstable.feishin
+      unstable.supersonic
       unstable.vscode
 
       vlc
@@ -32,6 +32,7 @@
     ];
 
     programs = {
+      granted.enable = true;
       gitui.enable = true;
       alacritty.enable = true;
       kitty.enable = true;
