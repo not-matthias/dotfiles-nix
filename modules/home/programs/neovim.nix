@@ -98,7 +98,6 @@
         enable = true;
         settings = {
           open_mapping = "[[<C-t>]]";
-          start_in_insert = true;
         };
       };
       nvim-tree = {
@@ -271,7 +270,7 @@
       # tree-sitter
       treesitter = {
         enable = true;
-        folding = true;
+        folding = false;
         settings = {
           highlight.enable = true;
           indent.enable = true;
