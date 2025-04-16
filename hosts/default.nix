@@ -16,7 +16,7 @@
   nixosBox = arch: base: name: domain: let
     system = arch;
 
-    pkgs = import nixpkgs {
+    pkgs = import base {
       inherit system overlays;
       config = {
         allowUnfree = true;
@@ -26,14 +26,14 @@
       };
     };
 
+    stable = import nixpkgs {
+      inherit system overlays;
+      config.allowUnfree = true;
+    };
+
     unstable = import nixpkgs-unstable {
       inherit system overlays;
-      config = {
-        allowUnfree = true;
-        permittedInsecurePackages = [
-          "electron-31.7.7"
-        ];
-      };
+      config.allowUnfree = true;
     };
 
     nur = import nurpkgs {
@@ -70,7 +70,7 @@
     base.lib.nixosSystem {
       system = arch;
       specialArgs = {
-        inherit flakes user domain nixvim unstable nixos-hardware;
+        inherit flakes user domain nixvim stable unstable nixos-hardware;
       };
       modules =
         commonModules
@@ -85,7 +85,7 @@
               useUserPackages = true;
               backupFileExtension = "backup";
               extraSpecialArgs = {
-                inherit flakes user nixvim unstable;
+                inherit flakes user nixvim stable unstable;
                 addons = nur.repos.rycee.firefox-addons;
               };
               users.${user} = {

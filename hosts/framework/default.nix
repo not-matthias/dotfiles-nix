@@ -16,55 +16,57 @@
 
       vlc
       evince
-      gwenview
+      kdePackages.gwenview
       nautilus
       file-roller
       gnome-text-editor
       unstable.anki
       obs-studio
       calibre
-      zotero
       mission-center
       slack
       fastfetch
 
+      awscli2
       flakes.zen-browser.packages."${system}".default
     ];
 
     programs = {
       granted.enable = true;
-      gitui.enable = true;
-      alacritty.enable = true;
       kitty.enable = true;
       waybar.enable = true;
-      firefox.enable = true;
       nixvim.enable = true;
+
+      gitui.enable = false;
+      alacritty.enable = false;
+      firefox.enable = false;
     };
 
     services = {
-      activitywatch.enable = false;
+      activitywatch.enable = true;
       dunst.enable = true;
       gpg-agent.enable = true;
     };
   };
 
   programs = {
-    noisetorch.enable = true;
     fcitx5.enable = true;
     nix-ld.enable = true;
   };
 
   services = {
+    audiobookshelf = {
+      enable = true;
+      audioFolder = "/home/${user}/Audiobooks";
+    };
     vpn.enable = true;
     safeeyes.enable = true;
-    printing.enable = true;
     navidrome = {
       enable = true;
       scrobblerUrl = "http://desktop.local:42010/apis/listenbrainz/1/";
     };
     adguardhome.useDns = true;
     caddy.enable = true;
-    kokoro.enable = false;
     yubikey.enable = true;
   };
 
@@ -77,16 +79,11 @@
   };
 
   virtualisation = {
-    docker = {
-      enable = false;
-      enableNvidia = false;
-    };
     podman.enable = true;
     qemu.enable = true;
     vfio = {
       enable = true;
       IOMMUType = "intel";
-      enableNestedVirt = true;
     };
   };
   desktop = {

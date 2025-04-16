@@ -379,7 +379,7 @@ in {
         privacy-badger
         clearurls
         libredirect
-        old-reddit-redirect
+        # old-reddit-redirect
 
         # TODO:
         # modern for hacker news

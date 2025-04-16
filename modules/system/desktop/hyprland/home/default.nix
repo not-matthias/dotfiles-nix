@@ -7,7 +7,11 @@
   cfg = config.desktop.hyprland;
 in {
   config = lib.mkIf cfg.enable {
-    home-manager.users.${user} = {pkgs, ...}: {
+    home-manager.users.${user} = {
+      pkgs,
+      unstable,
+      ...
+    }: {
       imports = [
         ./swayidle.nix
         ./swayidle.nix
@@ -29,6 +33,9 @@ in {
         slurp
         swappy
         tesseract
+
+        # hypr utils
+        unstable.hyprsunset
       ];
 
       home.file.".config/hypr/env.conf".text = builtins.readFile ./conf/env.conf;

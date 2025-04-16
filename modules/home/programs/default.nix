@@ -4,7 +4,6 @@
   ./gtk.nix
 
   ./alacritty.nix
-  ./anyrun.nix
   ./fish
   ./tmux
   ./waybar
@@ -19,7 +18,6 @@
   ./kitty.nix
   ./minecraft.nix
   ./neovim.nix
-  ./rio.nix
   ./rust.nix
   ./wofi.nix
   ./zellij.nix
