@@ -1,4 +1,5 @@
 {
+  stable,
   pkgs,
   user,
   ...
@@ -11,11 +12,11 @@
 
     packages = with pkgs; [
       # Rust tools
+      navi
+      yazi
       bat
       eza
       bottom
-      zoxide
-      fcp
       tealdeer
       kalker
       ripgrep
@@ -23,7 +24,6 @@
       topgrade
       hexyl
       fd
-      gping
       delta
       any-nix-shell
       duf
@@ -31,9 +31,10 @@
 
       # Useful tools
       python3
-      devenv
+      stable.devenv
 
       # Others:
+      # gping
       # ouch
       # kooha
       # hyperfine

@@ -1,15 +1,14 @@
 # References:
 # https://github.com/azuwis/nix-config/blob/885e77f74bd730f37d715c6a7ed1a9269a619f7d/common/neovim/nvchad.nix
-{pkgs, ...}: {
-  home.packages = with pkgs; [
-    neovide
-  ];
-
+{
   # https://github.com/tars0x9752/home/blob/main/modules/neovim/default.nix
   # https://github.com/notusknot/dotfiles-nix/blob/main/modules/nvim/default.nix
   programs.nixvim = {
     defaultEditor = true;
-    colorschemes.catppuccin.enable = true;
+    colorschemes.ayu = {
+      settings.mirage = false;
+      enable = true;
+    };
     clipboard = {
       providers.wl-copy.enable = true;
       register = "unnamedplus";
@@ -17,8 +16,6 @@
     opts = {
       number = true;
       relativenumber = true;
-
-      updatetime = 100; # faster completion
 
       # Intent
       expandtab = true; # tab to space
@@ -29,83 +26,102 @@
     };
     keymaps = [
       # {
-      #   action = ":NvimTreeToggle<CR>";
-      #   key = "<C-n>";
+      #   mode = "t";
+      #   key = "<C-/>";
+      #   action = "<cmd>close<cr>";
       #   options = {
-      #     noremap = true;
-      #     silent = true;
+      #     desc = "Hide Terminal";
       #   };
       # }
+      {
+        mode = "n";
+        key = "<leader>b";
+        action = "<cmd>:NvimTreeToggle<cr>";
+        options = {
+          silent = true;
+          desc = "Toggle file manager";
+        };
+      }
     ];
-    performance = {
-      byteCompileLua = {
-        enable = true;
-        configs = true;
-        initLua = true;
-        nvimRuntime = true;
-        plugins = true;
-      };
+    luaLoader.enable = true;
+    performance.byteCompileLua = {
+      enable = true;
+      configs = true;
+      initLua = true;
+      nvimRuntime = true;
+      plugins = true;
     };
     plugins = {
+      # Old stuff:
+      # Yazi
+
       auto-save.enable = true;
       lightline.enable = true;
-      commentary.enable = true;
-      comment.enable = true;
+      # commentary.enable = true;
+      # comment.enable = true;
       todo-comments.enable = true;
       rainbow-delimiters.enable = true;
       autoclose.enable = true;
       direnv.enable = true;
+      persistence.enable = true;
+      bullets.enable = true;
+      nvim-autopairs.enable = true;
 
-      # Misc
-      dashboard.enable = true;
-      obsidian = {
+      # Learn neovim better
+      which-key = {
         enable = true;
         settings = {
-          completion = {
-            min_chars = 2;
-            nvim_cmp = true;
-          };
-          workspaces = [
-            {
-              name = "temp";
-              path = "~/Documents/temp";
-            }
-          ];
+          notify = true;
+          preset = "helix";
         };
       };
+
+      hardtime.enable = true;
 
       # Fuzzy finder
       telescope = {
         enable = true;
         autoLoad = true;
         keymaps = {
-          # l = live_grep
-          # f = find_files
-          # a = file_browser
-          # g = git_commits
-          "<C-p>" = "find_files";
-          "<C-l>" = "live_grep";
           "<space>ff" = "find_files";
           "<space>fg" = "live_grep";
+          "<space>fk" = "keymaps";
+          "<space>ft" = "colorscheme";
+          "<space>fe" = "file_browser";
+          "<space>fc" = "git_commits";
+        };
+        extensions = {
+          file-browser.enable = true;
         };
       };
 
       # Visual
       fidget.enable = true; # LSP status
       airline.enable = true; # Status bar
+      web-devicons.enable = true;
+
+      # Warnings and notifications
+      noice = {
+        enable = true;
+        settings = {
+          notify.enabled = true;
+          messages.enabled = true;
+        };
+      };
+      notify.enable = true;
 
       toggleterm = {
         enable = true;
         settings = {
+          hide_numbers = false;
+          autochdir = true;
+          close_on_exit = true;
           open_mapping = "[[<C-t>]]";
         };
       };
-      nvim-tree = {
-        enable = true;
-        openOnSetup = true;
-        # TODO: Setup keybinds + don't show per default
-      };
-      web-devicons.enable = true;
+      nvim-tree.enable = true;
+
+      # TODO: Setup dap-rr, dap-ui, ...
 
       # Rust stuff
       # TODO: Allow inline hints + copilot
@@ -118,17 +134,6 @@
               features = "all";
             };
 
-            diagnostics = {
-              enable = true;
-              styleLints.enable = true;
-            };
-
-            checkOnSave = true;
-            check = {
-              command = "clippy";
-              features = "all";
-            };
-
             files = {
               excludeDirs = [
                 ".cargo"
@@ -138,23 +143,6 @@
                 "target"
               ];
             };
-
-            inlayHints = {
-              bindingModeHints.enable = true;
-              closureStyle = "rust_analyzer";
-              closureReturnTypeHints.enable = "always";
-              discriminantHints.enable = "always";
-              expressionAdjustmentHints.enable = "always";
-              implicitDrops.enable = true;
-              lifetimeElisionHints.enable = "always";
-              rangeExclusiveHints.enable = true;
-            };
-
-            procMacro = {
-              enable = true;
-            };
-
-            rustc.source = "discover";
           };
         };
       };
@@ -169,13 +157,6 @@
           pylsp.enable = true;
           beancount.enable = true;
           # rust_analyzer.enable = true;
-        };
-      };
-      lsp-format = {
-        enable = false;
-        settings = {
-          nix = {};
-          rust = {};
         };
       };
 
@@ -250,17 +231,6 @@
       # blink-cmp-spell.enable = true;
       # blink-compat.enable = true;
 
-      # cmp plugins
-      cmp.enable = true;
-      cmp-nvim-lsp.enable = true;
-      cmp-path.enable = true;
-      cmp-buffer.enable = true;
-      cmp-git.enable = true;
-      cmp-clippy.enable = true;
-      cmp-spell.enable = true;
-      cmp-tmux.enable = true;
-      cmp-emoji.enable = true;
-
       nix.enable = true;
 
       # git
@@ -270,17 +240,7 @@
       # tree-sitter
       treesitter = {
         enable = true;
-        folding = false;
-        settings = {
-          highlight.enable = true;
-          indent.enable = true;
-        };
       };
-      treesitter-context = {
-        enable = true;
-        settings = {max_lines = 2;};
-      };
-      nvim-autopairs.enable = true;
     };
   };
 

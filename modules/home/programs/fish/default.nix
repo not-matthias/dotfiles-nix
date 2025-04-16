@@ -18,7 +18,6 @@ in {
       "ns" = "nix-shell -p";
       "find" = "fd";
       "diff" = "delta";
-      "ping" = "gping";
       "cat" = "bat";
       "ls" = "eza";
       "tree" = "eza --tree";
@@ -26,8 +25,7 @@ in {
       "du" = "dust";
       "k" = "kalker";
       "xxd" = "hexyl";
-      # "dmesg" = "rmseg";
-      "gdb" = "gef";
+      "tmux" = "zellij";
 
       ".." = "cd ..";
       "..." = "cd ../..";
@@ -50,9 +48,6 @@ in {
       ''
       + fishPrompt;
     shellInit = ''
-      zoxide init --cmd j fish | source
-      atuin gen-completions --shell fish | source
-      atuin init fish --disable-up-arrow | source
       any-nix-shell fish --info-right | source
     '';
     functions = {

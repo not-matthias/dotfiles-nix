@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }: let
   cfg = config.hardware.sound;
@@ -11,7 +12,10 @@ in {
 
   config = lib.mkIf cfg.enable {
     security.rtkit.enable = true;
-    hardware.pulseaudio.enable = false;
+    hardware.pulseaudio = {
+      enable = false;
+      package = pkgs.pulseaudioFull;
+    };
     services.pipewire = {
       enable = true;
       alsa = {
