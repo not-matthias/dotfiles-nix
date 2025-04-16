@@ -12,6 +12,7 @@
       "music.laptop.local"
       "scrutiny.laptop.local"
       "lan.laptop.local"
+      "audiobook.laptop.local"
 
       # Custom only for laptop:
       "music.local"
