@@ -4,6 +4,7 @@
   ./caddy.nix
   ./change-detection.nix
   ./crm.nix
+  ./earlyoom.nix
   ./firefly-iii.nix
   ./gitea.nix
   ./homepage.nix
