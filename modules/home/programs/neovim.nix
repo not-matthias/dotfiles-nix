@@ -49,7 +49,7 @@
       configs = true;
       initLua = true;
       nvimRuntime = true;
-      plugins = true;
+      plugins = false; # Disable, otherwise keymap doesn't work
     };
     plugins = {
       # Old stuff:
@@ -66,6 +66,7 @@
       persistence.enable = true;
       bullets.enable = true;
       nvim-autopairs.enable = true;
+      diffview.enable = true;
 
       # Learn neovim better
       which-key = {

@@ -7,7 +7,6 @@
   ...
 }: {
   imports = [(import ./hardware-configuration.nix)];
-
   home-manager.users.${user} = {
     home.packages = with pkgs; [
       unstable.zed-editor
@@ -30,7 +29,6 @@
       awscli2
       flakes.zen-browser.packages."${system}".default
     ];
-
     programs = {
       granted.enable = true;
       kitty.enable = true;
@@ -52,9 +50,11 @@
   programs = {
     fcitx5.enable = true;
     nix-ld.enable = true;
+    noisetorch.enable = true;
   };
 
   services = {
+    earlyoom.enable = true;
     audiobookshelf = {
       enable = true;
       audioFolder = "/home/${user}/Audiobooks";

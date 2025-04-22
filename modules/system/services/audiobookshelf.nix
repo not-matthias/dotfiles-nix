@@ -17,11 +17,9 @@ in {
   config = lib.mkIf cfg.enable {
     services.audiobookshelf = {
       package = unstable.audiobookshelf;
-      # dataDir = "/var/lib/audiobookshelf";
       host = "0.0.0.0";
       port = 8234;
     };
-    environment.systemPackages = [unstable.audiobookshelf];
 
     fileSystems."/var/lib/audiobookshelf/media" = {
       device = cfg.audioFolder;
