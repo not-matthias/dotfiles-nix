@@ -44,13 +44,6 @@
       }
     ];
     luaLoader.enable = true;
-    performance.byteCompileLua = {
-      enable = true;
-      configs = true;
-      initLua = true;
-      nvimRuntime = true;
-      plugins = false; # Disable, otherwise keymap doesn't work
-    };
     plugins = {
       # Old stuff:
       # Yazi
@@ -64,7 +57,7 @@
       autoclose.enable = true;
       direnv.enable = true;
       persistence.enable = true;
-      bullets.enable = true;
+      # bullets.enable = true;
       nvim-autopairs.enable = true;
       diffview.enable = true;
 
@@ -82,7 +75,6 @@
       # Fuzzy finder
       telescope = {
         enable = true;
-        autoLoad = true;
         keymaps = {
           "<space>ff" = "find_files";
           "<space>fg" = "live_grep";
@@ -147,19 +139,19 @@
           };
         };
       };
-      crates.enable = true;
+      # crates.enable = true;
 
       # Language servers
-      lsp = {
-        enable = true;
-        inlayHints = true;
-        servers = {
-          nixd.enable = true;
-          pylsp.enable = true;
-          beancount.enable = true;
-          # rust_analyzer.enable = true;
-        };
-      };
+      # lsp = {
+      #   enable = true;
+      #   inlayHints = true;
+      #   servers = {
+      #     nixd.enable = true;
+      #     pylsp.enable = true;
+      #     beancount.enable = true;
+      #     # rust_analyzer.enable = true;
+      #   };
+      # };
 
       conform-nvim = {
         enable = true;
@@ -204,15 +196,15 @@
       };
       copilot-lua = {
         enable = true;
-        settings.suggestion = {
-          enabled = true;
-          auto_trigger = true;
-          debounce = 90;
-          keymap = {
-            accept = "<Tab>";
-          };
-        };
-        settings.panel.enable = false;
+        # settings.suggestion = {
+        #   enabled = true;
+        #   auto_trigger = true;
+        #   debounce = 90;
+        #   keymap = {
+        #     accept = "<Tab>";
+        #   };
+        # };
+        # settings.panel.enable = false;
       };
       # copilot-cmp.enable = true;
 
