@@ -39,6 +39,13 @@ in {
       "gps" = "git push";
       "btm" = "btm --battery";
 
+      # di = direnv
+      "did" = "direnv disallow";
+      "dil" = "direnv allow";
+
+      # db = distrobox
+      "dbe" = "distrobox enter";
+
       "dl3" = "yt-dlp -x --continue --audio-format mp3 --audio-quality 0  --format bestaudio --embed-metadata";
       "dl4" = "yt-dlp -f bestvideo+bestaudio --merge-output-format mp4 --continue";
     };
