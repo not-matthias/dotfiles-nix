@@ -35,7 +35,7 @@
       waybar.enable = true;
       nixvim.enable = true;
 
-      gitui.enable = false;
+      gitui.enable = true;
       alacritty.enable = false;
       firefox.enable = false;
     };
