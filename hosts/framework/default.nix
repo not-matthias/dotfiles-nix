@@ -80,6 +80,7 @@
 
   virtualisation = {
     podman.enable = true;
+    docker.enable = true;
     qemu.enable = true;
     vfio = {
       enable = true;
