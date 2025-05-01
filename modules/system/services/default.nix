@@ -14,6 +14,7 @@
   ./navidrome.nix
   ./netdata.nix
   ./nfs.nix
+  ./nitter.nix
   ./ollama.nix
   ./paperless.nix
   ./restic.nix

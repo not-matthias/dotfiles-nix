@@ -39,23 +39,14 @@
       useNvidia = true;
     };
     miniflux.enable = true;
-    firefly-iii.enable = false;
     self-hosted.enable = true;
-    nfs.enable = true;
     adguardhome.enable = true;
     memos.enable = true;
     scrutiny.enable = true;
-    #netdata.enable = true;
     homepage-dashboard.enable = true;
     paperless.enable = true;
     gitea.enable = true;
-    watchyourlan = {
-      enable = false;
-      ifaces = "enp34s0";
-    };
     restic.server.enable = true;
-    stump.enable = true;
-    traggo.enable = true;
     navidrome = {
       enable = true;
       musicFolder = "/mnt/data/personal/music";
@@ -68,6 +59,7 @@
       useGpu = true;
     };
     tandoor-recipes.enable = true;
+    nitter.enable = true;
   };
 
   networking = {
