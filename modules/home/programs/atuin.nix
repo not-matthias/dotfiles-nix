@@ -4,8 +4,8 @@
     package = unstable.atuin;
     enableFishIntegration = true;
     settings = {
-      filter_mode_shell_up_key_binding = "directory";
-      search_mode = "fuzzy";
+      # fuzzy: doesn't quite work for me. example: search for env var i set before
+      search_mode = "skim";
       # TODO: sync_address
     };
   };
