@@ -44,11 +44,13 @@ in {
         fi
       '';
       variables = {
-        #WLR_RENDERER_ALLOW_SOFTWARE = "1"; # Workaround for Nvidia issues
         XDG_CURRENT_DESKTOP = "Hyprland";
         XDG_SESSION_TYPE = "wayland";
         XDG_SESSION_DESKTOP = "Hyprland";
 
+        WLR_RENDERER = "vulkan";
+        WLR_DRM_DEVICES = "/dev/dri/by-path/pci-0000:00:02.0-card";
+        AQ_DRM_DEVICES = "/dev/dri/by-path/pci-0000:00:02.0-card";
         LIBVA_DRIVER_NAME =
           if cfg.useNvidia
           then "nvidia"

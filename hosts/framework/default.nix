@@ -28,15 +28,20 @@
 
       awscli2
       flakes.zen-browser.packages."${system}".default
+
+      # Language servers
+      taplo
+      nil
+      nixd
     ];
     programs = {
       granted.enable = true;
       kitty.enable = true;
+      alacritty.enable = true;
       waybar.enable = true;
       nixvim.enable = true;
 
       gitui.enable = true;
-      alacritty.enable = false;
       firefox.enable = false;
     };
 

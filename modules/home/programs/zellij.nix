@@ -1,12 +1,41 @@
-{
+{unstable, ...}: {
   programs.zellij = {
     enable = true;
-    settings = {
-      ui.pane_frames.rounded_corners = true;
-      mouse_mode = true;
-      default_layout = "default";
-    };
+    package = unstable.zellij;
   };
+
+  xdg.configFile."zellij/config.kdl".text = ''
+    default_layout "default"
+    mouse_mode true
+
+    simplified_ui true
+    pane_frames false
+
+    ui {
+      pane_frames {
+        rounded_corners false
+      }
+    }
+
+    keybinds {
+      normal {
+        bind "Ctrl b" { SwitchToMode "Tmux"; }
+      }
+
+      tmux {
+        bind "1" { GoToTab 1; SwitchToMode "Normal"; }
+        bind "2" { GoToTab 2; SwitchToMode "Normal"; }
+        bind "3" { GoToTab 3; SwitchToMode "Normal"; }
+        bind "4" { GoToTab 4; SwitchToMode "Normal"; }
+        bind "5" { GoToTab 5; SwitchToMode "Normal"; }
+        bind "6" { GoToTab 6; SwitchToMode "Normal"; }
+        bind "7" { GoToTab 7; SwitchToMode "Normal"; }
+        bind "8" { GoToTab 8; SwitchToMode "Normal"; }
+        bind "9" { GoToTab 9; SwitchToMode "Normal"; }
+      }
+    }
+
+  '';
 
   # TODO:
   # - https://github.com/karimould/zellij-forgot

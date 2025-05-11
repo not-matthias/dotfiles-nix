@@ -1,5 +1,6 @@
-{...}: {
+{unstable, ...}: {
   programs.alacritty = {
+    package = unstable.alacritty;
     settings = {
       window = {
         dimensions = {
@@ -16,7 +17,7 @@
           family = "JetBrainsMono";
           style = "Regular";
         };
-        size = 10.0;
+        size = 9.0;
       };
 
       # See: https://stackoverflow.com/questions/67463932/is-it-possible-to-make-alacritty-starts-with-tmux

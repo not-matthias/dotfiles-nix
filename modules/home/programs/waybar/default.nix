@@ -4,7 +4,6 @@
 # https://github.com/adomixaszvers/dotfiles-nix/blob/519ce8dcc1d272a7ec719ddf8fe21a230c012e47/profiles/wm/hyprland/default.nix
 # https://github.com/smravec/nixos-config/blob/main/home-manager/config/waybar.nix
 # https://github.com/cjbassi/config/blob/master/.config/waybar/config
-#  hyprctl dispatch exec kitty
 {
   pkgs,
   lib,

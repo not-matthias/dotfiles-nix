@@ -35,7 +35,7 @@
       # }
       {
         mode = "n";
-        key = "<leader>b";
+        key = "<space>fb";
         action = "<cmd>:NvimTreeToggle<cr>";
         options = {
           silent = true;
@@ -60,6 +60,7 @@
       # bullets.enable = true;
       nvim-autopairs.enable = true;
       diffview.enable = true;
+      zen-mode.enable = true;
 
       # Learn neovim better
       which-key = {
@@ -69,8 +70,6 @@
           preset = "helix";
         };
       };
-
-      hardtime.enable = true;
 
       # Fuzzy finder
       telescope = {
@@ -103,16 +102,16 @@
       };
       notify.enable = true;
 
-      toggleterm = {
+      nvim-tree = {
         enable = true;
-        settings = {
-          hide_numbers = false;
-          autochdir = true;
-          close_on_exit = true;
-          open_mapping = "[[<C-t>]]";
+        filters = {
         };
+        git = {
+          enable = true;
+          ignore = false;
+        };
+        modified.enable = true;
       };
-      nvim-tree.enable = true;
 
       # TODO: Setup dap-rr, dap-ui, ...
 
@@ -142,16 +141,16 @@
       # crates.enable = true;
 
       # Language servers
-      # lsp = {
-      #   enable = true;
-      #   inlayHints = true;
-      #   servers = {
-      #     nixd.enable = true;
-      #     pylsp.enable = true;
-      #     beancount.enable = true;
-      #     # rust_analyzer.enable = true;
-      #   };
-      # };
+      lsp = {
+        enable = true;
+        inlayHints = true;
+        servers = {
+          nixd.enable = true;
+          pylsp.enable = true;
+          beancount.enable = true;
+          # rust_analyzer.enable = true;
+        };
+      };
 
       conform-nvim = {
         enable = true;
@@ -181,12 +180,12 @@
 
       # Copilot
       avante = {
-        enable = false;
+        enable = true;
         settings = {
           provider = "copilot";
           auto_suggestions_frequency = "copilot";
           copilot = {
-            model = "claude-3.5-sonnet";
+            model = "claude-3.7-sonnet";
           };
           file_selector = {
             provider = "fzf";
