@@ -6,9 +6,11 @@
   config,
   lib,
   modulesPath,
+  nixos-hardware,
   ...
 }: {
   imports = [
+    nixos-hardware.nixosModules.framework-12th-gen-intel
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 

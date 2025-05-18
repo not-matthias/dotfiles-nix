@@ -113,6 +113,9 @@ experimental-features = nix-command flakes
 nix-store --verify --check-contents
 ```
 
+### Devenv error (Cargo.lock not found or package.nix )
+
+Remove `~/.cachix/nix` and try again. 
 
 ## References
 
