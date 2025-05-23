@@ -6,7 +6,7 @@
   languages.nix.enable = true;
 
   # https://devenv.sh/pre-commit-hooks/
-  pre-commit.hooks = {
+  git-hooks.hooks = {
     alejandra.enable = true;
     shellcheck.enable = true;
     deadnix.enable = true;
