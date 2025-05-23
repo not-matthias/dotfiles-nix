@@ -28,7 +28,7 @@
 
   time.timeZone = "Europe/Vienna";
   i18n = {
-    defaultLocale = "en_US.utf8";
+    defaultLocale = "en_US.UTF-8";
   };
 
   console = {

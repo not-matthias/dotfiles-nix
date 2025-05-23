@@ -12,7 +12,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     security.rtkit.enable = true;
-    hardware.pulseaudio = {
+    services.pulseaudio = {
       enable = false;
       package = pkgs.pulseaudioFull;
     };

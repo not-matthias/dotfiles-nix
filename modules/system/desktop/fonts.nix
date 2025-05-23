@@ -20,13 +20,9 @@ in {
         jetbrains-mono
         font-awesome # Icons
         corefonts # MS
-        (nerdfonts.override {
-          # Nerdfont Icons override
-          fonts = [
-            "FiraCode"
-            "RobotoMono"
-          ];
-        })
+
+        pkgs.nerd-fonts.fira-code
+        pkgs.nerd-fonts.roboto-mono
         (google-fonts.override {fonts = ["Poppins"];})
       ];
 
