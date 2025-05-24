@@ -26,7 +26,7 @@ in {
       options = ["bind" "perms=444"];
     };
 
-    services.caddy.virtualHosts."audiobook.${domain}".extraConfig = ''
+    services.caddy.virtualHosts."audiobooks.${domain}".extraConfig = ''
       encode zstd gzip
       reverse_proxy http://127.0.0.1:8234
     '';

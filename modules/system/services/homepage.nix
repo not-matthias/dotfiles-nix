@@ -128,6 +128,14 @@ in {
               siteMonitor = "https://maloja.${desktopDomain}";
             };
           }
+          {
+            Maloja = {
+              description = "Audiobookshelf";
+              icon = "audiobookshelf";
+              href = "https://audiobooks.${desktopDomain}";
+              siteMonitor = "https://audiobookshelf.${desktopDomain}";
+            };
+          }
         ];
       }
     ];
