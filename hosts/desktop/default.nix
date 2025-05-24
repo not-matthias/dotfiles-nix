@@ -89,7 +89,7 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2yZENvNlZ8XQxcPVG8CrSEaUmvthPwheHRruEKqnzP not-matthias@raspi"
   ];
 
-  age.identityPaths = ["/etc/ssh/ssh_host_rsa_key.pub"];
+  age.identityPaths = ["/etc/ssh/ssh_host_rsa_key"];
 
   # TODO: Change to hardware.virtualization
   virtualisation = {
