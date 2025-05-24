@@ -106,6 +106,8 @@
     # TODO: What to backup?
   ];
 
+  age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
+
   networking = {
     hostName = "laptop";
     networkmanager.enable = true;
