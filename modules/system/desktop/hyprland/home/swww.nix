@@ -3,7 +3,6 @@
 {
   pkgs,
   lib,
-  user,
   ...
 }: {
   home.file.".wallpaper.png".source = ./wallpaper.png;

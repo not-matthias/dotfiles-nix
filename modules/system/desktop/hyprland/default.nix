@@ -25,6 +25,12 @@ in {
       example = true;
       description = "Whether to use NVIDIA for rendering";
     };
+    useIntel = mkOption {
+      type = types.bool;
+      default = false;
+      example = true;
+      description = "Whether to use Intel for rendering";
+    };
   };
 
   # FIXME: Conditionally import this
@@ -54,6 +60,8 @@ in {
         LIBVA_DRIVER_NAME =
           if cfg.useNvidia
           then "nvidia"
+          else if cfg.useIntel
+          then "iHD"
           else "";
         GBM_BACKEND =
           if cfg.useNvidia

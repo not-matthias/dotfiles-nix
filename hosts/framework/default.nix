@@ -93,7 +93,10 @@
     };
   };
   desktop = {
-    hyprland.enable = true;
+    hyprland = {
+      enable = true;
+      useIntel = true;
+    };
     fonts.enable = true;
   };
 
