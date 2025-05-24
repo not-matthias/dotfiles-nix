@@ -12,6 +12,9 @@ in {
         server = {
           HTTP_HOST = "0.0.0.0";
           HTTP_PORT = 11430;
+
+          ROOT_URL = "https://git.${domain}";
+          DOMAIN = "git.${domain}";
         };
         service = {
           DISABLE_REGISTRATION = true;
