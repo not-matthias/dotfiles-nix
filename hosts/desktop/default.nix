@@ -43,7 +43,6 @@
       useNvidia = true;
     };
     miniflux.enable = true;
-    self-hosted.enable = true;
     adguardhome.enable = true;
     memos.enable = true;
     scrutiny.enable = true;
@@ -63,7 +62,7 @@
       useGpu = true;
     };
     tandoor-recipes.enable = true;
-    nitter.enable = true;
+    jellyfin.enable = true;
   };
 
   networking = {

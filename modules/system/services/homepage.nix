@@ -129,11 +129,19 @@ in {
             };
           }
           {
-            Maloja = {
+            Audiobookshelf = {
               description = "Audiobookshelf";
               icon = "audiobookshelf";
               href = "https://audiobooks.${desktopDomain}";
-              siteMonitor = "https://audiobookshelf.${desktopDomain}";
+              siteMonitor = "https://audiobooks.${desktopDomain}";
+            };
+          }
+          {
+            Jellyfin = {
+              description = "Jellyfin";
+              icon = "jellyfin";
+              href = "https://audiobooks.${desktopDomain}";
+              siteMonitor = "https://audiobooks.${desktopDomain}";
             };
           }
         ];

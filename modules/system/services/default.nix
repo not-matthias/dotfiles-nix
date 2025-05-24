@@ -8,6 +8,7 @@
   ./firefly-iii.nix
   ./gitea.nix
   ./homepage.nix
+  ./jellyfin.nix
   ./kokoro.nix
   ./maloja.nix
   ./memos.nix
@@ -23,7 +24,6 @@
   ./security.nix
   ./tailscale.nix
   ./tandoor.nix
-  ./selfhosted.nix
   ./stump.nix
   ./traggo.nix
   ./vpn.nix
