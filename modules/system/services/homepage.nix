@@ -1,4 +1,6 @@
-{domain, ...}: {
+{domain, ...}: let
+  desktopDomain = "desktopnm.duckdns.org";
+in {
   # Find the icons here:
   # - https://github.com/walkxcode/Dashboard-Icons/tree/main/svg
   # - https://gethomepage.dev/configs/services/#icons
@@ -34,8 +36,8 @@
             "AdGuard Home" = {
               description = "AdGuard Home";
               icon = "adguard-home";
-              href = "https://adguard.desktop.local";
-              siteMonitor = "https://adguard.desktop.local";
+              href = "https://adguard.${desktopDomain}";
+              siteMonitor = "https://adguard.${desktopDomain}";
             };
           }
           {
@@ -50,80 +52,80 @@
             "OpenWebUI (server)" = {
               description = "OpenWebUI";
               icon = "ollama";
-              href = "https://ollama.desktop.local";
-              siteMonitor = "https://ollama.desktop.local";
+              href = "https://ollama.${desktopDomain}";
+              siteMonitor = "https://ollama.${desktopDomain}";
             };
           }
           {
             Miniflux = {
               description = "Miniflux";
               icon = "miniflux";
-              href = "https://rss.desktop.local";
-              siteMonitor = "https://rss.desktop.local";
+              href = "https://rss.${desktopDomain}";
+              siteMonitor = "https://rss.${desktopDomain}";
             };
           }
           {
             Scrutiny = {
               description = "S.M.A.R.T. Monitoring";
               icon = "scrutiny";
-              href = "https://scrutiny.desktop.local";
-              siteMonitor = "https://scrutiny.desktop.local";
+              href = "https://scrutiny.${desktopDomain}";
+              siteMonitor = "https://scrutiny.${desktopDomain}";
             };
           }
           {
             Memos = {
               description = "Memos";
               icon = "memos";
-              href = "https://memos.desktop.local";
-              siteMonitor = "https://memos.desktop.local";
+              href = "https://memos.${desktopDomain}";
+              siteMonitor = "https://memos.${desktopDomain}";
             };
           }
           {
             Netdata = {
               description = "Netdata";
               icon = "netdata";
-              href = "https://netdata.desktop.local";
-              siteMonitor = "https://netdata.desktop.local";
+              href = "https://netdata.${desktopDomain}";
+              siteMonitor = "https://netdata.${desktopDomain}";
             };
           }
           {
             Immich = {
               description = "Immich";
               icon = "immich";
-              href = "https://immich.desktop.local";
-              siteMonitor = "https://immich.desktop.local";
+              href = "https://immich.${desktopDomain}";
+              siteMonitor = "https://immich.${desktopDomain}";
             };
           }
           {
             Paperless = {
               description = "Paperless";
               icon = "paperless";
-              href = "https://paperless.desktop.local";
-              siteMonitor = "https://paperless.desktop.local";
+              href = "https://paperless.${desktopDomain}";
+              siteMonitor = "https://paperless.${desktopDomain}";
             };
           }
           {
             Gitea = {
               description = "Gitea";
               icon = "gitea";
-              href = "https://git.desktop.local";
-              siteMonitor = "https://git.desktop.local";
+              href = "https://git.${desktopDomain}";
+              siteMonitor = "https://git.${desktopDomain}";
             };
           }
           {
             Stump = {
               description = "Stump";
               icon = "stump";
-              href = "https://books.desktop.local";
-              siteMonitor = "https://books.desktop.local";
+              href = "https://books.${desktopDomain}";
+              siteMonitor = "https://books.${desktopDomain}";
             };
           }
           {
             Maloja = {
               description = "Maloja";
               icon = "maloja";
-              href = "https://maloja.desktop.local";
-              siteMonitor = "https://maloja.desktop.local";
+              href = "https://maloja.${desktopDomain}";
+              siteMonitor = "https://maloja.${desktopDomain}";
             };
           }
         ];
