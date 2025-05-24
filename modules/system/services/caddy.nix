@@ -1,54 +1,40 @@
-{domain, ...}: {
+{
+  domain,
+  pkgs,
+  config,
+  ...
+}: {
+  # TODO: Turn into options, with tailnetName
+
   # TODO: https://github.com/frahz/nix-config/blob/9fefb303a64ce1f4169169597c5a1acac3b00d7e/hosts/chibi/services/caddy.nix#L30
   networking.hosts = {
     # I'm only ever going to use this on my laptop.
     "127.0.0.1" = [
       "laptop.local"
-      "test.laptop.local"
-
-      "home.laptop.local"
-      "ollama.laptop.local"
-      "memos.laptop.local"
-      "music.laptop.local"
-      "scrutiny.laptop.local"
-      "lan.laptop.local"
-      "audiobook.laptop.local"
-
-      # Custom only for laptop:
-      "music.local"
     ];
     "100.64.120.57" = [
       "desktop.local"
-      "test.desktop.local"
-
-      "home.desktop.local"
-      "ollama.desktop.local"
-      "memos.desktop.local"
-      "music.desktop.local"
-      "scrutiny.desktop.local"
-      "netdata.desktop.local"
-      "lan.desktop.local"
-
-      # Server-only:
-      "immich.desktop.local"
-      "rss.desktop.local"
-      "adguard.desktop.local"
-      "paperless.desktop.local"
-      "git.desktop.local"
-      "books.desktop.local"
-      "maloja.desktop.local"
-      "crm.desktop.local"
-      "recipes.desktop.local"
-      "nitter.desktop.local"
     ];
   };
 
   services.caddy = {
-    globalConfig = ''
-      auto_https disable_redirects
+    environmentFile = config.age.secrets.duckdns.path;
+    package = pkgs.caddy.withPlugins {
+      plugins = ["github.com/caddy-dns/duckdns@v0.5.0"];
+      hash = "sha256-ZdvxtHiJAyKIOVUAFns7WsfQddfO/fD1euyGFaBp9W8=";
+    };
+
+    virtualHosts."*.${domain}".extraConfig = ''
+      tls {
+          dns duckdns {$DUCKDNS_TOKEN}
+      }
     '';
+
     virtualHosts."${domain}".extraConfig = ''
       respond "Hello, world!"
+    '';
+    virtualHosts."${domain}/test".extraConfig = ''
+      respond "Path works!"
     '';
     virtualHosts."test.${domain}".extraConfig = ''
       respond "Subdomains work!"

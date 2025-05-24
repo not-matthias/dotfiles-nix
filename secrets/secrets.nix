@@ -17,4 +17,5 @@ in {
   "desktop.local.pem.age".publicKeys = systems;
   "desktop.local.key.age".publicKeys = systems;
   "temp1.age".publicKeys = systems;
+  "duckdns.age".publicKeys = systems;
 }

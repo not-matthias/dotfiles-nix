@@ -100,11 +100,11 @@
         ];
     };
 in {
-  desktop = nixosBox "x86_64-linux" nixpkgs "desktop" "desktop.local";
-  framework = nixosBox "x86_64-linux" nixpkgs "framework" "laptop.local";
-  raspi = nixosBox "aarch64-linux" nixpkgs "raspi" "raspi.local";
-  travel = nixosBox "x86_64-linux" nixpkgs "travel" "laptop.local";
+  desktop = nixosBox "x86_64-linux" nixpkgs "desktop" "desktopnm.duckdns.org";
+  framework = nixosBox "x86_64-linux" nixpkgs "framework" "laptopnm.duckdns.org";
+  raspi = nixosBox "aarch64-linux" nixpkgs "raspi" "raspi.ide-snares.ts.net";
 
   # Old configs:
   # laptop = nixosBox "aarch64" nixpkgs "laptop" "localhost";
+  # travel = nixosBox "x86_64-linux" nixpkgs "travel" "laptop.local";
 }

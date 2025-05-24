@@ -9,12 +9,13 @@
     #
     # secretsMountPoint can stay as is though, as this path won't be inserted in configs.
     #
-    secretsDir = "/home/${user}/.agenix";
+    # secretsDir = "/home/${user}/.agenix";
     identityPaths = ["/home/${user}/.ssh/id_rsa"];
 
     # TODO: Create a helper function to create those entries
     secrets = {
-      "temp1.age".file = ../../../secrets/temp1.age;
+      "temp1".file = ../../../secrets/temp1.age;
+      "duckdns".file = ../../../secrets/duckdns.age;
     };
   };
 }

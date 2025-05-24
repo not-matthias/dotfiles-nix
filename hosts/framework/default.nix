@@ -70,7 +70,6 @@
       enable = true;
       scrobblerUrl = "http://desktop.local:42010/apis/listenbrainz/1/";
     };
-    adguardhome.useDns = true;
     caddy.enable = true;
     yubikey.enable = true;
   };
@@ -106,13 +105,6 @@
     # "/home/${user}/Pictures"
     # TODO: What to backup?
   ];
-
-  # age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
-  # home.sessionVariables = {
-  #                  SECRET_VALUE = ''
-  #                    $(${pkgs.coreutils}/bin/cat ${config.age.secrets.secret1.path})
-  #                  '';
-  #                };
 
   networking = {
     hostName = "laptop";
