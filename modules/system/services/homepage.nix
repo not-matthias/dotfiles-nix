@@ -4,6 +4,7 @@
   # - https://gethomepage.dev/configs/services/#icons
   services.homepage-dashboard = {
     listenPort = 7676;
+    allowedHosts = "*";
 
     settings = {
       title = "Homepage";
