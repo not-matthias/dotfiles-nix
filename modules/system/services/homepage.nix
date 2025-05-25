@@ -140,8 +140,8 @@ in {
             Jellyfin = {
               description = "Jellyfin";
               icon = "jellyfin";
-              href = "https://audiobooks.${desktopDomain}";
-              siteMonitor = "https://audiobooks.${desktopDomain}";
+              href = "https://jellyfin.${desktopDomain}";
+              siteMonitor = "https://jellyfin.${desktopDomain}";
             };
           }
         ];
