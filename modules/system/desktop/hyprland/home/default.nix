@@ -25,7 +25,6 @@ in {
         playerctl # for media control
         networkmanagerapplet # for network control
 
-        wofi-emoji
         wtype
 
         # screenshot tools

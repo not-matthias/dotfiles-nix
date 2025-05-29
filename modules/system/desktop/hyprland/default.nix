@@ -54,7 +54,6 @@ in {
         XDG_SESSION_TYPE = "wayland";
         XDG_SESSION_DESKTOP = "Hyprland";
 
-        WLR_RENDERER = "vulkan";
         WLR_DRM_DEVICES = "/dev/dri/by-path/pci-0000:00:02.0-card";
         AQ_DRM_DEVICES = "/dev/dri/by-path/pci-0000:00:02.0-card";
         LIBVA_DRIVER_NAME =
@@ -62,10 +61,6 @@ in {
           then "nvidia"
           else if cfg.useIntel
           then "iHD"
-          else "";
-        GBM_BACKEND =
-          if cfg.useNvidia
-          then "nvidia-drm"
           else "";
         __GLX_VENDOR_LIBRARY_NAME =
           if cfg.useNvidia
