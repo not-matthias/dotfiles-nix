@@ -13,16 +13,21 @@ in {
   config = lib.mkIf cfg.enable {
     fonts = {
       packages = with pkgs; [
-        newcomputermodern
-        carlito # NixOS
-        vegur # NixOS
-        source-code-pro
-        jetbrains-mono
+        # NixOS:
+        carlito
+        vegur
+
+        # Chinese, Japanese, Korean fonts
+        noto-fonts-cjk-sans
+        noto-fonts-cjk-serif
+
         font-awesome # Icons
         corefonts # MS
-
-        pkgs.nerd-fonts.fira-code
-        pkgs.nerd-fonts.roboto-mono
+        newcomputermodern
+        source-code-pro
+        jetbrains-mono
+        nerd-fonts.fira-code
+        nerd-fonts.roboto-mono
         (google-fonts.override {fonts = ["Poppins"];})
       ];
 
