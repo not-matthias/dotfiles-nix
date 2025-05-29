@@ -12,6 +12,10 @@
       unstable.zed-editor
       unstable.supersonic
       unstable.vscode
+      unstable.obsidian
+      unstable.jetbrains.pycharm-professional
+      unstable.jetbrains.rust-rover
+      unstable.todoist-electron
 
       vlc
       evince
