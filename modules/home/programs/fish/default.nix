@@ -37,6 +37,10 @@ in {
       "ga" = "git add -A";
       "gp" = "git pull";
       "gps" = "git push";
+      "grbi" = "git rebase -i";
+      "grba" = "git rebase --abort";
+      "gwip" = "git commit -m \"chore: wip\" --no-verify";
+
       "btm" = "btm --battery";
 
       # di = direnv
