@@ -39,6 +39,10 @@
       nixd
     ];
     programs = {
+      walker = {
+        enable = true;
+        runAsService = true;
+      };
       granted.enable = true;
       kitty.enable = true;
       alacritty.enable = true;

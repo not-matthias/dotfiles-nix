@@ -19,7 +19,8 @@
   ./minecraft.nix
   ./neovim.nix
   ./rust.nix
-  ./wofi.nix
+  ./walker.nix
+  # ./wofi.nix
   ./zellij.nix
   ./zoxide.nix
 ]
