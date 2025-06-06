@@ -58,6 +58,12 @@ in {
         battery = {
           governor = "powersave";
           turbo = "never";
+          energy_perf_bias = "power";
+
+          # Battery charge threshold
+          enable_thresholds = true;
+          start_threshold = 20;
+          stop_threshold = 80;
         };
         charger = {
           governor = "performance";
