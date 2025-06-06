@@ -207,21 +207,19 @@
       };
       # copilot-cmp.enable = true;
 
-      # blink-cmp = {
-      #   enable = true;
-      #   settings.sources.default = [
-      #     "lsp"
-      #     "path"
-      #     "luasnip"
-      #     "buffer"
-      #     "copilot"
-      #   ];
-      # };
-      # blink-cmp-copilot.enable = true;
-      # blink-cmp-dictionary.enable = true;
-      # blink-cmp-git.enable = true;
-      # blink-cmp-spell.enable = true;
-      # blink-compat.enable = true;
+      blink-cmp = {
+        enable = true;
+        settings.sources.default = [
+          "lsp"
+          "path"
+          "buffer"
+        ];
+      };
+      blink-cmp-copilot.enable = true;
+      blink-cmp-dictionary.enable = true;
+      blink-cmp-git.enable = true;
+      blink-cmp-spell.enable = true;
+      blink-compat.enable = true;
 
       nix.enable = true;
 
