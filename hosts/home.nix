@@ -1,5 +1,4 @@
 {
-  stable,
   pkgs,
   user,
   ...
@@ -31,7 +30,7 @@
 
       # Useful tools
       python3
-      stable.devenv
+      devenv
 
       # Others:
       # gping

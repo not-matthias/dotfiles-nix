@@ -6,7 +6,6 @@
   home-manager,
   user,
   fenix,
-  devenv,
   nixvim,
   nixos-hardware,
   arion,
@@ -50,9 +49,6 @@
     overlays = [
       fenix.overlays.default
       fontsOverlay
-      (_: prev: {
-        inherit (devenv.packages."${prev.system}") devenv;
-      })
     ];
 
     commonModules = [
@@ -63,6 +59,7 @@
       home-manager.nixosModules.home-manager
       arion.nixosModules.arion
       agenix.nixosModules.default
+      flakes.determinate.nixosModules.default
 
       ./configuration.nix
     ];

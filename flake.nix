@@ -4,7 +4,6 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    devenv.url = "github:cachix/devenv/v1.6.1";
     nurpkgs.url = "github:nix-community/NUR";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     home-manager = {
@@ -32,6 +31,7 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     walker.url = "github:abenz1267/walker";
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
   };
 
   outputs = {
@@ -40,7 +40,6 @@
     nurpkgs,
     home-manager,
     fenix,
-    devenv,
     nixvim,
     nixos-hardware,
     arion,
@@ -52,7 +51,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix devenv nixvim nixos-hardware arion agenix;
+        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix;
       }
     );
   };
