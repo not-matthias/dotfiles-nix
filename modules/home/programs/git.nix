@@ -23,5 +23,8 @@
       commit.gpgsign = true;
       user.signingKey = "D1B0E3E8E62928DD";
     };
+    aliases = {
+      l = "log --pretty=oneline -n 20 --graph --abbrev-commit";
+    };
   };
 }

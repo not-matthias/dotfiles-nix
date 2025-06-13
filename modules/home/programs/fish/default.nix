@@ -31,12 +31,16 @@ in {
       "..." = "cd ../..";
       "...." = "cd ../../..";
 
+      "gca" = "git commit --amend";
       "gc" = "git commit";
       "gcm" = "git commit -m";
       "gs" = "git status";
       "ga" = "git add -A";
       "gp" = "git pull";
+      "gd" = "git diff";
+      "gdc" = "git diff";
       "gps" = "git push";
+      "gpsf" = "git push --force-with-lease";
       "grbi" = "git rebase -i";
       "grba" = "git rebase --abort";
       "gwip" = "git commit -m \"chore: wip\" --no-verify";
