@@ -3,7 +3,6 @@
   tmuxConf = builtins.readFile ./default.conf;
 in {
   programs.tmux = {
-    enable = true;
     aggressiveResize = true;
     baseIndex = 1;
     extraConfig = tmuxConf;
