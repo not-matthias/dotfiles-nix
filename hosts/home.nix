@@ -13,7 +13,6 @@
       # Rust tools
       navi
       yazi
-      bat
       eza
       bottom
       tealdeer

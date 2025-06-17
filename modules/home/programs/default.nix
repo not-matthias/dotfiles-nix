@@ -4,10 +4,11 @@
   ./gtk.nix
 
   ./alacritty.nix
+  ./atuin.nix
+  ./bat.nix
   ./fish
   ./tmux
   ./waybar
-  ./atuin.nix
   ./direnv.nix
   ./dunst.nix
   ./firefox.nix
