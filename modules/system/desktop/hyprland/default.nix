@@ -39,6 +39,7 @@ in {
       hyprland = {
         enable = true;
         package = pkgs.hyprland;
+        withUWSM = true;
       };
       xwayland.enable = true;
     };
@@ -46,7 +47,9 @@ in {
     environment = {
       loginShellInit = ''
         if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
-         dbus-run-session Hyprland
+            if uwsm check may-start && uwsm select; then
+                exec uwsm start default
+            fi
         fi
       '';
       variables = {
@@ -54,8 +57,7 @@ in {
         XDG_SESSION_TYPE = "wayland";
         XDG_SESSION_DESKTOP = "Hyprland";
 
-        WLR_DRM_DEVICES = "/dev/dri/by-path/pci-0000:00:02.0-card";
-        AQ_DRM_DEVICES = "/dev/dri/by-path/pci-0000:00:02.0-card";
+        AQ_DRM_DEVICES = "/dev/dri/card1";
         LIBVA_DRIVER_NAME =
           if cfg.useNvidia
           then "nvidia"
@@ -87,23 +89,6 @@ in {
       gnome = {
         sushi.enable = true;
         gnome-keyring.enable = true;
-      };
-
-      displayManager.defaultSession = "hyprland";
-      xserver = {
-        enable = true;
-
-        xkb = {
-          layout = "us";
-          options = "";
-        };
-
-        displayManager = {
-          gdm = {
-            enable = true;
-            wayland = true;
-          };
-        };
       };
     };
 
