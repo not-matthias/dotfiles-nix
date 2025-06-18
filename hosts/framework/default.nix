@@ -16,6 +16,8 @@
       unstable.jetbrains.pycharm-professional
       unstable.jetbrains.rust-rover
       unstable.todoist-electron
+      unstable.code-cursor
+      google-chrome
 
       vlc
       evince
@@ -24,7 +26,6 @@
       file-roller
       gnome-text-editor
       unstable.anki
-      obs-studio
       calibre
       mission-center
       slack
@@ -51,6 +52,18 @@
 
       gitui.enable = true;
       firefox.enable = false;
+
+      obs-studio = {
+        enable = true;
+        plugins = with pkgs.obs-studio-plugins; [
+          obs-vaapi
+          obs-vkcapture
+          obs-gstreamer
+          obs-pipewire-audio-capture
+          wlrobs
+          obs-backgroundremoval
+        ];
+      };
     };
 
     services = {
@@ -78,6 +91,20 @@
   };
 
   services = {
+    karakeep.enable = true;
+    system76-scheduler = {
+      enable = true;
+      assignments = {
+        nix-builds = {
+          nice = 15;
+          class = "batch";
+          ioClass = "idle";
+          matchers = [
+            "nix-daemon"
+          ];
+        };
+      };
+    };
     earlyoom.enable = true;
     audiobookshelf = {
       enable = true;
@@ -103,12 +130,7 @@
 
   virtualisation = {
     podman.enable = true;
-    docker.enable = true;
-    qemu.enable = true;
-    vfio = {
-      enable = true;
-      IOMMUType = "intel";
-    };
+    docker.enable = true; # Required for work (exec service)
   };
   desktop = {
     hyprland = {

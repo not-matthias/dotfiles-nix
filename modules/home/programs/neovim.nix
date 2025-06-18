@@ -215,6 +215,7 @@
           "buffer"
         ];
       };
+      blink-copilot.enable = true;
       blink-cmp-copilot.enable = true;
       blink-cmp-dictionary.enable = true;
       blink-cmp-git.enable = true;
