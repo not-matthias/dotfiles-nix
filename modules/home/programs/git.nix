@@ -23,6 +23,12 @@
       commit.gpgsign = true;
       user.signingKey = "D1B0E3E8E62928DD";
     };
+    ignores = [
+      ".idea"
+      ".zed"
+      "__pycache__"
+      ".direnv"
+    ];
     aliases = {
       l = "log --pretty=oneline -n 20 --graph --abbrev-commit";
     };
