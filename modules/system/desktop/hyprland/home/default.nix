@@ -32,6 +32,7 @@ in {
         slurp
         swappy
         tesseract
+        wofi-emoji
 
         # hypr utils
         unstable.hyprsunset
