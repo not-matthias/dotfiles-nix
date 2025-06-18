@@ -63,6 +63,7 @@
     };
     tandoor-recipes.enable = true;
     jellyfin.enable = true;
+    karakeep.enable = true;
   };
 
   networking = {
