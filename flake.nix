@@ -32,6 +32,7 @@
     };
     walker.url = "github:abenz1267/walker";
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
+    aw-hyprland.url = "github:bobvanderlinden/aw-watcher-window-hyprland";
   };
 
   outputs = {
