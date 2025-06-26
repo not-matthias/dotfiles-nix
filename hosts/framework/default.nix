@@ -13,10 +13,7 @@
       unstable.supersonic
       unstable.vscode
       unstable.obsidian
-      unstable.jetbrains.pycharm-professional
-      unstable.jetbrains.rust-rover
       unstable.todoist-electron
-      unstable.code-cursor
       google-chrome
 
       vlc
@@ -27,10 +24,9 @@
       gnome-text-editor
       unstable.anki
       calibre
-      mission-center
-      slack
       fastfetch
 
+      slack
       awscli2
       flakes.zen-browser.packages."${system}".default
 
@@ -91,7 +87,6 @@
   };
 
   services = {
-    karakeep.enable = true;
     system76-scheduler = {
       enable = true;
       assignments = {
