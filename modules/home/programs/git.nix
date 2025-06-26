@@ -24,6 +24,9 @@
       user.signingKey = "D1B0E3E8E62928DD";
     };
     ignores = [
+      ".claude"
+      "CLAUDE.md"
+      "SCRATCHPAD.md"
       ".idea"
       ".zed"
       "__pycache__"
