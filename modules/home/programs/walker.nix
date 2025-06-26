@@ -60,6 +60,21 @@
 
       plugins = [
         {
+          name = "auto-cpufreq";
+          switcher_only = false;
+
+          entries = [
+            {
+              exec = "sudo auto-cpufreq --force powersave";
+              label = "Powersave";
+            }
+            {
+              exec = "sudo auto-cpufreq --force performance";
+              label = "Performance";
+            }
+          ];
+        }
+        {
           keep_sort = false;
           name = "power";
           placeholder = "Power";
