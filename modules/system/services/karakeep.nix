@@ -19,8 +19,8 @@ in {
         OLLAMA_KEEP_ALIVE = "5m";
 
         INFERENCE_EMBEDDING_MODEL = "nomic-embed-text";
-        INFERENCE_IMAGE_MODEL = "gemma3:4b-it-qat";
-        INFERENCE_TEXT_MODEL = INFERENCE_IMAGE_MODEL;
+        INFERENCE_IMAGE_MODEL = "qwen3:30b-a3b";
+        INFERENCE_TEXT_MODEL = "gemma3:4b-it-qat";
         INFERENCE_JOB_TIMEOUT_SEC = "600";
         INFERENCE_ENABLE_AUTO_SUMMARIZATION = "false";
         INFERENCE_ENABLE_AUTO_TAGGING = "true";
