@@ -9,8 +9,16 @@
   cfg = config.services.activitywatch;
 in {
   config = lib.mkIf cfg.enable {
+    home.packages = [
+      unstable.aw-qt
+    ];
+
     services.activitywatch = {
       package = unstable.aw-server-rust;
+      watchers = {
+        awatcher.package = unstable.awatcher;
+        aw-sync.package = unstable.aw-server-rust;
+      };
     };
 
     systemd.user.services.activitywatch-watcher-window-hyprland = {
