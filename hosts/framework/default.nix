@@ -113,6 +113,7 @@
     };
     caddy.enable = true;
     yubikey.enable = true;
+    n8n.enable = true;
   };
 
   hardware = {

@@ -33,6 +33,7 @@
 
   # Only enable the services here, the settings are configured in the 'services/' folder.
   services = {
+    n8n.enable = true;
     audiobookshelf = {
       enable = true;
       audioFolder = "/mnt/data/personal/audiobooks/";

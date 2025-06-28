@@ -15,6 +15,7 @@
   ./memos.nix
   ./navidrome.nix
   ./netdata.nix
+  ./n8n.nix
   ./nfs.nix
   ./nitter.nix
   ./ollama.nix
