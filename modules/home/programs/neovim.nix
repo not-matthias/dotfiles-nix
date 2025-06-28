@@ -49,25 +49,31 @@
       # Yazi
 
       auto-save.enable = true;
+      autoclose.enable = true;
+      auto-session.enable = true;
       lightline.enable = true;
       # commentary.enable = true;
       # comment.enable = true;
       todo-comments.enable = true;
       rainbow-delimiters.enable = true;
-      autoclose.enable = true;
       direnv.enable = true;
       persistence.enable = true;
       # bullets.enable = true;
       nvim-autopairs.enable = true;
       diffview.enable = true;
       zen-mode.enable = true;
+      bufferline.enable = true;
+
+      # QoL
+      lastplace.enable = true;
+      snacks.enable = true;
 
       # Learn neovim better
       which-key = {
         enable = true;
         settings = {
           notify = true;
-          preset = "helix";
+          preset = "modern";
         };
       };
 

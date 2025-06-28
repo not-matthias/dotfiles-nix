@@ -26,10 +26,11 @@
       any-nix-shell
       duf
       wl-clipboard
+      nh
+      nix-output-monitor
 
       # Useful tools
       python3
-      devenv
 
       # Others:
       # gping

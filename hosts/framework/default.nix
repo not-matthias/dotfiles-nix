@@ -15,6 +15,8 @@
       unstable.obsidian
       unstable.todoist-electron
       google-chrome
+      unstable.lmstudio
+      unstable.nodejs
 
       vlc
       evince
