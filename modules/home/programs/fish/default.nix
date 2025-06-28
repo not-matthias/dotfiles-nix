@@ -8,11 +8,10 @@ in {
   programs.fish = {
     enable = true;
     shellAliases = {
-      # Shortcut for "open **F**older with **N**autilus"
-      "nf" = "nautilus . > /dev/null 2>&1 &";
     };
     shellAbbrs = {
-      "c" = "clear";
+      "c" = "clear -x"; # keep the scrollback buffer
+      "clear" = "clear -x";
       "x" = "exit";
 
       "ns" = "nix-shell -p";
@@ -80,6 +79,11 @@ in {
         set -x GRANTED_ALIAS_CONFIGURED "true"
         source ${unstable.granted}/share/assume.fish $argv
         set -e GRANTED_ALIAS_CONFIGURED
+      '';
+      nf = ''
+        function nf -d "Open folder with Nautilus"
+          nautilus . > /dev/null 2>&1 &
+        end
       '';
     };
   };
