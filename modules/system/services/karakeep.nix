@@ -19,7 +19,7 @@ in {
         OLLAMA_KEEP_ALIVE = "5m";
 
         CRAWLER_FULL_PAGE_SCREENSHOT = "true";
-        CRAWLER_FULL_PAGE_ARCHIVE = "true";
+        CRAWLER_FULL_PAGE_ARCHIVE = "false"; # Enable on-demand for now
 
         INFERENCE_CONTEXT_LENGTH = "8192";
         INFERENCE_EMBEDDING_MODEL = "nomic-embed-text";
