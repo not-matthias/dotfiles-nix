@@ -76,7 +76,8 @@
         enable = true;
         keymaps = {
           "<space>ff" = "find_files";
-          "<space>fg" = "live_grep";
+          "<space>gg" = "live_grep";
+          "<space>lg" = "live_grep";
           "<space>fk" = "keymaps";
           "<space>ft" = "colorscheme";
           "<space>fe" = "file_browser";
