@@ -5,10 +5,11 @@
 }: let
   fishPrompt = builtins.readFile ./prompt.fish;
 in {
+  home.packages = with pkgs; [
+    trash-cli
+  ];
   programs.fish = {
     enable = true;
-    shellAliases = {
-    };
     shellAbbrs = {
       "c" = "clear -x"; # keep the scrollback buffer
       "clear" = "clear -x";
@@ -25,6 +26,7 @@ in {
       "k" = "kalker";
       "xxd" = "hexyl";
       "tmux" = "zellij";
+      "rm" = "trash-put";
 
       ".." = "cd ..";
       "..." = "cd ../..";
