@@ -43,5 +43,7 @@ in {
       encode zstd gzip
       reverse_proxy http://127.0.0.1:9999
     '';
+
+    services.restic.backups.nas.paths = ["/var/lib/karakeep"];
   };
 }
