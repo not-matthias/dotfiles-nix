@@ -144,6 +144,30 @@ in {
               siteMonitor = "https://jellyfin.${desktopDomain}";
             };
           }
+          {
+            Karakeep = {
+              description = "Karakeep";
+              icon = "karakeep";
+              href = "https://links.${desktopDomain}";
+              siteMonitor = "https://links.${desktopDomain}";
+            };
+          }
+          {
+            n8n = {
+              description = "n8n";
+              icon = "n8n";
+              href = "https://n8n.${desktopDomain}";
+              siteMonitor = "https://n8n.${desktopDomain}";
+            };
+          }
+          {
+            NocoDB = {
+              description = "NocoDB";
+              icon = "nocodb";
+              href = "http://desktop.local:8080";
+              siteMonitor = "http://desktop.local:8080";
+            };
+          }
         ];
       }
     ];
