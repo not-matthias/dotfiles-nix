@@ -1,130 +1,121 @@
 # dotfiles-nix
-NixOS dotfiles and hardware configurations
 
-## Setup new device
+NixOS dotfiles and hardware configurations for my personal machines.
+
+##  NixOS & Flakes
+
+This repository is managed using NixOS and Nix Flakes. [NixOS](https://nixos.org/) is a Linux distribution with a unique approach to package and configuration management. [Flakes](https://nixos.wiki/wiki/Flakes) are a new feature in Nix that improve reproducibility and composability.
+
+To enable flakes, you need to add the following to your `/etc/nix/nix.conf`:
 
 ```
-nix-shell -p git vscode
-
-git clone github.com/not-matthias/dotfiles-nix
-cd dotfiles-nix
-code .
-```
-
-Then create a new folder inside `hosts` and configure it:
-```
-cp /etc/nixos/configuration.nix ./hosts/<name>
-cp /etc/nixos/hardware-configuration.nix ./hosts/<name>
+experimental-features = nix-command flakes
 ```
 
 ## Installation
 
-```
-ln -s `pwd` ~/.config/nixpkgs
-sudo nixos-rebuild switch --flake .#laptop
+### 1. Clone the repository
+
+```bash
+nix-shell -p git
+git clone https://github.com/not-matthias/dotfiles-nix ~/.config/nixpkgs
+cd ~/.config/nixpkgs
 ```
 
-## Free memory
+### 2. Set up a new host
 
-(Also try to restart your computer before)
+Create a new directory for your host in the `hosts` directory. You can use the existing hosts as a template. You will need to copy the `hardware-configuration.nix` from your new NixOS installation.
 
+```bash
+# Example for a new host named "my-new-machine"
+mkdir -p hosts/my-new-machine
+cp /etc/nixos/hardware-configuration.nix hosts/my-new-machine/
 ```
+
+You will also need to create a `default.nix` for your new host. This file defines the NixOS configuration for the machine. You can use one of the existing hosts as a starting point.
+
+### 3. Build and activate the configuration
+
+```bash
+sudo nixos-rebuild switch --flake .#<hostname>
+```
+
+Replace `<hostname>` with the name of your host (e.g., `desktop`, `laptop`).
+
+## Usage
+
+### Updating the system
+
+To update your system, first update the flake inputs:
+
+```bash
+nix flake update
+```
+
+Then, rebuild the system with the new inputs:
+
+```bash
+sudo nixos-rebuild switch --flake .#<hostname>
+```
+
+### Garbage Collection
+
+To free up disk space, you can run the garbage collector:
+
+```bash
 nix-collect-garbage -d
-# or
+# or to delete generations older than 14 days
 nix-collect-garbage --delete-older-than 14d
+```
 
+To delete the derivations, you need to run the command with `sudo`:
+
+```bash
+sudo nix-collect-garbage -d
+```
+
+You can also optimize the Nix store:
+```
 nix store optimise
 nix store gc
 ```
 
-To delete the derivations, you need `sudo`:
-```
-sudo nix-collect-garbage -d
-```
+### Secrets Management
 
-## Upgrade
+This repository uses [agenix](https://github.com/ryantm/agenix) to manage secrets. Secrets are encrypted using age and can be safely stored in the repository.
+
+To edit a secret, use the following command:
 
 ```bash
-sudo nix-channel --add https://nixos.org/channels/nixos-22.11 nixos
-sudo nix-channel --update
-# Rebuild dotfiles
+agenix -e <secret-name>.age
 ```
 
-See: https://superuser.com/a/1604695
-
-## Agenix
-
-```
-nix run github:ryantm/agenix -- -e test.ages
-```
-
-Encrypt existing file:
+To encrypt a new file:
 ```
 cat file.txt | agenix -e file.age
 ```
 
-## Errors
+## Troubleshooting
 
-### Cached failure of attribute '
+### Cached failure of attribute
 
-Error trace:
-```
-error: cached failure of attribute 'nixosConfigurations.framework.config.system.build.toplevel'
-```
+If you encounter an error like `cached failure of attribute 'nixosConfigurations.framework.config.system.build.toplevel'`, try running the command with the `--option eval-cache false` flag.
 
-Run with:
-```
---option eval-cache false
-```
+### command-not-found error
 
-https://discourse.nixos.org/t/cant-switch-to-flakes-error-cached-failure-of-attribute/42933/5
-
-### unable to open database file at /run/current-system/sw/bin/command-not-found
-
-You need to update the system channel (run with sudo!) not your user's channel.
+If you see `unable to open database file at /run/current-system/sw/bin/command-not-found`, you need to update the system channel (run with sudo!) not your user's channel.
 
 ```
 sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos
 sudo nix-channel --update
 ```
 
-### Fix home-manager error
+### Devenv error
 
-```
-nix-env --set-flag priority 0 nix-2.11.0
-nix-shell '<home-manager>' -A install
-```
-
-Source: https://github.com/nix-community/home-manager/issues/2995#issuecomment-1146676866
-
-
-### Flakes not supported
-
-Add to /etc/nix/nix.conf:
-```
-# https://nixos.wiki/wiki/Flakes
-experimental-features = nix-command flakes
-```
-
-
-### Random: No such file or directory
-
-```
-nix-store --verify --check-contents
-```
-
-### Devenv error (Cargo.lock not found or package.nix )
-
-Remove `~/.cachix/nix` and try again. 
+If you encounter an error related to `devenv` (e.g., `Cargo.lock` not found), try removing the `~/.cachix/nix` directory and running the command again.
 
 ## References
 
-- https://invidious.namazso.eu/watch?v=AGVXJ-TIv3Y
-- https://ghedam.at/24353/tutorial-getting-started-with-home-manager-for-nix
-- https://ipetkov.dev/blog/tips-and-tricks-for-nix-flakes/
-- https://stel.codes/blog-posts/i3-or-sway-why-not-both/
-
-Dotfiles:
-- https://github.com/MatthiasBenaets/nixos-config
-- https://github.com/yrashk/nix-home
-- https://github.com/Th0rgal/horus-nix-home
+- [MatthiasBenaets/nixos-config](https://github.com/MatthiasBenaets/nixos-config)
+- [yrashk/nix-home](https://github.com/yrashk/nix-home)
+- [Th0rgal/horus-nix-home](https://github.com/Th0rgal/horus-nix-home)
