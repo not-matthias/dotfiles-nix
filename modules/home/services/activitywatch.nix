@@ -21,6 +21,17 @@ in {
       };
     };
 
+    # awatcher should start and stop depending on wayland-session.target
+    # starting activitywatch should only start awatcher if wayland-session.target is active
+    systemd.user.services.activitywatch-watcher-awatcher = {
+      Unit = {
+        After = ["wayland-session.target"];
+        Requisite = ["wayland-session.target"];
+        PartOf = ["wayland-session.target"];
+      };
+      Install = {WantedBy = ["wayland-session.target"];};
+    };
+
     systemd.user.services.activitywatch-watcher-window-hyprland = {
       Unit = {
         Description = "ActivityWatch watcher 'aw-watcher-window-hyprland'";
