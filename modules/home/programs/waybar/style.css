@@ -40,3 +40,24 @@ window#waybar {
     padding: 0px 10px;
     border-left: 1px solid lightgray;
 }
+
+#custom-dnd {
+    padding: 0px 10px;
+    border-left: 1px solid lightgray;
+}
+
+#custom-dnd.paused {
+    color: #f07178;
+}
+
+#bluetooth.on {
+    color: #89b4fa;
+}
+
+#bluetooth.off, #bluetooth.disabled {
+    color: #999999;
+}
+
+#bluetooth.connected {
+    color: #a6e3a1;
+}

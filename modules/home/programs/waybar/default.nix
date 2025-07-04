@@ -14,7 +14,15 @@
     pkgs.pavucontrol
   ];
 
-  programs.waybar = {
+  programs.waybar = let
+    dnd = pkgs.writeShellScriptBin "dnd" ''
+      if dunstctl is-paused | grep -q "true"; then
+          echo '{"text": "󰂛", "tooltip": "Notifications Paused", "class": "paused"}'
+      else
+          echo '{"text": "󰂚", "tooltip": "Notifications Active"}'
+      fi
+    '';
+  in {
     settings.mainbar = {
       layer = "top";
       position = "top";
@@ -23,6 +31,7 @@
         "hyprland/workspaces"
       ];
       modules-right = [
+        "custom/dnd"
         "hyprland/language"
         "bluetooth"
         "battery"
@@ -30,6 +39,13 @@
         "clock"
         "tray"
       ];
+      "custom/dnd" = {
+        return-type = "json";
+        format = "{text}";
+        exec = "${dnd}/bin/dnd";
+        on-click = "dunstctl set-paused toggle";
+        signal = 8;
+      };
       "hyprland/language" = {
         format-en = "en";
         format-de = "de";
@@ -77,6 +93,11 @@
         spacing = 8;
       };
       bluetooth = {
+        format = "{icon}";
+        format-on = "󰂯";
+        format-off = "󰂲";
+        format-disabled = "󰂲";
+        format-connected = "󰂱";
         on-click = "blueman-manager";
       };
       pulseaudio = {
