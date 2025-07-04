@@ -7,19 +7,28 @@
   xdg.configFile."zellij/config.kdl".text = ''
     default_layout "default"
     mouse_mode true
-
     simplified_ui true
     pane_frames false
-
-    ui {
-      pane_frames {
-        rounded_corners false
-      }
-    }
 
     keybinds {
       normal {
         bind "Ctrl b" { SwitchToMode "Tmux"; }
+        bind "Ctrl j" {
+          LaunchOrFocusPlugin "zellij:session-manager" {
+            floating true
+            move_to_focused_tab true
+          }
+        }
+        bind "Ctrl s" {
+          LaunchOrFocusPlugin "https://github.com/laperlej/zellij-sessionizer/releases/latest/download/zellij-sessionizer.wasm" {
+            floating true
+          }
+        }
+        bind "Ctrl f" {
+          LaunchOrFocusPlugin "https://github.com/karimould/zellij-forgot/releases/latest/download/zellij-forgot.wasm" {
+            floating true
+          }
+        }
       }
 
       tmux {
@@ -35,109 +44,44 @@
       }
     }
 
+    ui {
+      pane_frames {
+        rounded_corners false
+      }
+    }
   '';
 
-  # TODO:
-  # - https://github.com/karimould/zellij-forgot
-  # - https://github.com/roberte777/zesh
-  # - https://github.com/evgenymng/zellij-compact-bar
-  # - https://github.com/blank2121/zellij-jump-list
-  # - https://github.com/zellij-org/awesome-zellij
-  # - https://github.com/rvcas/room
   xdg.configFile."zellij/layouts/default.kdl".text = ''
     layout {
-        default_tab_template {
-          children
+      pane size=1 borderless=true {
+        plugin location="https://github.com/evgenymng/zellij-compact-bar/releases/latest/download/compact-bar.wasm"
+      }
 
-          pane size=1 borderless=true {
-            plugin location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
-                format_left   "{mode} #[fg=#89B4FA,bold]{session}"
-                format_center "{tabs}"
+      children
 
-                mode_normal  "#[bg=blue] "
-                mode_tmux    "#[bg=#ffc387] "
-            }
-          }
+      pane size=2 borderless=true {
+        plugin location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
+          format_left   "#[fg=#89B4FA,bold]{session}"
+          format_center "{tabs}"
+          format_right  "{command_git_branch} {datetime}"
+          format_space  ""
+
+          border_enabled  "false"
+          border_char     "─"
+          border_format   "#[fg=#7b8496]{char}"
+          border_position "bottom"
+
+          hide_frame_for_single_pane "true"
+
+          tab_normal   "#[fg=#6C7086,bg=#181825] {index} {name} "
+          tab_active   "#[fg=#9399B2,bg=#11111B,bold,italic] {index} {name} "
         }
       }
+    }
+    session_manager {
+      plugin location="https://github.com/blank2121/zellij-jump-list/releases/latest/download/zellij-jump-list.wasm" {
+        jump_tool "zoxide"
+      }
+    }
   '';
-
-  # format_left   "{mode} #[fg=#89B4FA,bold]{session}"
-  # format_center "{tabs}"
-  # format_right  "{command_git_branch} {datetime}"
-  # format_space  ""
-
-  # border_enabled  "false"
-  # border_char     "─"
-  # border_format   "#[fg=#7b8496]{char}"
-  # border_position "bottom"
-
-  # hide_frame_for_single_pane "true"
-
-  # xdg.configFile."zellij/layouts/default.kdl".text = ''
-  #   load_plugins {
-  #       "https://github.com/dj95/zjstatus/releases/latest/download/zjframes.wasm" {
-  #           hide_frame_for_single_pane       "true"
-  #           hide_frame_except_for_search     "true"
-  #           hide_frame_except_for_scroll     "true"
-  #           hide_frame_except_for_fullscreen "true"
-  #       }
-  #   }
-
-  #   keybinds {
-  #       normal clear-defaults=true {
-  #           // https://shoukoo.github.io/blog/zellij-love-neovim/
-  #           bind "Ctrl b" { SwitchToMode "Tmux"; }
-
-  #           // bind "Esc" { SwitchToMode "Normal"; }
-  #           // bind "g" { SwitchToMode "Locked"; }
-  #           // bind "p" { SwitchToMode "Pane"; }
-  #           // bind "t" { SwitchToMode "Tab"; }
-  #           // bind "n" { SwitchToMode "Resize"; }
-  #           // bind "h" { SwitchToMode "Move"; }
-  #           // bind "s" { SwitchToMode "Scroll"; }
-  #           // bind "o" { SwitchToMode "Session"; }
-  #           // bind "q" { Quit; }
-  #       }
-  #   }
-
-  #   layout {
-  #       pane size=1 borderless=true {
-  #           plugin location="https://github.com/evgenymng/zellij-compact-bar/releases/download/1.0.0/compact-bar.wasm" {
-  #               inactive_color "#505050"
-  #               text_background_color "#1e1e1e"
-  #               background_color "#1e1e1e"
-  #               dot "•"
-  #               dot_locked_color "#404040"
-  #               dot_normal_color "#70a040"
-  #               dot_action_color "#ffb070"
-  #           }
-  #       }
-
-  #       // pane size=1 borderless=true {
-  #       //     plugin location="status-bar"
-  #       // }
-
-  #       children
-
-  #       pane size=1 borderless=true {
-  #           plugin location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
-  #               format_left   "{mode} #[fg=#89B4FA,bold]{session}"
-  #               format_center "{tabs}"
-  #               format_right  "{command_git_branch} {datetime}"
-  #               format_space  ""
-  #           }
-  #       }
-  #   }
-  # '';
-
-  # default_layout "compact"
-  # layout {
-  #   pane borderless=true
-  #   pane size=1 borderless=true {
-  #       plugin location="zjframes"
-  #   }
-  # }
-  #simplified_ui true
-  #pane_frames false
 }
