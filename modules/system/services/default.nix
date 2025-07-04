@@ -18,6 +18,7 @@
   ./n8n.nix
   ./nfs.nix
   ./nitter.nix
+  ./nocodb.nix
   ./ollama.nix
   ./paperless.nix
   ./restic.nix

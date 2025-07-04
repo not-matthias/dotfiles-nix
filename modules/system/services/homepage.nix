@@ -164,8 +164,8 @@ in {
             NocoDB = {
               description = "NocoDB";
               icon = "nocodb";
-              href = "http://desktop.local:8080";
-              siteMonitor = "http://desktop.local:8080";
+              href = "https://nocodb.${desktopDomain}";
+              siteMonitor = "https://nocodb.${desktopDomain}";
             };
           }
         ];

@@ -65,6 +65,7 @@
     tandoor-recipes.enable = true;
     jellyfin.enable = true;
     karakeep.enable = true;
+    nocodb.enable = true;
   };
 
   networking = {
