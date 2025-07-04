@@ -17,6 +17,9 @@
       google-chrome
       unstable.lmstudio
       unstable.nodejs
+      notepad-next
+      unstable.opencode
+      mission-center
 
       vlc
       evince
@@ -109,7 +112,7 @@
       audioFolder = "/home/${user}/Audiobooks";
     };
     vpn.enable = true;
-    safeeyes.enable = true;
+    safeeyes.enable = false;
     navidrome = {
       enable = true;
       scrobblerUrl = "http://desktop.local:42010/apis/listenbrainz/1/";
@@ -149,7 +152,7 @@
   age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
 
   networking = {
-    hostName = "laptop";
+    hostName = "framework";
     networkmanager.enable = true;
 
     # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
