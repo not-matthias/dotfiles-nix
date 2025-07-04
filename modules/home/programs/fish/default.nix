@@ -77,6 +77,7 @@ in {
         end
       '';
 
+      # FIXME: We still have to use 'export GRANTED_ALIAS_CONFIGURED="true"' when running with bash
       assume = ''
         set -x GRANTED_ALIAS_CONFIGURED "true"
         source ${unstable.granted}/share/assume.fish $argv
