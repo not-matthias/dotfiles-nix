@@ -24,4 +24,5 @@
   # ./wofi.nix
   ./zellij.nix
   ./zoxide.nix
+  ./low-battery-alert.nix
 ]

@@ -38,6 +38,7 @@
       nixd
     ];
     programs = {
+      low-battery-alert.enable = true;
       walker = {
         enable = true;
         runAsService = true;
