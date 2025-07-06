@@ -61,6 +61,7 @@ in {
     interactiveShellInit =
       ''
         eval (${pkgs.direnv}/bin/direnv hook fish)
+        atuin init fish --disable-up-arrow | source
       ''
       + fishPrompt;
     shellInit = ''
