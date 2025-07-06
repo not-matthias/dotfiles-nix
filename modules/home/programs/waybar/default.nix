@@ -16,10 +16,15 @@
 
   programs.waybar = let
     dnd = pkgs.writeShellScriptBin "dnd" ''
-      if dunstctl is-paused | grep -q "true"; then
+      COUNT=$(dunstctl count waiting)
+      PAUSED=$(dunstctl is-paused)
+
+      if [ "$PAUSED" = "true" ]; then
           echo '{"text": "󰂛", "tooltip": "Notifications Paused", "class": "paused"}'
+      elif [ "$COUNT" != "0" ]; then
+          echo '{"text": "󰂚", "tooltip": "Notifications Active", "class": "active"}'
       else
-          echo '{"text": "󰂚", "tooltip": "Notifications Active"}'
+          echo '{"text": "󰂚", "tooltip": "No new notifications", "class": "no-notifications"}'
       fi
     '';
   in {

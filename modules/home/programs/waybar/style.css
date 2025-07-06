@@ -47,7 +47,15 @@ window#waybar {
 }
 
 #custom-dnd.paused {
-    color: #f07178;
+    color: #f38ba8;
+}
+
+#custom-dnd.active {
+    color: #a6e3a1;
+}
+
+#custom-dnd.no-notifications {
+    color: #999999;
 }
 
 #bluetooth.on {
