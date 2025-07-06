@@ -27,7 +27,6 @@
       # Install desktop apps rather than websites
       discord
       todoist-electron
-      spotify
       unstable.feishin
 
       vlc

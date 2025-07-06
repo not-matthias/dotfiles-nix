@@ -59,8 +59,8 @@
     maloja.enable = true;
     crm.enable = true;
     kokoro = {
-      enable = false;
-      useGpu = true;
+      enable = true;
+      useGpu = false;
     };
     tandoor-recipes.enable = true;
     jellyfin.enable = true;

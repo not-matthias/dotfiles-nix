@@ -49,6 +49,12 @@
         rounded_corners false
       }
     }
+
+    session_manager {
+      plugin location="https://github.com/blank2121/zellij-jump-list/releases/latest/download/zellij-jump-list.wasm" {
+        jump_tool "zoxide"
+      }
+    }
   '';
 
   xdg.configFile."zellij/layouts/default.kdl".text = ''
@@ -57,7 +63,7 @@
         plugin location="https://github.com/evgenymng/zellij-compact-bar/releases/latest/download/compact-bar.wasm"
       }
 
-      children
+      pane
 
       pane size=2 borderless=true {
         plugin location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
@@ -76,11 +82,6 @@
           tab_normal   "#[fg=#6C7086,bg=#181825] {index} {name} "
           tab_active   "#[fg=#9399B2,bg=#11111B,bold,italic] {index} {name} "
         }
-      }
-    }
-    session_manager {
-      plugin location="https://github.com/blank2121/zellij-jump-list/releases/latest/download/zellij-jump-list.wasm" {
-        jump_tool "zoxide"
       }
     }
   '';

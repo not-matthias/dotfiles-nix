@@ -11,7 +11,7 @@ in {
     services.gpg-agent = {
       enableSshSupport = true;
       enableExtraSocket = true;
-      pinentryPackage = pkgs.pinentry-qt;
+      pinentry.package = pkgs.pinentry-qt;
     };
   };
 }

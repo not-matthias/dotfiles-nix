@@ -25,11 +25,11 @@ in {
     # starting activitywatch should only start awatcher if wayland-session.target is active
     systemd.user.services.activitywatch-watcher-awatcher = {
       Unit = {
-        After = ["wayland-session.target"];
-        Requisite = ["wayland-session.target"];
-        PartOf = ["wayland-session.target"];
+        After = ["graphical-session.target"];
+        Requisite = ["graphical-session.target"];
+        PartOf = ["graphical-session.target"];
       };
-      Install = {WantedBy = ["wayland-session.target"];};
+      Install = {WantedBy = ["graphical-session.target"];};
     };
 
     systemd.user.services.activitywatch-watcher-window-hyprland = {
