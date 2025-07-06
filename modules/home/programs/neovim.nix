@@ -63,6 +63,7 @@
       diffview.enable = true;
       zen-mode.enable = true;
       bufferline.enable = true;
+      toggleterm.enable = true;
 
       # QoL
       lastplace.enable = true;
