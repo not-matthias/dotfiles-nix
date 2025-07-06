@@ -9,6 +9,8 @@
   imports = [(import ./hardware-configuration.nix)];
   home-manager.users.${user} = {
     home.packages = with pkgs; [
+      flakes.zen-browser.packages."${system}".default
+
       unstable.zed-editor
       unstable.supersonic
       unstable.vscode
@@ -20,6 +22,13 @@
       notepad-next
       unstable.opencode
       mission-center
+      jujutsu
+
+      # Install desktop apps rather than websites
+      discord
+      todoist-electron
+      spotify
+      unstable.feishin
 
       vlc
       evince
@@ -31,9 +40,9 @@
       calibre
       fastfetch
 
+      # Work
       slack
       awscli2
-      flakes.zen-browser.packages."${system}".default
 
       # Language servers
       taplo
@@ -119,7 +128,6 @@
     };
     caddy.enable = true;
     yubikey.enable = true;
-    n8n.enable = true;
   };
 
   hardware = {
