@@ -15,7 +15,6 @@
       unstable.supersonic
       unstable.vscode
       unstable.obsidian
-      unstable.todoist-electron
       google-chrome
       unstable.lmstudio
       unstable.nodejs
@@ -23,6 +22,8 @@
       unstable.opencode
       mission-center
       jujutsu
+      unstable.beeper
+      unstable.claude-code
 
       # Install desktop apps rather than websites
       discord
@@ -98,6 +99,13 @@
     fcitx5.enable = true;
     nix-ld.enable = true;
     noisetorch.enable = true;
+  };
+
+  # FIXME: Find a better way to configure this (only needed for MCP)
+  environment.sessionVariables = {
+    # Playwright configuration
+    PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+    PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
   };
 
   services = {
