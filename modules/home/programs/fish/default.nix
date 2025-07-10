@@ -32,7 +32,7 @@ in {
       "..." = "cd ../..";
       "...." = "cd ../../..";
 
-      "gca" = "git commit --amend";
+      "gca" = "git commit --amend --no-edit";
       "gc" = "git commit";
       "gcm" = "git commit -m";
       "gs" = "git status";
@@ -44,7 +44,7 @@ in {
       "gpsf" = "git push --force-with-lease";
       "grbi" = "git rebase -i";
       "grba" = "git rebase --abort";
-      "gwip" = "git commit -m \"chore: wip\" --no-verify";
+      "gwip" = "git commit -m \"chore: wip [skip ci]\" --no-verify";
 
       "btm" = "btm --battery";
 
