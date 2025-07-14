@@ -3,14 +3,11 @@
   unstable,
   user,
   lib,
-  flakes,
   ...
 }: {
   imports = [(import ./hardware-configuration.nix)];
   home-manager.users.${user} = {
     home.packages = with pkgs; [
-      flakes.zen-browser.packages."${system}".default
-
       unstable.zed-editor
       unstable.supersonic
       unstable.vscode
@@ -63,6 +60,7 @@
 
       gitui.enable = true;
       firefox.enable = false;
+      zen-browser.enable = true;
 
       obs-studio = {
         enable = true;

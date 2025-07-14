@@ -12,6 +12,7 @@
   ./direnv.nix
   ./dunst.nix
   ./firefox.nix
+  ./zen-browser.nix
   ./git.nix
   ./gitui.nix
   ./helix.nix
