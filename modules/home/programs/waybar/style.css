@@ -3,51 +3,208 @@
     border-radius: 0;
     padding: 0;
     margin: 0;
-    font-size: 14px;
+    font-size: 12px;
+    font-family: "JetBrains Mono", "SF Mono", "Monaco", "Inconsolata", "Fira Code", "Source Code Pro", monospace;
 }
 
 window#waybar {
-    background: #000000;
+    background: transparent;
     color: white;
 }
 
 /* Workspaces */
+#workspaces {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    padding: 3px;
+    margin: 3px 3px 3px 8px;
+}
+
 #workspaces button {
-    padding: 0px 10px;
-    color: white;
+    padding: 3px 8px;
+    color: #cdd6f4;
+    background: transparent;
+    border-radius: 5px;
+    margin: 0 2px;
     transition: all 0.3s ease-in-out;
 }
 
 #workspaces button.active {
-    background-color: #333333;
-    color: white;
+    background-color: #89b4fa;
+    color: #1e1e2e;
     transition: all 0.3s ease-in-out;
 }
 
-#workspaces button:hover {
-    background-color: #5c5c5c;
-    color: white;
+#workspaces button:hover:not(.active) {
+    background-color: rgba(205, 214, 244, 0.1);
+    color: #cdd6f4;
+    transition: all 0.3s ease-in-out;
 }
 
-/* Different widgets */
+
+/* Individual modules styling */
 #clock,
 #bluetooth,
 #language,
-#tray,
 #pulseaudio,
 #network,
-#battery {
-    padding: 0px 10px;
-    border-left: 1px solid lightgray;
+#battery,
+#custom-pomodoro,
+#custom-dnd,
+#custom-weather,
+#custom-power_profile,
+#custom-temperature {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 4px 8px;
+    margin: 3px 2px;
+    border-radius: 6px;
+    color: #cdd6f4;
+    border: none;
 }
 
-#custom-dnd {
-    padding: 0px 10px;
-    border-left: 1px solid lightgray;
+/* Grouped modules styling */
+.group-system {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 6px;
+    margin: 3px 2px;
+    padding: 0;
+}
+
+.group-system > * {
+    background: transparent;
+    margin: 0;
+    border-radius: 0;
+    padding: 4px 8px;
+}
+
+.group-system > *:first-child {
+    border-radius: 6px 0 0 6px;
+}
+
+.group-system > *:last-child {
+    border-radius: 0 6px 6px 0;
+}
+
+.group-connectivity {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 6px;
+    margin: 3px 2px;
+    padding: 0;
+}
+
+.group-connectivity > * {
+    background: transparent;
+    margin: 0;
+    border-radius: 0;
+    padding: 4px 8px;
+}
+
+.group-connectivity > *:first-child {
+    border-radius: 6px 0 0 6px;
+}
+
+.group-connectivity > *:last-child {
+    border-radius: 0 6px 6px 0;
+}
+
+.group-utils {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 6px;
+    margin: 3px 2px;
+    padding: 0;
+}
+
+.group-utils > * {
+    background: transparent;
+    margin: 0;
+    border-radius: 0;
+    padding: 4px 8px;
+}
+
+.group-utils > *:first-child {
+    border-radius: 6px 0 0 6px;
+}
+
+.group-utils > *:last-child {
+    border-radius: 0 6px 6px 0;
+}
+
+/* Standalone modules need individual styling */
+#cpu,
+#memory,
+#custom-temperature {
+    background: transparent;
+    padding: 4px 8px;
+    margin: 0;
+    border-radius: 0;
+    color: #cdd6f4;
+    border: none;
+}
+
+#tray {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 4px 8px;
+    margin: 3px 8px 3px 2px;
+    border-radius: 6px;
+    color: #cdd6f4;
+}
+
+/* Module-specific colors */
+#battery {
+    color: #a6e3a1;
+}
+
+#battery.warning {
+    color: #f9e2af;
+}
+
+#battery.critical {
+    color: #f38ba8;
+}
+
+#cpu {
+    color: #89b4fa;
+}
+
+#memory {
+    color: #cba6f7;
+}
+
+#network {
+    color: #94e2d5;
+}
+
+#pulseaudio {
+    color: #fab387;
+}
+
+#clock {
+    color: #f5e0dc;
+    font-weight: bold;
+}
+
+#language {
+    color: #f2cdcd;
+}
+
+/* Custom modules */
+#custom-pomodoro.idle {
+    color: #6c7086;
+}
+
+#custom-pomodoro.work {
+    color: #f38ba8;
+    background: rgba(243, 139, 168, 0.1);
+}
+
+#custom-pomodoro.break {
+    color: #a6e3a1;
+    background: rgba(166, 227, 161, 0.1);
 }
 
 #custom-dnd.paused {
     color: #f38ba8;
+    background: rgba(243, 139, 168, 0.1);
 }
 
 #custom-dnd.active {
@@ -55,17 +212,86 @@ window#waybar {
 }
 
 #custom-dnd.no-notifications {
-    color: #999999;
+    color: #6c7086;
 }
 
+/* Weather module */
+#custom-weather {
+    color: #94e2d5;
+}
+
+#custom-weather.disconnected {
+    color: #6c7086;
+}
+
+/* Power profile module */
+#custom-power_profile.performance {
+    color: #f38ba8;
+    background: rgba(243, 139, 168, 0.1);
+}
+
+#custom-power_profile.balanced {
+    color: #89b4fa;
+}
+
+#custom-power_profile.power-saver {
+    color: #a6e3a1;
+    background: rgba(166, 227, 161, 0.1);
+}
+
+#custom-power_profile.unknown,
+#custom-power_profile.unavailable {
+    color: #6c7086;
+}
+
+/* Temperature module */
+#custom-temperature.normal {
+    color: #94e2d5;
+}
+
+#custom-temperature.warning {
+    color: #f9e2af;
+    background: rgba(249, 226, 175, 0.1);
+}
+
+#custom-temperature.critical {
+    color: #f38ba8;
+    background: rgba(243, 139, 168, 0.1);
+}
+
+#custom-temperature.unavailable {
+    color: #6c7086;
+}
+
+/* Bluetooth states */
 #bluetooth.on {
     color: #89b4fa;
 }
 
-#bluetooth.off, #bluetooth.disabled {
-    color: #999999;
+#bluetooth.off,
+#bluetooth.disabled {
+    color: #6c7086;
 }
 
 #bluetooth.connected {
     color: #a6e3a1;
+}
+
+/* Hover effects */
+#clock:hover,
+#bluetooth:hover,
+#language:hover,
+#pulseaudio:hover,
+#network:hover,
+#battery:hover,
+#cpu:hover,
+#memory:hover,
+#custom-pomodoro:hover,
+#custom-dnd:hover,
+#custom-weather:hover,
+#custom-power_profile:hover,
+#custom-temperature:hover,
+#tray:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease-in-out;
 }

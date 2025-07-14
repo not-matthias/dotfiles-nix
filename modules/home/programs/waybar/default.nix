@@ -27,29 +27,211 @@
           echo '{"text": "󰂚", "tooltip": "No new notifications", "class": "no-notifications"}'
       fi
     '';
+
+    weather = pkgs.writeShellScriptBin "weather" ''
+      # Get weather data from wttr.in
+      WEATHER=$(curl -s "https://wttr.in/?format=%t&m" 2>/dev/null | tr -d '+')
+      if [ -z "$WEATHER" ]; then
+          echo '{"text": "weather", "tooltip": "Weather unavailable", "class": "disconnected"}'
+      else
+          ICON="🌤"
+          case $WEATHER in
+              *"-"*) ICON="🥶" ;;
+              *"0"*|*"1"*|*"2"*|*"3"*|*"4"*|*"5"*) ICON="❄️" ;;
+              *"25"*|*"26"*|*"27"*|*"28"*|*"29"*|*"30"*) ICON="🌤" ;;
+              *) ICON="☀️" ;;
+          esac
+          echo "{\"text\": \"$WEATHER\", \"tooltip\": \"Weather: $WEATHER\", \"class\": \"weather\"}"
+      fi
+    '';
+
+    power_profile = pkgs.writeShellScriptBin "power_profile" ''
+      if command -v powerprofilesctl >/dev/null 2>&1; then
+          PROFILE=$(powerprofilesctl get 2>/dev/null || echo "unknown")
+          case "$PROFILE" in
+              "power-saver") echo '{"text": "eco", "tooltip": "Power Saver Mode", "class": "power-saver"}' ;;
+              "balanced") echo '{"text": "bal", "tooltip": "Balanced Mode", "class": "balanced"}' ;;
+              "performance") echo '{"text": "perf", "tooltip": "Performance Mode", "class": "performance"}' ;;
+              *) echo '{"text": "pwr", "tooltip": "Power Profile Unknown", "class": "unknown"}' ;;
+          esac
+      else
+          echo '{"text": "pwr", "tooltip": "Power Profiles Not Available", "class": "unavailable"}'
+      fi
+    '';
+
+    temperature = pkgs.writeShellScriptBin "temperature" ''
+      # Try to get CPU temperature from different sources
+      TEMP=""
+
+      # Try thermal zone (most common)
+      if [ -f /sys/class/thermal/thermal_zone0/temp ]; then
+          TEMP_RAW=$(cat /sys/class/thermal/thermal_zone0/temp)
+          TEMP=$((TEMP_RAW / 1000))
+      # Try sensors command if available
+      elif command -v sensors >/dev/null 2>&1; then
+          TEMP=$(sensors 2>/dev/null | grep -E "Core 0|Tctl|Tdie" | head -1 | grep -oE '[0-9]+\.[0-9]+' | head -1 | cut -d. -f1)
+      fi
+
+      if [ -n "$TEMP" ] && [ "$TEMP" -gt 0 ]; then
+          if [ "$TEMP" -gt 80 ]; then
+              CLASS="critical"
+          elif [ "$TEMP" -gt 70 ]; then
+              CLASS="warning"
+          else
+              CLASS="normal"
+          fi
+          echo "{\"text\": \"''${TEMP}°C\", \"tooltip\": \"CPU Temperature: ''${TEMP}°C\", \"class\": \"$CLASS\"}"
+      else
+          echo '{"text": "temp", "tooltip": "Temperature unavailable", "class": "unavailable"}'
+      fi
+    '';
+
+    pomodoro = pkgs.writeShellScriptBin "pomodoro" ''
+      STATE_FILE="/tmp/waybar-pomodoro"
+
+      # Initialize state file if it doesn't exist
+      if [ ! -f "$STATE_FILE" ]; then
+          echo "idle" > "$STATE_FILE"
+      fi
+
+      STATE=$(cat "$STATE_FILE")
+
+      case "$1" in
+          "start")
+              echo "work:$(date +%s):1500" > "$STATE_FILE"  # 25 min work session
+              pkill -RTMIN+9 waybar
+              ;;
+          "break")
+              echo "break:$(date +%s):300" > "$STATE_FILE"  # 5 min break
+              pkill -RTMIN+9 waybar
+              ;;
+          "stop")
+              echo "idle" > "$STATE_FILE"
+              pkill -RTMIN+9 waybar
+              ;;
+          "toggle")
+              if [ "$STATE" = "idle" ]; then
+                  echo "work:$(date +%s):1500" > "$STATE_FILE"
+              else
+                  echo "idle" > "$STATE_FILE"
+              fi
+              pkill -RTMIN+9 waybar
+              ;;
+          *)
+              # Display current state
+              if [ "$STATE" = "idle" ]; then
+                  echo '{"text": "󰔟", "tooltip": "Pomodoro Timer (Click to start)", "class": "idle"}'
+              else
+                  IFS=':' read -r mode start_time duration <<< "$STATE"
+                  current_time=$(date +%s)
+                  elapsed=$((current_time - start_time))
+                  remaining=$((duration - elapsed))
+
+                  if [ $remaining -le 0 ]; then
+                      if [ "$mode" = "work" ]; then
+                          echo "break:$(date +%s):300" > "$STATE_FILE"
+                          notify-send "Pomodoro" "Work session complete! Take a 5-minute break."
+                          echo '{"text": "󰔟", "tooltip": "Break time! (5:00)", "class": "break"}'
+                      else
+                          echo "idle" > "$STATE_FILE"
+                          notify-send "Pomodoro" "Break complete! Ready for next session."
+                          echo '{"text": "󰔟", "tooltip": "Pomodoro Timer (Click to start)", "class": "idle"}'
+                      fi
+                  else
+                      minutes=$((remaining / 60))
+                      seconds=$((remaining % 60))
+                      time_str=$(printf "%d:%02d" $minutes $seconds)
+
+                      if [ "$mode" = "work" ]; then
+                          echo "{\"text\": \"󰔟\", \"tooltip\": \"Work session: $time_str\", \"class\": \"work\"}"
+                      else
+                          echo "{\"text\": \"󰔟\", \"tooltip\": \"Break time: $time_str\", \"class\": \"break\"}"
+                      fi
+                  fi
+              fi
+              ;;
+      esac
+    '';
   in {
     settings.mainbar = {
       layer = "top";
       position = "top";
-      height = 20;
+      height = 16;
       modules-left = [
         "hyprland/workspaces"
       ];
-      modules-right = [
-        "custom/dnd"
-        "hyprland/language"
-        "bluetooth"
-        "battery"
-        "pulseaudio"
+      modules-center = [
         "clock"
+      ];
+      modules-right = [
+        "group/system"
+        "group/utils"
+        "group/connectivity"
+        "battery"
         "tray"
       ];
+
+      # Group definitions
+      "group/system" = {
+        orientation = "horizontal";
+        modules = [
+          "custom/temperature"
+          "cpu"
+          "memory"
+        ];
+      };
+
+      "group/utils" = {
+        orientation = "horizontal";
+        modules = [
+          "custom/pomodoro"
+          "custom/dnd"
+        ];
+      };
+
+      "group/connectivity" = {
+        orientation = "horizontal";
+        modules = [
+          "bluetooth"
+          "pulseaudio"
+        ];
+      };
+
+      "custom/pomodoro" = {
+        return-type = "json";
+        format = "{text}";
+        exec = "${pomodoro}/bin/pomodoro";
+        on-click = "${pomodoro}/bin/pomodoro toggle";
+        signal = 9;
+        interval = 1;
+      };
       "custom/dnd" = {
         return-type = "json";
         format = "{text}";
         exec = "${dnd}/bin/dnd";
         on-click = "dunstctl set-paused toggle";
         signal = 8;
+      };
+      "custom/weather" = {
+        return-type = "json";
+        format = "{text}";
+        exec = "${weather}/bin/weather";
+        interval = 600; # Update every 10 minutes
+      };
+      "custom/power_profile" = {
+        return-type = "json";
+        format = "{text}";
+        exec = "${power_profile}/bin/power_profile";
+        interval = 30;
+        on-click = "powerprofilesctl set performance";
+        on-click-right = "powerprofilesctl set power-saver";
+        on-click-middle = "powerprofilesctl set balanced";
+      };
+      "custom/temperature" = {
+        return-type = "json";
+        format = "{text}";
+        exec = "${temperature}/bin/temperature";
+        interval = 5;
       };
       "hyprland/language" = {
         format-en = "en";
@@ -65,8 +247,7 @@
       };
 
       battery = {
-        format = "{capacity}% {icon}";
-        format-icons = ["" "" "" "" ""];
+        format = "bat {capacity}%";
         states = {
           good = 95;
           warning = 30;
@@ -77,21 +258,21 @@
         format = "{:%Y-%m-%d %H:%M}";
       };
       memory = {
-        format = "󰍛 {}%";
-        format-alt = "󰍛 {used}/{total} GiB";
+        format = "ram {}%";
+        format-alt = "ram {used}/{total} GiB";
         interval = 5;
       };
       cpu = {
-        format = "󰻠 {usage}%";
-        format-alt = "󰻠 {avg_frequency} GHz";
+        format = "cpu {usage}%";
+        format-alt = "cpu {avg_frequency} GHz";
         interval = 5;
       };
       network = {
-        format-wifi = "  {signalStrength}%";
-        format-ethernet = "󰈀 100% ";
+        format-wifi = "wifi {signalStrength}%";
+        format-ethernet = "eth 100%";
         tooltip-format = "Connected to {essid} {ifname} via {gwaddr}";
         format-linked = "{ifname} (No IP)";
-        format-disconnected = "󰖪 0% ";
+        format-disconnected = "wifi 0%";
       };
       tray = {
         icon-size = 16;
@@ -106,11 +287,8 @@
         on-click = "blueman-manager";
       };
       pulseaudio = {
-        format = "{icon} {volume}%";
-        format-muted = "󰝟";
-        format-icons = {
-          default = ["󰕿" "󰖀" "󰕾"];
-        };
+        format = "vol {volume}%";
+        format-muted = "vol muted";
         # on-scroll-up= "bash ~/.scripts/volume up";
         # on-scroll-down= "bash ~/.scripts/volume down";
         scroll-step = 1;
