@@ -2,14 +2,14 @@
   _1min = 60;
 
   # Timeouts for swayidle
-  # - Timeout:      0 seconds
-  # - Lock:         60 seconds
+  # - Timeout:      1 minute
+  # - Lock:         4 minutes
   # - Screen Off:   5 minutes
   # - Suspend:      10 minutes
-  notifyTimeout = 5;
-  lockTimeout = notifyTimeout + 60;
+  notifyTimeout = 1 * _1min;
+  lockTimeout = 4 * _1min;
   screenOffTimeout = 5 * _1min;
-  suspendTimeout = 2 * lockTimeout;
+  suspendTimeout = 10 * _1min;
 
   displayCmd = status: "${pkgs.hyprland}/bin/hyprctl dispatch dpms ${status}";
   lockCmd = "${pkgs.swaylock}/bin/swaylock --daemonize";
