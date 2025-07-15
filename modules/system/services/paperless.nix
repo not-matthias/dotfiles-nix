@@ -13,6 +13,9 @@ in {
       address = "0.0.0.0";
       settings = {
         PAPERLESS_OCR_LANGUAGE = "deu+eng";
+        PAPERLESS_ALLOWED_HOSTS = "paperless.${domain},localhost,127.0.0.1";
+        PAPERLESS_CSRF_TRUSTED_ORIGINS = "https://paperless.${domain}";
+
         PAPERLESS_OCR_USER_ARGS = {
           # Use lossless optimizer
           # See: https://ocrmypdf.readthedocs.io/en/latest/optimizer.html
