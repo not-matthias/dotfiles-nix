@@ -152,6 +152,57 @@
               ;;
       esac
     '';
+
+    break_timer = pkgs.writeShellScriptBin "break_timer" ''
+      STATE_FILE="/tmp/waybar-break-timer"
+
+      # Initialize state file if it doesn't exist
+      if [ ! -f "$STATE_FILE" ]; then
+          echo "idle" > "$STATE_FILE"
+      fi
+
+      STATE=$(cat "$STATE_FILE")
+
+      case "$1" in
+          "start")
+              # Prompt for break duration
+              DURATION=$(echo -e "5\n10\n15\n20\n30\n45\n60" | ${pkgs.wofi}/bin/wofi --dmenu --prompt "Break duration (minutes):")
+              if [ -n "$DURATION" ] && [ "$DURATION" -gt 0 ]; then
+                  SECONDS=$((DURATION * 60))
+                  echo "break:$(date +%s):$SECONDS" > "$STATE_FILE"
+                  notify-send "Break Timer" "Break started for $DURATION minutes"
+                  pkill -RTMIN+10 waybar
+              fi
+              ;;
+          "stop")
+              echo "idle" > "$STATE_FILE"
+              notify-send "Break Timer" "Break cancelled"
+              pkill -RTMIN+10 waybar
+              ;;
+          *)
+              # Display current state
+              if [ "$STATE" = "idle" ]; then
+                  echo '{"text": "󰒲", "tooltip": "Break Timer (Click to start)", "class": "idle"}'
+              else
+                  IFS=':' read -r mode start_time duration <<< "$STATE"
+                  current_time=$(date +%s)
+                  elapsed=$((current_time - start_time))
+                  remaining=$((duration - elapsed))
+
+                  if [ $remaining -le 0 ]; then
+                      echo "idle" > "$STATE_FILE"
+                      notify-send "Break Timer" "Break time is over! Welcome back." --urgency=critical
+                      echo '{"text": "󰒲", "tooltip": "Break Timer (Click to start)", "class": "idle"}'
+                  else
+                      minutes=$((remaining / 60))
+                      seconds=$((remaining % 60))
+                      time_str=$(printf "%d:%02d" $minutes $seconds)
+                      echo "{\"text\": \"󰒲\", \"tooltip\": \"Break: $time_str remaining\", \"class\": \"active\"}"
+                  fi
+              fi
+              ;;
+      esac
+    '';
   in {
     settings.mainbar = {
       layer = "top";
@@ -185,6 +236,7 @@
         orientation = "horizontal";
         modules = [
           "custom/pomodoro"
+          "custom/break-timer"
           "custom/dnd"
         ];
       };
@@ -203,6 +255,15 @@
         exec = "${pomodoro}/bin/pomodoro";
         on-click = "${pomodoro}/bin/pomodoro toggle";
         signal = 9;
+        interval = 1;
+      };
+      "custom/break-timer" = {
+        return-type = "json";
+        format = "{text}";
+        exec = "${break_timer}/bin/break_timer";
+        on-click = "${break_timer}/bin/break_timer start";
+        on-click-right = "${break_timer}/bin/break_timer stop";
+        signal = 10;
         interval = 1;
       };
       "custom/dnd" = {

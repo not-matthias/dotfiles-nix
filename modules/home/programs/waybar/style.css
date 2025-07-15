@@ -26,21 +26,12 @@ window#waybar {
     background: transparent;
     border-radius: 5px;
     margin: 0 2px;
-    transition: all 0.3s ease-in-out;
 }
 
 #workspaces button.active {
     background-color: #89b4fa;
     color: #1e1e2e;
-    transition: all 0.3s ease-in-out;
 }
-
-#workspaces button:hover:not(.active) {
-    background-color: rgba(205, 214, 244, 0.1);
-    color: #cdd6f4;
-    transition: all 0.3s ease-in-out;
-}
-
 
 /* Individual modules styling */
 #clock,
@@ -50,6 +41,7 @@ window#waybar {
 #network,
 #battery,
 #custom-pomodoro,
+#custom-break-timer,
 #custom-dnd,
 #custom-weather,
 #custom-power_profile,
@@ -70,18 +62,18 @@ window#waybar {
     padding: 0;
 }
 
-.group-system > * {
+.group-system>* {
     background: transparent;
     margin: 0;
     border-radius: 0;
     padding: 4px 8px;
 }
 
-.group-system > *:first-child {
+.group-system>*:first-child {
     border-radius: 6px 0 0 6px;
 }
 
-.group-system > *:last-child {
+.group-system>*:last-child {
     border-radius: 0 6px 6px 0;
 }
 
@@ -92,18 +84,18 @@ window#waybar {
     padding: 0;
 }
 
-.group-connectivity > * {
+.group-connectivity>* {
     background: transparent;
     margin: 0;
     border-radius: 0;
     padding: 4px 8px;
 }
 
-.group-connectivity > *:first-child {
+.group-connectivity>*:first-child {
     border-radius: 6px 0 0 6px;
 }
 
-.group-connectivity > *:last-child {
+.group-connectivity>*:last-child {
     border-radius: 0 6px 6px 0;
 }
 
@@ -114,18 +106,18 @@ window#waybar {
     padding: 0;
 }
 
-.group-utils > * {
+.group-utils>* {
     background: transparent;
     margin: 0;
     border-radius: 0;
     padding: 4px 8px;
 }
 
-.group-utils > *:first-child {
+.group-utils>*:first-child {
     border-radius: 6px 0 0 6px;
 }
 
-.group-utils > *:last-child {
+.group-utils>*:last-child {
     border-radius: 0 6px 6px 0;
 }
 
@@ -200,6 +192,15 @@ window#waybar {
 #custom-pomodoro.break {
     color: #a6e3a1;
     background: rgba(166, 227, 161, 0.1);
+}
+
+#custom-break-timer.idle {
+    color: #6c7086;
+}
+
+#custom-break-timer.active {
+    color: #fab387;
+    background: rgba(250, 179, 135, 0.1);
 }
 
 #custom-dnd.paused {
@@ -287,6 +288,7 @@ window#waybar {
 #cpu:hover,
 #memory:hover,
 #custom-pomodoro:hover,
+#custom-break-timer:hover,
 #custom-dnd:hover,
 #custom-weather:hover,
 #custom-power_profile:hover,
