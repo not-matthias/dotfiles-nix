@@ -94,6 +94,7 @@
   };
 
   programs = {
+    zen-browser.enable = true;
     fcitx5.enable = true;
     nix-ld.enable = true;
     noisetorch.enable = true;
