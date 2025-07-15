@@ -94,6 +94,10 @@
 
   age.identityPaths = ["/etc/ssh/ssh_host_rsa_key"];
 
+  programs = {
+    sccache.enable = true;
+  };
+
   # TODO: Change to hardware.virtualization
   virtualisation = {
     docker = {
