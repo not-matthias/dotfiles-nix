@@ -44,7 +44,7 @@
       useNvidia = true;
     };
     miniflux.enable = true;
-    adguardhome.enable = true;
+    adguardhome.enable = false;
     memos.enable = true;
     scrutiny.enable = true;
     homepage-dashboard.enable = true;
