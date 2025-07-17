@@ -44,6 +44,9 @@ in {
       reverse_proxy http://127.0.0.1:9999
     '';
 
-    services.restic.backups.nas.paths = ["/var/lib/karakeep"];
+    services.restic = {
+      paths = ["/var/lib/karakeep"];
+      excludes = ["/var/lib/karakeep/assets"];
+    };
   };
 }

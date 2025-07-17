@@ -33,6 +33,6 @@ in {
       reverse_proxy http://127.0.0.1:42010
     '';
 
-    services.restic.backups.nas.paths = ["/var/lib/maloja"];
+    services.restic.paths = ["/var/lib/maloja"];
   };
 }

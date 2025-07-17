@@ -17,5 +17,7 @@ in {
       encode zstd gzip
       reverse_proxy http://localhost:11423
     '';
+
+    services.restic.paths = ["/var/lib/tandoor-recipes"];
   };
 }

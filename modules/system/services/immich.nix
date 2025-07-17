@@ -27,5 +27,15 @@ in {
       encode zstd gzip
       reverse_proxy http://127.0.0.1:11432
     '';
+
+    services.restic.paths = [
+      "/mnt/data/immich-test"
+      "/var/lib/postgresql"
+      "/var/lib/redis-immich"
+    ];
+
+    services.restic.excludes = [
+      "/var/lib/redis-immich/dump.rdb.tmp"
+    ];
   };
 }

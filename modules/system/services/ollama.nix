@@ -53,6 +53,13 @@ in {
       reverse_proxy http://127.0.0.1:11435
     '';
 
-    services.restic.backups.nas.paths = ["/var/lib/open-webui"];
+    services.restic = {
+      paths = ["/var/lib/open-webui"];
+      excludes = [
+        "/var/lib/open-webui/models-*"
+        "/var/lib/open-webui/hub"
+        "/var/lib/open-webui/cache"
+      ];
+    };
   };
 }

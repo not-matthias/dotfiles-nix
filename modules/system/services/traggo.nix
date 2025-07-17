@@ -28,6 +28,6 @@ in {
       };
     };
 
-    services.restic.backups.nas.paths = ["/var/lib/traggo"];
+    services.restic.paths = ["/var/lib/traggo"];
   };
 }

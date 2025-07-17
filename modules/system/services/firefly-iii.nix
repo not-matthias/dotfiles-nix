@@ -10,7 +10,7 @@ in {
   config = lib.mkIf cfg.enable {
     services.firefly-iii = {
       package = unstable.firefly-iii;
-      # TODO: Set dataDir
+      dataDir = "/var/lib/firefly-iii";
       settings = {
         # TODO: Setup secret mgmt system, but for now this is fine since it's not publicly accessible
         # Generate with: openssl rand -base64 32
@@ -19,5 +19,7 @@ in {
       enableNginx = true;
       virtualHost = "firefly";
     };
+
+    services.restic.paths = ["/var/lib/firefly-iii"];
   };
 }

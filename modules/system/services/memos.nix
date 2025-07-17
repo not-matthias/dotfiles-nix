@@ -39,6 +39,6 @@ in {
       '';
     };
 
-    services.restic.backups.nas.paths = ["/var/lib/memos"];
+    services.restic.paths = ["/var/lib/memos"];
   };
 }
