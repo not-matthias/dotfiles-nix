@@ -40,13 +40,16 @@ in {
           "activitywatch.service"
         ];
         BindsTo = ["activitywatch.target"];
-        ConditionEnvironment = "WAYLAND_DISPLAY";
+        Requisite = ["graphical-session.target"];
+        PartOf = ["graphical-session.target"];
       };
       Service = {
         ExecStart = lib.getExe flakes.aw-hyprland.packages.${unstable.system}.aw-watcher-window-hyprland;
+        Restart = "on-failure";
+        RestartSec = "5s";
       };
       Install = {
-        WantedBy = ["activitywatch.target"];
+        WantedBy = ["graphical-session.target"];
       };
     };
   };
