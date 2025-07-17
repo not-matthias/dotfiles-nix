@@ -18,4 +18,7 @@ in {
   "desktop.local.key.age".publicKeys = systems;
   "temp1.age".publicKeys = systems;
   "duckdns.age".publicKeys = systems;
+  "restic-password.age".publicKeys = systems;
+  "b2-application-key.age".publicKeys = systems;
+  "b2-application-key-id.age".publicKeys = systems;
 }

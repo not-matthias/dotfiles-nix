@@ -108,6 +108,23 @@
   };
 
   services = {
+    restic = {
+      enable = true;
+      paths = [
+        "/home/${user}/Documents"
+        "/home/${user}/Pictures"
+      ];
+      excludes = [];
+      localBackup = {
+        enable = true;
+        schedule = "hourly";
+      };
+      remoteBackup = {
+        enable = true;
+        repository = "s3.eu-central-003.backblazeb2.com/framework-laptop";
+        schedule = "weekly";
+      };
+    };
     system76-scheduler = {
       enable = true;
       assignments = {

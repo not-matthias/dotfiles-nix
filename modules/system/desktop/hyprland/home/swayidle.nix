@@ -50,6 +50,7 @@ in {
         }
 
         inhibit_active=false
+        marker_file="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/idle-inhibit-active"
 
         while true; do
           should_inhibit=false
@@ -65,7 +66,7 @@ in {
             send_inhibit_signal
             inhibit_active=true
             # Create a marker file for waybar
-            touch /tmp/idle-inhibit-active
+            touch "$marker_file"
           fi
 
           # Stop inhibiting if we shouldn't and are currently
@@ -74,7 +75,7 @@ in {
             resume_swayidle
             inhibit_active=false
             # Remove marker file
-            rm -f /tmp/idle-inhibit-active
+            rm -f "$marker_file"
           fi
 
           sleep 5
