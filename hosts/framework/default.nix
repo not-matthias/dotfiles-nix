@@ -94,10 +94,10 @@
   };
 
   programs = {
-    zen-browser.enable = true;
     fcitx5.enable = true;
     nix-ld.enable = true;
     noisetorch.enable = true;
+    sccache.enable = true;
   };
 
   # FIXME: Find a better way to configure this (only needed for MCP)
@@ -172,13 +172,6 @@
     };
     fonts.enable = true;
   };
-
-  # Backup the important folders
-  services.restic.backups.nas.paths = [
-    # "/home/${user}/Documents/temp"
-    # "/home/${user}/Pictures"
-    # TODO: What to backup?
-  ];
 
   age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
 
