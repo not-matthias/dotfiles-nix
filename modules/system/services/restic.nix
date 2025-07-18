@@ -1,3 +1,5 @@
+# TODO: Allows zfs snapshots to prevent backing up corrupted data (e.g. from a service)
+# - Do it like here: https://github.com/JulianFP/NixOSConfig/blob/5d2b2dea785d0bd610c6638e282528eeb0e8539d/mainserver/backup.nix#L32-L40
 {
   pkgs,
   config,
