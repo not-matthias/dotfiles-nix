@@ -150,9 +150,9 @@
     # Version Control System Metadata
     # ==============================================================================
     # Local VCS internals (keep .git for active projects)
-    ".git/objects"
-    ".git/refs/remotes"
-    ".git/logs"
+    # Git should be backed up somewhere rather than by ourselves
+    # TODO: Does this work for gitea?
+    ".git"
     ".svn"
     ".hg"
 
@@ -221,9 +221,12 @@
 
     # General build artifacts
     "**/build"
+    "**/.build"
     "**/dist"
     "**/result"
     "**/.devenv"
+    "**/.sst"
+    "**/generated"
 
     # ==============================================================================
     # IDE and Editor Configuration/Cache
@@ -292,6 +295,12 @@
     ".config/Lidarr/logs"
     ".config/Readarr/logs"
     "*.log"
+
+    # Performance profiling data
+    "perf.data"
+    "perf.data.*"
+    "perf.jit.data"
+    "perf.jit.data.*"
 
     # Application temporary
     ".zoom"
@@ -424,11 +433,8 @@ in {
 
   config = mkIf config.services.restic.enable {
     age.secrets.restic-password.file = ../../../secrets/restic-password.age;
-    age.secrets.b2-application-key = lib.mkIf config.services.restic.remoteBackup.enable {
-      file = ../../../secrets/b2-application-key.age;
-    };
-    age.secrets.b2-application-key-id = lib.mkIf config.services.restic.remoteBackup.enable {
-      file = ../../../secrets/b2-application-key-id.age;
+    age.secrets.b2-restic-env = lib.mkIf config.services.restic.remoteBackup.enable {
+      file = ../../../secrets/b2-restic-env.age;
     };
 
     environment.systemPackages = with pkgs;
@@ -439,6 +445,7 @@ in {
         curl
         dust
         ncdu
+        redu
       ]
       ++ lib.optionals config.services.restic.enablePreviewScript [
         (pkgs.writeScriptBin "restic-preview" ''
@@ -521,8 +528,10 @@ in {
             ${
             if config.services.restic.remoteBackup.enable
             then ''
-              export B2_ACCOUNT_ID=$(cat ${config.age.secrets.b2-application-key-id.path})
-              export B2_ACCOUNT_KEY=$(cat ${config.age.secrets.b2-application-key.path})
+              # Source environment file for B2 credentials
+              set -a
+              source ${config.age.secrets.b2-restic-env.path}
+              set +a
             ''
             else ''
               # Environment already set up above, or will error out
@@ -699,18 +708,54 @@ in {
         (pkgs.writeScriptBin "restic-remote" ''
           #!/usr/bin/env bash
           set -e
+          set -e
 
           ${
             if config.services.restic.remoteBackup.enable
             then ''
-              [[ $# -eq 0 ]] && { echo "Usage: restic-remote <command> [args...]"; exit 1; }
-
               export RESTIC_REPOSITORY="${config.services.restic.remoteBackup.repository}"
               export RESTIC_PASSWORD_FILE="${config.age.secrets.restic-password.path}"
-              export B2_ACCOUNT_ID=$(cat ${config.age.secrets.b2-application-key-id.path})
-              export B2_ACCOUNT_KEY=$(cat ${config.age.secrets.b2-application-key.path})
+
+              # Source environment file for B2 credentials
+              set -a
+              source ${config.age.secrets.b2-restic-env.path}
+              set +a
 
               exec ${pkgs.restic}/bin/restic "$@"
+            ''
+            else ''
+              echo "Remote backup not enabled"
+              exit 1
+            ''
+          }
+        '')
+
+        (pkgs.writeScriptBin "redu-local" ''
+          #!/usr/bin/env bash
+          set -e
+
+          export RESTIC_REPOSITORY="${config.services.restic.localBackup.repository}"
+          export RESTIC_PASSWORD_FILE="${config.age.secrets.restic-password.path}"
+
+          exec ${pkgs.redu}/bin/redu "$@"
+        '')
+
+        (pkgs.writeScriptBin "redu-remote" ''
+          #!/usr/bin/env bash
+          set -e
+
+          ${
+            if config.services.restic.remoteBackup.enable
+            then ''
+              export RESTIC_REPOSITORY="${config.services.restic.remoteBackup.repository}"
+              export RESTIC_PASSWORD_FILE="${config.age.secrets.restic-password.path}"
+
+              # Source environment file for B2 credentials
+              set -a
+              source ${config.age.secrets.b2-restic-env.path}
+              set +a
+
+              exec ${pkgs.redu}/bin/redu "$@"
             ''
             else ''
               echo "Remote backup not enabled"
@@ -740,10 +785,7 @@ in {
           name = "remote";
           repository = config.services.restic.remoteBackup.repository;
           paths = config.services.restic.remoteBackup.paths;
-          prepareCommand = ''
-            export B2_ACCOUNT_ID=$(cat ${config.age.secrets.b2-application-key-id.path})
-            export B2_ACCOUNT_KEY=$(cat ${config.age.secrets.b2-application-key.path})
-          '';
+          environmentFile = config.age.secrets.b2-restic-env.path;
           timerConfig = {
             OnCalendar = config.services.restic.remoteBackup.schedule;
             Persistent = true;

@@ -33,6 +33,20 @@
 
   # Only enable the services here, the settings are configured in the 'services/' folder.
   services = {
+    restic = {
+      enable = true;
+      localBackup = {
+        enable = true;
+        schedule = "daily";
+        # TODO: Create zfs pool for backups and set repo
+      };
+      # remoteBackup = {
+      #   enable = true;
+      # repository = "s3:s3.eu-central-003.backblazeb2.com/desktop-71bc7ce26f614b13";
+      #   schedule = "weekly";
+      # };
+    };
+
     n8n.enable = true;
     audiobookshelf = {
       enable = true;

@@ -19,6 +19,5 @@ in {
   "temp1.age".publicKeys = systems;
   "duckdns.age".publicKeys = systems;
   "restic-password.age".publicKeys = systems;
-  "b2-application-key.age".publicKeys = systems;
-  "b2-application-key-id.age".publicKeys = systems;
+  "b2-restic-env.age".publicKeys = systems;
 }

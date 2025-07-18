@@ -117,11 +117,11 @@
       excludes = [];
       localBackup = {
         enable = true;
-        schedule = "hourly";
+        schedule = "daily";
       };
       remoteBackup = {
         enable = true;
-        repository = "s3.eu-central-003.backblazeb2.com/framework-laptop";
+        repository = "s3:s3.eu-central-003.backblazeb2.com/framework-cf912bac41384519";
         schedule = "weekly";
       };
     };
