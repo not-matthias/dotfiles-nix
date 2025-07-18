@@ -20,4 +20,5 @@ in {
   "duckdns.age".publicKeys = systems;
   "restic-password.age".publicKeys = systems;
   "b2-restic-env.age".publicKeys = systems;
+  "nitter-session.age".publicKeys = systems;
 }

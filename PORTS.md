@@ -8,6 +8,8 @@
 11426 = netdata
 11425 = firefly-iii
 11424 = ntopng
+11000 = nitter
+10999 = redlib
 8123 = home-assistant
 
 https://jellyfin.org/docs/general/networking/

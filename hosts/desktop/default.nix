@@ -80,6 +80,8 @@
     jellyfin.enable = true;
     karakeep.enable = true;
     nocodb.enable = true;
+    nitter.enable = true;
+    redlib.enable = true;
   };
 
   networking = {

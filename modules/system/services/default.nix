@@ -21,6 +21,7 @@
   ./nocodb.nix
   ./ollama.nix
   ./paperless.nix
+  ./redlib.nix
   ./restic.nix
   ./rss.nix
   ./scrutiny.nix
