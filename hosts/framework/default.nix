@@ -20,7 +20,7 @@
       mission-center
       jujutsu
       unstable.beeper
-      unstable.claude-code
+      claude-code
 
       # Install desktop apps rather than websites
       discord
@@ -113,6 +113,12 @@
       paths = [
         "/home/${user}/Documents"
         "/home/${user}/Pictures"
+        "/home/${user}/Desktop"
+
+        "/home/${user}/.ssh"
+        "/home/${user}/.gnupg"
+        "/home/${user}/.local/share/atuin"
+        "/home/${user}/.local/share/activitywatch"
       ];
       excludes = [];
       localBackup = {

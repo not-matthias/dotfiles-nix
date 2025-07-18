@@ -6,5 +6,8 @@
     (_self: super: {
       msty = super.callPackage ../../pkgs/msty.nix {};
     })
+    (_self: super: {
+      claude-code = super.callPackage ../../pkgs/claude-code/default.nix {};
+    })
   ];
 }
