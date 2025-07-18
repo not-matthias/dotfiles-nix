@@ -35,16 +35,25 @@
   services = {
     restic = {
       enable = true;
+      paths = [
+        "/mnt/data/self-hosted/immich"
+        "/mnt/data/personal/games/minecraft"
+        "/mnt/data/technical"
+        # "/mnt/data/personal/photography/"
+        # "/mnt/data/personal/phone/"
+      ];
       localBackup = {
         enable = true;
+        repository = "/mnt/data/restic";
         schedule = "daily";
-        # TODO: Create zfs pool for backups and set repo
       };
-      # remoteBackup = {
-      #   enable = true;
-      # repository = "s3:s3.eu-central-003.backblazeb2.com/desktop-71bc7ce26f614b13";
-      #   schedule = "weekly";
-      # };
+      remoteBackup = {
+        enable = true;
+        repository = "s3:s3.eu-central-003.backblazeb2.com/desktop-71bc7ce26f614b13";
+        schedule = "daily";
+      };
+
+      # server.enable = true;
     };
 
     n8n.enable = true;
@@ -64,7 +73,6 @@
     homepage-dashboard.enable = true;
     paperless.enable = true;
     gitea.enable = true;
-    restic.server.enable = true;
     navidrome = {
       enable = true;
       musicFolder = "/mnt/data/personal/music";

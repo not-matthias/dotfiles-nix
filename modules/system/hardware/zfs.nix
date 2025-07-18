@@ -34,7 +34,7 @@ in {
             "storage-pool/personal/photography" = true;
 
             "storage-pool/technical<" = true;
-            "storage-pool/restic<" = true;
+            "storage-pool/restic<" = false;
           };
         in [
           # Snapshot job

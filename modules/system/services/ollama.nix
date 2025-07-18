@@ -1,5 +1,6 @@
 {
   unstable,
+  pkgs,
   config,
   lib,
   domain,
@@ -34,7 +35,7 @@ in {
 
     services.open-webui = {
       enable = true;
-      package = unstable.open-webui;
+      package = pkgs.open-webui;
       host = "0.0.0.0";
       port = 11435;
       environment = {
