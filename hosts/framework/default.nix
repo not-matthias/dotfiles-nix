@@ -108,6 +108,7 @@
   };
 
   services = {
+    ntfy-sh.enable = true;
     restic = {
       enable = true;
       paths = [

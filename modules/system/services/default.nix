@@ -19,6 +19,7 @@
   ./nfs.nix
   ./nitter.nix
   ./nocodb.nix
+  ./ntfy.nix
   ./ollama.nix
   ./paperless.nix
   ./redlib.nix

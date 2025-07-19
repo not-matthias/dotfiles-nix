@@ -90,6 +90,7 @@
     nocodb.enable = true;
     nitter.enable = true;
     redlib.enable = true;
+    ntfy-sh.enable = true;
   };
 
   networking = {
