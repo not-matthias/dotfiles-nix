@@ -39,7 +39,7 @@
         "/mnt/data/self-hosted/immich"
         "/mnt/data/personal/games/minecraft"
         "/mnt/data/technical"
-        # "/mnt/data/personal/photography/"
+        "/mnt/data/personal/photography/"
         # "/mnt/data/personal/phone/"
       ];
       localBackup = {
