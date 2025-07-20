@@ -22,5 +22,7 @@ in {
     services.caddy.virtualHosts."nocodb.${domain}".extraConfig = ''
       reverse_proxy http://127.0.0.1:8080
     '';
+
+    services.restic.paths = ["/var/lib/nocodb"];
   };
 }
