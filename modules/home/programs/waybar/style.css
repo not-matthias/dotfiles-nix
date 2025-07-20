@@ -42,6 +42,7 @@ window#waybar {
 #battery,
 #custom-pomodoro,
 #custom-break-timer,
+#custom-idle-inhibit,
 #custom-dnd,
 #custom-weather,
 #custom-power_profile,
@@ -216,6 +217,16 @@ window#waybar {
     color: #6c7086;
 }
 
+/* Idle inhibit module */
+#custom-idle-inhibit.active {
+    color: #f38ba8;
+    background: rgba(243, 139, 168, 0.1);
+}
+
+#custom-idle-inhibit.inactive {
+    color: #6c7086;
+}
+
 /* Weather module */
 #custom-weather {
     color: #94e2d5;
@@ -289,6 +300,7 @@ window#waybar {
 #memory:hover,
 #custom-pomodoro:hover,
 #custom-break-timer:hover,
+#custom-idle-inhibit:hover,
 #custom-dnd:hover,
 #custom-weather:hover,
 #custom-power_profile:hover,

@@ -203,6 +203,61 @@
               ;;
       esac
     '';
+
+    idle_inhibit = pkgs.writeShellScriptBin "idle_inhibit" ''
+      PID_FILE="/tmp/waybar-idle-inhibit.pid"
+
+      # Check if idle inhibitor is running
+      if [ -f "$PID_FILE" ] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null; then
+          INHIBIT_ACTIVE=true
+      else
+          INHIBIT_ACTIVE=false
+          # Clean up stale PID file
+          [ -f "$PID_FILE" ] && rm -f "$PID_FILE"
+      fi
+
+      case "$1" in
+          "toggle")
+              if [ "$INHIBIT_ACTIVE" = true ]; then
+                  # Stop inhibiting
+                  if [ -f "$PID_FILE" ]; then
+                      kill "$(cat "$PID_FILE")" 2>/dev/null || true
+                      rm -f "$PID_FILE"
+                  fi
+                  pkill -RTMIN+11 waybar || true
+              else
+                  # Start inhibiting - use systemd-inhibit with proper daemon mode
+                  if command -v systemd-inhibit >/dev/null 2>&1; then
+                      # Create a proper background process that holds the inhibit lock
+                      systemd-inhibit --what=idle:handle-lid-switch --who="waybar-idle-inhibit" --why="Manual idle inhibit via waybar" --mode=block sleep infinity &
+                      echo $! > "$PID_FILE"
+                  elif command -v ${pkgs.hypridle}/bin/hypridle >/dev/null 2>&1; then
+                      # If hypridle is available, disable it temporarily
+                      pkill hypridle || true
+                      # Create a marker process to track inhibit state
+                      (sleep infinity) &
+                      echo $! > "$PID_FILE"
+                  elif command -v caffeine >/dev/null 2>&1; then
+                      caffeine &
+                      echo $! > "$PID_FILE"
+                  else
+                      # Fallback: use a simple marker process
+                      (sleep infinity) &
+                      echo $! > "$PID_FILE"
+                  fi
+                  pkill -RTMIN+11 waybar || true
+              fi
+              ;;
+          *)
+              # Display current state
+              if [ "$INHIBIT_ACTIVE" = true ]; then
+                  echo '{"text": "󰅶", "tooltip": "Idle Inhibit: ON (Click to disable)", "class": "active"}'
+              else
+                  echo '{"text": "󰾪", "tooltip": "Idle Inhibit: OFF (Click to enable)", "class": "inactive"}'
+              fi
+              ;;
+      esac
+    '';
   in {
     settings.mainbar = {
       layer = "top";
@@ -237,6 +292,7 @@
         modules = [
           "custom/pomodoro"
           "custom/break-timer"
+          "custom/idle-inhibit"
           "custom/dnd"
         ];
       };
@@ -265,6 +321,14 @@
         on-click-right = "${break_timer}/bin/break_timer stop";
         signal = 10;
         interval = 1;
+      };
+      "custom/idle-inhibit" = {
+        return-type = "json";
+        format = "{text}";
+        exec = "${idle_inhibit}/bin/idle_inhibit";
+        on-click = "${idle_inhibit}/bin/idle_inhibit toggle";
+        signal = 11;
+        interval = 5;
       };
       "custom/dnd" = {
         return-type = "json";
