@@ -55,7 +55,10 @@ in {
     '';
 
     services.restic = {
-      paths = ["/var/lib/open-webui"];
+      paths = [
+        "/var/lib/open-webui"
+        "/var/lib/private/open-webui"
+      ];
       excludes = [
         "/var/lib/open-webui/models-*"
         "/var/lib/open-webui/hub"

@@ -21,6 +21,9 @@ in {
       '';
     };
 
-    services.restic.paths = ["/var/lib/n8n"];
+    services.restic.paths = [
+      "/var/lib/n8n"
+      "/var/lib/private/n8n"
+    ];
   };
 }
