@@ -14,7 +14,7 @@
   displayCmd = status: "${pkgs.hyprland}/bin/hyprctl dispatch dpms ${status}";
   lockCmd = "${pkgs.swaylock}/bin/swaylock --daemonize";
 in {
-  # Media-aware idle inhibition service
+  # Media-aware idle inhibition service using systemd-inhibit
   systemd.user.services.idle-inhibit = {
     Unit = {
       Description = "Idle inhibition for media playback";
@@ -39,18 +39,41 @@ in {
           ${pkgs.playerctl}/bin/playerctl status 2>/dev/null | grep -q "Playing"
         }
 
-        # Function to send idle inhibition signal to swayidle
-        send_inhibit_signal() {
-          ${pkgs.procps}/bin/pkill -STOP swayidle 2>/dev/null || true
-        }
-
-        # Function to resume swayidle
-        resume_swayidle() {
-          ${pkgs.procps}/bin/pkill -CONT swayidle 2>/dev/null || true
-        }
-
-        inhibit_active=false
+        inhibit_pid=""
         marker_file="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/idle-inhibit-active"
+
+        # Function to start systemd inhibition
+        start_inhibit() {
+          if [ -z "$inhibit_pid" ]; then
+            echo "$(date): Starting idle inhibition (media detected)"
+            # Use systemd-inhibit to block idle, sleep, and handle-lid-switch
+            ${pkgs.systemd}/bin/systemd-inhibit --what=idle:sleep:handle-lid-switch \
+              --who="Media Player" \
+              --why="Media is playing" \
+              sleep infinity &
+            inhibit_pid=$!
+            # Create a marker file for waybar
+            touch "$marker_file"
+          fi
+        }
+
+        # Function to stop systemd inhibition
+        stop_inhibit() {
+          if [ -n "$inhibit_pid" ]; then
+            echo "$(date): Stopping idle inhibition (no media detected)"
+            kill "$inhibit_pid" 2>/dev/null || true
+            inhibit_pid=""
+            # Remove marker file
+            rm -f "$marker_file"
+          fi
+        }
+
+        # Cleanup on exit
+        cleanup() {
+          stop_inhibit
+          exit 0
+        }
+        trap cleanup EXIT INT TERM
 
         while true; do
           should_inhibit=false
@@ -61,21 +84,13 @@ in {
           fi
 
           # Start inhibiting if we should and aren't already
-          if [ "$should_inhibit" = true ] && [ "$inhibit_active" = false ]; then
-            echo "$(date): Starting idle inhibition (media detected)"
-            send_inhibit_signal
-            inhibit_active=true
-            # Create a marker file for waybar
-            touch "$marker_file"
+          if [ "$should_inhibit" = true ] && [ -z "$inhibit_pid" ]; then
+            start_inhibit
           fi
 
           # Stop inhibiting if we shouldn't and are currently
-          if [ "$should_inhibit" = false ] && [ "$inhibit_active" = true ]; then
-            echo "$(date): Stopping idle inhibition (no media detected)"
-            resume_swayidle
-            inhibit_active=false
-            # Remove marker file
-            rm -f "$marker_file"
+          if [ "$should_inhibit" = false ] && [ -n "$inhibit_pid" ]; then
+            stop_inhibit
           fi
 
           sleep 5
