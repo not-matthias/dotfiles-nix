@@ -21,6 +21,10 @@ in {
           REQUIRE_SIGNIN_VIEW = true;
         };
       };
+      dump = {
+        enable = true;
+        interval = "daily";
+      };
     };
 
     services.caddy.virtualHosts."git.${domain}".extraConfig = ''
