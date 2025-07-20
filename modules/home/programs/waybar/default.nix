@@ -170,13 +170,31 @@
               if [ -n "$DURATION" ] && [ "$DURATION" -gt 0 ]; then
                   SECONDS=$((DURATION * 60))
                   echo "break:$(date +%s):$SECONDS" > "$STATE_FILE"
-                  notify-send "Break Timer" "Break started for $DURATION minutes"
+                  # Temporarily bypass DND for break start notification
+                  DND_WAS_PAUSED=$(dunstctl is-paused)
+                  if [ "$DND_WAS_PAUSED" = "true" ]; then
+                      dunstctl set-paused false
+                      notify-send "Break Timer" "Break started for $DURATION minutes"
+                      sleep 0.5
+                      dunstctl set-paused true
+                  else
+                      notify-send "Break Timer" "Break started for $DURATION minutes"
+                  fi
                   pkill -RTMIN+10 waybar
               fi
               ;;
           "stop")
               echo "idle" > "$STATE_FILE"
-              notify-send "Break Timer" "Break cancelled"
+              # Temporarily bypass DND for break cancel notification
+              DND_WAS_PAUSED=$(dunstctl is-paused)
+              if [ "$DND_WAS_PAUSED" = "true" ]; then
+                  dunstctl set-paused false
+                  notify-send "Break Timer" "Break cancelled"
+                  sleep 0.5
+                  dunstctl set-paused true
+              else
+                  notify-send "Break Timer" "Break cancelled"
+              fi
               pkill -RTMIN+10 waybar
               ;;
           *)
@@ -191,7 +209,19 @@
 
                   if [ $remaining -le 0 ]; then
                       echo "idle" > "$STATE_FILE"
-                      notify-send "Break Timer" "Break time is over! Welcome back." --urgency=critical
+                      # Play completion sound
+                      ${pkgs.pulseaudio}/bin/paplay ${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/complete.oga 2>/dev/null || \
+                      ${pkgs.libcanberra-gtk3}/bin/canberra-gtk-play -i complete 2>/dev/null || true
+                      # Temporarily bypass DND for break completion notification
+                      DND_WAS_PAUSED=$(dunstctl is-paused)
+                      if [ "$DND_WAS_PAUSED" = "true" ]; then
+                          dunstctl set-paused false
+                          notify-send "Break Timer" "Break time is over! Welcome back." --urgency=critical
+                          sleep 0.5  # Brief delay to ensure notification shows
+                          dunstctl set-paused true
+                      else
+                          notify-send "Break Timer" "Break time is over! Welcome back." --urgency=critical
+                      fi
                       echo '{"text": "󰒲", "tooltip": "Break Timer (Click to start)", "class": "idle"}'
                   else
                       minutes=$((remaining / 60))
