@@ -22,6 +22,7 @@
   ./ntfy.nix
   ./ollama.nix
   ./paperless.nix
+  ./postiz.nix
   ./redlib.nix
   ./restic.nix
   ./rss.nix

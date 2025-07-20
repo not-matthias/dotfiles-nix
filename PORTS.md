@@ -1,3 +1,4 @@
+11436 = postiz
 11435 = open-webui
 11434 = ollama
 11432 = paperless
