@@ -32,6 +32,7 @@
   ./tandoor.nix
   ./stump.nix
   ./traggo.nix
+  ./twenty.nix
   ./vpn.nix
   ./watchyourlan.nix
   ./yubikey.nix

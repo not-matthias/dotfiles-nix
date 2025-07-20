@@ -91,6 +91,7 @@
     nitter.enable = true;
     redlib.enable = true;
     ntfy-sh.enable = true;
+    twenty.enable = true;
   };
 
   networking = {

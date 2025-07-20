@@ -2,6 +2,7 @@
 11435 = open-webui
 11434 = ollama
 11432 = paperless
+11431 = twenty
 11430 = gitea
 11429 = adguard home (disabled)
 11428 = scrutiny
