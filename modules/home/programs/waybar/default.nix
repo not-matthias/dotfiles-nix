@@ -281,9 +281,9 @@
           *)
               # Display current state
               if [ "$INHIBIT_ACTIVE" = true ]; then
-                  echo '{"text": "󰅶", "tooltip": "Idle Inhibit: ON (Click to disable)", "class": "active"}'
+                  echo '{"text": "󰅶", "tooltip": "Idle Inhibit: ON", "class": "active"}'
               else
-                  echo '{"text": "󰾪", "tooltip": "Idle Inhibit: OFF (Click to enable)", "class": "inactive"}'
+                  echo '{"text": "󰾪", "tooltip": "Idle Inhibit: OFF", "class": "inactive"}'
               fi
               ;;
       esac
