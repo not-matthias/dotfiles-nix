@@ -35,73 +35,87 @@ in {
 
     virtualisation.oci-containers.containers = {
       twenty-db = {
-        image = "postgres:16";
+        image = "postgres:16.8-alpine";
         volumes = ["${dataDir}/db:/var/lib/postgresql/data"];
         environment = {
           POSTGRES_USER = "postgres";
           POSTGRES_PASSWORD = "postgres";
-          POSTGRES_DB = "default";
         };
         extraOptions = [
           "--network=twenty-network"
-          "--network-alias=db"
-          "--health-cmd=pg_isready -U postgres -h localhost -d default"
-          "--health-interval=5s"
-          "--health-timeout=5s"
-          "--health-retries=10"
+          "--network-alias=twenty-db"
         ];
       };
 
       twenty-redis = {
-        image = "redis";
-        cmd = ["--maxmemory-policy" "noeviction"];
+        image = "redis:8.0.2-alpine";
         extraOptions = [
           "--network=twenty-network"
-          "--network-alias=redis"
+          "--network-alias=twenty-redis"
+        ];
+      };
+
+      twenty-server-init = {
+        image = "twentycrm/twenty:latest";
+        volumes = ["${dataDir}/storage:/app/docker-data"];
+        user = "root";
+        cmd = [
+          "sh"
+          "-c"
+          ''
+            chown -R 1000:1000 /app/docker-data
+
+            apk update
+            apk add build-base g++ cairo-dev pango-dev giflib-dev python3
+            yarn
+            yarn command:prod workspace:sync-metadata
+          ''
+        ];
+        dependsOn = ["twenty-db" "twenty-redis"];
+        extraOptions = [
+          "--network=twenty-network"
         ];
       };
 
       twenty-server = {
         image = "twentycrm/twenty:latest";
         ports = ["11431:3000/tcp"];
-        volumes = ["${dataDir}/storage:/app/packages/twenty-server/.local-storage"];
+        volumes = ["${dataDir}/storage:/app/docker-data"];
         environment = {
-          NODE_PORT = "3000";
-          PG_DATABASE_URL = "postgres://postgres:postgres@db:5432/default";
-          SERVER_URL = "https://twenty.${domain}";
-          REDIS_URL = "redis://redis:6379";
-          DISABLE_DB_MIGRATIONS = "false";
-          DISABLE_CRON_JOBS_REGISTRATION = "false";
-          STORAGE_TYPE = "local";
-          APP_SECRET = "replace_me_with_a_random_string";
+          DISABLE_DB_MIGRATIONS = "true";
+          DATABASE_URL = "postgres://postgres:postgres@twenty-db:5432/postgres";
+          REDIS_HOST = "twenty-redis";
+          REDIS_PORT = "6379";
         };
-        dependsOn = ["twenty-db"];
+        dependsOn = ["twenty-server-init"];
         extraOptions = [
           "--network=twenty-network"
-          "--health-cmd=curl --fail http://localhost:3000/healthz"
-          "--health-interval=5s"
-          "--health-timeout=5s"
-          "--health-retries=20"
         ];
       };
 
       twenty-worker = {
         image = "twentycrm/twenty:latest";
-        volumes = ["${dataDir}/storage:/app/packages/twenty-server/.local-storage"];
-        cmd = ["yarn" "worker:prod"];
+        volumes = ["${dataDir}/storage:/app/docker-data"];
+        cmd = [
+          "yarn"
+          "worker:prod"
+        ];
         environment = {
-          PG_DATABASE_URL = "postgres://postgres:postgres@db:5432/default";
-          SERVER_URL = "https://twenty.${domain}";
-          REDIS_URL = "redis://redis:6379";
           DISABLE_DB_MIGRATIONS = "true";
-          DISABLE_CRON_JOBS_REGISTRATION = "true";
-          STORAGE_TYPE = "local";
-          APP_SECRET = "replace_me_with_a_random_string";
+          DATABASE_URL = "postgres://postgres:postgres@twenty-db:5432/postgres";
+          REDIS_HOST = "twenty-redis";
+          REDIS_PORT = "6379";
         };
-        dependsOn = ["twenty-db" "twenty-server"];
+        dependsOn = ["twenty-server-init"];
         extraOptions = [
           "--network=twenty-network"
         ];
+      };
+    };
+
+    systemd.services.docker-twenty-server-init = {
+      serviceConfig = {
+        Restart = lib.mkForce "on-failure";
       };
     };
 
