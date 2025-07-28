@@ -98,6 +98,7 @@
     nix-ld.enable = true;
     noisetorch.enable = true;
     sccache.enable = true;
+    oneleet.enable = true;
   };
 
   # FIXME: Find a better way to configure this (only needed for MCP)
