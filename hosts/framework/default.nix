@@ -20,7 +20,7 @@
       mission-center
       jujutsu
       unstable.beeper
-      claude-code
+      unstable.claude-code
 
       # Install desktop apps rather than websites
       discord
