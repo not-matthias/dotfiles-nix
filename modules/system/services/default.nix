@@ -9,6 +9,7 @@
   ./gitea.nix
   ./homepage.nix
   ./jellyfin.nix
+  ./journald.nix
   ./karakeep.nix
   ./kokoro.nix
   ./maloja.nix
