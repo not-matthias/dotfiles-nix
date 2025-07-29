@@ -108,6 +108,11 @@
     PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
   };
 
+  zramSwap = {
+    enable = true;
+    memoryPercent = 25;
+  };
+
   services = {
     ntfy-sh.enable = true;
     restic = {
