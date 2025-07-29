@@ -129,6 +129,9 @@
       ];
       excludes = [];
       localBackup = {
+        paths = [
+          "/home/${user}/Videos/obs"
+        ];
         enable = true;
         schedule = "daily";
       };
@@ -164,6 +167,12 @@
     };
     caddy.enable = true;
     yubikey.enable = true;
+    smartd = {
+      enable = true;
+      autodetect = true;
+      notifications.test = false;
+      defaults.monitored = "-a -o on -S on -s (S/../.././02|L/../../6/03)";
+    };
   };
 
   hardware = {
