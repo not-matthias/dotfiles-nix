@@ -1,5 +1,6 @@
 {
   pkgs,
+  unstable,
   user,
   ...
 }: {
@@ -29,6 +30,7 @@
 
       # Useful tools
       python3
+      unstable.claude-code
 
       # Others:
       # gping
@@ -71,8 +73,6 @@
       # jadx
       # avalonia-ilspy
     ];
-
-    stateVersion = "24.05";
   };
 
   programs = {
