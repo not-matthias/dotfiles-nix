@@ -46,6 +46,14 @@ in {
 
         # https://www.kernel.org/doc/Documentation/laptops/laptop-mode.txt
         "vm.laptop_mode" = 5;
+
+        # Optimize dirty page ratios for SSD
+        "vm.dirty_ratio" = 3;
+        "vm.dirty_background_ratio" = 1;
+
+        # Memory overcommit settings to reduce swap usage
+        "vm.overcommit_memory" = 1;
+        "vm.overcommit_ratio" = 50;
       };
     };
 
