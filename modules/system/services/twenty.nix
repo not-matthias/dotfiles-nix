@@ -74,7 +74,7 @@ in {
           autoStart = true;
           image = "twentycrm/twenty:${cfg.version}";
           ports = [
-            "127.0.0.1:3625:3000"
+            "3625:3000"
           ];
           volumes = [
             "${dataDir}/storage:/app/packages/twenty-server/.local-storage"
