@@ -254,6 +254,8 @@
                       kill "$(cat "$PID_FILE")" 2>/dev/null || true
                       rm -f "$PID_FILE"
                   fi
+                  # Reset swayidle timers to prevent accumulated events
+                  pkill -USR1 swayidle 2>/dev/null || true
                   pkill -RTMIN+11 waybar || true
               else
                   # Start inhibiting - use systemd-inhibit with proper daemon mode
