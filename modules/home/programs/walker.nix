@@ -1,7 +1,6 @@
 {
   flakes,
   pkgs,
-  lib,
   ...
 }: {
   imports = [flakes.walker.homeManagerModules.default];
@@ -140,5 +139,4 @@
     };
   };
   home.packages = [pkgs.libqalculate];
-
 }

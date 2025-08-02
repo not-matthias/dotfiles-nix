@@ -71,21 +71,20 @@
 
   # =============================== ZFS END ===============================
 
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/0926b27b-6f49-43b6-8ec7-7ac7dd597ffb";
+    fsType = "ext4";
+  };
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/0926b27b-6f49-43b6-8ec7-7ac7dd597ffb";
-      fsType = "ext4";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/907D-A20E";
+    fsType = "vfat";
+    options = ["fmask=0077" "dmask=0077"];
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/907D-A20E";
-      fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
-    };
-
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/3e7f1e86-bd9b-469e-9c54-789954ce10ae"; }
-    ];
+  swapDevices = [
+    {device = "/dev/disk/by-uuid/3e7f1e86-bd9b-469e-9c54-789954ce10ae";}
+  ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
