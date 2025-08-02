@@ -93,6 +93,7 @@
     redlib.enable = true;
     ntfy-sh.enable = true;
     twenty.enable = true;
+    netdata.enable = true;
   };
 
   networking = {
