@@ -24,6 +24,7 @@
   ./ollama.nix
   ./paperless.nix
   ./postiz.nix
+  ./postgresql-backup.nix
   ./redlib.nix
   ./restic.nix
   ./rss.nix
