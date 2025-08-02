@@ -32,8 +32,9 @@ in {
 
     services.caddy.virtualHosts."rss.${domain}".extraConfig = ''
       encode zstd gzip
-
       reverse_proxy http://127.0.0.1:4242
     '';
+
+    services.restic.paths = ["/var/lib/miniflux"];
   };
 }
