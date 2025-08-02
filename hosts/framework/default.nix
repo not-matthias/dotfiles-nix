@@ -7,6 +7,7 @@
 }: {
   imports = [(import ./hardware-configuration.nix)];
   home-manager.users.${user} = {
+    home.stateVersion = "22.05";
     home.packages = with pkgs; [
       unstable.zed-editor
       unstable.supersonic
@@ -173,6 +174,7 @@
       notifications.test = false;
       defaults.monitored = "-a -o on -S on -s (S/../.././02|L/../../6/03)";
     };
+    systembus-notify.enable = lib.mkForce true;
   };
 
   hardware = {
