@@ -1,6 +1,6 @@
 {
   domain,
-  pkgs,
+  unstable,
   config,
   ...
 }: {
@@ -19,9 +19,9 @@
 
   services.caddy = {
     environmentFile = config.age.secrets.duckdns.path;
-    package = pkgs.caddy.withPlugins {
+    package = unstable.caddy.withPlugins {
       plugins = ["github.com/caddy-dns/duckdns@v0.5.0"];
-      hash = "sha256-83ETc9K4T13Ws8gVOYwLarhuCA48Drs/i3rVLBMHyrc=";
+      hash = "sha256-YS+9pEuNaU2vN+pBHuuqZnPW/Fk5I+IQh2K99L0vPLo=";
     };
 
     virtualHosts."*.${domain}".extraConfig = ''
