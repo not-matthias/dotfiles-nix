@@ -26,7 +26,7 @@
 
     virtualHosts."*.${domain}".extraConfig = ''
       tls {
-          dns duckdns {$DUCKDNS_TOKEN}
+          dns duckdns {env.DUCKDNS_TOKEN}
       }
     '';
 
