@@ -80,7 +80,7 @@
       scrobblerUrl = "http://localhost:42010/apis/listenbrainz/1/";
     };
     maloja.enable = true;
-    crm.enable = true;
+    # crm.enable = true;
     kokoro = {
       enable = true;
       useGpu = false;
@@ -89,7 +89,7 @@
     jellyfin.enable = true;
     karakeep.enable = true;
     nocodb.enable = true;
-    nitter.enable = true;
+    # nitter.enable = true;
     redlib.enable = true;
     ntfy-sh.enable = true;
     twenty.enable = true;
