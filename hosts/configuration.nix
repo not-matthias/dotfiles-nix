@@ -14,16 +14,21 @@
 
     tmp.cleanOnBoot = lib.mkDefault true;
   };
+  zramSwap.enable = true;
 
-  users.defaultUserShell = pkgs.fish;
-  users.users.${user} = {
-    isNormalUser = true;
-    description = "${user}";
-    extraGroups = ["wheel" "video" "audio" "camera" "networkmanager" "kvm" "libvirtd" "docker"];
-    shell = pkgs.fish;
+  users = {
+    defaultUserShell = pkgs.fish;
+    users.${user} = {
+      isNormalUser = true;
+      description = "${user}";
+      extraGroups = ["wheel" "video" "audio" "camera" "networkmanager" "kvm" "libvirtd" "docker"];
+      shell = pkgs.fish;
+    };
   };
-  programs.fish.enable = true;
-  programs.dconf.enable = true;
+  programs = {
+    fish.enable = true;
+    dconf.enable = true;
+  };
   security.sudo.wheelNeedsPassword = false;
 
   time.timeZone = "Europe/Vienna";
@@ -50,7 +55,6 @@
       wget
       usbutils
       flakes.agenix.packages.${system}.default
-      config.boot.kernelPackages.perf
     ];
 
     # Remove perl, rsync and strace

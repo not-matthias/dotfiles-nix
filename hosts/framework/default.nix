@@ -3,6 +3,7 @@
   unstable,
   user,
   lib,
+  config,
   ...
 }: {
   imports = [(import ./hardware-configuration.nix)];
@@ -22,6 +23,7 @@
       jujutsu
       unstable.beeper
       unstable.claude-code
+      unstable.lmstudio
 
       # Install desktop apps rather than websites
       discord
@@ -70,8 +72,6 @@
           obs-vkcapture
           obs-gstreamer
           obs-pipewire-audio-capture
-          wlrobs
-          obs-backgroundremoval
         ];
       };
     };
@@ -94,24 +94,16 @@
     };
   };
 
+  environment.systemPackages = with pkgs; [
+    config.boot.kernelPackages.perf
+  ];
+
   programs = {
     fcitx5.enable = true;
     nix-ld.enable = true;
     noisetorch.enable = true;
     sccache.enable = true;
     oneleet.enable = true;
-  };
-
-  # FIXME: Find a better way to configure this (only needed for MCP)
-  environment.sessionVariables = {
-    # Playwright configuration
-    PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
-    PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
-  };
-
-  zramSwap = {
-    enable = true;
-    memoryPercent = 25;
   };
 
   services = {
