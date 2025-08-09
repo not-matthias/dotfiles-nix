@@ -59,28 +59,22 @@
 
   xdg.configFile."zellij/layouts/default.kdl".text = ''
     layout {
-      pane size=1 borderless=true {
-        plugin location="https://github.com/evgenymng/zellij-compact-bar/releases/latest/download/compact-bar.wasm"
-      }
-
       pane
 
       pane size=2 borderless=true {
         plugin location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
-          format_left   "#[fg=#89B4FA,bold]{session}"
-          format_center "{tabs}"
-          format_right  "{command_git_branch} {datetime}"
-          format_space  ""
-
-          border_enabled  "false"
-          border_char     "─"
-          border_format   "#[fg=#7b8496]{char}"
-          border_position "bottom"
+          format_left  "#[fg=0,bg=10][{session}]  {tabs}"
+          format_right "#[fg=0,bg=10]{datetime}"
+          format_space "#[bg=10]"
 
           hide_frame_for_single_pane "true"
 
-          tab_normal   "#[fg=#6C7086,bg=#181825] {index} {name} "
-          tab_active   "#[fg=#9399B2,bg=#11111B,bold,italic] {index} {name} "
+          tab_normal   "{index}:{name}  "
+          tab_active   "{index}:{name}* "
+
+          datetime          " {format} "
+          datetime_format   "%H:%M %d-%b-%y"
+          datetime_timezone "Europe/Vienna"
         }
       }
     }
