@@ -15,15 +15,12 @@ in {
       "lobe-chat" = {
         image = "docker.io/lobehub/lobe-chat:latest";
         environment = {
-          "OLLAMA_PROXY_URL" = "http://host.containers.internal:11434";
+          "OLLAMA_PROXY_URL" = "http://127.0.0.1:11434";
         };
         ports = ["11433:3210/tcp"];
-        log-driver = "journald";
         extraOptions = [
           "--pull=always"
-          "--name=lobe-chat"
-          "--hostname=lobe-chat"
-          "--add-host=host.containers.internal:host-gateway"
+          "--network=host"
         ];
       };
     };
@@ -33,7 +30,6 @@ in {
       reverse_proxy http://127.0.0.1:11433
     '';
 
-    # Optional: add to backup if needed
     # services.restic.paths = [
     #   "/var/lib/containers/storage/volumes/lobe-chat-data"
     # ];
