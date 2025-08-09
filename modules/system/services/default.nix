@@ -12,6 +12,8 @@
   ./journald.nix
   ./karakeep.nix
   ./kokoro.nix
+  ./librechat.nix
+  ./lobe-chat.nix
   ./maloja.nix
   ./memos.nix
   ./navidrome.nix
@@ -22,6 +24,7 @@
   ./nocodb.nix
   ./ntfy.nix
   ./ollama.nix
+  ./open-webui.nix
   ./paperless.nix
   ./postiz.nix
   ./postgresql-backup.nix

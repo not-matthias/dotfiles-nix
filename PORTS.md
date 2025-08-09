@@ -1,6 +1,8 @@
+11437 = librechat
 11436 = postiz
 11435 = open-webui
 11434 = ollama
+11433 = lobe-chat
 11432 = paperless
 11431 = twenty
 11430 = gitea

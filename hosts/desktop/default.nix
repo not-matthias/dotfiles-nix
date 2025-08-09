@@ -67,6 +67,9 @@
       enable = true;
       useNvidia = true;
     };
+    open-webui.enable = true;
+    lobe-chat.enable = true;
+    librechat.enable = true;
     miniflux.enable = true;
     adguardhome.enable = false;
     memos.enable = true;
