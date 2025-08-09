@@ -13,7 +13,7 @@
   };
 
   # https://devenv.sh/scripts/
-  scripts.bd.exec = "sudo nixos-rebuild switch --option extra-substituters https://install.determinate.systems --option extra-trusted-public-keys cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM=  --flake .#desktop";
-  scripts.bf.exec = "sudo nixos-rebuild switch --flake .#framework";
-  scripts.br.exec = "sudo nixos-rebuild switch --flake .#raspi";
+  scripts.bd.exec = "nh os switch -H desktop .";
+  scripts.bf.exec = "nh os switch -H framework .";
+  scripts.br.exec = "nh os switch -H raspi .";
 }
