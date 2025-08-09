@@ -11,7 +11,7 @@
     }
   '';
 in {
-  imports = [flakes.zen-browser.homeModules.default];
+  imports = [flakes.zen-browser.homeModules.beta];
 
   programs.zen-browser = {
     policies = {
@@ -144,7 +144,7 @@ in {
         #################
 
         "browser.ctrlTab.recentlyUsedOrder" = false;
-        "browser.tabs.allow_transparent_browser" = true;
+        "browser.tabs.allow_transparent_browser" = false;
         "browser.tabs.newtabbutton" = false;
         "browser.tabs.hoverPreview.enabled" = true;
         "browser.sessionstore.restore_pinned_tabs_on_demand" = true;
@@ -630,7 +630,7 @@ in {
       associations = builtins.listToAttrs (map (name: {
           inherit name;
           value = let
-            zen-browser = flakes.zen-browser.packages.${pkgs.system}.twilight;
+            zen-browser = flakes.zen-browser.packages.${pkgs.system}.beta;
           in
             zen-browser.meta.desktopFile;
         }) [
