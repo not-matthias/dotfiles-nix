@@ -13,4 +13,12 @@
     Storage=none
     ProcessSizeMax=0
   '';
+
+  # Systemd memory limits to prevent excessive memory usage
+  systemd.extraConfig = ''
+    DefaultMemoryAccounting=yes
+    DefaultMemoryMax=1G
+    DefaultTasksMax=4096
+    LogLevel=notice
+  '';
 }
