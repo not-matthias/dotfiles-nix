@@ -4,7 +4,23 @@
   },
   "includeCoAuthoredBy": false,
   "permissions": {
-    "defaultMode": "bypassPermissions"
+    "defaultMode": "bypassPermissions",
+    "allow": [
+        "Bash",
+        "Read",
+        "Edit",
+        "Write",
+        "WebFetch",
+        "Grep",
+        "Glob",
+        "LS",
+        "MultiEdit",
+        "NotebookRead",
+        "NotebookEdit",
+        "TodoRead",
+        "TodoWrite",
+        "WebSearch"
+    ]
   },
   "model": "sonnet",
   "hooks": {
@@ -33,7 +49,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "ccusage statusline"
+    "command": "npx -y ccusage statusline"
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754514815917
