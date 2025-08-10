@@ -15,12 +15,12 @@ in {
       "lobe-chat" = {
         image = "docker.io/lobehub/lobe-chat:latest";
         environment = {
-          "OLLAMA_PROXY_URL" = "http://127.0.0.1:11434";
+          "OLLAMA_PROXY_URL" = "http://host.docker.internal:11434";
         };
         ports = ["11433:3210/tcp"];
         extraOptions = [
           "--pull=always"
-          "--network=host"
+          "--add-host=host.docker.internal:host-gateway"
         ];
       };
     };
