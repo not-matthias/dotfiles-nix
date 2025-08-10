@@ -6,6 +6,7 @@
   ./alacritty.nix
   ./atuin.nix
   ./bat.nix
+  ./claude
   ./fish
   ./tmux
   ./waybar

@@ -22,7 +22,6 @@
       mission-center
       jujutsu
       unstable.beeper
-      unstable.claude-code
       unstable.lmstudio
 
       # Install desktop apps rather than websites
@@ -60,6 +59,7 @@
       alacritty.enable = true;
       waybar.enable = true;
       nixvim.enable = true;
+      claude.enable = true;
 
       gitui.enable = true;
       firefox.enable = false;

@@ -26,6 +26,7 @@
     #
     programs = {
       nixvim.enable = true;
+      claude.enable = true;
       #alacritty.enable = true;
       #waybar.enable = true;
       #firefox.enable = true;

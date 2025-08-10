@@ -1,6 +1,5 @@
 {
   pkgs,
-  unstable,
   user,
   ...
 }: {
@@ -30,7 +29,6 @@
 
       # Useful tools
       python3
-      unstable.claude-code
 
       # Others:
       # gping
@@ -81,5 +79,6 @@
       enable = true;
       clean.enable = true;
     };
+    claude.enable = true;
   };
 }
