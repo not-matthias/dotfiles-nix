@@ -1,0 +1,1 @@
+Save your entire context, conversation history, architectural decisions and all the other things to SCRATCHPAD.md
