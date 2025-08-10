@@ -23,7 +23,34 @@ in {
         support32Bit = true;
       };
       pulse.enable = true;
-      wireplumber.enable = true;
+      wireplumber = {
+        enable = true;
+        extraConfig = {
+          "10-auto-switch" = {
+            "monitor.bluez.rules" = [
+              {
+                matches = [
+                  {"device.name" = "~bluez_card.*";}
+                ];
+                actions = {
+                  "update-props" = {
+                    "device.profile.switch-on-connect" = true;
+                  };
+                };
+              }
+            ];
+          };
+          "11-bluetooth-policy" = {
+            "wireplumber.profiles" = {
+              "bluetooth" = {
+                "inherits" = ["main"];
+                "bluetooth.autoswitch-to-headset-profile" = true;
+                "bluetooth.default-node-auto-switch" = true;
+              };
+            };
+          };
+        };
+      };
     };
   };
 }
