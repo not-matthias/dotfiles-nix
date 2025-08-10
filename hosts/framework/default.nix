@@ -108,10 +108,6 @@
 
   services = {
     ntfy-sh.enable = true;
-    ollama.enable = true;
-    open-webui.enable = true;
-    lobe-chat.enable = true;
-    librechat.enable = true;
     restic = {
       enable = true;
       paths = [
