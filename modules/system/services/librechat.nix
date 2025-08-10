@@ -23,12 +23,13 @@ in {
         environment = {
           HOST = "0.0.0.0";
           PORT = "3080";
-          MONGO_URI = "mongodb://host.containers.internal:27017/LibreChat";
+          MONGO_URI = "mongodb://host.docker.internal:27017/LibreChat";
           ENDPOINTS = "openAI,ollama";
-          OLLAMA_BASE_URL = "http://host.containers.internal:11434/v1";
+          OLLAMA_BASE_URL = "http://host.docker.internal:11434/v1";
           REFRESH_TOKEN_EXPIRY = toString (1000 * 60 * 60 * 24 * 30); # 30 days
           JWT_SECRET = "librechat-jwt-secret-change-in-production";
           JWT_REFRESH_SECRET = "librechat-refresh-secret-change-in-production";
+          ALLOW_REGISTRATION = "true";
         };
         ports = [
           "${toString cfg.port}:3080"
@@ -38,7 +39,7 @@ in {
           "--pull=always"
           "--name=librechat"
           "--hostname=librechat"
-          "--add-host=host.containers.internal:host-gateway"
+          "--add-host=host.docker.internal:host-gateway"
         ];
       };
     };
@@ -52,7 +53,7 @@ in {
 
     # For MongoDB access from containers
     networking.firewall.trustedInterfaces = [
-      "podman0" # for librechat container access
+      "docker0"
     ];
 
     services.caddy.virtualHosts."librechat.${domain}".extraConfig = ''
