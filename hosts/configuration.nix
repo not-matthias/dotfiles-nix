@@ -28,6 +28,7 @@
   programs = {
     fish.enable = true;
     dconf.enable = true;
+    command-not-found.enable = true;
   };
   security.sudo.wheelNeedsPassword = false;
 
