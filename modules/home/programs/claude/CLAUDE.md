@@ -51,6 +51,7 @@ _ SCRATCHPAD.md: (Located in project root). This is your append-only log file fo
 - System Info: du-dust, duf, hexyl, tealdeer
 - Python: ALWAYS use uv for all Python package and environment operations.
 - Navigation: You can use zoxide for directory jumping (e.g., j <folder>).
+- IMPORTANT: When a program isn't installed use `nix-shell` or `nix run`
 </cli_tools>
 
 <mcp_servers>
@@ -61,10 +62,4 @@ _ SCRATCHPAD.md: (Located in project root). This is your append-only log file fo
 - Fetch/Playwright MCPs: For web Browse and automation.
 </mcp_servers>
 </tooling_and_environment>
-
-<platform_specific_notes>
-<nixos>
-When editing NixOS modules (.nix files), you MUST preserve existing attribute naming conventions, such as kebab-case (ui-port), even if they seem inconsistent with typical Nix conventions. Adhere to the local style.
-</nixos>
-</platform_specific_notes>
 </claude_instructions>
