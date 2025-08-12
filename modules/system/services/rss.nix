@@ -21,6 +21,14 @@ in {
       config = {
         LISTEN_ADDR = "0.0.0.0:4242";
         CLEANUP_FREQUENCY = "48";
+
+        OAUTH2_PROVIDER = "oidc";
+        OAUTH2_CLIENT_ID = "miniflux";
+        OAUTH2_CLIENT_SECRET = "insecure_secret";
+        OAUTH2_REDIRECT_URL = "https://rss.${domain}/oauth2/oidc/callback";
+        OAUTH2_OIDC_DISCOVERY_ENDPOINT = "https://auth.${domain}";
+        OAUTH2_USER_CREATION = 1;
+        DISABLE_LOCAL_AUTH = 1;
       };
     };
 
@@ -34,6 +42,25 @@ in {
       encode zstd gzip
       reverse_proxy http://127.0.0.1:4242
     '';
+
+    services.authelia.instances.main.settings.identity_providers.oidc.clients = lib.mkAfter [
+      {
+        client_id = "miniflux";
+        client_name = "Miniflux RSS Reader";
+        public = false;
+        authorization_policy = "one_factor";
+        client_secret = "$pbkdf2-sha512$310000$c8p78n7pUMln0jzvd4aK4Q$JNRBzwAo0ek5qKn50cFzzvE9RXV88h1wJn5KGiHrD0YKtZaR/nCb2CJPOsKaPK0hjf.9yHxzQGZziziccp6Yng"; # The digest of 'insecure_secret'.
+        redirect_uris = [
+          "https://rss.${domain}/oauth2/oidc/callback"
+        ];
+        scopes = [
+          "openid"
+          "profile"
+          "email"
+        ];
+        userinfo_signed_response_alg = "none";
+      }
+    ];
 
     services.restic.paths = ["/var/lib/miniflux"];
   };
