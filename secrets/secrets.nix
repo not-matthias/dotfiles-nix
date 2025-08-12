@@ -21,4 +21,11 @@ in {
   "restic-password.age".publicKeys = systems;
   "b2-restic-env.age".publicKeys = systems;
   "nitter-session.age".publicKeys = systems;
+
+  "authelia-jwt-secret.age".publicKeys = systems;
+  "authelia-session-secret.age".publicKeys = systems;
+  "authelia-storage-encryption-key.age".publicKeys = systems;
+  "authelia-oidc-secret.age".publicKeys = systems;
+  "authelia-oidc-hmac-secret.age".publicKeys = systems;
+  "nextauth-secret.age".publicKeys = systems;
 }

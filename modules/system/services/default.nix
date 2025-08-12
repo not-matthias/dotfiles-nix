@@ -1,6 +1,7 @@
 [
   ./adguard.nix
   ./audiobookshelf.nix
+  ./authelia.nix
   ./caddy.nix
   ./change-detection.nix
   ./crm.nix
