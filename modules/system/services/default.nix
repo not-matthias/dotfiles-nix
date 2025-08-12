@@ -15,6 +15,7 @@
   ./kokoro.nix
   ./librechat.nix
   ./lobe-chat.nix
+  ./logto.nix
   ./maloja.nix
   ./memos.nix
   ./navidrome.nix

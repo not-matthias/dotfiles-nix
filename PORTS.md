@@ -14,6 +14,9 @@
 11424 = ntopng
 11000 = nitter
 10999 = redlib
+3002 = logto admin
+3001 = logto
+9091 = authelia
 8123 = home-assistant
 
 https://jellyfin.org/docs/general/networking/
