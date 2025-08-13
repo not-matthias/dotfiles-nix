@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "notify-send 'Claude Code' 'Task completed'"
+            "command": "command -v notify-send >/dev/null && notify-send 'Claude Code' 'Task completed'"
           }
         ]
       }
@@ -41,7 +41,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "notify-send 'Claude Code' 'Session ended'"
+            "command": "command -v notify-send >/dev/null && notify-send 'Claude Code' 'Session ended'"
           }
         ]
       }
