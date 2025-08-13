@@ -103,6 +103,14 @@ in {
     environment.etc."authelia/users.yml" = {
       text = ''
         users:
+          not-matthias:
+            displayname: "Matthias"
+            password: "$argon2id$v=19$m=65536,t=3,p=4$OcptMAIy/x9AKgUujdmeRw$QTbgbwhSPdX9hzs8kOcCXtZyyTbp5utH+QW0jZ5Lj9U"
+            email: not-matthias@${domain}
+            groups:
+              - admins
+              - dev
+
           admin:
             displayname: "Admin User"
             # Generate password hash with: nix shell nixpkgs#authelia --command authelia crypto hash generate argon2 --password "yourpassword"
