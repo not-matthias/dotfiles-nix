@@ -35,6 +35,7 @@
 
   # Only enable the services here, the settings are configured in the 'services/' folder.
   services = {
+    authelia.enable = true;
     restic = {
       enable = true;
       paths = [
