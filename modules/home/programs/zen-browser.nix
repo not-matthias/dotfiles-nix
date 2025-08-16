@@ -15,7 +15,7 @@
     }
   '';
 in {
-  imports = [flakes.zen-browser.homeModules.beta];
+  imports = [flakes.zen-browser.homeModules.default];
 
   programs.zen-browser = {
     policies = {

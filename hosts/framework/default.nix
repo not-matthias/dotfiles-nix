@@ -18,6 +18,7 @@
       unstable.lmstudio
       unstable.nodejs
       notepad-next
+      msty
       unstable.opencode
       mission-center
       jujutsu

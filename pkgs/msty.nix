@@ -15,7 +15,7 @@
   appimageContents = appimageTools.extractType2 {inherit pname version src;};
 in
   appimageTools.wrapType2 {
-    inherit name src;
+    inherit pname version src;
 
     extraInstallCommands = ''
       install -m 444 -D ${appimageContents}/msty.desktop -t $out/share/applications
