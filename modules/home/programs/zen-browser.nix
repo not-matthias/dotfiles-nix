@@ -86,11 +86,14 @@ in {
       * Enhanced cleaning preferences for privacy
       */
       sanitizingSettings = {
-        # Sanitize on shutdown
-        "privacy.sanitize.sanitizeOnShutdown" = true;
+        # Don't sanitize on shutdown to preserve login sessions
+        "privacy.sanitize.sanitizeOnShutdown" = false;
         "privacy.sanitize.timeSpan" = 0;
         "privacy.clearOnShutdown_v2.historyFormDataAndDownloads" = false;
         "privacy.clearOnShutdown_v2.browsingHistoryAndDownloads" = false;
+        "privacy.clearOnShutdown_v2.cookies" = false;
+        "privacy.clearOnShutdown_v2.cache" = false;
+        "privacy.clearOnShutdown_v2.sessions" = false;
         "privacy.sanitize.clearOnShutdown.hasMigratedToNewPrefs3" = true;
 
         # Prevent media cache from being written to disk in private browsing
