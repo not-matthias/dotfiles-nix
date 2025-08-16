@@ -22,6 +22,13 @@ in {
     };
 
     services.minio.enable = true;
+    systemd.services.minio.environment = {
+      MINIO_API_CORS_ALLOW_ORIGIN = "https://lobe-chat.desktopnm.duckdns.org";
+      MINIO_API_CORS_ALLOW_HEADERS = "Authorization,Content-Type,Content-Length,X-Amz-*";
+      MINIO_API_CORS_ALLOW_METHODS = "GET,POST,PUT,DELETE,HEAD,OPTIONS";
+      MINIO_API_CORS_EXPOSE_HEADERS = "ETag,x-amz-request-id";
+    };
+
     services.postgresql = {
       enable = true;
       package = pkgs.postgresql_16;
@@ -84,10 +91,13 @@ in {
           # S3/MinIO Configuration
           "S3_ACCESS_KEY_ID" = "minioadmin";
           "S3_SECRET_ACCESS_KEY" = "minioadmin";
-          "S3_ENDPOINT" = "http://127.0.0.1:9000";
+          "S3_ENDPOINT" = "https://s3.${domain}";
           "S3_BUCKET" = "lobe";
-          "S3_PUBLIC_DOMAIN" = "http://127.0.0.1:9000";
+          "S3_PUBLIC_DOMAIN" = "https://s3.${domain}";
           "S3_ENABLE_PATH_STYLE" = "1";
+
+          # Files/Knowledge Base Configuration
+          "DEFAULT_FILES_CONFIG" = "embedding_model=ollama/nomic-embed-text:latest";
 
           # Authelia SSO Configuration
           "NEXT_AUTH_SECRET" = "Vx/ET7i60bdpaVrxj8NStYAZxF0HmtSzNoDbxIrTR+Q=";
@@ -132,6 +142,10 @@ in {
     services.caddy.virtualHosts."lobe-chat.${domain}".extraConfig = ''
       encode zstd gzip
       reverse_proxy http://127.0.0.1:3210
+    '';
+    services.caddy.virtualHosts."s3.${domain}".extraConfig = ''
+      encode zstd gzip
+      reverse_proxy http://127.0.0.1:9000
     '';
   };
 }
