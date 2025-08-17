@@ -18,12 +18,12 @@
       unstable.lmstudio
       unstable.nodejs
       notepad-next
-      msty
-      unstable.opencode
-      mission-center
-      jujutsu
+      # msty
+      # unstable.opencode
+      # mission-center
+      # jujutsu
+      # unstable.lmstudio
       unstable.beeper
-      unstable.lmstudio
 
       # Install desktop apps rather than websites
       discord
