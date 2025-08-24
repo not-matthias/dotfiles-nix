@@ -23,10 +23,11 @@
 
     # https://github.com/catppuccin/gtk
     theme = {
-      name = "Catppuccin-Orange-Light-Compact";
+      name = "catppuccin-latte-red-compact";
       package = pkgs.catppuccin-gtk.override {
         size = "compact";
-        variant = "frappe";
+        variant = "latte";
+        accents = ["red" "blue"];
       };
     };
 
