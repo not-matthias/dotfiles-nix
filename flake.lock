@@ -147,6 +147,25 @@
         "url": "https://install.determinate.systems/determinate-nixd/tag/v3.8.5/x86_64-linux"
       }
     },
+    "elephant": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_6",
+        "systems": "systems_5"
+      },
+      "locked": {
+        "lastModified": 1755628307,
+        "narHash": "sha256-lYp2nstnPevI92tpAz2TrXP6HBji8J4oiMAi1MjlKdg=",
+        "owner": "kagurazakei",
+        "repo": "elephant",
+        "rev": "5dc978219366c514e65b98d0c98ede76f5da66b9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kagurazakei",
+        "repo": "elephant",
+        "type": "github"
+      }
+    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -600,11 +619,27 @@
     },
     "nixpkgs_6": {
       "locked": {
-        "lastModified": 1747542820,
-        "narHash": "sha256-GaOZntlJ6gPPbbkTLjbd8BMWaDYafhuuYRNrxCGnPJw=",
+        "lastModified": 1755186698,
+        "narHash": "sha256-wNO3+Ks2jZJ4nTHMuks+cxAiVBGNuEBXsT29Bz6HASo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "292fa7d4f6519c074f0a50394dbbe69859bb6043",
+        "rev": "fbcf476f790d8a217c3eab4e12033dc4a0f6d23c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_7": {
+      "locked": {
+        "lastModified": 1755186698,
+        "narHash": "sha256-wNO3+Ks2jZJ4nTHMuks+cxAiVBGNuEBXsT29Bz6HASo=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "fbcf476f790d8a217c3eab4e12033dc4a0f6d23c",
         "type": "github"
       },
       "original": {
@@ -789,21 +824,37 @@
         "type": "github"
       }
     },
-    "walker": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_6",
-        "systems": "systems_5"
-      },
+    "systems_6": {
       "locked": {
-        "lastModified": 1754732405,
-        "narHash": "sha256-2Vafch9BUwT0dT/DTZcKX1F9c92NodtRCtPT5pd5gtU=",
-        "owner": "abenz1267",
-        "repo": "walker",
-        "rev": "87c718889d457e636be904ade6217610a0a06cef",
+        "lastModified": 1689347949,
+        "narHash": "sha256-12tWmuL2zgBgZkdoB6qXZsgJEH9LR3oUgpaQq2RbI80=",
+        "owner": "nix-systems",
+        "repo": "default-linux",
+        "rev": "31732fcf5e8fea42e59c2488ad31a0e651500f68",
         "type": "github"
       },
       "original": {
-        "owner": "abenz1267",
+        "owner": "nix-systems",
+        "repo": "default-linux",
+        "type": "github"
+      }
+    },
+    "walker": {
+      "inputs": {
+        "elephant": "elephant",
+        "nixpkgs": "nixpkgs_7",
+        "systems": "systems_6"
+      },
+      "locked": {
+        "lastModified": 1756031767,
+        "narHash": "sha256-0nI+akItb1cEf3nqFwif2O3q6TqOt3gqAXaTCTycZjA=",
+        "owner": "not-matthias",
+        "repo": "walker",
+        "rev": "7760b92914e718db980390ee5060e83eac6cd221",
+        "type": "github"
+      },
+      "original": {
+        "owner": "not-matthias",
         "repo": "walker",
         "type": "github"
       }

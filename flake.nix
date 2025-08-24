@@ -30,7 +30,7 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    walker.url = "github:abenz1267/walker";
+    walker.url = "github:not-matthias/walker";
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     aw-hyprland.url = "github:bobvanderlinden/aw-watcher-window-hyprland";
   };
