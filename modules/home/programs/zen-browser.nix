@@ -242,7 +242,7 @@ in {
       [SECTION] WEBGL
       */
       webglSettings = {
-        "webgl.disabled" = true;
+        "webgl.disabled" = false; # Enable WebGL for proper icon rendering
         "dom.webgpu.enabled" = false;
       };
 
@@ -349,8 +349,8 @@ in {
 
         # Image and content loading
         "image.animation_mode" = "none"; # Disable animated images
-        "browser.display.use_document_fonts" = 0; # Use system fonts only
-        "gfx.downloadable_fonts.enabled" = false; # No web fonts
+        "browser.display.use_document_fonts" = 1; # Allow web fonts for icons
+        "gfx.downloadable_fonts.enabled" = true; # Enable web fonts for proper icon display
       };
 
       /**
