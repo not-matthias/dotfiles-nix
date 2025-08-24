@@ -1,6 +1,15 @@
 {
   description = "Home Manager configuration";
 
+  nixConfig = {
+    extra-substituters = [
+      "https://install.determinate.systems"
+    ];
+    extra-trusted-public-keys = [
+      "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -30,9 +39,15 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    determinate = {
+      url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    aw-hyprland = {
+      url = "github:bobvanderlinden/aw-watcher-window-hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     walker.url = "github:not-matthias/walker";
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
-    aw-hyprland.url = "github:bobvanderlinden/aw-watcher-window-hyprland";
   };
 
   outputs = {
