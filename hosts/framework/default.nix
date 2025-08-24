@@ -15,7 +15,6 @@
       unstable.vscode
       unstable.obsidian
       google-chrome
-      unstable.lmstudio
       unstable.nodejs
       notepad-next
       # msty
@@ -23,10 +22,11 @@
       # mission-center
       # jujutsu
       # unstable.lmstudio
-      unstable.beeper
+      unstable.planify
 
       # Install desktop apps rather than websites
-      discord
+      # unstable.beeper
+      # discord
       todoist-electron
       unstable.feishin
 
