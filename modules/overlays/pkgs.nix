@@ -13,5 +13,8 @@
     (_self: super: {
       oneleet = super.callPackage ../../modules/system/programs/oneleet/default.nix {};
     })
+    # (_self: super: {
+    #   lobe-chat = super.callPackage ../../pkgs/lobe-chat.nix {};
+    # })
   ];
 }
