@@ -344,6 +344,9 @@ in {
         "dom.serviceWorkers.enabled" = false; # Disable service workers
         "dom.push.enabled" = false; # Disable push notifications
 
+        # Enable PerformanceObserver for cloud.google.com compatibility
+        "dom.enable_performance_observer" = true;
+
         # Image and content loading
         "image.animation_mode" = "none"; # Disable animated images
         "browser.display.use_document_fonts" = 0; # Use system fonts only
