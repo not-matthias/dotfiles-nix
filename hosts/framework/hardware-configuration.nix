@@ -3,7 +3,7 @@
 # to /etc/nixos/configuration.nix instead.
 {
   modulesPath,
-  unstable,
+  pkgs,
   nixos-hardware,
   ...
 }: {
@@ -12,7 +12,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.kernelPackages = unstable.linuxPackages_zen;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "nvme" "usb_storage" "usbhid" "sd_mod"];
 
   fileSystems."/" = {
