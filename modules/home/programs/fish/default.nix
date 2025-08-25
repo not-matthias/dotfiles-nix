@@ -85,8 +85,8 @@ in {
         set -e GRANTED_ALIAS_CONFIGURED
       '';
       nf = ''
-        function nf -d "Open folder with Nautilus"
-          nautilus . > /dev/null 2>&1 &
+        function nf -d "Open folder with Nemo"
+          nemo . > /dev/null 2>&1 &
         end
       '';
     };

@@ -33,7 +33,7 @@
       vlc
       evince
       kdePackages.gwenview
-      nautilus
+      nemo-with-extensions
       file-roller
       gnome-text-editor
       unstable.anki
