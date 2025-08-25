@@ -108,6 +108,7 @@
   };
 
   services = {
+    flatpak.enable = true;
     ntfy-sh.enable = true;
     restic = {
       enable = true;
