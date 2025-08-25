@@ -46,6 +46,19 @@ in {
       home.file.".config/hypr/keybinds.conf".text = builtins.readFile ./conf/keybinds.conf;
       home.file.".config/hypr/startup.conf".text = builtins.readFile ./conf/startup.conf;
       home.file.".config/hypr/windowrule.conf".text = builtins.readFile ./conf/windowrule.conf;
+
+      # Configure screenshot directory
+      # TODO: Configure swappy in separate module
+      home.file."Pictures/screenshots/.keep".text = "";
+      home.file.".config/swappy/config".text = ''
+        [Default]
+        save_dir=/home/${user}/Pictures/screenshots
+        save_filename_format=swappy-%Y%m%d-%H%M%S.png
+        show_panel=false
+        line_size=5
+        text_size=20
+        text_font=sans-serif
+      '';
     };
   };
 }
