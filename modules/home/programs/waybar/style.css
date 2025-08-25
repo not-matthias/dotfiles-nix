@@ -3,8 +3,8 @@
     border-radius: 0;
     padding: 0;
     margin: 0;
-    font-size: 12px;
-    font-family: "JetBrains Mono", "SF Mono", "Monaco", "Inconsolata", "Fira Code", "Source Code Pro", monospace;
+    font-size: 11px;
+    font-family: "JetBrains Mono Nerd Font", "JetBrains Mono", "SF Mono", "Monaco", "Inconsolata", "Fira Code", "Source Code Pro", monospace;
 }
 
 window#waybar {
@@ -14,18 +14,19 @@ window#waybar {
 
 /* Workspaces */
 #workspaces {
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
-    padding: 3px;
-    margin: 3px 3px 3px 8px;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 8px;
+    padding: 2px;
+    margin: 2px 2px 2px 6px;
 }
 
 #workspaces button {
-    padding: 3px 8px;
+    padding: 2px 6px;
     color: #cdd6f4;
     background: transparent;
-    border-radius: 5px;
-    margin: 0 2px;
+    border-radius: 4px;
+    margin: 0 1px;
+    min-width: 20px;
 }
 
 #workspaces button.active {
@@ -47,19 +48,19 @@ window#waybar {
 #custom-weather,
 #custom-power_profile,
 #custom-temperature {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 4px 8px;
-    margin: 3px 2px;
-    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 3px 6px;
+    margin: 2px 1px;
+    border-radius: 5px;
     color: #cdd6f4;
     border: none;
 }
 
 /* Grouped modules styling */
 .group-system {
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 6px;
-    margin: 3px 2px;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 5px;
+    margin: 2px 1px;
     padding: 0;
 }
 
@@ -67,21 +68,21 @@ window#waybar {
     background: transparent;
     margin: 0;
     border-radius: 0;
-    padding: 4px 8px;
+    padding: 3px 6px;
 }
 
 .group-system>*:first-child {
-    border-radius: 6px 0 0 6px;
+    border-radius: 5px 0 0 5px;
 }
 
 .group-system>*:last-child {
-    border-radius: 0 6px 6px 0;
+    border-radius: 0 5px 5px 0;
 }
 
 .group-connectivity {
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 6px;
-    margin: 3px 2px;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 5px;
+    margin: 2px 1px;
     padding: 0;
 }
 
@@ -89,21 +90,21 @@ window#waybar {
     background: transparent;
     margin: 0;
     border-radius: 0;
-    padding: 4px 8px;
+    padding: 3px 6px;
 }
 
 .group-connectivity>*:first-child {
-    border-radius: 6px 0 0 6px;
+    border-radius: 5px 0 0 5px;
 }
 
 .group-connectivity>*:last-child {
-    border-radius: 0 6px 6px 0;
+    border-radius: 0 5px 5px 0;
 }
 
 .group-utils {
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 6px;
-    margin: 3px 2px;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 5px;
+    margin: 2px 1px;
     padding: 0;
 }
 
@@ -111,15 +112,15 @@ window#waybar {
     background: transparent;
     margin: 0;
     border-radius: 0;
-    padding: 4px 8px;
+    padding: 3px 6px;
 }
 
 .group-utils>*:first-child {
-    border-radius: 6px 0 0 6px;
+    border-radius: 5px 0 0 5px;
 }
 
 .group-utils>*:last-child {
-    border-radius: 0 6px 6px 0;
+    border-radius: 0 5px 5px 0;
 }
 
 /* Standalone modules need individual styling */
@@ -127,7 +128,7 @@ window#waybar {
 #memory,
 #custom-temperature {
     background: transparent;
-    padding: 4px 8px;
+    padding: 3px 6px;
     margin: 0;
     border-radius: 0;
     color: #cdd6f4;
@@ -135,10 +136,10 @@ window#waybar {
 }
 
 #tray {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 4px 8px;
-    margin: 3px 8px 3px 2px;
-    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 3px 6px;
+    margin: 2px 6px 2px 1px;
+    border-radius: 5px;
     color: #cdd6f4;
 }
 

@@ -1,25 +1,6 @@
-# https://github.com/slwst/dotfiles/blob/3bddfc490f09ed1b0b8db90bf31074eafc3906ed/home/slwst/modules/desktop/gtk.nix#L18
 {pkgs, ...}: {
-  home.pointerCursor = {
-    gtk.enable = true;
-    package = pkgs.catppuccin-cursors.frappeDark;
-    name = "Catppuccin-Frappe-Light-Cursors";
-    size = 16;
-  };
-
   gtk = {
     enable = true;
-
-    # FIXME: Adding this breaks gnome-shell (no icons, text, bar, ...)
-    # font = {
-    #   name = "Poppins";
-    #   package = pkgs.google-fonts-poppins;
-    # };
-
-    iconTheme = {
-      name = "Papirus";
-      package = pkgs.papirus-icon-theme;
-    };
 
     # https://github.com/catppuccin/gtk
     theme = {
@@ -29,12 +10,6 @@
         variant = "latte";
         accents = ["red" "blue"];
       };
-    };
-
-    # https://github.com/PapirusDevelopmentTeam/papirus-icon-theme
-    cursorTheme = {
-      package = pkgs.catppuccin-cursors.frappeDark;
-      name = "Catppuccin-Frappe-Light-Cursors";
     };
   };
 }

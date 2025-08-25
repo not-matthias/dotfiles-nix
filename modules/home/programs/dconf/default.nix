@@ -54,11 +54,6 @@
       switch-to-workspace-4 = ["<Alt>4"];
     };
 
-    # Dark theme
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-light";
-    };
-
     # Center new windows
     "org/gnome/mutter" = {
       center-new-windows = true;

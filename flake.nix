@@ -48,6 +48,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     walker.url = "github:not-matthias/walker";
+    stylix = {
+      url = "github:nix-community/stylix/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -60,6 +64,7 @@
     nixos-hardware,
     arion,
     agenix,
+    stylix,
     ...
   } @ flakes: let
     user = "not-matthias";
@@ -67,7 +72,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix;
+        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix stylix;
       }
     );
   };

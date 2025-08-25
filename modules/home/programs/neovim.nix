@@ -5,8 +5,8 @@
   # https://github.com/notusknot/dotfiles-nix/blob/main/modules/nvim/default.nix
   programs.nixvim = {
     defaultEditor = true;
-    colorschemes.ayu = {
-      settings.mirage = false;
+    colorschemes.catppuccin = {
+      settings.flavour = "latte";
       enable = true;
     };
     clipboard = {
@@ -48,7 +48,7 @@
       # Old stuff:
       # Yazi
 
-      auto-save.enable = true;
+      # auto-save.enable = true;
       autoclose.enable = true;
       auto-session.enable = true;
       lightline.enable = true;

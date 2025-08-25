@@ -8,9 +8,8 @@
     settings = {
       global = {
         alignment = "center";
-        corner_radius = 16;
+        corner_radius = 10;
         follow = "mouse";
-        font = "Roboto 10";
         format = "<b>%s</b>\\n%b";
         frame_width = 1;
         offset = "5x5";
@@ -24,7 +23,6 @@
         mouse_right_click = "close_current";
         padding = 8;
         plain_text = "no";
-        separator_color = "auto";
         separator_height = 1;
         show_indicators = false;
         shrink = "no";

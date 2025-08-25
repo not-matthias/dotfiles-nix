@@ -10,6 +10,7 @@
   nixos-hardware,
   arion,
   agenix,
+  stylix,
   ...
 }: let
   nixosBox = arch: base: name: domain: let
@@ -59,6 +60,7 @@
       home-manager.nixosModules.home-manager
       arion.nixosModules.arion
       agenix.nixosModules.default
+      stylix.nixosModules.stylix
       flakes.determinate.nixosModules.default
 
       ./configuration.nix
@@ -67,7 +69,7 @@
     base.lib.nixosSystem {
       system = arch;
       specialArgs = {
-        inherit flakes user domain nixvim stable unstable nixos-hardware;
+        inherit flakes user domain nixvim stable unstable nixos-hardware stylix;
       };
       modules =
         commonModules
