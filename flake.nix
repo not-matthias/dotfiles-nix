@@ -52,6 +52,10 @@
       url = "github:nix-community/stylix/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    quickshell = {
+      url = "github:quickshell-mirror/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs = {
@@ -65,6 +69,7 @@
     arion,
     agenix,
     stylix,
+    quickshell,
     ...
   } @ flakes: let
     user = "not-matthias";
@@ -72,7 +77,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix stylix;
+        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix stylix quickshell;
       }
     );
   };

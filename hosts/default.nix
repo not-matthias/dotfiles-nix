@@ -11,6 +11,7 @@
   arion,
   agenix,
   stylix,
+  quickshell,
   ...
 }: let
   nixosBox = arch: base: name: domain: let
@@ -69,7 +70,7 @@
     base.lib.nixosSystem {
       system = arch;
       specialArgs = {
-        inherit flakes user domain nixvim stable unstable nixos-hardware stylix;
+        inherit flakes user domain nixvim stable unstable nixos-hardware stylix quickshell;
       };
       modules =
         commonModules
