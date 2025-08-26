@@ -83,6 +83,8 @@
       gpg-agent.enable = true;
     };
 
+    stylix.enable = true;
+
     nix.settings = {
       substituters = [
         "https://cache.nixos.org"
@@ -195,31 +197,6 @@
   };
 
   age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
-
-  stylix = {
-    enable = true;
-    autoEnable = true;
-
-    base16Scheme = {
-      base00 = "eff1f5";
-      base01 = "e6e9ef";
-      base02 = "ccd0da";
-      base03 = "bcc0cc";
-      base04 = "acb0be";
-      base05 = "4c4f69";
-      base06 = "d20f39";
-      base07 = "d20f39";
-      base08 = "d20f39";
-      base09 = "fe640b";
-      base0A = "df8e1d";
-      base0B = "40a02b";
-      base0C = "179299";
-      base0D = "d20f39";
-      base0E = "d20f39";
-      base0F = "d20f39";
-    };
-    polarity = "light";
-  };
 
   networking = {
     hostName = "framework";

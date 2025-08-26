@@ -85,7 +85,7 @@
               useUserPackages = true;
               backupFileExtension = "backup";
               extraSpecialArgs = {
-                inherit flakes user nixvim stable unstable;
+                inherit flakes user nixvim stable unstable stylix;
                 addons = nur.repos.rycee.firefox-addons;
               };
               users.${user} = {
@@ -93,6 +93,7 @@
                   ./home.nix
                   nixvim.homeManagerModules.nixvim
                   agenix.homeManagerModules.age
+                  stylix.homeModules.stylix
                 ];
               };
             };
