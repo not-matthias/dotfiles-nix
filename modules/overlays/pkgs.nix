@@ -11,9 +11,6 @@
     #   claude-code = super.callPackage ../../pkgs/claude-code/default.nix {};
     # })
     (_self: super: {
-      oneleet = super.callPackage ../../modules/system/programs/oneleet/default.nix {};
-    })
-    (_self: super: {
       vicinae = super.callPackage ../../pkgs/vicinae.nix {};
     })
     # (_self: super: {
