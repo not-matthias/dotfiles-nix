@@ -104,7 +104,10 @@
     nix-ld.enable = true;
     noisetorch.enable = true;
     sccache.enable = true;
-    oneleet.enable = true;
+    oneleet = {
+      enable = true;
+      service.enable = true;
+    };
   };
 
   services = {

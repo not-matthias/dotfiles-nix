@@ -9,6 +9,9 @@ with lib; let
 in {
   options.programs.oneleet = {
     enable = mkEnableOption "OneLeet";
+    service = {
+      enable = mkEnableOption "OneLeet systemd service that runs weekly";
+    };
 
     package = mkOption {
       type = types.package;
@@ -113,6 +116,23 @@ in {
         '';
         deps = [];
       };
+    };
+
+    systemd.services.oneleet = mkIf cfg.service.enable {
+      description = "OneLeet Agent Service";
+      serviceConfig = {
+        Type = "oneshot";
+        User = "root";
+        ExecStart = "${cfg.package}/bin/oneleet-agent";
+      };
+    };
+
+    systemd.timers.oneleet = mkIf cfg.service.enable {
+      timerConfig = {
+        OnCalendar = "weekly";
+        Persistent = true;
+      };
+      wantedBy = ["timers.target"];
     };
   };
 }
