@@ -1,1 +1,1 @@
-(import ./programs) ++ (import ./services) ++ [./stylix.nix]
+(import ./programs) ++ (import ./services)

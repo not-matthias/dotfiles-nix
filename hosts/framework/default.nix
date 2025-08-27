@@ -82,8 +82,6 @@
       gpg-agent.enable = true;
     };
 
-    stylix.enable = true;
-
     nix.settings = {
       substituters = [
         "https://cache.nixos.org"
@@ -194,6 +192,7 @@
     };
     fonts.enable = true;
   };
+  stylix.enable = true;
 
   age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
 

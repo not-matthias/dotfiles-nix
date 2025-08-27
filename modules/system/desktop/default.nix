@@ -4,4 +4,5 @@
   (import ./quickshell)
   # (import ./sway)
   ./fonts.nix
+  ./stylix.nix
 ]

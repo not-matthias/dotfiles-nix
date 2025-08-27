@@ -93,7 +93,6 @@
                   ./home.nix
                   nixvim.homeManagerModules.nixvim
                   agenix.homeManagerModules.age
-                  stylix.homeModules.stylix
                 ];
               };
             };

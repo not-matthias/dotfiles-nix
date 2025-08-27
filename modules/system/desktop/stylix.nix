@@ -2,6 +2,8 @@
   stylix = {
     autoEnable = true;
     targets.gtk.enable = false;
+    homeManagerIntegration.autoImport = true;
+    homeManagerIntegration.followSystem = true;
 
     base16Scheme = {
       base00 = "eff1f5"; # base
@@ -24,7 +26,7 @@
 
     polarity = "light";
 
-    image = ../system/desktop/hyprland/home/wallpaper.png;
+    image = ./hyprland/home/wallpaper.png;
 
     icons = {
       enable = true;
