@@ -13,6 +13,9 @@
     (_self: super: {
       vicinae = super.callPackage ../../pkgs/vicinae.nix {};
     })
+    (_self: super: {
+      feishin = super.callPackage ../../pkgs/feishin.nix {};
+    })
     # (_self: super: {
     #   lobe-chat = super.callPackage ../../pkgs/lobe-chat.nix {};
     # })

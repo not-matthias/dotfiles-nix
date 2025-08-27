@@ -27,8 +27,7 @@
       # Install desktop apps rather than websites
       # unstable.beeper
       # discord
-      todoist-electron
-      unstable.feishin
+      feishin
 
       vlc
       evince
