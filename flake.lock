@@ -224,15 +224,15 @@
         "systems": "systems_6"
       },
       "locked": {
-        "lastModified": 1756134373,
-        "narHash": "sha256-AnWcFKdiL5MAS1BnrQDTlmw2MRIIySJ9UnYefrxU98I=",
-        "owner": "not-matthias",
+        "lastModified": 1756218302,
+        "narHash": "sha256-B2n1w6X8wGTNFRlEcyneKoHvLcKUQegyjeYeWxyJUxs=",
+        "owner": "umbrageodotus",
         "repo": "elephant",
-        "rev": "04be9f449a299d7bdcc423fab7986dfc3f69a2ba",
+        "rev": "1189b136e2a8ae8743c07c2de5df33b0afaf449a",
         "type": "github"
       },
       "original": {
-        "owner": "not-matthias",
+        "owner": "umbrageodotus",
         "repo": "elephant",
         "type": "github"
       }
@@ -1158,15 +1158,15 @@
         "systems": "systems_7"
       },
       "locked": {
-        "lastModified": 1756134393,
-        "narHash": "sha256-xkF1/l05w+e/g8Ef91uMZjDhT+v32ur1qe8v6qr4fbI=",
-        "owner": "not-matthias",
+        "lastModified": 1756220964,
+        "narHash": "sha256-CDtU4/Y2BZJqxy/aKWSFD4SsmuU9zd4sCRhq83pN/SY=",
+        "owner": "umbrageodotus",
         "repo": "walker",
-        "rev": "54a3ee1545de2b7a139e3911fd8837016af208ca",
+        "rev": "2eea2311f8f669e6721b7e04a0890c6ebe680661",
         "type": "github"
       },
       "original": {
-        "owner": "not-matthias",
+        "owner": "umbrageodotus",
         "repo": "walker",
         "type": "github"
       }
@@ -1175,7 +1175,7 @@
       "inputs": {
         "home-manager": "home-manager_3",
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs"
         ]
       },
       "locked": {

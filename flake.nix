@@ -37,7 +37,7 @@
     };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     determinate = {
       url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
@@ -47,7 +47,7 @@
       url = "github:bobvanderlinden/aw-watcher-window-hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    walker.url = "github:not-matthias/walker";
+    walker.url = "github:umbrageodotus/walker";
     stylix = {
       url = "github:nix-community/stylix/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
