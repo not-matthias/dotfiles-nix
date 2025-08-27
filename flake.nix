@@ -4,9 +4,11 @@
   nixConfig = {
     extra-substituters = [
       "https://install.determinate.systems"
+      "https://chaotic-nyx.cachix.org"
     ];
     extra-trusted-public-keys = [
       "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
+      "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
     ];
   };
 
@@ -56,6 +58,7 @@
       url = "github:quickshell-mirror/quickshell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
   };
 
   outputs = {
@@ -70,6 +73,7 @@
     agenix,
     stylix,
     quickshell,
+    chaotic,
     ...
   } @ flakes: let
     user = "not-matthias";
@@ -77,7 +81,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix stylix quickshell;
+        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix stylix quickshell chaotic;
       }
     );
   };

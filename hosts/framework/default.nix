@@ -6,7 +6,10 @@
   config,
   ...
 }: {
-  imports = [(import ./hardware-configuration.nix)];
+  imports = [
+    (import ./hardware-configuration.nix)
+    ../../modules/system/kernel/cachyos.nix
+  ];
   home-manager.users.${user} = {
     home.stateVersion = "22.05";
     home.packages = with pkgs; [
@@ -36,7 +39,7 @@
       nemo-with-extensions
       file-roller
       gnome-text-editor
-      unstable.anki
+      anki
       calibre
       fastfetch
 
@@ -98,7 +101,7 @@
   };
 
   environment.systemPackages = with pkgs; [
-    config.boot.kernelPackages.perf
+    # config.boot.kernelPackages.perf
   ];
 
   programs = {
@@ -165,7 +168,7 @@
       enable = true;
       scrobblerUrl = "http://desktop.local:42010/apis/listenbrainz/1/";
     };
-    caddy.enable = true;
+    caddy.enable = false;
     yubikey.enable = true;
     smartd = {
       enable = true;
@@ -174,6 +177,13 @@
       defaults.monitored = "-a -o on -S on -s (S/../.././02|L/../../6/03)";
     };
     systembus-notify.enable = lib.mkForce true;
+  };
+
+  # Enable CachyOS kernel with scx scheduler
+  kernel.cachyos = {
+    enable = true;
+    scheduler = "scx_rustland";
+    mArch = "GENERIC_V3";
   };
 
   hardware = {

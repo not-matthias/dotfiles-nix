@@ -8,11 +8,11 @@
   ...
 }: {
   imports = [
-    nixos-hardware.nixosModules.framework-12th-gen-intel
+    # nixos-hardware.nixosModules.framework-12th-gen-intel # Disabled due to conflict with CachyOS kernel
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  # boot.kernelPackages = pkgs.linuxPackages_zen; # Overridden by CachyOS kernel
   boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "nvme" "usb_storage" "usbhid" "sd_mod"];
 
   fileSystems."/" = {
