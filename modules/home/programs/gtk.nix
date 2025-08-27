@@ -6,6 +6,11 @@
   gtk = {
     enable = true;
 
+    iconTheme = {
+      name = "Papirus";
+      package = pkgs.papirus-icon-theme;
+    };
+
     # https://github.com/catppuccin/gtk
     theme = lib.mkForce {
       name = "catppuccin-latte-red-compact";
