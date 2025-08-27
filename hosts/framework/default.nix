@@ -55,7 +55,6 @@
         runAsService = true;
       };
       granted.enable = true;
-      kitty.enable = true;
       alacritty.enable = true;
       waybar.enable = true;
       nixvim.enable = true;
@@ -101,7 +100,6 @@
   programs = {
     fcitx5.enable = true;
     nix-ld.enable = true;
-    noisetorch.enable = true;
     sccache.enable = true;
     oneleet = {
       enable = true;
@@ -111,7 +109,6 @@
 
   services = {
     flatpak.enable = true;
-    ntfy-sh.enable = true;
     restic = {
       enable = true;
       paths = [
@@ -135,7 +132,7 @@
       remoteBackup = {
         enable = true;
         repository = "s3:s3.eu-central-003.backblazeb2.com/framework-cf912bac41384519";
-        schedule = "weekly";
+        schedule = "daily";
       };
     };
     system76-scheduler = {
@@ -156,8 +153,7 @@
       enable = true;
       audioFolder = "/home/${user}/Audiobooks";
     };
-    vpn.enable = true;
-    safeeyes.enable = false;
+    safeeyes.enable = true;
     navidrome = {
       enable = true;
       scrobblerUrl = "http://desktop.local:42010/apis/listenbrainz/1/";
