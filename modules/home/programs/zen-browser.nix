@@ -59,15 +59,10 @@ in {
     };
 
     profiles = let
-      /**
-        ------------------------------
-      * [CATEGORY] PRIVACY
-      * -------------------------------
-      */
-      /**
-        [SECTION] ISOLATION
-      * Default to strict mode with enhanced partitioning
-      */
+      # ================================
+      # [CATEGORY] PRIVACY
+      # ================================
+      # [SECTION] ISOLATION - Default to strict mode with enhanced partitioning
       isolationSettings = {
         # Content blocking strict mode
         "browser.contentblocking.category" = "strict";
@@ -81,10 +76,7 @@ in {
         "network.cookie.CHIPS.enabled" = true;
       };
 
-      /**
-        [SECTION] SANITIZING
-      * Enhanced cleaning preferences for privacy
-      */
+      # [SECTION] SANITIZING - Enhanced cleaning preferences for privacy
       sanitizingSettings = {
         # Don't sanitize on shutdown to preserve login sessions
         "privacy.sanitize.sanitizeOnShutdown" = false;
@@ -101,100 +93,44 @@ in {
         "media.memory_cache_max_size" = 65536;
       };
 
-      /**
-      [SECTION] CACHE AND STORAGE
-      */
+      # [SECTION] CACHE AND STORAGE
       cacheSettings = {
-        "browser.cache.disk.enable" = false; # Disable disk cache for privacy
+        "browser.cache.disk.enable" = false;
+        "browser.cache.disk.capacity" = 0;
+
+        "browser.cache.disk.smart_size.enabled" = false;
+
         "browser.cache.memory.enable" = true;
         "browser.cache.memory.capacity" = 524288; # 512MB RAM cache
-        "browser.cache.memory.max_entry_size" = 102400; # 100MB max per entry
+        "browser.cache.memory.max_entry_size" = 32768; # 32MB max per entry
         "browser.shell.shortcutFavicons" = false; # Disable favicons in profile folder
-        "browser.helperApps.deleteTempFileOnExit" = true; # Delete temporary files
+        "browser.helperApps.deleteTempFileOnExit" = true;
       };
 
-      /**
-      [SECTION] HISTORY AND SESSION RESTORE
-      */
+      # [SECTION] HISTORY AND SESSION RESTORE
       historySettings = {
         "privacy.history.custom" = true;
         "browser.privatebrowsing.autostart" = false;
         "browser.formfill.enable" = false; # Disable form history
         "browser.sessionstore.privacy_level" = 2; # Prevent session data storage
         "browser.sessionstore.interval" = 300000; # 5 minutes instead of 15 seconds
-
-        # Session management - restore tabs on startup
-        # "browser.startup.page" = 3; # Restore previous session
-        # "browser.sessionstore.max_tabs_undo" = 10; # Keep more closed tabs
-        # "browser.sessionstore.max_windows_undo" = 3; # Allow window undo
-        # "browser.sessionstore.restore_on_demand" = true; # Lazy tab loading
-        # "browser.sessionstore.restore_tabs_lazily" = true;
       };
 
-      /**
-        [SECTION] QUERY STRIPPING
-      * Use Brave's query stripping list for privacy
-      */
-      queryStrippingSettings = {
+      # [SECTION] PRIVACY SETTINGS - Query stripping and logging
+      privacySettings = {
+        # Query stripping
         "privacy.query_stripping.strip_list" = "__hsfp __hssc __hstc __s _hsenc _openstat dclid fbclid gbraid gclid hsCtaTracking igshid mc_eid ml_subscriber ml_subscriber_hash msclkid oft_c oft_ck oft_d oft_id oft_ids oft_k oft_lk oft_sk oly_anon_id oly_enc_id rb_clickid s_cid twclid vero_conv vero_id wbraid wickedid yclid";
-      };
 
-      /**
-      [SECTION] LOGGING
-      */
-      loggingSettings = {
+        # Logging
         "browser.dom.window.dump.enabled" = false;
         "devtools.console.stdout.chrome" = false;
       };
 
-      /**
-        ------------------------------
-      * [CATEGORY] NETWORKING
-      * -------------------------------
-      */
+      # ================================
+      # [CATEGORY] NETWORKING
+      # ================================
 
-      /**
-      [SECTION] HTTPS
-      */
-      httpsSettings = {
-        "dom.security.https_only_mode" = true; # HTTPS-only mode
-        "network.auth.subresource-http-auth-allow" = 1; # Block HTTP auth dialogs
-      };
-
-      /**
-      [SECTION] REFERERS
-      */
-      refererSettings = {
-        "network.http.referer.XOriginTrimmingPolicy" = 2; # Trim cross-origin referers
-      };
-
-      /**
-      [SECTION] WEBRTC
-      */
-      webrtcSettings = {
-        "media.peerconnection.ice.default_address_only" = true; # Single interface for ICE
-        "media.peerconnection.ice.proxy_only_if_behind_proxy" = true; # Force WebRTC through proxy
-      };
-
-      /**
-      [SECTION] PROXY
-      */
-      proxySettings = {
-        "network.gio.supported-protocols" = ""; # Disable gio to prevent proxy bypass
-        "network.file.disable_unc_paths" = true; # Disable UNC paths
-        "network.proxy.socks_remote_dns" = true; # Force DNS through proxy
-      };
-
-      /**
-      [SECTION] DNS
-      */
-      dnsSettings = {
-        "network.dns.disablePrefetch" = true; # Disable DNS prefetching
-      };
-
-      /**
-      [SECTION] DOH
-      */
+      # [SECTION] DNS OVER HTTPS (DoH)
       dohSettings = {
         "network.trr.mode" = 5; # DoH turned off by default
         "network.trr.uri" = "https://dns10.quad9.net/dns-query"; # Default DoH server
@@ -205,27 +141,40 @@ in {
         "network.trr.allow-rfc1918" = true; # Allow private IP addresses
       };
 
-      /**
-      [SECTION] PREFETCHING AND SPECULATIVE CONNECTIONS
-      */
-      prefetchingSettings = {
+      # [SECTION] NETWORKING - HTTPS, WebRTC, Proxy, DNS, Prefetching
+      networkingSettings = {
+        # HTTPS and security
+        "dom.security.https_only_mode" = true; # HTTPS-only mode
+        "network.auth.subresource-http-auth-allow" = 1; # Block HTTP auth dialogs
+
+        # WebRTC
+        "media.peerconnection.ice.default_address_only" = true; # Single interface for ICE
+        "media.peerconnection.ice.proxy_only_if_behind_proxy" = true; # Force WebRTC through proxy
+
+        # Proxy settings
+        "network.gio.supported-protocols" = ""; # Disable gio to prevent proxy bypass
+        "network.file.disable_unc_paths" = true; # Disable UNC paths
+        "network.proxy.socks_remote_dns" = true; # Force DNS through proxy
+
+        # DNS and prefetching
+        "network.dns.disablePrefetch" = true; # Disable DNS prefetching
         "network.predictor.enabled" = false;
         "network.prefetch-next" = false;
         "network.http.speculative-parallel-limit" = 0;
         "browser.places.speculativeConnect.enabled" = false;
         "browser.urlbar.speculativeConnect.enabled" = false;
+
+        # Referers
+        "network.http.referer.XOriginTrimmingPolicy" = 2; # Trim cross-origin referers
       };
 
-      /**
-        ------------------------------
-      * [CATEGORY] FINGERPRINTING
-      * -------------------------------
-      */
+      # ================================
+      # [CATEGORY] FINGERPRINTING
+      # ================================
 
-      /**
-      [SECTION] RFP
-      */
-      rfpSettings = {
+      # [SECTION] FINGERPRINTING - RFP and WebGL settings
+      fingerprintingSettings = {
+        # Resist Fingerprinting (RFP)
         "privacy.resistFingerprinting" = true;
         "privacy.resistFingerprinting.block_mozAddonManager" = true; # Prevent RFP from breaking AMO
         "browser.display.use_system_colors" = false;
@@ -236,25 +185,17 @@ in {
         "privacy.globalprivacycontrol.enabled" = true; # Global Privacy Control
         "privacy.globalprivacycontrol.pbmode.enabled" = true;
         "privacy.globalprivacycontrol.functionality.enabled" = true;
-      };
 
-      /**
-      [SECTION] WEBGL
-      */
-      webglSettings = {
+        # Exceptions:
         "webgl.disabled" = false; # Enable WebGL for proper icon rendering
-        "dom.webgpu.enabled" = false;
+        "dom.webgpu.enabled" = true; # WebGPU can be used for fingerprinting but speeds up rendering
       };
 
-      /**
-        ------------------------------
-      * [CATEGORY] UI AND PERFORMANCE
-      * -------------------------------
-      */
+      # ================================
+      # [CATEGORY] UI AND PERFORMANCE
+      # ================================
 
-      /**
-      [SECTION] UI SETTINGS
-      */
+      # [SECTION] UI SETTINGS
       uiSettings = {
         # Disable updates (managed by Nix)
         "app.update.channel" = "default";
@@ -268,9 +209,8 @@ in {
         "browser.newtab.url" = "about:blank";
 
         # Fix URL navigation behavior - prevent new tabs when changing URLs
-        "browser.link.open_newwindow" = 1; # Open links in current tab
+        "browser.link.open_newwindow" = 2; # Open links in new tab
         "browser.link.open_newwindow.restriction" = 0; # No restrictions
-        "browser.tabs.loadInBackground" = false; # Don't load new tabs in background
 
         # Hide bookmarks bar by default
         "browser.toolbars.bookmarks.visibility" = "never";
@@ -279,16 +219,9 @@ in {
         "browser.compactmode.show" = true;
         "findbar.highlightAll" = true;
         "browser.tabs.firefox-view" = false;
-
-        # Theme and customization
-        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-        "layout.css.prefers-color-scheme.content-override" = 2;
-        "browser.privateWindowSeparation.enabled" = false;
       };
 
-      /**
-      [SECTION] ZEN BROWSER SPECIFIC
-      */
+      # [SECTION] ZEN BROWSER SPECIFIC
       zenSettings = {
         "zen.urlbar.onlyfloatingbar" = true;
         "zen.containers.enable_container_essentials" = true;
@@ -299,12 +232,23 @@ in {
         "zen.updates.check-interval" = 86400000; # Check updates daily
         "zen.animation.enabled" = false; # Disable zen-specific animations
         "zen.sounds.enabled" = false; # Disable zen sound effects
+
+        "zen.glance.enabled" = false;
+        "zen.splitView.enable-tab-drop" = false;
+        "zen.haptic-feedback.enabled" = false;
+        "zen.swipe.is-fast-swipe" = false;
+        "zen.theme.disable-lightweight" = false;
+        "zen.theme.gradient" = false;
+        "zen.theme.acrylic-elements" = false;
+
+        "zen.theme.use-sysyem-colors" = true;
+        "zen.watermark.enabled" = false;
       };
 
-      /**
-      [SECTION] PERFORMANCE OPTIMIZATIONS
-      */
+      # [SECTION] PERFORMANCE OPTIMIZATIONS
       performanceSettings = {
+        "browser.preferences.defaultPerformanceSettings.enabled" = false;
+
         # Hardware acceleration
         "media.ffmpeg.vaapi.enabled" = true;
         "widget.dmabuf.force-enabled" = true;
@@ -312,67 +256,76 @@ in {
         "layers.acceleration.force-enabled" = true;
 
         # Process management optimizations
-        "dom.ipc.processCount" = 8; # Limit content processes for laptop
-        "dom.ipc.processCount.webIsolated" = 4; # Isolated web processes
-        "dom.ipc.processPrelaunch.enabled" = true; # Prelaunch processes
-        "browser.tabs.remote.autostart" = true; # Enable multiprocess
-        "dom.ipc.processHangMonitor" = true; # Monitor hanging processes
+        "dom.ipc.processCount" = 8;
+        # "dom.ipc.keepProcessesAlive.web" = 4;
+        # "dom.ipc.processCount.webIsolated" = 4; # Isolated web processes
+        # "dom.ipc.processPrelaunch.enabled" = true; # Prelaunch processes
+        # "browser.tabs.remote.autostart" = true; # Enable multiprocess
+        # "dom.ipc.processHangMonitor" = true; # Monitor hanging processes
 
         # Graphics and rendering optimizations
-        "gfx.canvas.accelerated" = true; # Hardware-accelerated canvas
-        "gfx.webrender.compositor" = true; # WebRender compositor
-        "layers.mlgpu.enabled" = true; # Multi-layer GPU acceleration
+        "gfx.canvas.accelerated" = true;
+        "gfx.webrender.compositor" = true;
+        "layers.mlgpu.enabled" = true;
 
         # Media decoding optimizations
-        "media.hardware-video-decoding.enabled" = true; # Hardware video decode
-        "media.rdd-process.enabled" = true; # Separate media process
+        "media.hardware-video-decoding.enabled" = true;
+        "media.rdd-process.enabled" = true;
         "image.mem.decode_bytes_at_a_time" = 32768; # Faster image decoding
 
         # Background activity and animations
-        "browser.tabs.animate" = false; # Disable tab animations
-        "browser.fullscreen.animate" = false; # Disable fullscreen animations
-        "toolkit.cosmeticAnimations.enabled" = false; # Disable UI animations
-        "browser.download.animateNotifications" = false; # No download animations
+        "browser.tabs.animate" = false;
+        "browser.fullscreen.animate" = false;
+        "toolkit.cosmeticAnimations.enabled" = false;
+        "browser.download.animateNotifications" = false;
 
         # Accessibility (disable for performance)
-        "accessibility.force_disabled" = 1; # Force disable a11y services
-        "accessibility.typeaheadfind.enabled" = false; # Disable type-ahead find
+        "accessibility.force_disabled" = 1;
+        "accessibility.typeaheadfind.enabled" = false;
 
-        # Background processes and timers
-        "dom.timeout.enable_budget_timer_throttling" = false; # No timer throttling
-        "dom.timeout.throttling_delay" = -1; # Disable timeout throttling
-        "dom.serviceWorkers.enabled" = false; # Disable service workers
-        "dom.push.enabled" = false; # Disable push notifications
+        # # Background processes and timers
+        # "dom.timeout.enable_budget_timer_throttling" = false; # No timer throttling
+        # "dom.timeout.throttling_delay" = -1; # Disable timeout throttling
+        # "dom.serviceWorkers.enabled" = false; # Disable service workers
+        # "dom.push.enabled" = false; # Disable push notifications
 
-        # Enable PerformanceObserver for cloud.google.com compatibility
-        "dom.enable_performance_observer" = true;
+        # # Image and content loading
+        # "image.animation_mode" = "none"; # Disable animated images
+        # "browser.display.use_document_fonts" = 1; # Allow web fonts for icons
+        # "gfx.downloadable_fonts.enabled" = true; # Enable web fonts for proper icon display
 
-        # Image and content loading
-        "image.animation_mode" = "none"; # Disable animated images
-        "browser.display.use_document_fonts" = 1; # Allow web fonts for icons
-        "gfx.downloadable_fonts.enabled" = true; # Enable web fonts for proper icon display
+        # Smooth scroll
+        "general.smoothScroll" = true;
+        "general.smoothScroll.msdPhysics.enabled" = false;
+        "general.smoothScroll.currentVelocityWeighting" = 0;
+        # "apz.overscroll.enabled" = false;
+        # "general.smoothScroll.stopDecelerationWeighting" = 1;
+        # "general.smoothScroll.mouseWheel.durationMaxMS" = 150;
+        # "general.smoothScroll.mouseWheel.durationMinMS" = 50;
+        # "mousewheel.min_line_scroll_amount" = 18;
+        # "mousewheel.scroll_series_timeout" = 10;
+
+        # Wayland
+        "widget.wayland.opaque-region.enabled" = true;
+        "widget.wayland.fractional-scale.enabled" = true;
+
+        # Misc:
+        "layout.frame_rate" = 60;
+        "widget.gtk.rounded-bottom-corners.enabled" = false;
       };
 
-      /**
-        ------------------------------
-      * [CATEGORY] SECURITY
-      * -------------------------------
-      */
+      # ================================
+      # [CATEGORY] SECURITY
+      # ================================
 
-      /**
-      [SECTION] PERMISSIONS
-      */
-      permissionsSettings = {
+      # [SECTION] SECURITY - Permissions, safe browsing, and other security
+      securitySettings = {
+        # Permissions
         "permissions.manager.defaultsUrl" = ""; # Remove Mozilla special permissions
         "permissions.default.desktop-notification" = 2; # Block notifications
         "permissions.default.geo" = 2; # Block location requests
-      };
 
-      /**
-      [SECTION] SAFE BROWSING
-      */
-      safeBrowsingSettings = {
-        # Disable safe browsing completely for privacy
+        # Safe browsing (disabled for privacy)
         "browser.safebrowsing.malware.enabled" = false;
         "browser.safebrowsing.phishing.enabled" = false;
         "browser.safebrowsing.blockedURIs.enabled" = false;
@@ -390,61 +343,29 @@ in {
         "browser.safebrowsing.provider.google4.dataSharingURL" = "";
       };
 
-      /**
-      [SECTION] OTHER SECURITY
-      */
-      otherSecuritySettings = {
-        "network.IDN_show_punycode" = true; # Prevent IDN spoofing
-        "pdfjs.enableScripting" = false; # Disable PDF scripting
-      };
+      # ================================
+      # [CATEGORY] REGION
+      # ================================
 
-      /**
-        ------------------------------
-      * [CATEGORY] REGION
-      * -------------------------------
-      */
-
-      /**
-      [SECTION] LOCATION
-      */
-      locationSettings = {
-        # Use BeaconDB instead of Google for geolocation
+      # [SECTION] REGION - Geolocation and language settings
+      regionSettings = {
+        # Geolocation - Use BeaconDB instead of Google
         "geo.provider.network.url" = "https://api.beacondb.net/v1/geolocate";
         "geo.provider.ms-windows-location" = false; # Windows
         "geo.provider.use_corelocation" = false; # macOS
         "geo.provider.use_gpsd" = false; # Linux
         "geo.provider.use_geoclue" = false; # Linux
-      };
 
-      /**
-      [SECTION] LANGUAGE
-      */
-      languageSettings = {
-        # Disable region-specific updates
+        # Language and region updates
         "browser.region.network.url" = "";
         "browser.region.update.enabled" = false;
       };
 
-      /**
-        ------------------------------
-      * [CATEGORY] BEHAVIOR
-      * -------------------------------
-      */
+      # ================================
+      # [CATEGORY] BEHAVIOR
+      # ================================
 
-      /**
-      [SECTION] DRM
-      */
-      drmSettings = {
-        "media.eme.enabled" = false; # Disable DRM
-        "media.gmp-manager.url" = "data:text/plain,"; # Prevent plugin update checks
-        "media.gmp-provider.enabled" = false;
-        "media.gmp-gmpopenh264.enabled" = false;
-        "media.webrtc.hw.h264.enabled" = true; # Allow H264 itself
-      };
-
-      /**
-      [SECTION] SEARCH AND URLBAR
-      */
+      # [SECTION] SEARCH AND URLBAR
       searchSettings = {
         "browser.urlbar.suggest.searches" = false;
         "browser.search.suggest.enabled" = false;
@@ -470,41 +391,23 @@ in {
         "browser.urlbar.untrimOnUserInteraction.featureGate" = true;
       };
 
-      /**
-      [SECTION] DOWNLOADS
-      */
+      # [SECTION] DOWNLOADS AND AUTOPLAY
       downloadSettings = {
-        "browser.download.useDownloadDir" = false; # Always ask where to save
-        "browser.download.autohideButton" = false; # Don't hide download button
-        "browser.download.manager.addToRecentDocs" = false; # Don't add to recent docs
-        "browser.download.alwaysOpenPanel" = false; # Don't expand download menu
-        "browser.download.start_downloads_in_tmp_dir" = true; # Use temp directory
-      };
+        "browser.download.useDownloadDir" = true;
+        "browser.download.autohideButton" = false;
+        "browser.download.manager.addToRecentDocs" = false;
+        "browser.download.alwaysOpenPanel" = false;
+        "browser.download.start_downloads_in_tmp_dir" = true;
 
-      /**
-      [SECTION] AUTOPLAY
-      */
-      autoplaySettings = {
+        # Autoplay
         "media.autoplay.default" = 5; # Block autoplay unless right-clicked
       };
 
-      /**
-      [SECTION] MACHINE LEARNING
-      */
-      mlSettings = {
-        "browser.ml.enable" = false;
-        "browser.ml.chat.enabled" = false;
-      };
+      # ================================
+      # [CATEGORY] EXTENSIONS
+      # ================================
 
-      /**
-        ------------------------------
-      * [CATEGORY] EXTENSIONS
-      * -------------------------------
-      */
-
-      /**
-      [SECTION] USER INSTALLED
-      */
+      # [SECTION] USER INSTALLED EXTENSIONS
       extensionSettings = {
         "extensions.webextensions.restrictedDomains" = ""; # Allow extensions on all domains
         "extensions.enabledScopes" = 5; # Profile + application scope
@@ -512,9 +415,7 @@ in {
         "extensions.quarantinedDomains.enabled" = false; # Disable quarantined domains
       };
 
-      /**
-      [SECTION] SYSTEM
-      */
+      # [SECTION] SYSTEM EXTENSIONS
       systemExtensionSettings = {
         "extensions.systemAddon.update.enabled" = false; # No auto-updates for system addons
         "extensions.systemAddon.update.url" = "";
@@ -522,30 +423,22 @@ in {
         "extensions.webcompat-reporter.newIssueEndpoint" = "";
       };
 
-      /**
-        ------------------------------
-      * [CATEGORY] BUILT-IN FEATURES
-      * -------------------------------
-      */
+      # ================================
+      # [CATEGORY] BUILT-IN FEATURES
+      # ================================
 
-      /**
-      [SECTION] UPDATER
-      */
-      updaterSettings = {
-        "app.update.auto" = false; # Managed by Nix
-      };
-
-      /**
-      [SECTION] SYNC
-      */
-      syncSettings = {
+      # [SECTION] FIREFOX ACCOUNTS AND SYNC
+      firefoxAccountsSettings = {
         "identity.fxaccounts.enabled" = false; # Disable Firefox Sync
+        "identity.fxaccounts.toolbar.pxiToolbarEnabled" = false; # Hide Firefox Sync ads
+
+        # App updates (managed by Nix)
+        "app.update.auto" = false;
       };
 
-      /**
-      [SECTION] LOCKWISE
-      */
-      lockwiseSettings = {
+      # [SECTION] BUILT-IN FEATURES - Password manager, containers, devtools
+      builtInFeaturesSettings = {
+        # Password manager and autofill (Lockwise)
         "signon.rememberSignons" = false; # Disable password manager
         "signon.autofillForms" = false; # Disable autofill
         "extensions.formautofill.addresses.enabled" = false; # Disable address autofill
@@ -553,33 +446,21 @@ in {
         "signon.formlessCapture.enabled" = false; # Disable formless capture
         "signon.privateBrowsingCapture.enabled" = false;
         "editor.truncate_user_pastes" = false;
-      };
 
-      /**
-      [SECTION] CONTAINERS
-      */
-      containerSettings = {
+        # Container tabs
         "privacy.userContext.enabled" = true; # Enable container tabs
         "privacy.userContext.ui.enabled" = true; # Show container UI
-      };
 
-      /**
-      [SECTION] DEVTOOLS
-      */
-      devtoolsSettings = {
+        # Developer tools
         "devtools.debugger.remote-enabled" = false; # Disable remote debugging
         "devtools.selfxss.count" = 0; # Allow console usage
       };
 
-      /**
-        ------------------------------
-      * [CATEGORY] UI
-      * -------------------------------
-      */
+      # ================================
+      # [CATEGORY] UI
+      # ================================
 
-      /**
-      [SECTION] FIRST LAUNCH
-      */
+      # [SECTION] FIRST LAUNCH
       firstLaunchSettings = {
         "browser.startup.homepage_override.mstone" = "ignore";
         "startup.homepage_override_url" = "about:blank";
@@ -591,9 +472,7 @@ in {
         "browser.shell.checkDefaultBrowser" = false;
       };
 
-      /**
-      [SECTION] NEW TAB PAGE
-      */
+      # [SECTION] NEW TAB PAGE
       newTabSettings = {
         "browser.newtabpage.activity-stream.section.highlights.includeDownloads" = false;
         "browser.newtabpage.activity-stream.section.highlights.includeVisited" = false;
@@ -609,9 +488,7 @@ in {
         "browser.newtabpage.activity-stream.showWeather" = false;
       };
 
-      /**
-      [SECTION] ABOUT PAGES
-      */
+      # [SECTION] ABOUT PAGES
       aboutSettings = {
         "browser.contentblocking.report.lockwise.enabled" = false;
         "browser.contentblocking.report.hide_vpn_banner" = true;
@@ -627,32 +504,28 @@ in {
         "browser.preferences.moreFromMozilla" = false;
       };
 
-      /**
-      [SECTION] RECOMMENDED
-      */
+      # [SECTION] RECOMMENDED FEATURES
       recommendedSettings = {
         "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" = false;
         "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" = false;
       };
 
-      /**
-      [SECTION] OTHER UI
-      */
+      # [SECTION] OTHER UI AND MACHINE LEARNING
       otherUiSettings = {
-        "identity.fxaccounts.toolbar.pxiToolbarEnabled" = false; # Hide Firefox Sync ads
         "sidebar.main.tools" = "history"; # Default sidebar layout
+
+        # Machine Learning
+        "browser.ml.enable" = false;
+        "browser.ml.chat.enabled" = false;
       };
 
-      /**
-        ------------------------------
-      * [CATEGORY] TELEMETRY
-      * -------------------------------
-      */
+      # ================================
+      # [CATEGORY] TELEMETRY
+      # ================================
 
-      /**
-      [SECTION] CORE TELEMETRY
-      */
+      # [SECTION] COMPREHENSIVE TELEMETRY - Core, studies, crash reports, connectivity
       telemetrySettings = {
+        # Core telemetry
         "toolkit.telemetry.unified" = false; # Master switch
         "toolkit.telemetry.enabled" = false; # Master switch
         "toolkit.telemetry.server" = "data:,";
@@ -672,50 +545,22 @@ in {
         "datareporting.healthreport.uploadEnabled" = false;
         "datareporting.policy.dataSubmissionEnabled" = false;
         "datareporting.usage.uploadEnabled" = false;
-      };
 
-      /**
-      [SECTION] STUDIES AND NORMANDY
-      */
-      studiesSettings = {
+        # Studies and Normandy
         "app.normandy.enabled" = false;
         "app.normandy.api_url" = "";
         "app.shield.optoutstudies.enabled" = false;
         "browser.discovery.enabled" = false; # Disable personalized extension recommendations
-      };
 
-      /**
-      [SECTION] CRASH REPORTS
-      */
-      crashSettings = {
+        # Crash reports
         "browser.tabs.crashReporting.sendReport" = false;
         "breakpad.reportURL" = "";
-      };
 
-      /**
-      [SECTION] CONNECTIVITY
-      */
-      connectivitySettings = {
+        # Connectivity and attribution
         "network.connectivity-service.enabled" = false;
         "network.captive-portal-service.enabled" = false;
         "captivedetect.canonicalURL" = "";
         "dom.private-attribution.submission.enabled" = false; # Privacy-Preserving Attribution
-      };
-
-      /**
-        ------------------------------
-      * [CATEGORY] WINDOWS
-      * -------------------------------
-      */
-
-      /**
-      [SECTION] WINDOWS SPECIFIC
-      */
-      windowsSettings = {
-        "app.update.service.enabled" = false;
-        "default-browser-agent.enabled" = false;
-        "network.protocol-handler.external.ms-windows-store" = false;
-        "toolkit.winRegisterApplicationRestart" = false;
       };
 
       # Combine all settings into one object
@@ -725,54 +570,34 @@ in {
         // sanitizingSettings
         // cacheSettings
         // historySettings
-        // queryStrippingSettings
-        // loggingSettings
+        // privacySettings # Merged: queryStrippingSettings + loggingSettings
         # NETWORKING CATEGORY
-        // httpsSettings
-        // refererSettings
-        // webrtcSettings
-        // proxySettings
-        // dnsSettings
-        // dohSettings
-        // prefetchingSettings
+        # // dohSettings
+        # // networkingSettings # Merged: httpsSettings + webrtcSettings + proxySettings + prefetchingSettings + dnsSettings + refererSettings
         # FINGERPRINTING CATEGORY
-        // rfpSettings
-        // webglSettings
+        // fingerprintingSettings # Merged: rfpSettings + webglSettings
         # SECURITY CATEGORY
-        // permissionsSettings
-        // safeBrowsingSettings
-        // otherSecuritySettings
+        // securitySettings # Merged: permissionsSettings + safeBrowsingSettings + otherSecuritySettings
         # REGION CATEGORY
-        // locationSettings
-        // languageSettings
+        // regionSettings # Merged: locationSettings + languageSettings
         # BEHAVIOR CATEGORY
-        // drmSettings
         // searchSettings
-        // downloadSettings
-        // autoplaySettings
-        // mlSettings
+        // downloadSettings # Merged: downloadSettings + autoplaySettings
         # EXTENSIONS CATEGORY
         // extensionSettings
         // systemExtensionSettings
         # BUILT-IN FEATURES CATEGORY
-        // updaterSettings
-        // syncSettings
-        // lockwiseSettings
-        // containerSettings
-        // devtoolsSettings
+        // firefoxAccountsSettings # Merged: syncSettings + updaterSettings + identity.fxaccounts.*
+        // builtInFeaturesSettings # Merged: lockwiseSettings + containerSettings + devtoolsSettings
         # UI CATEGORY
         // firstLaunchSettings
         // newTabSettings
         // aboutSettings
         // recommendedSettings
-        // otherUiSettings
+        // otherUiSettings # Merged: otherUiSettings + mlSettings
         # TELEMETRY CATEGORY
-        // telemetrySettings
-        // studiesSettings
-        // crashSettings
-        // connectivitySettings
+        // telemetrySettings # Merged: telemetrySettings + studiesSettings + crashSettings + connectivitySettings
         # WINDOWS CATEGORY
-        // windowsSettings
         # UI AND PERFORMANCE CATEGORY
         // uiSettings
         // zenSettings
@@ -784,12 +609,9 @@ in {
         vimium
         firefox-translations
         refined-github
-
         leechblock-ng
-        ublock-origin
         sponsorblock
         istilldontcareaboutcookies
-
         libredirect
       ];
 
