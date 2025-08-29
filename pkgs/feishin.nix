@@ -3,6 +3,7 @@
   appimageTools,
   fetchurl,
   stdenv,
+  makeWrapper,
 }: let
   pname = "feishin";
   version = "0.19.0";
@@ -28,9 +29,15 @@ in
   appimageTools.wrapType2 {
     inherit pname version src;
 
+    nativeBuildInputs = [makeWrapper];
+
     extraInstallCommands = ''
       install -m 444 -D ${appimageContents}/feishin.desktop -t $out/share/applications
       cp -r ${appimageContents}/usr/share/icons $out/share
+
+      # Wrap the binary to set Electron Ozone platform hint
+      wrapProgram $out/bin/feishin \
+        --set ELECTRON_OZONE_PLATFORM_HINT auto
     '';
 
     meta = with lib; {
