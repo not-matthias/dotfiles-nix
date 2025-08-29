@@ -1,3 +1,4 @@
+11439 = wordpress
 11438 = vaultwarden
 11437 = librechat
 11436 = postiz

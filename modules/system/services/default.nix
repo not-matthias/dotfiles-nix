@@ -43,5 +43,6 @@
   ./vaultwarden.nix
   ./vpn.nix
   ./watchyourlan.nix
+  ./wordpress.nix
   ./yubikey.nix
 ]

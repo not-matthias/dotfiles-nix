@@ -99,6 +99,7 @@
     ntfy-sh.enable = true;
     twenty.enable = true;
     netdata.enable = true;
+    wordpress.enable = true;
   };
 
   networking = {
