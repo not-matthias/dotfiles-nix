@@ -95,6 +95,13 @@ To encrypt a new file:
 cat file.txt | agenix -e file.age
 ```
 
+### Adding extra registries
+
+```
+$ nix registry add nixpkgs-unstable github:NixOS/nixpkgs/nixos-unstable 
+$ nix registry list
+```
+
 ## Troubleshooting
 
 ### Cached failure of attribute
