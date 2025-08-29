@@ -1,3 +1,4 @@
+11438 = vaultwarden
 11437 = librechat
 11436 = postiz
 11435 = open-webui

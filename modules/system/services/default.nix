@@ -40,6 +40,7 @@
   ./stump.nix
   ./traggo.nix
   ./twenty.nix
+  ./vaultwarden.nix
   ./vpn.nix
   ./watchyourlan.nix
   ./yubikey.nix
