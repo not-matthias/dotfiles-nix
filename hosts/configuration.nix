@@ -42,6 +42,8 @@
     keyMap = "us";
   };
 
+  documentation.man.enable = false;
+
   environment = {
     variables = {
       TERMINAL = "alacritty";
