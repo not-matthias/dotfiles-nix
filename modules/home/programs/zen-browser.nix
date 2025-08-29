@@ -4,6 +4,7 @@
 * A comprehensive privacy and security configuration based on LibreWolf settings. This configuration includes similar categories and settings from LibreWolf's librewolf.cfg to provide enhanced privacy, security, and performance for Zen Browser.
 */
 {
+  unstable,
   flakes,
   addons,
   ...
@@ -26,8 +27,6 @@ in {
       DisableFirefoxStudies = true;
       DisableMasterPasswordCreation = true;
       DisablePocket = true;
-      DisableProfileImport = true;
-      DisableProfileRefresh = true;
       DisableTelemetry = true;
       DontCheckDefaultBrowser = true;
       OfferToSaveLogins = false;
@@ -56,6 +55,12 @@ in {
       };
       OverrideFirstRunPage = "";
       OverridePostUpdatePage = "";
+      EnableTrackingProtection = {
+        Value = true;
+        Cryptomining = true;
+        Fingerprinting = true;
+      };
+      PictureInPicture.Enabled = false;
     };
 
     profiles = let
@@ -66,14 +71,6 @@ in {
       isolationSettings = {
         # Content blocking strict mode
         "browser.contentblocking.category" = "strict";
-
-        # Always Partition Storage (APS)
-        "privacy.partition.always_partition_third_party_non_cookie_storage" = true;
-        "privacy.partition.always_partition_third_party_non_cookie_storage.exempt_sessionstorage" = false;
-
-        # CHIPS / third party cookie deprecation
-        "network.cookie.cookieBehavior.optInPartitioning" = true;
-        "network.cookie.CHIPS.enabled" = true;
       };
 
       # [SECTION] SANITIZING - Enhanced cleaning preferences for privacy
@@ -98,12 +95,9 @@ in {
         "browser.cache.disk.enable" = false;
         "browser.cache.disk.capacity" = 0;
 
-        "browser.cache.disk.smart_size.enabled" = false;
-
         "browser.cache.memory.enable" = true;
-        "browser.cache.memory.capacity" = 524288; # 512MB RAM cache
-        "browser.cache.memory.max_entry_size" = 32768; # 32MB max per entry
-        "browser.shell.shortcutFavicons" = false; # Disable favicons in profile folder
+        "browser.cache.memory.capacity" = 1048576; # 1GB RAM cache
+        "browser.cache.memory.max_entry_size" = 65536; # 64MB max per entry
         "browser.helperApps.deleteTempFileOnExit" = true;
       };
 
@@ -131,65 +125,14 @@ in {
       # ================================
 
       # [SECTION] DNS OVER HTTPS (DoH)
-      dohSettings = {
-        "network.trr.mode" = 5; # DoH turned off by default
-        "network.trr.uri" = "https://dns10.quad9.net/dns-query"; # Default DoH server
-        "network.trr.strict_native_fallback" = false; # Allow native fallback
-        "network.trr.retry_on_recoverable_errors" = true; # Retry on errors
-        "network.trr.disable-heuristics" = true; # Disable canary detection
-        "network.trr.default_provider_uri" = "https://doh.dns4all.eu/dns-query"; # Fallback DoH
-        "network.trr.allow-rfc1918" = true; # Allow private IP addresses
-      };
 
       # [SECTION] NETWORKING - HTTPS, WebRTC, Proxy, DNS, Prefetching
-      networkingSettings = {
-        # HTTPS and security
-        "dom.security.https_only_mode" = true; # HTTPS-only mode
-        "network.auth.subresource-http-auth-allow" = 1; # Block HTTP auth dialogs
-
-        # WebRTC
-        "media.peerconnection.ice.default_address_only" = true; # Single interface for ICE
-        "media.peerconnection.ice.proxy_only_if_behind_proxy" = true; # Force WebRTC through proxy
-
-        # Proxy settings
-        "network.gio.supported-protocols" = ""; # Disable gio to prevent proxy bypass
-        "network.file.disable_unc_paths" = true; # Disable UNC paths
-        "network.proxy.socks_remote_dns" = true; # Force DNS through proxy
-
-        # DNS and prefetching
-        "network.dns.disablePrefetch" = true; # Disable DNS prefetching
-        "network.predictor.enabled" = false;
-        "network.prefetch-next" = false;
-        "network.http.speculative-parallel-limit" = 0;
-        "browser.places.speculativeConnect.enabled" = false;
-        "browser.urlbar.speculativeConnect.enabled" = false;
-
-        # Referers
-        "network.http.referer.XOriginTrimmingPolicy" = 2; # Trim cross-origin referers
-      };
 
       # ================================
       # [CATEGORY] FINGERPRINTING
       # ================================
 
       # [SECTION] FINGERPRINTING - RFP and WebGL settings
-      fingerprintingSettings = {
-        # Resist Fingerprinting (RFP)
-        "privacy.resistFingerprinting" = true;
-        "privacy.resistFingerprinting.block_mozAddonManager" = true; # Prevent RFP from breaking AMO
-        "browser.display.use_system_colors" = false;
-        "privacy.window.maxInnerWidth" = 1600;
-        "privacy.window.maxInnerHeight" = 900;
-        "privacy.resistFingerprinting.letterboxing" = false;
-        "browser.toolbars.bookmarks.visibility" = "never"; # Hide bookmarks bar
-        "privacy.globalprivacycontrol.enabled" = true; # Global Privacy Control
-        "privacy.globalprivacycontrol.pbmode.enabled" = true;
-        "privacy.globalprivacycontrol.functionality.enabled" = true;
-
-        # Exceptions:
-        "webgl.disabled" = false; # Enable WebGL for proper icon rendering
-        "dom.webgpu.enabled" = true; # WebGPU can be used for fingerprinting but speeds up rendering
-      };
 
       # ================================
       # [CATEGORY] UI AND PERFORMANCE
@@ -208,10 +151,6 @@ in {
         "browser.newtabpage.enabled" = false;
         "browser.newtab.url" = "about:blank";
 
-        # Fix URL navigation behavior - prevent new tabs when changing URLs
-        "browser.link.open_newwindow" = 2; # Open links in new tab
-        "browser.link.open_newwindow.restriction" = 0; # No restrictions
-
         # Hide bookmarks bar by default
         "browser.toolbars.bookmarks.visibility" = "never";
 
@@ -219,6 +158,12 @@ in {
         "browser.compactmode.show" = true;
         "findbar.highlightAll" = true;
         "browser.tabs.firefox-view" = false;
+
+        # Tab behavior
+        "browser.tabs.loadInBackground" = true;
+        "browser.link.open_newwindow" = 3; # Force new windows to open as tabs
+        "browser.link.open_newwindow.restriction" = 0; # Allow new tabs in same window
+        "browser.tabs.groups.enabled" = true;
       };
 
       # [SECTION] ZEN BROWSER SPECIFIC
@@ -241,8 +186,20 @@ in {
         "zen.theme.gradient" = false;
         "zen.theme.acrylic-elements" = false;
 
-        "zen.theme.use-sysyem-colors" = true;
+        "zen.theme.use-sysyem-colors" = false;
         "zen.watermark.enabled" = false;
+
+        # Disable sidebar animation in compact view
+        "zen.view.compact.animate-sidebar" = false;
+        "zen.downloads.download-animation" = false;
+        "sidebar.animation.enabled" = false;
+        "zen.startup.smooth-scroll-in-tabs" = false;
+        "toolkit.scrollbox.smoothScroll" = false;
+
+        # Force light theme
+        "ui.systemUsesDarkTheme" = 0; # Force light theme
+        "browser.theme.content-theme" = 0; # 0 = light, 1 = dark, 2 = system
+        "browser.theme.toolbar-theme" = 0; # 0 = light, 1 = dark, 2 = system
       };
 
       # [SECTION] PERFORMANCE OPTIMIZATIONS
@@ -266,7 +223,10 @@ in {
         # Graphics and rendering optimizations
         "gfx.canvas.accelerated" = true;
         "gfx.webrender.compositor" = true;
+        "gfx.webrender.compositor.force-enabled" = true;
         "layers.mlgpu.enabled" = true;
+        "layers.gpu-process.enabled" = true;
+        "layers.gpu-process.force-enabled" = true;
 
         # Media decoding optimizations
         "media.hardware-video-decoding.enabled" = true;
@@ -295,9 +255,9 @@ in {
         # "gfx.downloadable_fonts.enabled" = true; # Enable web fonts for proper icon display
 
         # Smooth scroll
-        "general.smoothScroll" = true;
-        "general.smoothScroll.msdPhysics.enabled" = false;
-        "general.smoothScroll.currentVelocityWeighting" = 0;
+        "general.smoothScroll" = false;
+        # "general.smoothScroll.msdPhysics.enabled" = false;
+        # "general.smoothScroll.currentVelocityWeighting" = 0;
         # "apz.overscroll.enabled" = false;
         # "general.smoothScroll.stopDecelerationWeighting" = 1;
         # "general.smoothScroll.mouseWheel.durationMaxMS" = 150;
@@ -454,6 +414,9 @@ in {
         # Developer tools
         "devtools.debugger.remote-enabled" = false; # Disable remote debugging
         "devtools.selfxss.count" = 0; # Allow console usage
+
+        # Mouse settings
+        "middlemouse.paste" = false;
       };
 
       # ================================
@@ -575,7 +538,7 @@ in {
         # // dohSettings
         # // networkingSettings # Merged: httpsSettings + webrtcSettings + proxySettings + prefetchingSettings + dnsSettings + refererSettings
         # FINGERPRINTING CATEGORY
-        // fingerprintingSettings # Merged: rfpSettings + webglSettings
+        # // fingerprintingSettings # Merged: rfpSettings + webglSettings
         # SECURITY CATEGORY
         // securitySettings # Merged: permissionsSettings + safeBrowsingSettings + otherSecuritySettings
         # REGION CATEGORY
@@ -613,6 +576,21 @@ in {
         sponsorblock
         istilldontcareaboutcookies
         libredirect
+        control-panel-for-twitter
+        darkreader
+        inkah
+        old-reddit-redirect
+        pwas-for-firefox
+        web-scrobbler
+        private-grammar-checker-harper
+        karakeep
+        aw-watcher-web
+
+        # TODO:
+        # - LinkedIn Feed Blocker
+        # - Livemarks
+        # - Modern for Wikipedia
+        # - Perapera Chinese Popup Dictionary
       ];
 
       commonSearch = {
@@ -719,6 +697,9 @@ in {
         extensions.packages = commonExtensions;
       };
     };
+
+    # Enable Progressive Web Apps for Firefox
+    nativeMessagingHosts = [unstable.firefoxpwa];
   };
 
   xdg = {

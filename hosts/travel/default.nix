@@ -17,7 +17,7 @@
       slack
 
       awscli2
-      flakes.zen-browser.packages."${system}".default
+      flakes.zen-browser.packages."${system}".twilight
 
       # Language servers
       taplo
