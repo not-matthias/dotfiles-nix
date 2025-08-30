@@ -27,4 +27,5 @@
   ./zellij.nix
   ./zoxide.nix
   ./low-battery-alert.nix
+  ./webapps.nix
 ]

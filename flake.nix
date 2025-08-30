@@ -56,6 +56,10 @@
       url = "github:quickshell-mirror/quickshell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    nix-webapps = {
+      url = "github:TLATER/nix-webapps?ref=tlater/idiomatic-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -70,6 +74,7 @@
     agenix,
     stylix,
     quickshell,
+    nix-webapps,
     ...
   } @ flakes: let
     user = "not-matthias";
@@ -77,7 +82,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix stylix quickshell;
+        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix stylix quickshell nix-webapps;
       }
     );
   };

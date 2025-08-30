@@ -47,6 +47,7 @@
       taplo
       nil
       nixd
+      unstable.gemini-cli
     ];
     programs = {
       low-battery-alert.enable = true;
@@ -63,6 +64,12 @@
       gitui.enable = true;
       firefox.enable = false;
       zen-browser.enable = true;
+
+      webapps = {
+        twenty.enable = true;
+        lobe-chat.enable = true;
+        hackernews.enable = true;
+      };
 
       obs-studio = {
         enable = true;
@@ -153,7 +160,7 @@
       enable = true;
       audioFolder = "/home/${user}/Audiobooks";
     };
-    safeeyes.enable = true;
+    safeeyes.enable = false;
     navidrome = {
       enable = true;
       scrobblerUrl = "http://desktop.local:42010/apis/listenbrainz/1/";
