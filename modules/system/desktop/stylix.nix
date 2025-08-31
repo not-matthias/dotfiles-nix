@@ -1,28 +1,30 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  catppuccinMochaRed = {
+    base00 = "1e1e2e"; # base
+    base01 = "181825"; # mantle
+    base02 = "313244"; # surface0
+    base03 = "45475a"; # surface1
+    base04 = "585b70"; # surface2
+    base05 = "cdd6f4"; # text
+    base06 = "f5e0dc"; # rosewater
+    base07 = "b4befe"; # lavender
+    base08 = "f38ba8"; # red
+    base09 = "fab387"; # peach
+    base0A = "f9e2af"; # yellow
+    base0B = "a6e3a1"; # green
+    base0C = "94e2d5"; # teal
+    base0D = "f38ba8"; # red (used for blue)
+    base0E = "f38ba8"; # red (used for mauve)
+    base0F = "f38ba8"; # red (used for pink)
+  };
+in {
   stylix = {
     autoEnable = true;
     targets.gtk.enable = false;
     homeManagerIntegration.autoImport = true;
     homeManagerIntegration.followSystem = true;
 
-    base16Scheme = {
-      base00 = "eff1f5"; # base
-      base01 = "e6e9ef"; # mantle
-      base02 = "ccd0da"; # surface0
-      base03 = "bcc0cc"; # surface1
-      base04 = "acb0be"; # surface2
-      base05 = "4c4f69"; # text
-      base06 = "d20f39"; # rosewater
-      base07 = "d20f39"; # rosewater
-      base08 = "d20f39"; # red
-      base09 = "fe640b"; # peach
-      base0A = "df8e1d"; # yellow
-      base0B = "40a02b"; # green
-      base0C = "179299"; # teal
-      base0D = "d20f39"; # red (used for blue)
-      base0E = "d20f39"; # red (used for mauve)
-      base0F = "d20f39"; # red (used for pink)
-    };
+    base16Scheme = catppuccinMochaRed;
 
     polarity = "light";
 
