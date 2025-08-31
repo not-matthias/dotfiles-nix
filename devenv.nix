@@ -9,7 +9,10 @@
   git-hooks.hooks = {
     alejandra.enable = true;
     shellcheck.enable = true;
-    deadnix.enable = true;
+    deadnix = {
+      enable = true;
+      settings.edit = true;
+    };
   };
 
   # https://devenv.sh/scripts/
