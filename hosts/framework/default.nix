@@ -60,6 +60,16 @@
       waybar.enable = true;
       nixvim.enable = true;
       claude.enable = true;
+      pay-respects = {
+        package = unstable.pay-respects;
+        enable = true;
+        enableFishIntegration = true;
+        # TODO: Setup this
+        # aiIntegration = {
+        #   url = "http://desktop.local:11434";
+        #   model = "gemm2:e4b";
+        # };
+      };
 
       gitui.enable = true;
       firefox.enable = false;
