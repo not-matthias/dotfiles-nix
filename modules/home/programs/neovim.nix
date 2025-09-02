@@ -188,7 +188,7 @@
 
       # Copilot
       avante = {
-        enable = true;
+        enable = false;
         settings = {
           provider = "copilot";
           auto_suggestions_frequency = "copilot";
