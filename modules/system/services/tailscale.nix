@@ -1,6 +1,9 @@
 # https://tailscale.com/download/linux/nixos
-{
-  services.tailscale.enable = true;
+{unstable, ...}: {
+  services.tailscale = {
+    enable = true;
+    package = unstable.tailscale;
+  };
 
   # Setup MagicDNS
   # FIXME: Doesn't work together with adguard dns (i think)
