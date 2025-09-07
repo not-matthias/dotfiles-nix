@@ -47,10 +47,6 @@
       }
     ]
   },
-  "statusLine": {
-    "type": "command",
-    "command": "npx -y ccusage statusline"
-  },
   "feedbackSurveyState": {
     "lastShownTime": 1754514815917
   },
