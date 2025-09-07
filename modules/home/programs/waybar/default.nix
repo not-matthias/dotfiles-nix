@@ -302,7 +302,6 @@
         "clock"
       ];
       modules-right = [
-        "group/system"
         "group/utils"
         "hyprland/language"
         "group/connectivity"
