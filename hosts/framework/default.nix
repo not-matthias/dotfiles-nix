@@ -10,12 +10,11 @@
   home-manager.users.${user} = {
     home.stateVersion = "22.05";
     home.packages = with pkgs; [
-      unstable.zed-editor
-      unstable.supersonic
-      unstable.vscode
-      unstable.obsidian
+      zed-editor
+      vscode
+      obsidian
+      nodejs
       google-chrome
-      unstable.nodejs
       notepad-next
       # msty
       # unstable.opencode
@@ -23,9 +22,9 @@
       # jujutsu
       # unstable.lmstudio
       unstable.planify
+      unstable.beeper
 
       # Install desktop apps rather than websites
-      # unstable.beeper
       # discord
       feishin
 
@@ -60,16 +59,6 @@
       waybar.enable = true;
       nixvim.enable = true;
       claude.enable = true;
-      pay-respects = {
-        package = unstable.pay-respects;
-        enable = true;
-        enableFishIntegration = true;
-        # TODO: Setup this
-        # aiIntegration = {
-        #   url = "http://desktop.local:11434";
-        #   model = "gemm2:e4b";
-        # };
-      };
 
       gitui.enable = true;
       firefox.enable = false;
@@ -93,7 +82,7 @@
     };
 
     services = {
-      activitywatch.enable = true;
+      # activitywatch.enable = true;
       dunst.enable = true;
       gpg-agent.enable = true;
     };
@@ -114,7 +103,13 @@
     config.boot.kernelPackages.perf
   ];
 
+  programs.noisetorch = {
+    enable = true;
+    package = pkgs.noisetorch;
+  };
+
   programs = {
+    steam.enable = true;
     fcitx5.enable = true;
     nix-ld.enable = true;
     sccache.enable = true;
@@ -122,10 +117,20 @@
       enable = true;
       service.enable = true;
     };
+    pay-respects = {
+      package = unstable.pay-respects;
+      enable = true;
+      # enableFishIntegration = true;
+      aiIntegration = {
+        url = "http://desktop.local:11434";
+        model = "gemm2:e4b";
+        locale = "en-US";
+      };
+    };
   };
 
   services = {
-    flatpak.enable = true;
+    # flatpak.enable = true;
     restic = {
       enable = true;
       paths = [
@@ -153,7 +158,7 @@
       };
     };
     system76-scheduler = {
-      enable = true;
+      enable = false;
       assignments = {
         nix-builds = {
           nice = 15;
