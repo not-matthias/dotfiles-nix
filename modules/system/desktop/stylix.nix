@@ -1,4 +1,23 @@
 {pkgs, ...}: let
+  catppuccinLatteRed = {
+    base00 = "eff1f5"; # base
+    base01 = "e6e9ef"; # mantle
+    base02 = "ccd0da"; # surface0
+    base03 = "bcc0cc"; # surface1
+    base04 = "acb0be"; # surface2
+    base05 = "4c4f69"; # text
+    base06 = "d20f39"; # rosewater
+    base07 = "d20f39"; # rosewater
+    base08 = "d20f39"; # red
+    base09 = "fe640b"; # peach
+    base0A = "df8e1d"; # yellow
+    base0B = "40a02b"; # green
+    base0C = "179299"; # teal
+    base0D = "d20f39"; # red (used for blue)
+    base0E = "d20f39"; # red (used for mauve)
+    base0F = "d20f39"; # red (used for pink)
+  };
+  # deadnix: skip
   catppuccinMochaRed = {
     base00 = "1e1e2e"; # base
     base01 = "181825"; # mantle
@@ -24,7 +43,7 @@ in {
     homeManagerIntegration.autoImport = true;
     homeManagerIntegration.followSystem = true;
 
-    base16Scheme = catppuccinMochaRed;
+    base16Scheme = catppuccinLatteRed;
 
     polarity = "light";
 
