@@ -389,7 +389,7 @@ in {
 
       # [SECTION] FIREFOX ACCOUNTS AND SYNC
       firefoxAccountsSettings = {
-        "identity.fxaccounts.enabled" = false; # Disable Firefox Sync
+        "identity.fxaccounts.enabled" = true; # Enable Firefox Sync
         "identity.fxaccounts.toolbar.pxiToolbarEnabled" = false; # Hide Firefox Sync ads
 
         # App updates (managed by Nix)
