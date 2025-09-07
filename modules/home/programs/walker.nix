@@ -7,6 +7,11 @@
   imports = [flakes.walker.homeManagerModules.default];
 
   programs.walker = {
+    runAsService = true;
+    elephant = {
+      # Don't run as service, but start with Hyprland
+      installService = false;
+    };
     # See default config: https://github.com/abenz1267/walker/main/internal/config/config.default.toml
     config = {
       activation_mode = {
