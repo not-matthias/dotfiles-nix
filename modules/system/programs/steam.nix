@@ -19,7 +19,6 @@ in {
 
       wineWowPackages.stable
       winetricks
-      obs-studio
     ];
   };
 }
