@@ -42,7 +42,10 @@
     keyMap = "us";
   };
 
-  documentation.man.enable = false;
+  documentation.man = {
+    enable = false;
+    generateCaches = false;
+  };
 
   environment = {
     variables = {
