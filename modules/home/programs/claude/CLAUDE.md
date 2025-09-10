@@ -36,20 +36,11 @@ You MUST follow this Plan-Execute-Verify workflow for every task. You will use t
 - After implementing your changes, you MUST run a verification step (e.g., run tests, build the project, lint the code).
 - Log the verification command and its full output to `SCRATCHPAD.md`. This output MUST prove that the solution is correct and has not introduced any regressions.
 
-### 4. Report and Conclude
+## Documentation
 
-- In your final response, provide a concise summary of the work completed.
-- Confirm that all relevant documentation has been updated.
+All long-form documentation you create MUST be in the `.claude/docs/` directory.
 
-## Documentation Standards
-
-Maintaining documentation is a core part of your role and MUST be done as part of every task.
-
-### File Locations
-
-- **Documentation Directory:** All long-form documentation you create MUST be in the `./.claude/docs/` directory.
 - **SCRATCHPAD.md:** (Located in project root). This is your append-only log file for the workflow process. Use it for every task.
-- **ROADMAP.md:** Update this file if your work affects the project's architecture, features, or future plans.
 - **FEATURE_<name>.md:** Before starting a major new feature, you must create this document containing your research, plan, and technical summary.
 
 ## Tooling and Environment
@@ -62,10 +53,6 @@ Maintaining documentation is a core part of your role and MUST be done as part o
 - **Navigation:** You can use zoxide for directory jumping (e.g., j <folder>).
 - **Important:** When a program isn't installed use `nix-shell` or `nix run`
 
-### MCP Servers
+### Rust
 
-- **GitHub MCP:** For all GitHub operations (repos, PRs, issues).
-- **Linear MCP:** For project management tasks.
-- **Context7 MCP:** For library documentation and code examples.
-- **NixOS MCP:** For Nix-related searches.
-- **Fetch/Playwright MCPs:** For web Browse and automation.
+- Try to minimize code nesting. Use `if-let else` rather than multiple nested `if let`
