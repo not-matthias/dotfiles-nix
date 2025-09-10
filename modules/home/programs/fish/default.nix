@@ -33,7 +33,7 @@ in {
       "...." = "cd ../../..";
 
       "gca" = "git commit --amend --no-edit";
-      "gc" = "git commit";
+      "gc" = "git checkout";
       "gcm" = "git commit -m";
       "gs" = "git status";
       "ga" = "git add -A";
