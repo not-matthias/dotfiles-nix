@@ -14,7 +14,8 @@
   home-manager.users.${user} = {
     home.stateVersion = "22.05";
     home.packages = with pkgs; [
-      zed-editor
+      unstable.jetbrains.rust-rover
+      unstable.zed-editor
       vscode
       obsidian
       nodejs
@@ -86,7 +87,7 @@
     };
 
     services = {
-      # activitywatch.enable = true;
+      activitywatch.enable = true;
       dunst.enable = true;
       gpg-agent.enable = true;
     };
@@ -135,7 +136,7 @@
   };
 
   services = {
-    # flatpak.enable = true;
+    flatpak.enable = true;
     multi-scrobbler.enable = true;
     restic = {
       enable = true;
@@ -164,7 +165,7 @@
       };
     };
     system76-scheduler = {
-      enable = false;
+      enable = true;
       assignments = {
         nix-builds = {
           nice = 15;
