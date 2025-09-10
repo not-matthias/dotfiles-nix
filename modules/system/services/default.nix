@@ -18,6 +18,7 @@
   ./logto.nix
   ./maloja.nix
   ./memos.nix
+  ./multi-scrobbler.nix
   ./navidrome.nix
   ./netdata.nix
   ./n8n.nix

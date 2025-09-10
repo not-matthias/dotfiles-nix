@@ -28,5 +28,6 @@ https://jellyfin.org/docs/general/networking/
 8123 = home-assistant
 
 docker-compose ports:
+9078 = multi-scrobbler
 2283 = immich
 8001 = archivebox

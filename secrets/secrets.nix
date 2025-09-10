@@ -28,4 +28,8 @@ in {
   "authelia-oidc-secret.age".publicKeys = systems;
   "authelia-oidc-hmac-secret.age".publicKeys = systems;
   "nextauth-secret.age".publicKeys = systems;
+
+  "maloja-api-key.age".publicKeys = systems;
+  "spotify-client-id.age".publicKeys = systems;
+  "spotify-client-secret.age".publicKeys = systems;
 }

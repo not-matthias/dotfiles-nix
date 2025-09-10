@@ -136,6 +136,7 @@
 
   services = {
     # flatpak.enable = true;
+    multi-scrobbler.enable = true;
     restic = {
       enable = true;
       paths = [
