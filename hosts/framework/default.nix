@@ -4,9 +4,13 @@
   user,
   lib,
   config,
+  flakes,
   ...
 }: {
-  imports = [(import ./hardware-configuration.nix)];
+  imports = [
+    (import ./hardware-configuration.nix)
+    flakes.fw-fanctrl.nixosModules.default
+  ];
   home-manager.users.${user} = {
     home.stateVersion = "22.05";
     home.packages = with pkgs; [
@@ -127,6 +131,7 @@
         locale = "en-US";
       };
     };
+    fw-fanctrl.enable = true;
   };
 
   services = {

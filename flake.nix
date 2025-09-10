@@ -68,6 +68,10 @@
       url = "github:TLATER/nix-webapps?ref=tlater/idiomatic-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    fw-fanctrl = {
+      url = "github:TamtamHero/fw-fanctrl/packaging/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
