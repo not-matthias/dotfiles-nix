@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "command -v notify-send >/dev/null && notify-send 'Claude Code' 'Task completed'"
+            "command": "notify-send 'Claude Code' 'Task completed' || true"
           }
         ]
       }
