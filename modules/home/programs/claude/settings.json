@@ -24,24 +24,13 @@
   },
   "model": "sonnet",
   "hooks": {
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "notify-send 'Claude Code' 'Task completed' || true"
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "command -v notify-send >/dev/null && notify-send 'Claude Code' 'Session ended'"
+            "command": "notify-send 'Claude Code' 'Task completed' || true"
           }
         ]
       }
