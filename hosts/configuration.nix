@@ -77,7 +77,7 @@
     };
     registry.nixpkgs.flake = flakes.nixpkgs;
     extraOptions = ''
-      experimental-features = nix-command flakes parallel-eval
+      experimental-features = nix-command flakes
       keep-outputs          = true
       keep-derivations      = true
       keep-going            = true
@@ -86,7 +86,6 @@
     # Cachix
     settings = {
       trusted-users = ["root" "${user}"];
-      eval-cores = 0;
       substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
