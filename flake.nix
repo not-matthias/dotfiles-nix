@@ -64,10 +64,7 @@
       url = "github:quickshell-mirror/quickshell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    nix-webapps = {
-      url = "github:TLATER/nix-webapps?ref=tlater/idiomatic-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nix-webapps.url = "github:TLATER/nix-webapps?ref=tlater/idiomatic-flake";
     niri = {
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
