@@ -23,6 +23,7 @@
   ./neovim.nix
   ./rust.nix
   ./walker.nix
+  ./vicinae.nix
   # ./wofi.nix
   ./zellij.nix
   ./zoxide.nix
