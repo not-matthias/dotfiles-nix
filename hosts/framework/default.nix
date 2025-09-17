@@ -12,7 +12,6 @@
   home-manager.users.${user} = {
     home.stateVersion = "22.05";
     home.packages = with pkgs; [
-      unstable.jetbrains.rust-rover
       unstable.zed-editor
       vscode
       obsidian
