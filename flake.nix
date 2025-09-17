@@ -68,6 +68,10 @@
       url = "github:TLATER/nix-webapps?ref=tlater/idiomatic-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {

@@ -53,9 +53,9 @@ in {
         fi
       '';
       variables = {
-        XDG_CURRENT_DESKTOP = "Hyprland";
-        XDG_SESSION_TYPE = "wayland";
-        XDG_SESSION_DESKTOP = "Hyprland";
+        XDG_CURRENT_DESKTOP = lib.mkDefault "Hyprland";
+        XDG_SESSION_TYPE = lib.mkDefault "wayland";
+        XDG_SESSION_DESKTOP = lib.mkDefault "Hyprland";
 
         AQ_DRM_DEVICES = "/dev/dri/card1";
         LIBVA_DRIVER_NAME =
