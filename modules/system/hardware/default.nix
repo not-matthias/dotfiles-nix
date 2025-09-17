@@ -2,6 +2,7 @@
   ./bluetooth.nix
   ./fingerprint.nix
   ./firmware.nix
+  ./fw-fanctrl.nix
   ./luks-remote.nix
   ./nvidia.nix
   ./powersave.nix

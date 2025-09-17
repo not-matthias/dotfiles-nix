@@ -4,12 +4,10 @@
   user,
   lib,
   config,
-  flakes,
   ...
 }: {
   imports = [
     (import ./hardware-configuration.nix)
-    flakes.fw-fanctrl.nixosModules.default
   ];
   home-manager.users.${user} = {
     home.stateVersion = "22.05";
@@ -132,7 +130,6 @@
         locale = "en-US";
       };
     };
-    fw-fanctrl.enable = true;
   };
 
   services = {
@@ -204,6 +201,7 @@
     sound.enable = true;
     ssd.enable = true;
     fingerprint.enable = true;
+    fw-fanctrl.enable = true;
   };
 
   virtualisation = {
