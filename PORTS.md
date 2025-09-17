@@ -29,5 +29,6 @@ https://jellyfin.org/docs/general/networking/
 
 docker-compose ports:
 9078 = multi-scrobbler
+3000 = dawarich
 2283 = immich
 8001 = archivebox
