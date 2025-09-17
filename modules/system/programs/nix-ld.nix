@@ -30,6 +30,7 @@ in {
       util-linux
       zlib
       zstd
+      zlib-ng
     ];
   };
 }
