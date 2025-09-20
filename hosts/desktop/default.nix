@@ -64,6 +64,10 @@
       enable = true;
       audioFolder = "/mnt/data/personal/audiobooks/";
     };
+    calibre-web = {
+      enable = true;
+      options.calibreLibrary = "/mnt/data/personal/books/calibre-library";
+    };
     caddy.enable = true;
     ollama = {
       enable = true;

@@ -1,3 +1,4 @@
+8083 = calibre-web
 11439 = wordpress
 11438 = vaultwarden
 11437 = librechat

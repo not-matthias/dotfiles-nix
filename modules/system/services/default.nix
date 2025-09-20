@@ -3,6 +3,7 @@
   ./audiobookshelf.nix
   ./authelia.nix
   ./caddy.nix
+  ./calibre-web.nix
   ./change-detection.nix
   ./crm.nix
   ./dawarich.nix
