@@ -16,6 +16,9 @@ in {
     };
 
     # Requires /1/ at the end!
+    # IMPORTANT: This requires manual interaction to enable scrobbling
+    # in the UI. Login, then click on "Personal", then "Scrobble to ListenBrainz" and
+    # paste the Maloja API token.
     scrobblerUrl = lib.mkOption {
       type = lib.types.str;
       description = "The URL to the ListenBrainz API";
