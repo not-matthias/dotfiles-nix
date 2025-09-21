@@ -87,6 +87,9 @@
     slskd = {
       enable = true;
       settings = {
+        directories = {
+          downloads = "/mnt/data/personal/music/downloads";
+        };
         shares = {
           directories = [
             "/mnt/data/personal/music/library"
