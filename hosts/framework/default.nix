@@ -57,6 +57,7 @@
       waybar.enable = true;
       nixvim.enable = true;
       claude.enable = true;
+      vicinae.enable = true;
 
       gitui.enable = true;
       firefox.enable = false;
