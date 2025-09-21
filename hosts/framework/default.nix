@@ -154,6 +154,7 @@
       localBackup = {
         paths = [
           "/home/${user}/Videos/obs"
+          "/home/${user}/Videos/Music"
         ];
         enable = true;
         schedule = "daily";
