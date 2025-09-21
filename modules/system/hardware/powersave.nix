@@ -105,22 +105,6 @@ in {
       cpuFreqGovernor = lib.mkDefault "powersave";
     };
 
-    # USB autosuspend configuration for PowerTOP tunables
-    services.udev.extraRules = ''
-      # Disable autosuspend for input devices to prevent lag/disconnections
-      # Logitech USB receivers (mice, keyboards)
-      ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="046d", ATTR{power/autosuspend}="-1"
-
-      # GamaKay LK67 and other keyboards - disable autosuspend for responsiveness
-      ACTION=="add", SUBSYSTEM=="usb", ATTR{bInterfaceClass}=="03", ATTR{bInterfaceSubClass}=="01", ATTR{power/autosuspend}="-1"
-
-      # Enable autosuspend for USB Type-C adapters and non-critical devices
-      ACTION=="add", SUBSYSTEM=="usb", ATTR{bDeviceClass}=="09", ATTR{power/autosuspend}="2"
-
-      # Enable autosuspend for USB storage devices with longer timeout
-      ACTION=="add", SUBSYSTEM=="usb", ATTR{bInterfaceClass}=="08", ATTR{power/autosuspend}="10"
-    '';
-
     # Runtime power management for storage devices
     boot.kernelParams = [
       # Enable runtime PM for SATA devices
