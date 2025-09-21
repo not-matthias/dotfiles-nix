@@ -52,6 +52,10 @@
       url = "github:abenz1267/walker";
       inputs.elephant.follows = "elephant";
     };
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     vicinae = {
       url = "github:vicinaehq/vicinae";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -65,10 +69,6 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     nix-webapps.url = "github:TLATER/nix-webapps?ref=tlater/idiomatic-flake";
-    niri = {
-      url = "github:sodiboo/niri-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
@@ -83,6 +83,7 @@
     agenix,
     stylix,
     quickshell,
+    niri,
     nix-webapps,
     ...
   } @ flakes: let
@@ -91,7 +92,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix stylix quickshell nix-webapps;
+        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix stylix quickshell niri nix-webapps;
       }
     );
   };
