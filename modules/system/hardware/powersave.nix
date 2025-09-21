@@ -20,6 +20,9 @@ in {
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       powertop
+      hdparm
+      iw
+      ethtool
     ];
 
     boot = {
@@ -54,6 +57,17 @@ in {
         # Memory overcommit settings to reduce swap usage
         "vm.overcommit_memory" = 1;
         "vm.overcommit_ratio" = 50;
+
+        # Additional laptop-mode-tools inspired settings
+        # Longer dirty expire time when in laptop mode
+        "vm.dirty_expire_centisecs" = 3000;
+
+        # Network power management
+        "net.core.default_qdisc" = "fq_codel";
+
+        # Reduce network buffer sizes to save memory
+        "net.core.rmem_default" = 262144;
+        "net.core.wmem_default" = 262144;
       };
     };
 
@@ -66,6 +80,12 @@ in {
         battery = {
           governor = "powersave";
           turbo = "never";
+
+          # Maximize battery
+          energy_performance_preference = "power";
+          energy_perf_bias = "power";
+          scaling_min_freq = 400000;
+          scaling_max_freq = 800000;
 
           # Battery charge threshold
           enable_thresholds = true;
@@ -84,6 +104,77 @@ in {
       powertop.enable = true;
       cpuFreqGovernor = lib.mkDefault "powersave";
     };
+
+    # USB autosuspend configuration for PowerTOP tunables
+    services.udev.extraRules = ''
+      # Disable autosuspend for input devices to prevent lag/disconnections
+      # Logitech USB receivers (mice, keyboards)
+      ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="046d", ATTR{power/autosuspend}="-1"
+
+      # GamaKay LK67 and other keyboards - disable autosuspend for responsiveness
+      ACTION=="add", SUBSYSTEM=="usb", ATTR{bInterfaceClass}=="03", ATTR{bInterfaceSubClass}=="01", ATTR{power/autosuspend}="-1"
+
+      # Enable autosuspend for USB Type-C adapters and non-critical devices
+      ACTION=="add", SUBSYSTEM=="usb", ATTR{bDeviceClass}=="09", ATTR{power/autosuspend}="2"
+
+      # Enable autosuspend for USB storage devices with longer timeout
+      ACTION=="add", SUBSYSTEM=="usb", ATTR{bInterfaceClass}=="08", ATTR{power/autosuspend}="10"
+    '';
+
+    # Runtime power management for storage devices
+    boot.kernelParams = [
+      # Enable runtime PM for SATA devices
+      "scsi_mod.use_blk_mq=1"
+    ];
+
+    # Power management commands to enable runtime PM for storage
+    powerManagement.powerUpCommands = ''
+      # Enable runtime PM for all SATA devices
+      for dev in /sys/class/scsi_host/host*/link_power_management_policy; do
+        if [ -w "$dev" ]; then
+          echo min_power > "$dev" 2>/dev/null || true
+        fi
+      done
+
+      # Enable runtime PM for NVMe devices
+      for dev in /sys/class/nvme/nvme*/power/control; do
+        if [ -w "$dev" ]; then
+          echo auto > "$dev" 2>/dev/null || true
+        fi
+      done
+
+      # Enable runtime PM for block devices (including sda)
+      for dev in /sys/block/sd*/device/power/control; do
+        if [ -w "$dev" ]; then
+          echo auto > "$dev" 2>/dev/null || true
+        fi
+      done
+
+      # Disk power management (laptop-mode-tools style)
+      # Set aggressive power management for SATA drives
+      for disk in /dev/sd?; do
+        if [ -b "$disk" ]; then
+          ${pkgs.hdparm}/bin/hdparm -B 1 -S 120 "$disk" 2>/dev/null || true
+        fi
+      done
+
+      # Network power management
+      # Enable power saving for wireless interfaces
+      for iface in /sys/class/net/w*; do
+        if [ -d "$iface" ]; then
+          iface_name=$(basename "$iface")
+          ${pkgs.iw}/bin/iw dev "$iface_name" set power_save on 2>/dev/null || true
+        fi
+      done
+
+      # Disable Wake-on-LAN for ethernet interfaces
+      for iface in /sys/class/net/e*; do
+        if [ -d "$iface" ]; then
+          iface_name=$(basename "$iface")
+          ${pkgs.ethtool}/bin/ethtool -s "$iface_name" wol d 2>/dev/null || true
+        fi
+      done
+    '';
 
     # See:
     # https://knowledgebase.frame.work/optimizing-ubuntu-battery-life-Sye_48Lg3
