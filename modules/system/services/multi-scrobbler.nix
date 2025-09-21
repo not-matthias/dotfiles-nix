@@ -43,8 +43,8 @@ in {
           config.age.secrets.spotify-client-id.path
           config.age.secrets.spotify-client-secret.path
         ];
-        ports = [
-          "9078:9078/tcp"
+        extraOptions = [
+          "--network=host"
         ];
         volumes = [
           "/var/lib/multi-scrobbler:/config"
