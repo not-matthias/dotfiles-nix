@@ -132,6 +132,8 @@
 
   age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
 
+  stylix.enable = true;
+
   # TODO: Change to hardware.virtualization
   virtualisation = {
     docker = {

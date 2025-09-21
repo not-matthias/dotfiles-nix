@@ -14,8 +14,8 @@ in {
     enable = mkEnableOption "Enable Niri scrollable-tiling Wayland compositor";
     package = mkOption {
       type = types.package;
-      default = niri.packages.${pkgs.system}.niri-stable;
-      example = niri.packages.${pkgs.system}.niri-unstable;
+      default = flakes.niri.packages.${pkgs.system}.niri-stable;
+      example = flakes.niri.packages.${pkgs.system}.niri-unstable;
       description = "Which niri package to use (niri-stable or niri-unstable)";
     };
   };
