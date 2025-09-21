@@ -57,8 +57,6 @@ in {
       reverse_proxy http://127.0.0.1:9078
     '';
 
-    services.restic.paths = ["/var/lib/multi-scrobbler"];
-
     # Ensure the config directory exists with proper permissions
     systemd.tmpfiles.rules = [
       "d /var/lib/multi-scrobbler 0755 root root -"
