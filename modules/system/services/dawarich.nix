@@ -13,7 +13,7 @@ in {
   config = lib.mkIf cfg.enable {
     virtualisation.oci-containers.containers = {
       dawarich-redis = {
-        image = "redis:7.0-alpine";
+        image = "redis:7.4-alpine";
         volumes = [
           "/var/lib/dawarich/redis:/data"
         ];
@@ -23,7 +23,7 @@ in {
       };
 
       dawarich-db = {
-        image = "postgres:14.2-alpine";
+        image = "postgres:17-alpine";
         environment = {
           POSTGRES_DB = "dawarich";
           POSTGRES_USER = "dawarich";

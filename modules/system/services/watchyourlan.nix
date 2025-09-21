@@ -22,7 +22,7 @@ in {
           IFACES = cfg.ifaces;
           TZ = "Europe/Vienna";
         };
-        image = "aceberg/watchyourlan";
+        image = "aceberg/watchyourlan:latest";
         extraOptions = [
           "--network=host"
         ];
