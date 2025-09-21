@@ -17,14 +17,7 @@ in {
     ];
 
     # https://discourse.nixos.org/t/fprintd-on-t440p/1350/3
-    services.fprintd = {
-      enable = true;
-      tod = {
-        enable = true;
-        driver = pkgs.libfprint-2-tod1-goodix;
-      };
-    };
-
+    services.fprintd.enable = true;
     # start the driver at boot
     systemd.services.fprintd = {
       wantedBy = ["multi-user.target"];
@@ -34,6 +27,9 @@ in {
     security.pam.services = {
       login.fprintAuth = lib.mkForce true;
       xscreensaver.fprintAuth = true;
+      sudo.fprintAuth = true;
+      polkit-1.fprintAuth = true;
+      swaylock.fprintAuth = true;
     };
   };
 }

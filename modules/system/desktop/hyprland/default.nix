@@ -112,6 +112,7 @@ in {
         text = ''
           auth include login
         '';
+        fprintAuth = true;
       };
     };
 
