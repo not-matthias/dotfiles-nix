@@ -38,6 +38,7 @@
   ./rss.nix
   ./scrutiny.nix
   ./security.nix
+  ./slskd.nix
   ./tailscale.nix
   ./tandoor.nix
   ./stump.nix
