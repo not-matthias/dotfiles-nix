@@ -7,9 +7,9 @@
   #     enable = true;
   #     useNvidia = true;
   #   };
-  #   fonts.enable = true;
   # };
-  #
+  stylix.enable = true;
+
   home-manager.users.${user} = {
     home.stateVersion = "25.05";
     #   home.packages = with pkgs; [
@@ -36,6 +36,7 @@
   # Only enable the services here, the settings are configured in the 'services/' folder.
   services = {
     authelia.enable = true;
+    caddy.enable = true;
     restic = {
       enable = true;
       paths = [
@@ -58,8 +59,6 @@
 
       # server.enable = true;
     };
-
-    n8n.enable = true;
     audiobookshelf = {
       enable = true;
       audioFolder = "/mnt/data/personal/audiobooks/";
@@ -68,16 +67,13 @@
       enable = true;
       options.calibreLibrary = "/mnt/data/personal/books/calibre-library";
     };
-    caddy.enable = true;
     ollama = {
       enable = true;
       useNvidia = true;
     };
     open-webui.enable = true;
     lobe-chat.enable = true;
-    librechat.enable = true;
     miniflux.enable = true;
-    adguardhome.enable = false;
     memos.enable = true;
     scrutiny.enable = true;
     homepage-dashboard.enable = true;
@@ -102,21 +98,23 @@
       };
     };
     maloja.enable = true;
-    # crm.enable = true;
     kokoro = {
       enable = true;
       useGpu = false;
     };
-    tandoor-recipes.enable = true;
-    jellyfin.enable = true;
     karakeep.enable = true;
-    nocodb.enable = true;
-    # nitter.enable = true;
-    redlib.enable = true;
     ntfy-sh.enable = true;
     twenty.enable = true;
     netdata.enable = true;
-    wordpress.enable = true;
+    # tandoor-recipes.enable = true;
+    # jellyfin.enable = true;
+    # nocodb.enable = true;
+    # nitter.enable = true;
+    # redlib.enable = true;
+    # wordpress.enable = true;
+    # adguardhome.enable = false;
+    # librechat.enable = true;
+    # n8n.enable = true;
   };
 
   networking = {
@@ -144,8 +142,6 @@
   ];
 
   age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
-
-  stylix.enable = true;
 
   # TODO: Change to hardware.virtualization
   virtualisation = {

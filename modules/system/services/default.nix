@@ -5,7 +5,6 @@
   ./caddy.nix
   ./calibre-web.nix
   ./change-detection.nix
-  ./crm.nix
   ./dawarich.nix
   ./earlyoom.nix
   ./firefly-iii.nix
