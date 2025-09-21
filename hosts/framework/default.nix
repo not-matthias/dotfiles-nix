@@ -105,7 +105,7 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = [
     config.boot.kernelPackages.perf
   ];
 
@@ -115,24 +115,13 @@
   };
 
   programs = {
-    steam.enable = true;
     fcitx5.enable = true;
     nix-ld.enable = true;
-    sccache.enable = true;
     oneleet = {
       enable = true;
       service.enable = true;
     };
-    pay-respects = {
-      package = unstable.pay-respects;
-      enable = true;
-      # enableFishIntegration = true;
-      aiIntegration = {
-        url = "http://desktop.local:11434";
-        model = "gemm2:e4b";
-        locale = "en-US";
-      };
-    };
+    pay-respects.enable = true;
   };
 
   services = {
@@ -178,24 +167,12 @@
         };
       };
     };
-    earlyoom.enable = true;
-    audiobookshelf = {
-      enable = true;
-      audioFolder = "/home/${user}/Audiobooks";
-    };
     safeeyes.enable = false;
     navidrome = {
       enable = true;
       scrobblerUrl = "http://desktop.local:42010/apis/listenbrainz/1/";
     };
-    caddy.enable = true;
     yubikey.enable = true;
-    smartd = {
-      enable = true;
-      autodetect = true;
-      notifications.test = false;
-      defaults.monitored = "-a -o on -S on -s (S/../.././02|L/../../6/03)";
-    };
     systembus-notify.enable = lib.mkForce true;
   };
 
