@@ -92,7 +92,7 @@
             "/mnt/data/personal/music/library"
           ];
           filters = [
-            "*.db"
+            ".*\\.db$"
           ];
         };
       };
