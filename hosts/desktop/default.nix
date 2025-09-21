@@ -88,6 +88,19 @@
       musicFolder = "/mnt/data/personal/music";
       scrobblerUrl = "http://localhost:42010/apis/listenbrainz/1/";
     };
+    slskd = {
+      enable = true;
+      settings = {
+        shares = {
+          directories = [
+            "/mnt/data/personal/music/library"
+          ];
+          filters = [
+            "*.db"
+          ];
+        };
+      };
+    };
     maloja.enable = true;
     # crm.enable = true;
     kokoro = {

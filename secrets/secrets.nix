@@ -32,4 +32,5 @@ in {
   "maloja-api-key.age".publicKeys = systems;
   "spotify-client-id.age".publicKeys = systems;
   "spotify-client-secret.age".publicKeys = systems;
+  "slskd-env.age".publicKeys = systems;
 }
