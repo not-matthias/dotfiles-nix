@@ -48,6 +48,9 @@
       ];
       localBackup = {
         enable = true;
+        paths = [
+          "/mnt/data/personal/music/"
+        ];
         repository = "/mnt/data/restic";
         schedule = "daily";
       };
@@ -87,9 +90,6 @@
     slskd = {
       enable = true;
       settings = {
-        directories = {
-          downloads = "/mnt/data/personal/music/downloads";
-        };
         shares = {
           directories = [
             "/mnt/data/personal/music/library"

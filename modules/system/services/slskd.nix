@@ -18,6 +18,14 @@ in {
       };
     };
 
+    users.groups.slskd-access = {
+      members = ["not-matthias" "slskd"];
+    };
+
+    systemd.tmpfiles.rules = [
+      "d /var/lib/slskd/downloads 0775 slskd slskd-access - -"
+    ];
+
     services.caddy.virtualHosts."slskd.${domain}".extraConfig = ''
       encode zstd gzip
       reverse_proxy http://127.0.0.1:${toString (cfg.settings.web.port or 5030)}
