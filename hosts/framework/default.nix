@@ -19,12 +19,10 @@
       google-chrome
       notepad-next
       # msty
-      # unstable.opencode
       # mission-center
       # jujutsu
-      # unstable.lmstudio
-      unstable.planify
-      unstable.beeper
+      # planify
+      beeper
 
       # Install desktop apps rather than websites
       # discord
@@ -35,20 +33,18 @@
       kdePackages.gwenview
       nemo-with-extensions
       file-roller
-      gnome-text-editor
-      unstable.anki
+      anki
       calibre
-      fastfetch
 
       # Work
       slack
       awscli2
+      imhex
 
       # Language servers
       taplo
       nil
       nixd
-      unstable.gemini-cli
     ];
     programs = {
       low-battery-alert.enable = true;
