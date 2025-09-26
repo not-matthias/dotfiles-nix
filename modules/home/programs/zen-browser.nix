@@ -38,7 +38,7 @@ in {
         ExtensionRecommendations = false;
         FeatureRecommendations = false;
         UrlbarInterventions = false;
-        SkipOnboarding = false;
+        SkipOnboarding = true;
         MoreFromMozilla = false;
       };
       FirefoxHome = {
@@ -67,12 +67,6 @@ in {
       # ================================
       # [CATEGORY] PRIVACY
       # ================================
-      # [SECTION] ISOLATION - Default to strict mode with enhanced partitioning
-      isolationSettings = {
-        # Content blocking strict mode
-        "browser.contentblocking.category" = "strict";
-      };
-
       # [SECTION] SANITIZING - Enhanced cleaning preferences for privacy
       sanitizingSettings = {
         # Don't sanitize on shutdown to preserve login sessions
@@ -83,7 +77,6 @@ in {
         "privacy.clearOnShutdown_v2.cookies" = false;
         "privacy.clearOnShutdown_v2.cache" = false;
         "privacy.clearOnShutdown_v2.sessions" = false;
-        "privacy.sanitize.clearOnShutdown.hasMigratedToNewPrefs3" = true;
 
         # Prevent media cache from being written to disk in private browsing
         "browser.privatebrowsing.forceMediaMemoryCache" = true;
@@ -104,35 +97,20 @@ in {
       # [SECTION] HISTORY AND SESSION RESTORE
       historySettings = {
         "privacy.history.custom" = true;
-        "browser.privatebrowsing.autostart" = false;
         "browser.formfill.enable" = false; # Disable form history
         "browser.sessionstore.privacy_level" = 2; # Prevent session data storage
         "browser.sessionstore.interval" = 300000; # 5 minutes instead of 15 seconds
       };
 
-      # [SECTION] PRIVACY SETTINGS - Query stripping and logging
-      privacySettings = {
-        # Query stripping
-        "privacy.query_stripping.strip_list" = "__hsfp __hssc __hstc __s _hsenc _openstat dclid fbclid gbraid gclid hsCtaTracking igshid mc_eid ml_subscriber ml_subscriber_hash msclkid oft_c oft_ck oft_d oft_id oft_ids oft_k oft_lk oft_sk oly_anon_id oly_enc_id rb_clickid s_cid twclid vero_conv vero_id wbraid wickedid yclid";
+      # # [SECTION] PRIVACY SETTINGS - Query stripping and logging
+      # privacySettings = {
+      #   # Query stripping
+      #   "privacy.query_stripping.strip_list" = "__hsfp __hssc __hstc __s _hsenc _openstat dclid fbclid gbraid gclid hsCtaTracking igshid mc_eid ml_subscriber ml_subscriber_hash msclkid oft_c oft_ck oft_d oft_id oft_ids oft_k oft_lk oft_sk oly_anon_id oly_enc_id rb_clickid s_cid twclid vero_conv vero_id wbraid wickedid yclid";
 
-        # Logging
-        "browser.dom.window.dump.enabled" = false;
-        "devtools.console.stdout.chrome" = false;
-      };
-
-      # ================================
-      # [CATEGORY] NETWORKING
-      # ================================
-
-      # [SECTION] DNS OVER HTTPS (DoH)
-
-      # [SECTION] NETWORKING - HTTPS, WebRTC, Proxy, DNS, Prefetching
-
-      # ================================
-      # [CATEGORY] FINGERPRINTING
-      # ================================
-
-      # [SECTION] FINGERPRINTING - RFP and WebGL settings
+      #   # Logging
+      #   "browser.dom.window.dump.enabled" = false;
+      #   "devtools.console.stdout.chrome" = false;
+      # };
 
       # ================================
       # [CATEGORY] UI AND PERFORMANCE
@@ -143,8 +121,6 @@ in {
         # Disable updates (managed by Nix)
         "app.update.channel" = "default";
         "app.normandy.first_run" = false;
-
-        # Don't check if browser is default
         "browser.shell.checkDefaultBrowser" = false;
 
         # Use blank new tab page
@@ -157,36 +133,34 @@ in {
         # UI tweaks
         "browser.compactmode.show" = true;
         "findbar.highlightAll" = true;
-        "browser.tabs.firefox-view" = false;
 
         # Tab behavior
-        "browser.tabs.loadInBackground" = true;
-        "browser.link.open_newwindow" = 3; # Force new windows to open as tabs
-        "browser.link.open_newwindow.restriction" = 0; # Allow new tabs in same window
-        "browser.tabs.groups.enabled" = true;
+        # "browser.tabs.loadInBackground" = true;
+        # "browser.link.open_newwindow" = 3; # Force new windows to open as tabs
+        # "browser.link.open_newwindow.restriction" = 0; # Allow new tabs in same window
+        # "browser.tabs.groups.enabled" = true;
       };
 
       # [SECTION] ZEN BROWSER SPECIFIC
       zenSettings = {
-        "zen.urlbar.onlyfloatingbar" = true;
-        "zen.containers.enable_container_essentials" = true;
+        "zen.urlbar.onlyfloatingbar" = true; # TODO
+        "zen.containers.enable_container_essentials" = false;
         "zen.widget.windows.acrylic" = false;
-        "zen.sidebar.enabled" = true; # Keep sidebar but optimize
+        "zen.sidebar.enabled" = true;
         "zen.workspaces.enabled" = false;
         "zen.themes.dynamic-loading" = false; # Disable dynamic theme loading
-        "zen.updates.check-interval" = 86400000; # Check updates daily
-        "zen.animation.enabled" = false; # Disable zen-specific animations
-        "zen.sounds.enabled" = false; # Disable zen sound effects
+        # "zen.animation.enabled" = false;  # Can cause UI glitches when disabled
+        "zen.sounds.enabled" = false;
 
         "zen.glance.enabled" = false;
         "zen.splitView.enable-tab-drop" = false;
         "zen.haptic-feedback.enabled" = false;
         "zen.swipe.is-fast-swipe" = false;
-        "zen.theme.disable-lightweight" = false;
+        "zen.theme.disable-lightweight" = true; # Enable lightweight theme for better performance
         "zen.theme.gradient" = false;
         "zen.theme.acrylic-elements" = false;
 
-        "zen.theme.use-sysyem-colors" = false;
+        "zen.theme.use-system-colors" = false;
         "zen.watermark.enabled" = false;
 
         # Disable sidebar animation in compact view
@@ -195,11 +169,6 @@ in {
         "sidebar.animation.enabled" = false;
         "zen.startup.smooth-scroll-in-tabs" = false;
         "toolkit.scrollbox.smoothScroll" = false;
-
-        # Force light theme
-        "ui.systemUsesDarkTheme" = 0; # Force light theme
-        "browser.theme.content-theme" = 0; # 0 = light, 1 = dark, 2 = system
-        "browser.theme.toolbar-theme" = 0; # 0 = light, 1 = dark, 2 = system
       };
 
       # [SECTION] PERFORMANCE OPTIMIZATIONS
@@ -212,50 +181,32 @@ in {
         "gfx.webrender.all" = true;
         "layers.acceleration.force-enabled" = true;
 
-        # Process management optimizations
-        "dom.ipc.processCount" = 8;
-        # "dom.ipc.keepProcessesAlive.web" = 4;
-        # "dom.ipc.processCount.webIsolated" = 4; # Isolated web processes
-        # "dom.ipc.processPrelaunch.enabled" = true; # Prelaunch processes
-        # "browser.tabs.remote.autostart" = true; # Enable multiprocess
-        # "dom.ipc.processHangMonitor" = true; # Monitor hanging processes
-
         # Graphics and rendering optimizations
         "gfx.canvas.accelerated" = true;
-        "gfx.webrender.compositor" = true;
-        "gfx.webrender.compositor.force-enabled" = true;
+        # Disable problematic compositor forcing on Wayland
+        # "gfx.webrender.compositor" = true;
+        # "gfx.webrender.compositor.force-enabled" = true;
         "layers.mlgpu.enabled" = true;
-        "layers.gpu-process.enabled" = true;
-        "layers.gpu-process.force-enabled" = true;
+        # Disable GPU process forcing on Wayland - causes blocking
+        # "layers.gpu-process.enabled" = true;
+        # "layers.gpu-process.force-enabled" = true;
 
         # Media decoding optimizations
         "media.hardware-video-decoding.enabled" = true;
         "media.rdd-process.enabled" = true;
-        "image.mem.decode_bytes_at_a_time" = 32768; # Faster image decoding
 
-        # Background activity and animations
+        # Background activity and animations - some can cause glitches when disabled
         "browser.tabs.animate" = false;
-        "browser.fullscreen.animate" = false;
-        "toolkit.cosmeticAnimations.enabled" = false;
+        "browser.fullscreen.animate" = true; # Keep enabled to prevent fullscreen glitches
+        "toolkit.cosmeticAnimations.enabled" = true; # Keep enabled to prevent UI glitches
         "browser.download.animateNotifications" = false;
 
-        # Accessibility (disable for performance)
-        "accessibility.force_disabled" = 1;
+        # Accessibility (disable for performance but can cause issues)
+        # "accessibility.force_disabled" = 1;  # Can cause rendering issues
         "accessibility.typeaheadfind.enabled" = false;
 
-        # # Background processes and timers
-        # "dom.timeout.enable_budget_timer_throttling" = false; # No timer throttling
-        # "dom.timeout.throttling_delay" = -1; # Disable timeout throttling
-        # "dom.serviceWorkers.enabled" = false; # Disable service workers
-        # "dom.push.enabled" = false; # Disable push notifications
-
-        # # Image and content loading
-        # "image.animation_mode" = "none"; # Disable animated images
-        # "browser.display.use_document_fonts" = 1; # Allow web fonts for icons
-        # "gfx.downloadable_fonts.enabled" = true; # Enable web fonts for proper icon display
-
-        # Smooth scroll
-        "general.smoothScroll" = false;
+        # Smooth scroll - disabling can cause visual stutter
+        # "general.smoothScroll" = false;
         # "general.smoothScroll.msdPhysics.enabled" = false;
         # "general.smoothScroll.currentVelocityWeighting" = 0;
         # "apz.overscroll.enabled" = false;
@@ -264,14 +215,6 @@ in {
         # "general.smoothScroll.mouseWheel.durationMinMS" = 50;
         # "mousewheel.min_line_scroll_amount" = 18;
         # "mousewheel.scroll_series_timeout" = 10;
-
-        # Wayland
-        "widget.wayland.opaque-region.enabled" = true;
-        "widget.wayland.fractional-scale.enabled" = true;
-
-        # Misc:
-        "layout.frame_rate" = 60;
-        "widget.gtk.rounded-bottom-corners.enabled" = false;
       };
 
       # ================================
@@ -282,8 +225,6 @@ in {
       securitySettings = {
         # Permissions
         "permissions.manager.defaultsUrl" = ""; # Remove Mozilla special permissions
-        "permissions.default.desktop-notification" = 2; # Block notifications
-        "permissions.default.geo" = 2; # Block location requests
 
         # Safe browsing (disabled for privacy)
         "browser.safebrowsing.malware.enabled" = false;
@@ -330,12 +271,9 @@ in {
         "browser.urlbar.suggest.searches" = false;
         "browser.search.suggest.enabled" = false;
         "browser.search.update" = false;
-        "browser.search.separatePrivateDefault" = true;
-        "browser.search.separatePrivateDefault.ui.enabled" = true;
-        "browser.search.serpEventTelemetryCategorization.enabled" = false;
 
         # MDN and other suggestions
-        "browser.urlbar.suggest.mdn" = true;
+        "browser.urlbar.suggest.mdn" = false;
         "browser.urlbar.addons.featureGate" = false;
         "browser.urlbar.mdn.featureGate" = false;
         "browser.urlbar.trending.featureGate" = false;
@@ -345,10 +283,6 @@ in {
         "browser.urlbar.quicksuggest.enabled" = false;
         "browser.urlbar.suggest.weather" = false;
         "browser.urlbar.update2.engineAliasRefresh" = true;
-
-        # URL Bar Privacy
-        "browser.urlbar.trimHttps" = true;
-        "browser.urlbar.untrimOnUserInteraction.featureGate" = true;
       };
 
       # [SECTION] DOWNLOADS AND AUTOPLAY
@@ -360,20 +294,12 @@ in {
         "browser.download.start_downloads_in_tmp_dir" = true;
 
         # Autoplay
-        "media.autoplay.default" = 5; # Block autoplay unless right-clicked
+        # "media.autoplay.default" = 5; # Block autoplay unless right-clicked
       };
 
       # ================================
       # [CATEGORY] EXTENSIONS
       # ================================
-
-      # [SECTION] USER INSTALLED EXTENSIONS
-      extensionSettings = {
-        "extensions.webextensions.restrictedDomains" = ""; # Allow extensions on all domains
-        "extensions.enabledScopes" = 5; # Profile + application scope
-        "extensions.postDownloadThirdPartyPrompt" = false;
-        "extensions.quarantinedDomains.enabled" = false; # Disable quarantined domains
-      };
 
       # [SECTION] SYSTEM EXTENSIONS
       systemExtensionSettings = {
@@ -403,20 +329,19 @@ in {
         "signon.autofillForms" = false; # Disable autofill
         "extensions.formautofill.addresses.enabled" = false; # Disable address autofill
         "extensions.formautofill.creditCards.enabled" = false; # Disable credit card autofill
+
+        # TODO:
         "signon.formlessCapture.enabled" = false; # Disable formless capture
         "signon.privateBrowsingCapture.enabled" = false;
         "editor.truncate_user_pastes" = false;
 
-        # Container tabs
-        "privacy.userContext.enabled" = true; # Enable container tabs
-        "privacy.userContext.ui.enabled" = true; # Show container UI
-
-        # Developer tools
-        "devtools.debugger.remote-enabled" = false; # Disable remote debugging
-        "devtools.selfxss.count" = 0; # Allow console usage
-
         # Mouse settings
         "middlemouse.paste" = false;
+
+        # Container tabs
+        # TODO: I kinda need them in the work browser?
+        "privacy.userContext.enabled" = false; # Disable container tabs
+        "privacy.userContext.ui.enabled" = false; # Hide container UI
       };
 
       # ================================
@@ -529,25 +454,17 @@ in {
       # Combine all settings into one object
       commonSettings =
         # PRIVACY CATEGORY
-        isolationSettings
-        // sanitizingSettings
+        sanitizingSettings
         // cacheSettings
         // historySettings
-        // privacySettings # Merged: queryStrippingSettings + loggingSettings
-        # NETWORKING CATEGORY
-        # // dohSettings
-        # // networkingSettings # Merged: httpsSettings + webrtcSettings + proxySettings + prefetchingSettings + dnsSettings + refererSettings
-        # FINGERPRINTING CATEGORY
-        # // fingerprintingSettings # Merged: rfpSettings + webglSettings
         # SECURITY CATEGORY
-        // securitySettings # Merged: permissionsSettings + safeBrowsingSettings + otherSecuritySettings
+        // securitySettings
         # REGION CATEGORY
         // regionSettings # Merged: locationSettings + languageSettings
         # BEHAVIOR CATEGORY
         // searchSettings
         // downloadSettings # Merged: downloadSettings + autoplaySettings
         # EXTENSIONS CATEGORY
-        // extensionSettings
         // systemExtensionSettings
         # BUILT-IN FEATURES CATEGORY
         // firefoxAccountsSettings # Merged: syncSettings + updaterSettings + identity.fxaccounts.*
@@ -576,14 +493,13 @@ in {
         sponsorblock
         istilldontcareaboutcookies
         libredirect
-        control-panel-for-twitter
+        # control-panel-for-twitter
         darkreader
         inkah
         old-reddit-redirect
         pwas-for-firefox
         web-scrobbler
-        private-grammar-checker-harper
-        karakeep
+        # private-grammar-checker-harper
         aw-watcher-web
 
         # TODO:
@@ -668,19 +584,7 @@ in {
 
         search = commonSearch;
         settings =
-          commonSettings
-          // {
-            "browser.newtabpage.pinned" = [
-              {
-                title = "Miniflux";
-                url = "http://localhost:4242";
-              }
-              {
-                title = "OpenWebUI";
-                url = "http://localhost:11435";
-              }
-            ];
-          };
+          commonSettings;
         extensions.packages = commonExtensions;
       };
 
@@ -702,31 +606,30 @@ in {
     nativeMessagingHosts = [unstable.firefoxpwa];
   };
 
-  xdg = {
-    enable = true;
-    mimeApps = let
-      associations = builtins.listToAttrs (map (name: {
-          inherit name;
-          value = "zen-beta.desktop";
-        }) [
-          "x-scheme-handler/https"
-          "x-scheme-handler/http"
-          "text/html"
-          "application/xhtml+xml"
-          "application/x-extension-html"
-          "application/x-extension-htm"
-          "application/x-extension-shtml"
-          "application/x-extension-xhtml"
-          "application/x-extension-xht"
-          "application/json"
-          "text/plain"
-          "x-scheme-handler/about"
-          "x-scheme-handler/unknown"
-          "x-scheme-handler/mailto"
-        ]);
-    in {
-      associations.added = associations;
-      defaultApplications = associations;
-    };
-  };
+  # xdg = {
+  #   enable = true;
+  #   mimeApps = let
+  #     associations = builtins.listToAttrs (map (name: {
+  #         inherit name;
+  #         value = "zen-beta.desktop";
+  #       }) [
+  #         "x-scheme-handler/https"
+  #         "x-scheme-handler/http"
+  #         "text/html"
+  #         "application/xhtml+xml"
+  #         "application/x-extension-html"
+  #         "application/x-extension-htm"
+  #         "application/x-extension-shtml"
+  #         "application/x-extension-xhtml"
+  #         "application/x-extension-xht"
+  #         "application/json"
+  #         "text/plain"
+  #         "x-scheme-handler/about"
+  #         "x-scheme-handler/unknown"
+  #         "x-scheme-handler/mailto"
+  #       ]);
+  #   in {
+  #     associations.added = associations;
+  #     defaultApplications = associations;
+  #   };
 }
