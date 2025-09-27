@@ -22,6 +22,7 @@
       # mission-center
       # jujutsu
       # planify
+      todoist
       beeper
 
       # Install desktop apps rather than websites
