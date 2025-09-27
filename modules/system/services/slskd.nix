@@ -15,6 +15,9 @@ in {
       environmentFile = config.age.secrets.slskd-env.path;
       settings = {
         remote_file_management = true;
+        transfers = {
+          upload_speed_limit = 1000; # KB/s (1 MB/s upload limit)
+        };
       };
     };
 
