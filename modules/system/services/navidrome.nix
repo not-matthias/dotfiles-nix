@@ -39,7 +39,7 @@ in {
 
     fileSystems."/var/lib/navidrome/music" = {
       device = cfg.musicFolder;
-      options = ["bind" "perms=444"];
+      options = ["bind"];
     };
 
     services.caddy.virtualHosts."music.${domain}" = {
@@ -48,5 +48,11 @@ in {
         reverse_proxy http://127.0.0.1:11424
       '';
     };
+
+    services.restic.paths = ["/var/lib/navidrome"];
+    services.restic.excludes = [
+      "/var/lib/navidrome/music"
+      "/var/lib/navidrome/cache"
+    ];
   };
 }
