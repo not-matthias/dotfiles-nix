@@ -84,7 +84,7 @@
     gitea.enable = true;
     navidrome = {
       enable = true;
-      musicFolder = "/mnt/data/personal/music";
+      musicFolder = "/mnt/data/personal/music/library";
       scrobblerUrl = "http://localhost:42010/apis/listenbrainz/1/";
     };
     slskd = {
@@ -102,7 +102,7 @@
     };
     maloja.enable = true;
     kokoro = {
-      enable = true;
+      enable = false;
       useGpu = false;
     };
     karakeep.enable = true;
