@@ -4,9 +4,11 @@
   nixConfig = {
     extra-substituters = [
       "https://install.determinate.systems"
+      "https://devenv.cachix.org"
     ];
     extra-trusted-public-keys = [
       "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
+      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
     ];
   };
 
@@ -69,6 +71,9 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     nix-webapps.url = "github:TLATER/nix-webapps?ref=tlater/idiomatic-flake";
+    # Pinned to 1.7 to prevent constant recompilations of the devenv-tasks package
+    # See: https://github.com/cachix/devenv/issues/1865
+    devenv.url = "github:cachix/devenv/v1.7";
   };
 
   outputs = {

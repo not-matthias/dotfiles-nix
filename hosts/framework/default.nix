@@ -4,6 +4,7 @@
   user,
   lib,
   config,
+  flakes,
   ...
 }: {
   imports = [
@@ -24,6 +25,7 @@
       # planify
       todoist
       beeper
+      flakes.devenv.packages.${pkgs.system}.devenv
 
       # Install desktop apps rather than websites
       # discord
