@@ -64,8 +64,10 @@ in {
 
     fonts = {
       sansSerif = {
-        package = pkgs.dejavu_fonts;
-        name = "DejaVu Sans";
+        # package = pkgs.dejavu_fonts;
+        # name = "DejaVu Sans";
+        package = pkgs.atkinson-hyperlegible;
+        name = "Atkinson Hyperlegible";
       };
       serif = {
         package = pkgs.ibm-plex;
