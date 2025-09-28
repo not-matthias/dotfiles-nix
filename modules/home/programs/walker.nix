@@ -1,7 +1,6 @@
 {
   flakes,
   pkgs,
-  config,
   ...
 }: {
   imports = [flakes.walker.homeManagerModules.default];

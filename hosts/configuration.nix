@@ -3,7 +3,6 @@
   flakes,
   user,
   lib,
-  config,
   ...
 }: {
   imports = (import ../modules/overlays) ++ (import ../modules/system);

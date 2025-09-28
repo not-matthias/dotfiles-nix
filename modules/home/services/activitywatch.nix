@@ -4,7 +4,6 @@
   flakes,
   config,
   lib,
-  user,
   ...
 }: let
   cfg = config.services.activitywatch;

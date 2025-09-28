@@ -5,7 +5,6 @@
 }: let
   pname = "msty";
   version = "1.0";
-  name = "${pname}-${version}";
   src = fetchurl {
     url = "https://assets.msty.app/Msty_x86_64.AppImage";
     name = "Msty_x86_64.AppImage";
