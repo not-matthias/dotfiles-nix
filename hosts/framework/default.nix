@@ -16,7 +16,7 @@
       unstable.zed-editor
       vscode
       obsidian
-      nodejs
+      bun
       google-chrome
       notepad-next
       # msty
