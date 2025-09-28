@@ -55,6 +55,7 @@
       nixvim.enable = true;
       claude.enable = true;
       vicinae.enable = true;
+      screenshot-journal.enable = true;
 
       gitui.enable = true;
       firefox.enable = false;
