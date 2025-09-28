@@ -47,6 +47,7 @@ in {
       "gwip" = "git commit -m \"chore: wip [skip ci]\" --no-verify";
 
       "btm" = "btm --battery";
+      "ps" = "procs";
 
       # di = direnv
       "did" = "direnv disallow";
