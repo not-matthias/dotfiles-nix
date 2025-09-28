@@ -30,14 +30,19 @@
       # Useful tools
       python3
 
+      # Productivity
+      calcurse
+      khal
+
       # Others:
-      # gping
-      # ouch
+      gping
+      ouch
       # kooha
       # hyperfine
       # oxipng
-      # fzf
+      fzf
       # tokei
+      procs
       # alejandra
       # treefmt
 
