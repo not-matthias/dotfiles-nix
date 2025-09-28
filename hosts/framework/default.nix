@@ -28,6 +28,7 @@
       # Install desktop apps rather than websites
       # discord
       feishin
+      handy
 
       vlc
       evince
