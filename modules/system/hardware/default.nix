@@ -8,5 +8,6 @@
   ./powersave.nix
   ./sound.nix
   ./ssd.nix
+  ./wifi-performance.nix
   ./zfs.nix
 ]

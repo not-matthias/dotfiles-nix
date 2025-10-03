@@ -27,11 +27,12 @@ in {
 
     boot = {
       # snd_hda_intel: Audio Power saving
-      # iwlwifi: https://wiki.archlinux.org/title/Power_management#Intel_wireless_cards_(iwlwifi)
+      # iwlwifi: Balanced WiFi performance vs power saving
+      # Note: power_save=0 for better performance, keep other power features
       extraModprobeConfig = ''
         options snd_hda_intel power_save=1
-        options iwlwifi power_save=1 d0i3_disable=0 uapsd_disable=0
-        options iwlmvm power_scheme=3
+        options iwlwifi power_save=0 d0i3_disable=0 uapsd_disable=0
+        options iwlmvm power_scheme=1
       '';
 
       kernel.sysctl = {
@@ -143,13 +144,30 @@ in {
       done
 
       # Network power management
-      # Enable power saving for wireless interfaces
-      for iface in /sys/class/net/w*; do
-        if [ -d "$iface" ]; then
-          iface_name=$(basename "$iface")
-          ${pkgs.iw}/bin/iw dev "$iface_name" set power_save on 2>/dev/null || true
+      # Conditional WiFi power saving based on power state
+      # Only enable aggressive WiFi power saving when on battery and low charge
+      if [ -f /sys/class/power_supply/BAT*/capacity ]; then
+        battery_level=$(cat /sys/class/power_supply/BAT*/capacity | head -1)
+        ac_connected=$(cat /sys/class/power_supply/A*/online 2>/dev/null | head -1 || echo 0)
+
+        # Only enable WiFi power saving if on battery AND below 30% charge
+        if [ "$ac_connected" = "0" ] && [ "$battery_level" -lt 30 ]; then
+          for iface in /sys/class/net/w*; do
+            if [ -d "$iface" ]; then
+              iface_name=$(basename "$iface")
+              ${pkgs.iw}/bin/iw dev "$iface_name" set power_save on 2>/dev/null || true
+            fi
+          done
+        else
+          # Disable WiFi power saving for better performance
+          for iface in /sys/class/net/w*; do
+            if [ -d "$iface" ]; then
+              iface_name=$(basename "$iface")
+              ${pkgs.iw}/bin/iw dev "$iface_name" set power_save off 2>/dev/null || true
+            fi
+          done
         fi
-      done
+      fi
 
       # Disable Wake-on-LAN for ethernet interfaces
       for iface in /sys/class/net/e*; do
