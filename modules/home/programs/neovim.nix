@@ -82,13 +82,25 @@
       telescope = {
         enable = true;
         keymaps = {
-          "<space>ff" = "find_files";
+          "<space>ff" = {
+            action = "find_files";
+            options.desc = "Find files (including hidden)";
+          };
+          "<space>fg" = {
+            action = "git_files";
+            options.desc = "Find git files";
+          };
           "<space>gg" = "live_grep";
           "<space>lg" = "live_grep";
           "<space>fk" = "keymaps";
           "<space>ft" = "colorscheme";
           "<space>fe" = "file_browser";
           "<space>fc" = "git_commits";
+        };
+        settings.defaults.file_ignore_patterns = [];
+        settings.pickers.find_files = {
+          hidden = true;
+          no_ignore = true;
         };
         extensions = {
           file-browser.enable = true;
