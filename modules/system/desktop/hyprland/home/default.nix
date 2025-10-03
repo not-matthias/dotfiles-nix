@@ -16,7 +16,6 @@ in {
         ./swayidle.nix
         ./swayidle.nix
         ./swww.nix
-        ./wlsunset.nix
       ];
 
       home.packages = with pkgs; [
