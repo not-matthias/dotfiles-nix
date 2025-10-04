@@ -12,12 +12,6 @@ in {
       unstable,
       ...
     }: {
-      imports = [
-        ./swayidle.nix
-        ./swayidle.nix
-        ./swww.nix
-      ];
-
       home.packages = with pkgs; [
         alsa-utils # for volume control
         brightnessctl # for brightness control
