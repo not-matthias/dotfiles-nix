@@ -58,8 +58,13 @@
       waybar.enable = true;
       nixvim.enable = true;
       claude.enable = true;
-      vicinae.enable = true;
-      screenshot-journal.enable = true;
+      screen-journal = {
+        enable = true;
+        video = {
+          enable = true;
+          fps = 5;
+        };
+      };
 
       gitui.enable = true;
       firefox.enable = false;

@@ -1,3 +1,5 @@
+# References:
+# - https://github.com/JerryZLiu/Dayflow
 {
   config,
   pkgs,
@@ -13,9 +15,7 @@ with lib; let
     export DISPLAY=:0
     export WAYLAND_DISPLAY=wayland-1
 
-    MODE="${cfg.mode}"
-
-    if [ "$MODE" = "video" ]; then
+    ${optionalString cfg.video.enable ''
       # Video recording mode
       YEAR=$(date +"%Y")
       MONTH=$(date +"%m")
@@ -23,167 +23,169 @@ with lib; let
       VIDEO_DIR="$HOME/Videos/journal/$YEAR/$MONTH"
       mkdir -p "$VIDEO_DIR"
 
-      VIDEO_FILE="$VIDEO_DIR/$YEAR-$MONTH-$DAY.mp4"
+      BASE_VIDEO_FILE="$VIDEO_DIR/$YEAR-$MONTH-$DAY"
       PID_FILE="$VIDEO_DIR/.$YEAR-$MONTH-$DAY.pid"
 
       # Check if recording is already running
       if [ -f "$PID_FILE" ] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null; then
         # Stop existing recording
+        VIDEO_FILE="$BASE_VIDEO_FILE.mkv"
         kill "$(cat "$PID_FILE")" && rm -f "$PID_FILE"
         echo "Stopped video recording: $VIDEO_FILE"
       else
-        # Start new recording
-        if [ "${toString cfg.singleMonitor}" = "true" ]; then
-          # Single monitor detection for video
-          OUTPUT=""
-          if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ] && command -v hyprctl >/dev/null 2>&1; then
-            CURSOR_INFO=$(${pkgs.hyprland}/bin/hyprctl cursorpos)
-            MOUSE_X=$(echo "$CURSOR_INFO" | cut -d',' -f1)
-            MOUSE_Y=$(echo "$CURSOR_INFO" | cut -d',' -f2)
-            OUTPUT=$(${pkgs.hyprland}/bin/hyprctl monitors -j | \
-                    ${pkgs.jq}/bin/jq -r ".[] | select(.x <= $MOUSE_X and .y <= $MOUSE_Y and (.x + .width) > $MOUSE_X and (.y + .height) > $MOUSE_Y) | .name")
-          elif pgrep -x niri >/dev/null 2>&1; then
-            MOUSE_POS=$(${pkgs.wlrctl}/bin/wlrctl pointer | head -1)
-            MOUSE_X=$(echo "$MOUSE_POS" | cut -d',' -f1)
-            MOUSE_Y=$(echo "$MOUSE_POS" | cut -d',' -f2)
-            for output_line in $(${pkgs.wlr-randr}/bin/wlr-randr | grep -E "^[A-Z]"); do
-              OUTPUT_NAME=$(echo "$output_line" | cut -d' ' -f1)
-              GEOMETRY=$(${pkgs.wlr-randr}/bin/wlr-randr | grep -A5 "^$OUTPUT_NAME" | grep "Position" | cut -d' ' -f2)
-              if [ -n "$GEOMETRY" ]; then
-                X_POS=$(echo "$GEOMETRY" | cut -d',' -f1)
-                Y_POS=$(echo "$GEOMETRY" | cut -d',' -f2)
-                SIZE=$(${pkgs.wlr-randr}/bin/wlr-randr | grep -A5 "^$OUTPUT_NAME" | grep "current" | sed 's/.*current //' | cut -d' ' -f1)
-                WIDTH=$(echo "$SIZE" | cut -d'x' -f1)
-                HEIGHT=$(echo "$SIZE" | cut -d'x' -f2)
-                if [ "$MOUSE_X" -ge "$X_POS" ] && [ "$MOUSE_X" -lt "$((X_POS + WIDTH))" ] && \
-                   [ "$MOUSE_Y" -ge "$Y_POS" ] && [ "$MOUSE_Y" -lt "$((Y_POS + HEIGHT))" ]; then
-                  OUTPUT="$OUTPUT_NAME"
-                  break
-                fi
-              fi
-            done
-          fi
-
-          if [ -n "$OUTPUT" ]; then
-            ${pkgs.wf-recorder}/bin/wf-recorder -o "$OUTPUT" -f "$VIDEO_FILE" -r ${toString cfg.fps} -c h264_vaapi -p preset=medium &
+        # Find next available filename to avoid overwriting
+        COUNTER=0
+        if [ -f "$BASE_VIDEO_FILE.mkv" ]; then
+          COUNTER=1
+          while [ -f "$BASE_VIDEO_FILE-$COUNTER.mkv" ]; do
+            COUNTER=$((COUNTER + 1))
+          done
+          VIDEO_FILE="$BASE_VIDEO_FILE-$COUNTER.mkv"
+        else
+          VIDEO_FILE="$BASE_VIDEO_FILE.mkv"
+        fi
+        # Detect monitor
+        ${
+        if cfg.monitor != null
+        then ''
+          MONITOR="${cfg.monitor}"
+        ''
+        else ''
+          # Auto-detect: prefer external monitor, fallback to laptop screen
+          if pgrep -x niri >/dev/null 2>&1; then
+            # Niri: use wlr-randr
+            EXTERNAL=$(${pkgs.wlr-randr}/bin/wlr-randr | grep -E "^(HDMI|DP|DisplayPort)" | head -1 | cut -d' ' -f1)
+            if [ -n "$EXTERNAL" ]; then
+              MONITOR="$EXTERNAL"
+            else
+              MONITOR=$(${pkgs.wlr-randr}/bin/wlr-randr | grep -E "^eDP" | head -1 | cut -d' ' -f1)
+            fi
+          elif [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ] && command -v hyprctl >/dev/null 2>&1; then
+            # Hyprland: use hyprctl
+            EXTERNAL=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r '.[] | select(.name | test("^(HDMI|DP)")) | .name' | head -1)
+            if [ -n "$EXTERNAL" ]; then
+              MONITOR="$EXTERNAL"
+            else
+              MONITOR=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r '.[] | select(.name | test("^eDP")) | .name' | head -1)
+            fi
           else
-            ${pkgs.wf-recorder}/bin/wf-recorder -f "$VIDEO_FILE" -r ${toString cfg.fps} -c h264_vaapi -p preset=medium &
+            # Fallback: capture all monitors
+            MONITOR=""
           fi
+        ''
+      }
+
+        # Start new recording (use nohup to detach properly)
+        # Use MKV for crash resilience (MKV is inherently recoverable if killed)
+        if [ -n "$MONITOR" ]; then
+          nohup ${pkgs.wf-recorder}/bin/wf-recorder -o "$MONITOR" -f "$VIDEO_FILE" -r ${toString cfg.video.fps} -c hevc_vaapi -p preset=medium >/dev/null 2>&1 &
+          RECORDER_PID=$!
         else
-          ${pkgs.wf-recorder}/bin/wf-recorder -f "$VIDEO_FILE" -r ${toString cfg.fps} -c h264_vaapi -p preset=medium &
+          nohup ${pkgs.wf-recorder}/bin/wf-recorder -f "$VIDEO_FILE" -r ${toString cfg.video.fps} -c hevc_vaapi -p preset=medium >/dev/null 2>&1 &
+          RECORDER_PID=$!
         fi
 
-        echo $! > "$PID_FILE"
-        echo "Started video recording: $VIDEO_FILE (PID: $!)"
+        # Wait a moment to ensure process started
+        sleep 0.5
+
+        # Verify the process is actually running
+        if kill -0 $RECORDER_PID 2>/dev/null; then
+          echo $RECORDER_PID > "$PID_FILE"
+          echo "Started video recording: $VIDEO_FILE (PID: $RECORDER_PID)"
+        else
+          echo "Error: Failed to start wf-recorder" >&2
+          exit 1
+        fi
       fi
-      exit 0
-    fi
+    ''}
 
-    # Screenshot mode (existing functionality)
-    # Create screen journal directory structure YYYY/MM/DD
-    YEAR=$(date +"%Y")
-    MONTH=$(date +"%m")
-    DAY=$(date +"%d")
-    SCREENSHOT_DIR="$HOME/Pictures/Screenshots/journal/$YEAR/$MONTH/$DAY"
-    mkdir -p "$SCREENSHOT_DIR"
+    ${optionalString cfg.image.enable ''
+      # Screenshot mode
+      # Create screen journal directory structure YYYY/MM/DD
+      YEAR=$(date +"%Y")
+      MONTH=$(date +"%m")
+      DAY=$(date +"%d")
+      SCREENSHOT_DIR="$HOME/Pictures/Screenshots/journal/$YEAR/$MONTH/$DAY"
+      mkdir -p "$SCREENSHOT_DIR"
 
-    # Generate filename with full date and time
-    FULL_TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
-    TEMP_FILENAME="$SCREENSHOT_DIR/$FULL_TIMESTAMP.png"
+      # Generate filename with full date and time
+      FULL_TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+      TEMP_FILENAME="$SCREENSHOT_DIR/$FULL_TIMESTAMP.png"
 
-    # Take screenshot using grim (Wayland only)
-    if [ -n "$WAYLAND_DISPLAY" ] && command -v grim >/dev/null 2>&1; then
-        if [ "${toString cfg.singleMonitor}" = "true" ]; then
-            # Check compositor type for different mouse position methods
-            if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ] && command -v hyprctl >/dev/null 2>&1; then
-                # Hyprland: use hyprctl for cursor position
-                CURSOR_INFO=$(${pkgs.hyprland}/bin/hyprctl cursorpos)
-                MOUSE_X=$(echo "$CURSOR_INFO" | cut -d',' -f1)
-                MOUSE_Y=$(echo "$CURSOR_INFO" | cut -d',' -f2)
-
-                # Get monitor info from hyprctl
-                OUTPUT=$(${pkgs.hyprland}/bin/hyprctl monitors -j | \
-                        ${pkgs.jq}/bin/jq -r ".[] | select(.x <= $MOUSE_X and .y <= $MOUSE_Y and (.x + .width) > $MOUSE_X and (.y + .height) > $MOUSE_Y) | .name")
-            elif pgrep -x niri >/dev/null 2>&1; then
-                # Niri: use wlrctl for cursor position
-                MOUSE_POS=$(${pkgs.wlrctl}/bin/wlrctl pointer | head -1)
-                MOUSE_X=$(echo "$MOUSE_POS" | cut -d',' -f1)
-                MOUSE_Y=$(echo "$MOUSE_POS" | cut -d',' -f2)
-
-                # Use wlr-randr for Niri monitor info
-                OUTPUT=""
-                for output_line in $(${pkgs.wlr-randr}/bin/wlr-randr | grep -E "^[A-Z]"); do
-                    OUTPUT_NAME=$(echo "$output_line" | cut -d' ' -f1)
-                    GEOMETRY=$(${pkgs.wlr-randr}/bin/wlr-randr | grep -A5 "^$OUTPUT_NAME" | grep "Position" | cut -d' ' -f2)
-                    if [ -n "$GEOMETRY" ]; then
-                        X_POS=$(echo "$GEOMETRY" | cut -d',' -f1)
-                        Y_POS=$(echo "$GEOMETRY" | cut -d',' -f2)
-                        SIZE=$(${pkgs.wlr-randr}/bin/wlr-randr | grep -A5 "^$OUTPUT_NAME" | grep "current" | sed 's/.*current //' | cut -d' ' -f1)
-                        WIDTH=$(echo "$SIZE" | cut -d'x' -f1)
-                        HEIGHT=$(echo "$SIZE" | cut -d'x' -f2)
-
-                        if [ "$MOUSE_X" -ge "$X_POS" ] && [ "$MOUSE_X" -lt "$((X_POS + WIDTH))" ] && \
-                           [ "$MOUSE_Y" -ge "$Y_POS" ] && [ "$MOUSE_Y" -lt "$((Y_POS + HEIGHT))" ]; then
-                            OUTPUT="$OUTPUT_NAME"
-                            break
-                        fi
-                    fi
-                done
+      # Detect monitor
+      ${
+        if cfg.monitor != null
+        then ''
+          MONITOR="${cfg.monitor}"
+        ''
+        else ''
+          # Auto-detect: prefer external monitor, fallback to laptop screen
+          if pgrep -x niri >/dev/null 2>&1; then
+            # Niri: use wlr-randr
+            EXTERNAL=$(${pkgs.wlr-randr}/bin/wlr-randr | grep -E "^(HDMI|DP|DisplayPort)" | head -1 | cut -d' ' -f1)
+            if [ -n "$EXTERNAL" ]; then
+              MONITOR="$EXTERNAL"
             else
-                # Fallback for other wlroots compositors
-                OUTPUT=""
+              MONITOR=$(${pkgs.wlr-randr}/bin/wlr-randr | grep -E "^eDP" | head -1 | cut -d' ' -f1)
             fi
-
-            if [ -n "$OUTPUT" ]; then
-                ${pkgs.grim}/bin/grim -o "$OUTPUT" "$TEMP_FILENAME"
+          elif [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ] && command -v hyprctl >/dev/null 2>&1; then
+            # Hyprland: use hyprctl
+            EXTERNAL=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r '.[] | select(.name | test("^(HDMI|DP)")) | .name' | head -1)
+            if [ -n "$EXTERNAL" ]; then
+              MONITOR="$EXTERNAL"
             else
-                # Fallback to full screenshot
-                ${pkgs.grim}/bin/grim "$TEMP_FILENAME"
+              MONITOR=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r '.[] | select(.name | test("^eDP")) | .name' | head -1)
             fi
-        else
-            ${pkgs.grim}/bin/grim "$TEMP_FILENAME"
-        fi
-    else
-        echo "Wayland screenshot tool (grim) not available" >&2
-        exit 1
-    fi
+          else
+            # Fallback: capture all monitors
+            MONITOR=""
+          fi
+        ''
+      }
 
-    # Compress and optimize the image
-    OPTIMIZED_FILENAME="$SCREENSHOT_DIR/$FULL_TIMESTAMP.webp"
+      # Take screenshot using grim (Wayland only)
+      if [ -n "$WAYLAND_DISPLAY" ] && command -v grim >/dev/null 2>&1; then
+          if [ -n "$MONITOR" ]; then
+              ${pkgs.grim}/bin/grim -o "$MONITOR" "$TEMP_FILENAME"
+          else
+              ${pkgs.grim}/bin/grim "$TEMP_FILENAME"
+          fi
+      else
+          echo "Wayland screenshot tool (grim) not available" >&2
+          exit 1
+      fi
 
-    # Convert to WebP with quality setting for significant size reduction
-    ${pkgs.imagemagick}/bin/convert "$TEMP_FILENAME" \
-        -quality ${toString cfg.quality} \
-        -define webp:method=6 \
-        -define webp:preprocessing=2 \
-        "$OPTIMIZED_FILENAME"
+      # Compress and optimize the image
+      OPTIMIZED_FILENAME="$SCREENSHOT_DIR/$FULL_TIMESTAMP.webp"
 
-    # Remove the original PNG
-    rm "$TEMP_FILENAME"
+      # Convert to WebP with quality setting for significant size reduction
+      ${pkgs.imagemagick}/bin/convert "$TEMP_FILENAME" \
+          -quality ${toString cfg.image.quality} \
+          -define webp:method=6 \
+          -define webp:preprocessing=2 \
+          "$OPTIMIZED_FILENAME"
 
-    # Check for duplicate screenshots using perceptual hash
-    if [ "${toString cfg.deduplication.enable}" = "true" ]; then
-        CURRENT_HASH=$(${pkgs.imagemagick}/bin/identify -format "%#" "$OPTIMIZED_FILENAME")
-        HASH_FILE="$SCREENSHOT_DIR/.hashes"
+      # Remove the original PNG
+      rm "$TEMP_FILENAME"
 
-        # Check if this hash already exists today
-        if [ -f "$HASH_FILE" ] && grep -q "^$CURRENT_HASH$" "$HASH_FILE"; then
-            echo "Duplicate screenshot detected, removing: $OPTIMIZED_FILENAME"
-            rm "$OPTIMIZED_FILENAME"
-        else
-            echo "$CURRENT_HASH" >> "$HASH_FILE"
-        fi
-    fi
+      # Check for duplicate screenshots using perceptual hash
+      if [ "${toString cfg.image.deduplication.enable}" = "true" ]; then
+          CURRENT_HASH=$(${pkgs.imagemagick}/bin/identify -format "%#" "$OPTIMIZED_FILENAME")
+          HASH_FILE="$SCREENSHOT_DIR/.hashes"
+
+          # Check if this hash already exists today
+          if [ -f "$HASH_FILE" ] && grep -q "^$CURRENT_HASH$" "$HASH_FILE"; then
+              echo "Duplicate screenshot detected, removing: $OPTIMIZED_FILENAME"
+              rm "$OPTIMIZED_FILENAME"
+          else
+              echo "$CURRENT_HASH" >> "$HASH_FILE"
+          fi
+      fi
+    ''}
   '';
 in {
   options.programs.screen-journal = {
     enable = mkEnableOption "screen journal for tracking activity over time";
-
-    mode = mkOption {
-      type = types.enum ["screenshot" "video"];
-      default = "screenshot";
-      description = "Capture mode: individual screenshots or continuous video recording";
-    };
 
     schedule = mkOption {
       type = types.str;
@@ -192,25 +194,38 @@ in {
       example = "*:*:0/30";
     };
 
-    quality = mkOption {
-      type = types.int;
-      default = 75;
-      description = "WebP compression quality for screenshots (0-100) or video bitrate for recordings";
-      example = 60;
+    monitor = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = "Specific monitor to capture (e.g., 'eDP-1', 'HDMI-A-1'). If null, captures all monitors.";
+      example = "eDP-1";
     };
 
-    fps = mkOption {
-      type = types.int;
-      default = 2;
-      description = "Frames per second for video recording mode (1-30)";
-      example = 5;
+    video = {
+      enable = mkEnableOption "video recording mode";
+
+      fps = mkOption {
+        type = types.int;
+        default = 2;
+        description = "Frames per second for video recording mode (1-30)";
+        example = 5;
+      };
     };
 
-    deduplication = {
-      enable = mkEnableOption "duplicate screenshot detection and removal";
-    };
+    image = {
+      enable = mkEnableOption "screenshot mode";
 
-    singleMonitor = mkEnableOption "capture only the monitor where the mouse cursor is located";
+      quality = mkOption {
+        type = types.int;
+        default = 75;
+        description = "WebP compression quality for screenshots (0-100)";
+        example = 60;
+      };
+
+      deduplication = {
+        enable = mkEnableOption "duplicate screenshot detection and removal";
+      };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -219,45 +234,37 @@ in {
       [
         grim # Wayland screenshot tool
         imagemagick # For WebP conversion and image processing
+        wlr-randr # Monitor detection (Niri)
+        jq # JSON parsing (Hyprland)
       ]
-      ++ optionals (cfg.mode == "video") [
+      ++ optionals cfg.video.enable [
         wf-recorder # Wayland video recording
-      ]
-      ++ optionals cfg.singleMonitor [
-        # Additional tools for single monitor detection
-        jq # JSON parsing for Hyprland
-      ]
-      ++ optionals (cfg.singleMonitor && config.wayland.windowManager.hyprland.enable) [
-        hyprland # Hyprctl for cursor position
-      ]
-      ++ optionals (cfg.singleMonitor) [
-        wlrctl # Wayland mouse position (Niri)
-        wlr-randr # Wayland display info (Niri)
       ];
 
     systemd.user.services.screen-journal = {
       Unit = {
         Description =
-          if cfg.mode == "video"
+          if cfg.video.enable
           then "Video journal recording"
           else "Take screen journal entry";
       };
       Service = {
         Type = "oneshot";
         ExecStart = "${script}/bin/screen-journal";
+        RemainAfterExit = cfg.video.enable;
       };
     };
 
     systemd.user.timers.screen-journal = {
       Unit = {
         Description =
-          if cfg.mode == "video"
+          if cfg.video.enable
           then "Start/stop daily video journal recordings"
           else "Capture screen journal entry on schedule";
       };
       Timer = {
         OnCalendar =
-          if cfg.mode == "video"
+          if cfg.video.enable
           then "daily"
           else "${cfg.schedule}";
         Persistent = true;
