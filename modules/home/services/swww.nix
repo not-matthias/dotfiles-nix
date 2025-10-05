@@ -8,16 +8,16 @@
   cfg = config.services.swww;
 in {
   options.services.swww = {
-    enable = lib.mkEnableOption "swww wayland wallpaper daemon";
-
     wallpaper = lib.mkOption {
-      type = lib.types.path;
+      type = lib.types.nullOr lib.types.path;
+      default = null;
       description = "Path to wallpaper image";
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf (cfg.enable or false && cfg.wallpaper != null) {
     home.file.".wallpaper.png".source = cfg.wallpaper;
-    # services.swww.enable =
+
+    # services.swww.enable is already defined in home-manager
   };
 }
