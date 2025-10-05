@@ -1,3 +1,4 @@
+# https://github.com/Daru-san/SnowyDots/tree/master/modules/home/wayland/niri/config
 {
   pkgs,
   lib,
@@ -8,7 +9,7 @@
 with lib; let
   cfg = config.desktop.niri;
 in {
-  imports = [flakes.niri.nixosModules.niri];
+  imports = [./home/default.nix];
 
   options.desktop.niri = {
     enable = mkEnableOption "Enable Niri scrollable-tiling Wayland compositor";
@@ -21,30 +22,61 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    programs.niri = {
+    nix.settings = {
+      substituters = ["https://niri.cachix.org"];
+      trusted-public-keys = ["niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="];
+    };
+    nixpkgs.overlays = [flakes.niri.overlays.niri];
+
+    stylix.enable = true;
+
+    # Enable UWSM for proper systemd session management
+    programs.uwsm = {
       enable = true;
-      package = cfg.package;
+      waylandCompositors.niri = {
+        prettyName = "Niri";
+        comment = "Niri - scrollable-tiling Wayland compositor";
+        binPath = "${cfg.package}/bin/niri-session";
+      };
     };
 
-    # Enable niri-flake binary cache for faster builds
-    niri-flake.cache.enable = true;
-
     # Essential Wayland environment setup
+    # FIXME: Do we need this?
     programs.xwayland.enable = true;
 
     environment = {
+      variables = {
+        XDG_CURRENT_DESKTOP = lib.mkDefault "niri";
+        XDG_SESSION_TYPE = lib.mkDefault "wayland";
+        XDG_SESSION_DESKTOP = lib.mkDefault "niri";
+      };
+
       sessionVariables = {
-        # Enable Wayland for Electron/CEF apps
+        CLUTTER_BACKEND = "wayland";
+        GDK_BACKEND = "wayland,x11";
+        MOZ_ENABLE_WAYLAND = "1";
         NIXOS_OZONE_WL = "1";
+        QT_QPA_PLATFORM = "wayland";
+        QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+        ELECTRON_OZONE_PLATFORM_HINT = "auto";
+        DISPLAY = ":0";
       };
 
       # Essential packages for basic niri functionality
       systemPackages = with pkgs; [
-        alacritty # Terminal (Super+T)
-        fuzzel # Application launcher (Super+D)
+        alacritty # Terminal (Alt+Q)
+        wofi-emoji # Emoji picker (Ctrl+Period)
         wl-clipboard # Wayland clipboard utilities
-        swaylock # Screen locker
         wlr-randr # Display configuration
+        grim # Screenshot tool
+        slurp # Screen area selection
+        swappy # Screenshot editor
+        tesseract # OCR for screenshot text
+        alsa-utils # Volume control (provides amixer)
+        brightnessctl # Brightness control
+        playerctl # Media control
+        nemo # File manager (Alt+E)
+        xwayland-satellite # XWayland integration
       ];
     };
 
@@ -69,7 +101,13 @@ in {
           xdg-desktop-portal-gtk
           xdg-desktop-portal-gnome
         ];
-        config.common.default = "*";
+        config = {
+          common.default = "*";
+          niri = {
+            default = ["gnome" "gtk"];
+            "org.freedesktop.impl.portal.Screenshot" = ["gnome"];
+          };
+        };
       };
     };
 

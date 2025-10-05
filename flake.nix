@@ -54,10 +54,7 @@
       url = "github:abenz1267/walker";
       inputs.elephant.follows = "elephant";
     };
-    niri = {
-      url = "github:sodiboo/niri-flake";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    niri.url = "github:sodiboo/niri-flake";
     vicinae = {
       url = "github:vicinaehq/vicinae";
       inputs.nixpkgs.follows = "nixpkgs";

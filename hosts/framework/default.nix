@@ -55,7 +55,6 @@
       low-battery-alert.enable = true;
       granted.enable = true;
       alacritty.enable = true;
-      waybar.enable = true;
       nixvim.enable = true;
       claude.enable = true;
       screen-journal = {
@@ -70,11 +69,7 @@
       firefox.enable = false;
       zen-browser.enable = true;
 
-      webapps = {
-        twenty.enable = true;
-        lobe-chat.enable = true;
-        hackernews.enable = true;
-      };
+      niri-screen-time.enable = true;
 
       obs-studio = {
         enable = true;
@@ -89,12 +84,7 @@
 
     services = {
       activitywatch.enable = true;
-      dunst.enable = true;
       gpg-agent.enable = true;
-      vicinae = {
-        enable = true;
-        autoStart = true;
-      };
     };
 
     nix.settings = {
@@ -134,6 +124,7 @@
   };
 
   services = {
+    vpn.enable = true;
     flatpak.enable = true;
     multi-scrobbler.enable = true;
     restic = {
@@ -199,13 +190,13 @@
     docker.enable = true; # Required for work (exec service)
   };
   desktop = {
+    niri.enable = true;
     hyprland = {
-      enable = true;
+      enable = false;
       useIntel = true;
     };
     fonts.enable = true;
   };
-  stylix.enable = true;
 
   age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
 

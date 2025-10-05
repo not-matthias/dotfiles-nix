@@ -17,7 +17,14 @@
   screenOffTimeout = 5 * _1min;
   suspendTimeout = 10 * _1min;
 
-  displayCmd = status: "${pkgs.hyprland}/bin/hyprctl dispatch dpms ${status}";
+  # Determine which desktop environment is enabled
+  desktopCfg = config.desktop or {};
+  isHyprland = desktopCfg.hyprland.enable or false;
+
+  displayCmd =
+    if isHyprland
+    then status: "${pkgs.hyprland}/bin/hyprctl dispatch dpms ${status}"
+    else status: "${pkgs.wlopm}/bin/wlopm --${status} '*'";
   lockCmd = "${pkgs.swaylock}/bin/swaylock --daemonize";
 in {
   config = lib.mkIf cfg.enable {

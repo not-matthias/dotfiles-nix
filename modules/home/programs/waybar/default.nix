@@ -15,6 +15,9 @@
   ];
 
   programs.waybar = let
+    isNiri = config.desktop.niri.enable or false;
+    isHyprland = config.desktop.hyprland.enable or false;
+
     dnd = pkgs.writeShellScriptBin "dnd" ''
       COUNT=$(dunstctl count waiting)
       PAUSED=$(dunstctl is-paused)
@@ -238,19 +241,31 @@
       layer = "top";
       position = "top";
       height = 32;
-      modules-left = [
-        "hyprland/workspaces"
-      ];
+      modules-left =
+        if isNiri
+        then ["niri/workspaces"]
+        else if isHyprland
+        then ["hyprland/workspaces"]
+        else [];
       modules-center = [
         "clock"
       ];
-      modules-right = [
-        "group/utils"
-        "hyprland/language"
-        "group/connectivity"
-        "battery"
-        "tray"
-      ];
+      modules-right =
+        [
+          "group/utils"
+        ]
+        ++ (
+          if isNiri
+          then ["niri/language"]
+          else if isHyprland
+          then ["hyprland/language"]
+          else []
+        )
+        ++ [
+          "group/connectivity"
+          "battery"
+          "tray"
+        ];
 
       # Group definitions
       "group/system" = {
@@ -338,13 +353,20 @@
         format-en = "en";
         format-de = "de";
       };
-
       "hyprland/workspaces" = {
         all-outputs = true;
         # on-click = "activate";
         # on-scroll-up = "hyprctl dispatch workspace e-1";
         # on-scroll-down = "hyprctl dispatch workspace e+1";
         # on-click = "activate";
+      };
+      "niri/language" = {
+        format-en = "en";
+        format-de = "de";
+      };
+      "niri/workspaces" = {
+        all-outputs = false;
+        # format = "{index}";
       };
 
       battery = {
