@@ -24,13 +24,14 @@
       # jujutsu
       # planify
       todoist
-      beeper
+      unstable.beeper
       flakes.devenv.packages.${pkgs.system}.devenv
 
       # Install desktop apps rather than websites
       # discord
       feishin
       handy
+      gh
 
       vlc
       evince
@@ -119,6 +120,7 @@
   programs = {
     fcitx5.enable = true;
     nix-ld.enable = true;
+    nix-index.enable = true;
     oneleet = {
       enable = true;
       service.enable = true;
