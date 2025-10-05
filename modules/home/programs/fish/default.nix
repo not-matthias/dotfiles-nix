@@ -60,6 +60,8 @@ in {
       "dl4" = "yt-dlp -f bestvideo+bestaudio --merge-output-format mp4 --continue";
 
       "cc" = "bunx @anthropic-ai/claude-code";
+      "ccc" = "bunx @anthropic-ai/claude-code --continue";
+      "ccr" = "bunx @anthropic-ai/claude-code resume";
     };
     interactiveShellInit =
       ''
