@@ -8,9 +8,13 @@
   cfg = config.services.audiobookshelf;
 in {
   options.services.audiobookshelf = {
-    audioFolder = lib.mkOption {
+    audiobookFolder = lib.mkOption {
       type = lib.types.str;
-      description = "The path to the audio folder";
+      description = "The path to the audiobook folder";
+    };
+    podcastFolder = lib.mkOption {
+      type = lib.types.str;
+      description = "The path to the podcast folder";
     };
   };
 
@@ -21,10 +25,20 @@ in {
       port = 8234;
     };
 
-    fileSystems."/var/lib/audiobookshelf/media" = {
-      device = cfg.audioFolder;
+    fileSystems."/var/lib/audiobookshelf/audiobooks" = {
+      device = cfg.audiobookFolder;
       options = ["bind" "perms=444"];
     };
+
+    fileSystems."/var/lib/audiobookshelf/podcasts" = {
+      device = cfg.podcastFolder;
+      options = ["bind" "perms=444"];
+    };
+
+    systemd.tmpfiles.rules = [
+      "Z ${cfg.audiobookFolder} - audiobookshelf audiobookshelf - -"
+      "Z ${cfg.podcastFolder} - audiobookshelf audiobookshelf - -"
+    ];
 
     services.caddy.virtualHosts."audiobooks.${domain}".extraConfig = ''
       encode zstd gzip

@@ -64,7 +64,8 @@
     };
     audiobookshelf = {
       enable = true;
-      audioFolder = "/mnt/data/personal/audiobooks/";
+      audiobookFolder = "/mnt/data/personal/audiobooks/";
+      podcastFolder = "/mnt/data/personal/podcasts/";
     };
     calibre-web = {
       enable = true;
