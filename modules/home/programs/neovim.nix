@@ -42,18 +42,48 @@
           desc = "Toggle file manager";
         };
       }
+      {
+        mode = "n";
+        key = "<space>gg";
+        action = "<cmd>Neogit<cr>";
+        options = {
+          desc = "Git status (Neogit)";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>gb";
+        action = "<cmd>GitBlameToggle<cr>";
+        options = {
+          desc = "Toggle git blame";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>u";
+        action = "<cmd>UndotreeToggle<cr>";
+        options = {
+          desc = "Undo tree";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>a";
+        action = "<cmd>AerialToggle<cr>";
+        options = {
+          desc = "Symbol outline";
+        };
+      }
     ];
     luaLoader.enable = true;
     plugins = {
       # Old stuff:
       # Yazi
 
-      # auto-save.enable = true;
+      auto-save.enable = true;
       autoclose.enable = true;
-      auto-session.enable = true;
-      lightline.enable = true;
-      # commentary.enable = true;
-      # comment.enable = true;
+      commentary.enable = true;
+      comment.enable = true;
       todo-comments.enable = true;
       rainbow-delimiters.enable = true;
       direnv.enable = true;
@@ -68,6 +98,23 @@
       # QoL
       lastplace.enable = true;
       snacks.enable = true;
+      undotree.enable = true;
+      aerial = {
+        enable = true;
+        settings = {
+          backends = ["treesitter" "lsp"];
+          layout = {
+            default_direction = "prefer_right";
+            placement = "edge";
+          };
+        };
+      };
+      flash = {
+        enable = true;
+        settings = {
+          modes.char.enabled = false; # Don't override f/F/t/T
+        };
+      };
 
       # Learn neovim better
       which-key = {
@@ -109,8 +156,19 @@
 
       # Visual
       fidget.enable = true; # LSP status
-      airline.enable = true; # Status bar
       web-devicons.enable = true;
+      indent-blankline = {
+        enable = true;
+        settings = {
+          scope.enabled = true;
+        };
+      };
+      tiny-inline-diagnostic = {
+        enable = true;
+        settings = {
+          preset = "modern";
+        };
+      };
 
       # Warnings and notifications
       noice = {
@@ -247,6 +305,23 @@
       # git
       trouble.enable = true;
       gitsigns.enable = true;
+      neogit = {
+        enable = true;
+        settings = {
+          integrations = {
+            diffview = true;
+            telescope = true;
+          };
+        };
+      };
+      gitblame = {
+        enable = true;
+        settings = {
+          enabled = false; # Don't show by default, toggle with keybind
+          message_template = "<author> • <date> • <summary>";
+          date_format = "%r";
+        };
+      };
 
       # tree-sitter
       treesitter = {
@@ -254,7 +329,4 @@
       };
     };
   };
-
-  xdg.configFile."nvim/init.lua".text = ''
-  '';
 }
