@@ -7,7 +7,7 @@
   ./change-detection.nix
   ./dawarich.nix
   ./earlyoom.nix
-  ./firefly-iii.nix
+  # ./firefly-iii.nix
   ./gitea.nix
   ./homepage.nix
   ./jellyfin.nix

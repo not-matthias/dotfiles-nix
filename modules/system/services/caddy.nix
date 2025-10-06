@@ -17,6 +17,9 @@
     ];
   };
 
+  # Prevent nginx from being enabled alongside Caddy
+  services.nginx.enable = false;
+
   services.caddy = {
     environmentFile = config.age.secrets.duckdns.path;
     package = unstable.caddy.withPlugins {
