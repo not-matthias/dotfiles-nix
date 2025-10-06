@@ -46,6 +46,9 @@
       # alejandra
       # treefmt
 
+      btop
+      bun
+
       # User
       # anki
       # calibre
