@@ -61,7 +61,7 @@ in {
 
       "cc" = "bunx @anthropic-ai/claude-code";
       "ccc" = "bunx @anthropic-ai/claude-code --continue";
-      "ccr" = "bunx @anthropic-ai/claude-code resume";
+      "ccr" = "bunx @anthropic-ai/claude-code --resume";
     };
     interactiveShellInit =
       ''
