@@ -42,6 +42,7 @@
   services.zfs = {
     autoScrub.enable = true;
     trim.enable = true;
+    autoSnapshot.enable = true;
 
     # https://github.com/openzfs/zfs/blob/master/cmd/zed/zed.d/zed.rc
     zed.settings = {
