@@ -36,7 +36,8 @@
       ".direnv"
     ];
     aliases = {
-      l = "log --pretty=oneline -n 20 --graph --abbrev-commit";
+      l = "log --pretty=oneline -n 20 --graph --abbrev-commit --decorate=no";
+      lb = "log --pretty=oneline -n 20 --graph --abbrev-commit";
     };
   };
 }
