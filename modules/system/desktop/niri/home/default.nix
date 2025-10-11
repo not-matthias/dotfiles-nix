@@ -1,3 +1,5 @@
+# TODO: Configure screen sharing
+#  wl-present mirror eDP-1
 {
   user,
   lib,
@@ -13,6 +15,7 @@ in {
     home-manager.users.${user} = {
       imports = [
         flakes.niri.homeModules.niri
+        flakes.system76-scheduler-niri.homeModules.default
         ./keybinds.nix
         ./autostart.nix
         ./env.nix
@@ -23,6 +26,10 @@ in {
         swaylock.enable = true;
         waybar.enable = true;
         vicinae.enable = true;
+      };
+
+      services.system76-scheduler-niri = lib.mkIf config.desktop.niri.enable {
+        enable = true;
       };
       services = {
         swayidle.enable = true;
@@ -86,12 +93,30 @@ in {
 
           # Named workspaces to prevent auto-deletion when empty
           workspaces = {
-            "0" = {name = "scratchpad";};
-            "1" = {name = "web";};
-            "2" = {name = "code";};
-            "3" = {name = "notes";};
-            "4" = {name = "chat";};
-            "5" = {name = "music";};
+            "1" = {
+              name = "web";
+              open-on-output = "DP-1";
+            };
+            "2" = {
+              name = "code";
+              open-on-output = "DP-1";
+            };
+            "3" = {
+              name = "notes";
+              open-on-output = "DP-1";
+            };
+            "4" = {
+              name = "chat";
+              open-on-output = "DP-1";
+            };
+            "5" = {
+              name = "music";
+              open-on-output = "DP-1";
+            };
+            "99" = {
+              name = "scratchpad";
+              open-on-output = "DP-1";
+            };
           };
 
           # Enable shadows and rounded corners for windows

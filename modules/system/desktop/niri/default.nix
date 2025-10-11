@@ -68,6 +68,7 @@ in {
         wofi-emoji # Emoji picker (Ctrl+Period)
         wl-clipboard # Wayland clipboard utilities
         wlr-randr # Display configuration
+        wl-mirror # Screen mirroring (use with `wl-present mirror eDP-1`)
         grim # Screenshot tool
         slurp # Screen area selection
         swappy # Screenshot editor

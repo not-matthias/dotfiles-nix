@@ -30,9 +30,6 @@
     # Tabbed column functionality
     "Alt+T".action.toggle-column-tabbed-display = [];
 
-    # Special workspace
-    "Alt+Y".action.focus-workspace = 9;
-
     # Column navigation with HL keys
     "Alt+H".action.focus-column-or-monitor-left = [];
     "Alt+L".action.focus-column-or-monitor-right = [];
@@ -99,7 +96,7 @@
     "XF86AudioPrev".action.spawn = ["playerctl" "previous"];
     "XF86AudioStop".action.spawn = ["playerctl" "stop"];
 
-    "Mod+Tab".action.focus-workspace-previous = [];
+    "Alt+Tab".action.focus-workspace-previous = [];
 
     # Workspace switching
     "Alt+1".action.focus-workspace = 1;
@@ -111,7 +108,7 @@
     "Alt+7".action.focus-workspace = 7;
     "Alt+8".action.focus-workspace = 8;
     "Alt+9".action.focus-workspace = 9;
-    "Alt+0".action.focus-workspace = 0;
+    "Alt+Y".action.focus-workspace = "scratchpad";
 
     # Move window to workspace
     "Alt+Shift+1".action.move-window-to-workspace = 1;
@@ -123,6 +120,6 @@
     "Alt+Shift+7".action.move-window-to-workspace = 7;
     "Alt+Shift+8".action.move-window-to-workspace = 8;
     "Alt+Shift+9".action.move-window-to-workspace = 9;
-    "Alt+Shift+0".action.move-window-to-workspace = 0;
+    "Alt+Shift+Y".action.move-window-to-workspace = "scratchpad";
   };
 }
