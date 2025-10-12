@@ -203,6 +203,7 @@
           else []
         )
         ++ [
+          "pulseaudio"
           "battery"
           "tray"
         ];
