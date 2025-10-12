@@ -69,6 +69,10 @@
     };
     nix-webapps.url = "github:TLATER/nix-webapps?ref=tlater/idiomatic-flake";
     niri-screen-time.url = "github:probeldev/niri-screen-time";
+    system76-scheduler-niri = {
+      url = "github:Kirottu/system76-scheduler-niri";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # Pinned to 1.7 to prevent constant recompilations of the devenv-tasks package
     # See: https://github.com/cachix/devenv/issues/1865
     devenv.url = "github:cachix/devenv/v1.7";
