@@ -149,6 +149,7 @@ in {
             # Code editors on workspace "code"
             {
               open-on-workspace = "code";
+              open-maximized = true;
               matches = [
                 {app-id = "^code$";}
                 {app-id = "^VSCodium$";}
@@ -159,6 +160,7 @@ in {
             # Note apps on workspace "notes"
             {
               open-on-workspace = "notes";
+              open-maximized = true;
               matches = [
                 {app-id = "^obsidian$";}
                 {app-id = "^logseq$";}
@@ -174,7 +176,7 @@ in {
                 {app-id = "^slack$";}
                 {app-id = "^element$";}
                 {app-id = "^telegram$";}
-                {app-id = "^beeper$";}
+                {app-id = "^BeeperTexts$";}
               ];
             }
             # Music apps on workspace "music"
