@@ -8,6 +8,7 @@
   pkgs,
   lib,
   config,
+  osConfig,
   ...
 }: {
   home.packages = lib.mkIf config.programs.waybar.enable [
@@ -15,8 +16,8 @@
   ];
 
   programs.waybar = let
-    isNiri = config.desktop.niri.enable or false;
-    isHyprland = config.desktop.hyprland.enable or false;
+    isNiri = osConfig.desktop.niri.enable or false;
+    isHyprland = osConfig.desktop.hyprland.enable or false;
 
     dnd = pkgs.writeShellScriptBin "dnd" ''
       COUNT=$(dunstctl count waiting)
@@ -89,152 +90,92 @@
       fi
     '';
 
-    pomodoro = pkgs.writeShellScriptBin "pomodoro" ''
-      STATE_FILE="/tmp/waybar-pomodoro"
+    niri_window_index = pkgs.writeShellScriptBin "niri_window_index" ''
+      update_display() {
+          # Query niri for focused workspace
+          WORKSPACE_OUTPUT=$(niri msg --json workspaces 2>/dev/null)
+          FOCUSED_WS_ID=$(echo "$WORKSPACE_OUTPUT" | ${pkgs.jq}/bin/jq -r '.[] | select(.is_focused == true) | .id')
 
-      # Initialize state file if it doesn't exist
-      if [ ! -f "$STATE_FILE" ]; then
-          echo "idle" > "$STATE_FILE"
-      fi
+          if [ -z "$FOCUSED_WS_ID" ]; then
+              echo '{"text": "", "tooltip": "No focused workspace", "class": "empty"}'
+              return
+          fi
 
-      STATE=$(cat "$STATE_FILE")
+          # Query niri for windows information
+          WINDOWS_OUTPUT=$(niri msg --json windows 2>/dev/null)
 
-      case "$1" in
-          "start")
-              echo "work:$(date +%s):1500" > "$STATE_FILE"  # 25 min work session
-              pkill -RTMIN+9 waybar
-              ;;
-          "break")
-              echo "break:$(date +%s):300" > "$STATE_FILE"  # 5 min break
-              pkill -RTMIN+9 waybar
-              ;;
-          "stop")
-              echo "idle" > "$STATE_FILE"
-              pkill -RTMIN+9 waybar
-              ;;
-          "toggle")
-              if [ "$STATE" = "idle" ]; then
-                  echo "work:$(date +%s):1500" > "$STATE_FILE"
+          if [ -z "$WINDOWS_OUTPUT" ] || [ "$WINDOWS_OUTPUT" = "null" ]; then
+              echo '{"text": "", "tooltip": "No windows", "class": "empty"}'
+              return
+          fi
+
+          # Parse JSON to find focused window and count windows on focused workspace
+          # Sort by horizontal position (pos_in_scrolling_layout[0])
+          RESULT=$(echo "$WINDOWS_OUTPUT" | ${pkgs.jq}/bin/jq -r --arg ws_id "$FOCUSED_WS_ID" '
+            . as $root |
+            ($root | map(select(.workspace_id == ($ws_id | tonumber)))) as $ws_windows |
+            ($ws_windows | sort_by(.layout.pos_in_scrolling_layout[0])) as $sorted_windows |
+            ($sorted_windows | map(select(.is_focused == true)) | .[0]) as $focused |
+            if ($sorted_windows | length) > 0 then
+              if $focused then
+                ($sorted_windows | map(.id) | index($focused.id)) as $idx |
+                {
+                  index: $idx,
+                  total: ($sorted_windows | length)
+                }
               else
-                  echo "idle" > "$STATE_FILE"
-              fi
-              pkill -RTMIN+9 waybar
-              ;;
-          *)
-              # Display current state
-              if [ "$STATE" = "idle" ]; then
-                  echo '{"text": "󰔟", "tooltip": "Pomodoro Timer (Click to start)", "class": "idle"}'
-              else
-                  IFS=':' read -r mode start_time duration <<< "$STATE"
-                  current_time=$(date +%s)
-                  elapsed=$((current_time - start_time))
-                  remaining=$((duration - elapsed))
+                {
+                  index: -1,
+                  total: ($sorted_windows | length)
+                }
+              end
+            else
+              null
+            end |
+            if . then
+              "\(.index)|\(.total)"
+            else
+              ""
+            end
+          ')
 
-                  if [ $remaining -le 0 ]; then
-                      if [ "$mode" = "work" ]; then
-                          echo "break:$(date +%s):300" > "$STATE_FILE"
-                          notify-send "Pomodoro" "Work session complete! Take a 5-minute break."
-                          echo '{"text": "󰔟", "tooltip": "Break time! (5:00)", "class": "break"}'
-                      else
-                          echo "idle" > "$STATE_FILE"
-                          notify-send "Pomodoro" "Break complete! Ready for next session."
-                          echo '{"text": "󰔟", "tooltip": "Pomodoro Timer (Click to start)", "class": "idle"}'
-                      fi
-                  else
-                      minutes=$((remaining / 60))
-                      seconds=$((remaining % 60))
-                      time_str=$(printf "%d:%02d" $minutes $seconds)
+          if [ -n "$RESULT" ] && [ "$RESULT" != "null" ] && [ "$RESULT" != "" ]; then
+              IFS='|' read -r INDEX TOTAL <<< "$RESULT"
 
-                      if [ "$mode" = "work" ]; then
-                          echo "{\"text\": \"󰔟\", \"tooltip\": \"Work session: $time_str\", \"class\": \"work\"}"
-                      else
-                          echo "{\"text\": \"󰔟\", \"tooltip\": \"Break time: $time_str\", \"class\": \"break\"}"
-                      fi
+              # Build dot visualization with spacing
+              DOTS=""
+              for ((i=0; i<TOTAL; i++)); do
+                  if [ $i -gt 0 ]; then
+                      DOTS="$DOTS "
                   fi
-              fi
-              ;;
-      esac
-    '';
-
-    break_timer = pkgs.writeShellScriptBin "break_timer" ''
-      STATE_FILE="/tmp/waybar-break-timer"
-
-      # Initialize state file if it doesn't exist
-      if [ ! -f "$STATE_FILE" ]; then
-          echo "idle" > "$STATE_FILE"
-      fi
-
-      STATE=$(cat "$STATE_FILE")
-
-      case "$1" in
-          "start")
-              # Prompt for break duration
-              DURATION=$(echo -e "5\n10\n15\n20\n30\n45\n60" | ${pkgs.wofi}/bin/wofi --dmenu --prompt "Break duration (minutes):")
-              if [ -n "$DURATION" ] && [ "$DURATION" -gt 0 ]; then
-                  SECONDS=$((DURATION * 60))
-                  echo "break:$(date +%s):$SECONDS" > "$STATE_FILE"
-                  # Temporarily bypass DND for break start notification
-                  DND_WAS_PAUSED=$(dunstctl is-paused)
-                  if [ "$DND_WAS_PAUSED" = "true" ]; then
-                      dunstctl set-paused false
-                      notify-send "Break Timer" "Break started for $DURATION minutes"
-                      sleep 0.5
-                      dunstctl set-paused true
+                  if [ "$INDEX" != "-1" ] && [ $i -eq $INDEX ]; then
+                      DOTS="$DOTS󰪥"
                   else
-                      notify-send "Break Timer" "Break started for $DURATION minutes"
+                      DOTS="$DOTS󰄰"
                   fi
-                  pkill -RTMIN+10 waybar
-              fi
-              ;;
-          "stop")
-              echo "idle" > "$STATE_FILE"
-              # Temporarily bypass DND for break cancel notification
-              DND_WAS_PAUSED=$(dunstctl is-paused)
-              if [ "$DND_WAS_PAUSED" = "true" ]; then
-                  dunstctl set-paused false
-                  notify-send "Break Timer" "Break cancelled"
-                  sleep 0.5
-                  dunstctl set-paused true
-              else
-                  notify-send "Break Timer" "Break cancelled"
-              fi
-              pkill -RTMIN+10 waybar
-              ;;
-          *)
-              # Display current state
-              if [ "$STATE" = "idle" ]; then
-                  echo '{"text": "󰒲", "tooltip": "Break Timer (Click to start)", "class": "idle"}'
-              else
-                  IFS=':' read -r mode start_time duration <<< "$STATE"
-                  current_time=$(date +%s)
-                  elapsed=$((current_time - start_time))
-                  remaining=$((duration - elapsed))
+              done
 
-                  if [ $remaining -le 0 ]; then
-                      echo "idle" > "$STATE_FILE"
-                      # Play completion sound
-                      ${pkgs.pulseaudio}/bin/paplay ${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/complete.oga 2>/dev/null || \
-                      ${pkgs.libcanberra-gtk3}/bin/canberra-gtk-play -i complete 2>/dev/null || true
-                      # Temporarily bypass DND for break completion notification
-                      DND_WAS_PAUSED=$(dunstctl is-paused)
-                      if [ "$DND_WAS_PAUSED" = "true" ]; then
-                          dunstctl set-paused false
-                          notify-send "Break Timer" "Break time is over! Welcome back." --urgency=critical
-                          sleep 0.5  # Brief delay to ensure notification shows
-                          dunstctl set-paused true
-                      else
-                          notify-send "Break Timer" "Break time is over! Welcome back." --urgency=critical
-                      fi
-                      echo '{"text": "󰒲", "tooltip": "Break Timer (Click to start)", "class": "idle"}'
-                  else
-                      minutes=$((remaining / 60))
-                      seconds=$((remaining % 60))
-                      time_str=$(printf "%d:%02d" $minutes $seconds)
-                      echo "{\"text\": \"󰒲\", \"tooltip\": \"Break: $time_str remaining\", \"class\": \"active\"}"
-                  fi
+              if [ "$INDEX" != "-1" ]; then
+                  echo "{\"text\": \"$DOTS\", \"tooltip\": \"Window $INDEX/$TOTAL\", \"class\": \"active\"}"
+              else
+                  echo "{\"text\": \"$DOTS\", \"tooltip\": \"$TOTAL windows\", \"class\": \"inactive\"}"
               fi
-              ;;
-      esac
+          else
+              echo '{"text": "", "tooltip": "No windows", "class": "empty"}'
+          fi
+      }
+
+      # Initial display
+      update_display
+
+      # Listen to niri event stream for changes
+      niri msg event-stream 2>/dev/null | while read -r line; do
+          case "$line" in
+              "Window opened or changed:"*|"Window closed:"*|"Window focus changed:"*|"Workspace focused:"*|*"active window changed to"*)
+                  update_display
+                  ;;
+          esac
+      done
     '';
   in {
     settings.mainbar = {
@@ -243,7 +184,7 @@
       height = 32;
       modules-left =
         if isNiri
-        then ["niri/workspaces"]
+        then ["niri/workspaces" "group/niri-info"]
         else if isHyprland
         then ["hyprland/workspaces"]
         else [];
@@ -262,12 +203,18 @@
           else []
         )
         ++ [
-          "group/connectivity"
           "battery"
           "tray"
         ];
 
       # Group definitions
+      "group/niri-info" = {
+        orientation = "horizontal";
+        modules = [
+          "custom/niri-window-index"
+        ];
+      };
+
       "group/system" = {
         orientation = "horizontal";
         modules = [
@@ -280,8 +227,6 @@
       "group/utils" = {
         orientation = "horizontal";
         modules = [
-          "custom/pomodoro"
-          "custom/break-timer"
           "idle_inhibitor"
           "custom/dnd"
         ];
@@ -293,24 +238,6 @@
           "bluetooth"
           "pulseaudio"
         ];
-      };
-
-      "custom/pomodoro" = {
-        return-type = "json";
-        format = "{text}";
-        exec = "${pomodoro}/bin/pomodoro";
-        on-click = "${pomodoro}/bin/pomodoro toggle";
-        signal = 9;
-        interval = 1;
-      };
-      "custom/break-timer" = {
-        return-type = "json";
-        format = "{text}";
-        exec = "${break_timer}/bin/break_timer";
-        on-click = "${break_timer}/bin/break_timer start";
-        on-click-right = "${break_timer}/bin/break_timer stop";
-        signal = 10;
-        interval = 1;
       };
       idle_inhibitor = {
         format = "{icon}";
@@ -348,6 +275,11 @@
         format = "{text}";
         exec = "${temperature}/bin/temperature";
         interval = 5;
+      };
+      "custom/niri-window-index" = {
+        return-type = "json";
+        format = "{text}";
+        exec = "${niri_window_index}/bin/niri_window_index";
       };
       "hyprland/language" = {
         format-en = "en";

@@ -1,28 +1,41 @@
+catpuccin-light-palette {
+    color: #eff1f5;
+    color: #e6e9ef;
+    color: #ccd0da;
+    color: #bcc0cc;
+    color: #acb0be;
+    color: #4c4f69;
+    color: #d20f39;
+    color: #d20f39;
+    color: #d20f39;
+    color: #fe640b;
+    color: #df8e1d;
+    color: #40a02b;
+    color: #179299;
+    color: #d20f39;
+    color: #d20f39;
+    color: #d20f39;
+}
+
 * {
     border: none;
     border-radius: 0;
     padding: 0;
     margin: 0;
-    font-size: 11px;
+    font-size: 12px;
     font-family: "JetBrains Mono Nerd Font", "JetBrains Mono", "SF Mono", "Monaco", "Inconsolata", "Fira Code", "Source Code Pro", monospace;
 }
 
 window#waybar {
     background: transparent;
-    color: white;
+    color: @base00;
 }
 
 /* Workspaces */
-#workspaces {
-    background: rgba(0, 0, 0, 0.85);
-    border-radius: 8px;
-    padding: 2px;
-    margin: 2px 2px 2px 6px;
-}
 
 #workspaces button {
     padding: 2px 6px;
-    color: #cdd6f4;
+    color: @base00;
     background: transparent;
     border-radius: 4px;
     margin: 0 1px;
@@ -30,264 +43,66 @@ window#waybar {
 }
 
 #workspaces button.active {
-    background-color: #89b4fa;
-    color: #1e1e2e;
+    background-color: @base0D;
+    color: @base00;
 }
 
-/* Individual modules styling */
+/* Niri window index */
+#custom-niri-window-index {
+    font-size: 14px;
+    letter-spacing: 2px;
+    margin: 0 2px;
+}
+
+/* FIXME: This is the same color */
+#custom-niri-window-index.active {
+    color: @base0D;
+}
+
+#custom-niri-window-index.empty {
+    color: @base03;
+}
+
+
+#idle_inhibitor,
+#custom-dnd {
+    font-size: 14px;
+    margin: 0 2px;
+    padding: 2px 6px;
+    background: transparent;
+}
+
+#workspaces,
+#custom-niri-window-index,
+.group-niri-info,
+.group-system,
+.group-connectivity,
+.group-utils,
 #clock,
+#tray,
 #bluetooth,
 #language,
 #pulseaudio,
 #network,
-#battery,
-#custom-pomodoro,
-#custom-break-timer,
-#custom-idle-inhibit,
-#custom-dnd,
-#custom-weather,
-#custom-power_profile,
-#custom-temperature {
-    background: rgba(0, 0, 0, 0.85);
-    padding: 3px 6px;
-    margin: 2px 1px;
-    border-radius: 5px;
-    color: #cdd6f4;
-    border: none;
-}
-
-/* Grouped modules styling */
-.group-system {
-    background: rgba(0, 0, 0, 0.85);
-    border-radius: 5px;
-    margin: 2px 1px;
-    padding: 0;
-}
-
-.group-system>* {
-    background: transparent;
-    margin: 0;
-    border-radius: 0;
-    padding: 3px 6px;
-}
-
-.group-system>*:first-child {
-    border-radius: 5px 0 0 5px;
-}
-
-.group-system>*:last-child {
-    border-radius: 0 5px 5px 0;
-}
-
-.group-connectivity {
-    background: rgba(0, 0, 0, 0.85);
-    border-radius: 5px;
-    margin: 2px 1px;
-    padding: 0;
-}
-
-.group-connectivity>* {
-    background: transparent;
-    margin: 0;
-    border-radius: 0;
-    padding: 3px 6px;
-}
-
-.group-connectivity>*:first-child {
-    border-radius: 5px 0 0 5px;
-}
-
-.group-connectivity>*:last-child {
-    border-radius: 0 5px 5px 0;
-}
-
-.group-utils {
-    background: rgba(0, 0, 0, 0.85);
-    border-radius: 5px;
-    margin: 2px 1px;
-    padding: 0;
-}
-
-.group-utils>* {
-    background: transparent;
-    margin: 0;
-    border-radius: 0;
-    padding: 3px 6px;
-}
-
-.group-utils>*:first-child {
-    border-radius: 5px 0 0 5px;
-}
-
-.group-utils>*:last-child {
-    border-radius: 0 5px 5px 0;
-}
-
-/* Standalone modules need individual styling */
-#cpu,
-#memory,
-#custom-temperature {
-    background: transparent;
-    padding: 3px 6px;
-    margin: 0;
-    border-radius: 0;
-    color: #cdd6f4;
-    border: none;
-}
-
-#tray {
-    background: rgba(0, 0, 0, 0.85);
-    padding: 3px 6px;
-    margin: 2px 6px 2px 1px;
-    border-radius: 5px;
-    color: #cdd6f4;
-}
-
-/* Module-specific colors */
 #battery {
-    color: #a6e3a1;
-}
-
-#battery.warning {
-    color: #f9e2af;
-}
-
-#battery.critical {
-    color: #f38ba8;
-}
-
-#cpu {
-    color: #89b4fa;
-}
-
-#memory {
-    color: #cba6f7;
-}
-
-#network {
-    color: #94e2d5;
-}
-
-#pulseaudio {
-    color: #fab387;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 3px 6px;
+    margin: 2px 1px;
+    border-radius: 5px;
+    color: @base00;
 }
 
 #clock {
-    color: #f5e0dc;
     font-weight: bold;
 }
 
-#language {
-    color: #f2cdcd;
-}
-
-/* Custom modules */
-#custom-pomodoro.idle {
-    color: #6c7086;
-}
-
-#custom-pomodoro.work {
-    color: #f38ba8;
-    background: rgba(243, 139, 168, 0.1);
-}
-
-#custom-pomodoro.break {
-    color: #a6e3a1;
-    background: rgba(166, 227, 161, 0.1);
-}
-
-#custom-break-timer.idle {
-    color: #6c7086;
-}
-
-#custom-break-timer.active {
-    color: #fab387;
-    background: rgba(250, 179, 135, 0.1);
-}
-
+/* Active/enabled states use accent color */
+#custom-niri-window-index.active,
+#idle_inhibitor.activated,
+#bluetooth.on,
+#bluetooth.connected,
 #custom-dnd.paused {
-    color: #f38ba8;
-    background: rgba(243, 139, 168, 0.1);
-}
-
-#custom-dnd.active {
-    color: #a6e3a1;
-}
-
-#custom-dnd.no-notifications {
-    color: #6c7086;
-}
-
-/* Idle inhibit module */
-#custom-idle-inhibit.active {
-    color: #f38ba8;
-    background: rgba(243, 139, 168, 0.1);
-}
-
-#custom-idle-inhibit.inactive {
-    color: #6c7086;
-}
-
-/* Weather module */
-#custom-weather {
-    color: #94e2d5;
-}
-
-#custom-weather.disconnected {
-    color: #6c7086;
-}
-
-/* Power profile module */
-#custom-power_profile.performance {
-    color: #f38ba8;
-    background: rgba(243, 139, 168, 0.1);
-}
-
-#custom-power_profile.balanced {
-    color: #89b4fa;
-}
-
-#custom-power_profile.power-saver {
-    color: #a6e3a1;
-    background: rgba(166, 227, 161, 0.1);
-}
-
-#custom-power_profile.unknown,
-#custom-power_profile.unavailable {
-    color: #6c7086;
-}
-
-/* Temperature module */
-#custom-temperature.normal {
-    color: #94e2d5;
-}
-
-#custom-temperature.warning {
-    color: #f9e2af;
-    background: rgba(249, 226, 175, 0.1);
-}
-
-#custom-temperature.critical {
-    color: #f38ba8;
-    background: rgba(243, 139, 168, 0.1);
-}
-
-#custom-temperature.unavailable {
-    color: #6c7086;
-}
-
-/* Bluetooth states */
-#bluetooth.on {
-    color: #89b4fa;
-}
-
-#bluetooth.off,
-#bluetooth.disabled {
-    color: #6c7086;
-}
-
-#bluetooth.connected {
-    color: #a6e3a1;
+    color: @base0D;
 }
 
 /* Hover effects */
@@ -299,13 +114,12 @@ window#waybar {
 #battery:hover,
 #cpu:hover,
 #memory:hover,
-#custom-pomodoro:hover,
-#custom-break-timer:hover,
-#custom-idle-inhibit:hover,
+#idle_inhibitor:hover,
 #custom-dnd:hover,
 #custom-weather:hover,
 #custom-power_profile:hover,
 #custom-temperature:hover,
+#custom-niri-window-index:hover,
 #tray:hover {
     background: rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease-in-out;
