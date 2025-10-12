@@ -57,6 +57,7 @@
       alacritty.enable = true;
       nixvim.enable = true;
       claude.enable = true;
+      btop.enable = true;
       video-journal = {
         enable = true;
         fps = 5;

@@ -46,7 +46,6 @@
       # alejandra
       # treefmt
 
-      btop
       bun
 
       # User
