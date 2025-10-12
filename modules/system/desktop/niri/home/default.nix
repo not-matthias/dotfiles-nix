@@ -270,18 +270,6 @@ in {
             }
           ];
 
-          # Gesture configuration
-          gestures = {
-            dnd-edge-workspace-switch = {
-              trigger-height = 100;
-              max-speed = 3000;
-            };
-            dnd-edge-view-scroll = {
-              trigger-width = 100;
-              max-speed = 3000;
-            };
-          };
-
           # Overview mode settings
           overview = {
             zoom = 0.4;
