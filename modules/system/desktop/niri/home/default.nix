@@ -28,7 +28,7 @@ in {
         vicinae.enable = true;
       };
 
-      services.system76-scheduler-niri = lib.mkIf config.desktop.niri.enable {
+      services.system76-scheduler-niri = {
         enable = true;
       };
       services = {
