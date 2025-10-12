@@ -28,7 +28,8 @@
   ./zellij.nix
   ./zoxide.nix
   ./low-battery-alert.nix
-  ./screen-journal.nix
+  ./screenshot-journal.nix
+  ./video-journal.nix
   ./swaylock.nix
   ./webapps.nix
   ./niri-screen-time.nix

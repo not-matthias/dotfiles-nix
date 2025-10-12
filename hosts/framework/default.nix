@@ -57,12 +57,10 @@
       alacritty.enable = true;
       nixvim.enable = true;
       claude.enable = true;
-      screen-journal = {
+      video-journal = {
         enable = true;
-        video = {
-          enable = true;
-          fps = 5;
-        };
+        fps = 5;
+        autoStart = true;
       };
 
       gitui.enable = true;
