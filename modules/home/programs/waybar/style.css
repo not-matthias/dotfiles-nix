@@ -32,7 +32,6 @@ window#waybar {
 }
 
 /* Workspaces */
-
 #workspaces button {
     padding: 2px 6px;
     color: @base00;
@@ -47,23 +46,6 @@ window#waybar {
     color: @base00;
 }
 
-/* Niri window index */
-#custom-niri-window-index {
-    font-size: 14px;
-    letter-spacing: 2px;
-    margin: 0 2px;
-}
-
-/* FIXME: This is the same color */
-#custom-niri-window-index.active {
-    color: @base0D;
-}
-
-#custom-niri-window-index.empty {
-    color: @base03;
-}
-
-
 #idle_inhibitor,
 #custom-dnd {
     font-size: 14px;
@@ -72,8 +54,8 @@ window#waybar {
     background: transparent;
 }
 
-#workspaces,
 #custom-niri-window-index,
+#workspaces,
 .group-niri-info,
 .group-system,
 .group-connectivity,
