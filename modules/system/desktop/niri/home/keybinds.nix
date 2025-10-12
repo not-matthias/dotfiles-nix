@@ -11,75 +11,78 @@
 # 3:
 #
 # I could remap: 0 to 7 and 9 to 6 -> this way the workspaces are closer -> make sthe overview easier
-{
+let
+  mod1 = "Alt";
+  mod = "Super";
+in {
   programs.niri.settings.binds = {
     # Basic application binds
-    "Alt+Q".action.spawn = ["alacritty"];
-    "Alt+C".action.close-window = [];
-    "Alt+M".action.quit = [];
-    "Alt+E".action.spawn = ["nemo"];
-    "Alt+V".action.toggle-window-floating = [];
-    "Alt+R".action.spawn = ["vicinae" "toggle"];
-    "Alt+F".action.fullscreen-window = [];
-    "Super+L".action.spawn = ["swaylock" "-f" "-c" "000000"];
+    "${mod}+Q".action.spawn = ["alacritty"];
+    "${mod}+C".action.close-window = [];
+    "${mod}+M".action.quit = [];
+    "${mod}+E".action.spawn = ["nemo"];
+    "${mod}+V".action.toggle-window-floating = [];
+    "${mod}+R".action.spawn = ["vicinae" "toggle"];
+    "${mod}+F".action.fullscreen-window = [];
+    "${mod1}+L".action.spawn = ["swaylock" "-f" "-c" "000000"];
 
     # Overview mode
-    "Alt+O".action.toggle-overview = [];
-    "Alt+G".action.toggle-overview = [];
+    "${mod}+O".action.toggle-overview = [];
+    "${mod}+G".action.toggle-overview = [];
 
     # Tabbed column functionality
-    "Alt+T".action.toggle-column-tabbed-display = [];
+    "${mod}+T".action.toggle-column-tabbed-display = [];
 
     # Column navigation with HL keys
-    "Alt+H".action.focus-column-or-monitor-left = [];
-    "Alt+L".action.focus-column-or-monitor-right = [];
+    "${mod}+H".action.focus-column-or-monitor-left = [];
+    "${mod}+L".action.focus-column-or-monitor-right = [];
     # Workspace navigation with JK and WS keys
-    "Alt+K".action.focus-workspace-up = [];
-    "Alt+J".action.focus-workspace-down = [];
-    "Alt+W".action.focus-workspace-up = [];
-    "Alt+S".action.focus-workspace-down = [];
+    "${mod}+K".action.focus-workspace-up = [];
+    "${mod}+J".action.focus-workspace-down = [];
+    "${mod}+W".action.focus-workspace-up = [];
+    "${mod}+S".action.focus-workspace-down = [];
     # Column navigation with AD keys
-    "Alt+A".action.focus-column-or-monitor-left = [];
-    "Alt+D".action.focus-column-or-monitor-right = [];
-    "Alt+BracketLeft".action.focus-column-left = [];
-    "Alt+BracketRight".action.focus-column-right = [];
+    "${mod}+A".action.focus-column-or-monitor-left = [];
+    "${mod}+D".action.focus-column-or-monitor-right = [];
+    "${mod}+BracketLeft".action.focus-column-left = [];
+    "${mod}+BracketRight".action.focus-column-right = [];
 
     # Screenshot keybindings
     "Print".action.screenshot-screen = [];
-    "Alt+Shift+S".action.screenshot = [];
-    "Alt+Shift+O".action.spawn = ["bash" "-c" "grim -g \"$(slurp)\" \"tmp.png\" && tesseract -l eng \"tmp.png\" - | wl-copy && rm \"tmp.png\""];
+    "${mod}+Shift+S".action.screenshot = [];
+    "${mod}+Shift+O".action.spawn = ["bash" "-c" "grim -g \"$(slurp)\" \"tmp.png\" && tesseract -l eng \"tmp.png\" - | wl-copy && rm \"tmp.png\""];
 
     # Misc
     "Ctrl+Period".action.spawn = ["wofi-emoji"];
     "Super+Slash".action.show-hotkey-overlay = [];
 
     # Column resizing
-    "Alt+Ctrl+I".action.consume-window-into-column = [];
-    "Alt+Ctrl+O".action.expel-window-from-column = [];
-    "Alt+Comma".action.consume-or-expel-window-left = [];
-    "Alt+Period".action.consume-or-expel-window-right = [];
+    "${mod}+Ctrl+I".action.consume-window-into-column = [];
+    "${mod}+Ctrl+O".action.expel-window-from-column = [];
+    "${mod}+Comma".action.consume-or-expel-window-left = [];
+    "${mod}+Period".action.consume-or-expel-window-right = [];
 
     # Window movements:
-    "Alt+Shift+H".action.move-window-to-monitor-left = [];
-    "Alt+Shift+L".action.move-window-to-monitor-right = [];
-    "Alt+Shift+K".action.move-window-to-workspace-up = [];
-    "Alt+Shift+J".action.move-window-to-workspace-down = [];
+    "${mod}+Shift+H".action.move-window-to-monitor-left = [];
+    "${mod}+Shift+L".action.move-window-to-monitor-right = [];
+    "${mod}+Shift+K".action.move-window-to-workspace-up = [];
+    "${mod}+Shift+J".action.move-window-to-workspace-down = [];
 
     # Column and window sizing
-    "Alt+Shift+R".action.reset-window-height = [];
-    "Alt+Shift+F".action.maximize-column = [];
+    "${mod}+Shift+R".action.reset-window-height = [];
+    "${mod}+Shift+F".action.maximize-column = [];
 
     # Column width resizing
-    "Alt+Equal".action.set-column-width = "+10%";
-    "Alt+Minus".action.set-column-width = "-10%";
-    "Alt+Shift+Equal".action.set-window-height = "+10%";
-    "Alt+Shift+Minus".action.set-window-height = "-10%";
+    "${mod}+Equal".action.set-column-width = "+10%";
+    "${mod}+Minus".action.set-column-width = "-10%";
+    "${mod}+Shift+Equal".action.set-window-height = "+10%";
+    "${mod}+Shift+Minus".action.set-window-height = "-10%";
 
     # Column management
-    "Alt+Ctrl+Left".action.move-column-left = [];
-    "Alt+Ctrl+Right".action.move-column-right = [];
-    "Alt+Ctrl+H".action.move-column-left = [];
-    "Alt+Ctrl+L".action.move-column-right = [];
+    "${mod}+Ctrl+Left".action.move-column-left = [];
+    "${mod}+Ctrl+Right".action.move-column-right = [];
+    "${mod}+Ctrl+H".action.move-column-left = [];
+    "${mod}+Ctrl+L".action.move-column-right = [];
 
     # Volume controls
     "XF86AudioRaiseVolume".action.spawn = ["amixer" "set" "Master" "5%+"];
@@ -96,30 +99,30 @@
     "XF86AudioPrev".action.spawn = ["playerctl" "previous"];
     "XF86AudioStop".action.spawn = ["playerctl" "stop"];
 
-    "Alt+Tab".action.focus-workspace-previous = [];
+    "${mod}+Tab".action.focus-workspace-previous = [];
 
     # Workspace switching
-    "Alt+1".action.focus-workspace = 1;
-    "Alt+2".action.focus-workspace = 2;
-    "Alt+3".action.focus-workspace = 3;
-    "Alt+4".action.focus-workspace = 4;
-    "Alt+5".action.focus-workspace = 5;
-    "Alt+6".action.focus-workspace = 6;
-    "Alt+7".action.focus-workspace = 7;
-    "Alt+8".action.focus-workspace = 8;
-    "Alt+9".action.focus-workspace = 9;
-    "Alt+Y".action.focus-workspace = "scratchpad";
+    "${mod}+1".action.focus-workspace = 1;
+    "${mod}+2".action.focus-workspace = 2;
+    "${mod}+3".action.focus-workspace = 3;
+    "${mod}+4".action.focus-workspace = 4;
+    "${mod}+5".action.focus-workspace = 5;
+    "${mod}+6".action.focus-workspace = 6;
+    "${mod}+7".action.focus-workspace = 7;
+    "${mod}+8".action.focus-workspace = 8;
+    "${mod}+9".action.focus-workspace = 9;
+    "${mod}+Y".action.focus-workspace = "scratchpad";
 
     # Move window to workspace
-    "Alt+Shift+1".action.move-window-to-workspace = 1;
-    "Alt+Shift+2".action.move-window-to-workspace = 2;
-    "Alt+Shift+3".action.move-window-to-workspace = 3;
-    "Alt+Shift+4".action.move-window-to-workspace = 4;
-    "Alt+Shift+5".action.move-window-to-workspace = 5;
-    "Alt+Shift+6".action.move-window-to-workspace = 6;
-    "Alt+Shift+7".action.move-window-to-workspace = 7;
-    "Alt+Shift+8".action.move-window-to-workspace = 8;
-    "Alt+Shift+9".action.move-window-to-workspace = 9;
-    "Alt+Shift+Y".action.move-window-to-workspace = "scratchpad";
+    "${mod}+Shift+1".action.move-window-to-workspace = 1;
+    "${mod}+Shift+2".action.move-window-to-workspace = 2;
+    "${mod}+Shift+3".action.move-window-to-workspace = 3;
+    "${mod}+Shift+4".action.move-window-to-workspace = 4;
+    "${mod}+Shift+5".action.move-window-to-workspace = 5;
+    "${mod}+Shift+6".action.move-window-to-workspace = 6;
+    "${mod}+Shift+7".action.move-window-to-workspace = 7;
+    "${mod}+Shift+8".action.move-window-to-workspace = 8;
+    "${mod}+Shift+9".action.move-window-to-workspace = 9;
+    "${mod}+Shift+Y".action.move-window-to-workspace = "scratchpad";
   };
 }
