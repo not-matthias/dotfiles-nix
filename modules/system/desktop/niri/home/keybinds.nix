@@ -12,8 +12,8 @@
 #
 # I could remap: 0 to 7 and 9 to 6 -> this way the workspaces are closer -> make sthe overview easier
 let
-  mod1 = "Alt";
-  mod = "Super";
+  mod = "Alt";
+  mod1 = "Super";
 in {
   programs.niri.settings.binds = {
     # Basic application binds
