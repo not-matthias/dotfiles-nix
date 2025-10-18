@@ -15,14 +15,14 @@
 
       # Sign commits by default
       signing = {
-        sign-all = true;
+        behavior = "own";
         backend = "gpg";
         key = "D1B0E3E8E62928DD";
       };
 
       # Git interop settings
       git = {
-        auto-local-branch = true;
+        auto-local-bookmark = true;
         push-branch-prefix = "push-";
       };
 

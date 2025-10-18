@@ -16,6 +16,7 @@
   ./zen-browser.nix
   ./git.nix
   ./gitui.nix
+  ./jj.nix
   ./helix.nix
   ./idea-copilot.nix
   ./kitty.nix
