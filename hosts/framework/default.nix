@@ -73,8 +73,6 @@
       gitui.enable = true;
       firefox.enable = false;
       zen-browser.enable = true;
-
-      niri-screen-time.enable = true;
       waystt = {
         enable = true;
         provider = "local";
