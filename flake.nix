@@ -55,10 +55,7 @@
       inputs.elephant.follows = "elephant";
     };
     niri.url = "github:sodiboo/niri-flake";
-    vicinae = {
-      url = "github:vicinaehq/vicinae";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    vicinae.url = "github:vicinaehq/vicinae";
     stylix = {
       url = "github:nix-community/stylix/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
