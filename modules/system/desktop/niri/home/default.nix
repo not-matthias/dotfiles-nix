@@ -70,6 +70,10 @@ in {
                 height = 1080;
                 refresh = 74.973;
               };
+              variable-refresh-rate = true;
+            };
+            "eDP-1" = {
+              variable-refresh-rate = true;
             };
           };
 
