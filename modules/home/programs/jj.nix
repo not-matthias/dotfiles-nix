@@ -1,6 +1,11 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  unstable,
+  ...
+}: {
   programs.jujutsu = {
     enable = true;
+    package = unstable.jujutsu;
     settings = {
       user = {
         name = "not-matthias";
@@ -26,11 +31,6 @@
         push-branch-prefix = "push-";
       };
 
-      # Default branches
-      revset-aliases = {
-        "trunk()" = "main@origin | master@origin";
-      };
-
       # Color and formatting
       colors = {
         "working_copy" = "green";
@@ -47,7 +47,6 @@
 
   # Add jj shell completions for fish
   programs.fish.interactiveShellInit = ''
-    # jj completions
     source (${pkgs.jujutsu}/bin/jj util completion fish | psub)
   '';
 }
