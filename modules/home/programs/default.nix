@@ -33,4 +33,5 @@
   ./swaylock.nix
   ./webapps.nix
   ./niri-screen-time.nix
+  ./obsidian.nix
 ]

@@ -15,7 +15,6 @@
     home.packages = with pkgs; [
       unstable.zed-editor
       vscode
-      obsidian
       bun
       google-chrome
       notepad-next
@@ -58,6 +57,13 @@
       nixvim.enable = true;
       claude.enable = true;
       btop.enable = true;
+      obsidian = {
+        enable = true;
+        vaults.personal = {
+          vaultName = "personal-vault-v2";
+          desktopName = "Obsidian - Personal Vault";
+        };
+      };
       video-journal = {
         enable = true;
         fps = 5;
