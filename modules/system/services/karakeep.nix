@@ -32,6 +32,9 @@ in {
 
         CRAWLER_VIDEO_DOWNLOAD = "true";
         CRAWLER_VIDEO_DOWNLOAD_MAX_SIZE = "-1";
+
+        # Fix cache directory issue: Next.js needs a writable cache directory
+        NEXTJS_CACHE_DIR = "/var/lib/karakeep/.next/cache";
       };
       browser.enable = true;
       meilisearch.enable = true;
