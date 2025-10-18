@@ -49,6 +49,25 @@ in {
               };
             };
           };
+          "12-bluetooth-volume" = {
+            "monitor.bluez.rules" = [
+              {
+                matches = [
+                  {"device.name" = "~bluez_card.*";}
+                ];
+                actions = {
+                  "update-props" = {
+                    "bluez5.auto-connect" = ["hfp_hf" "hsp_hs" "a2dp_sink"];
+                    "bluez5.hw-volume" = ["hfp_hf" "hsp_hs" "a2dp_sink"];
+                  };
+                };
+              }
+            ];
+            "monitor.bluez.properties" = {
+              "bluez5.enable-sbc-xq" = true;
+              "bluez5.enable-hw-volume" = true;
+            };
+          };
         };
       };
     };
