@@ -18,6 +18,7 @@
   ./lobe-chat.nix
   ./logto.nix
   ./maloja.nix
+  ./maybe.nix
   ./memos.nix
   ./multi-scrobbler.nix
   ./navidrome.nix
