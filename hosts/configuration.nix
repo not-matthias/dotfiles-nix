@@ -44,6 +44,7 @@
   documentation.man = {
     enable = false;
     generateCaches = false;
+    man-db.enable = false;
   };
 
   environment = {
