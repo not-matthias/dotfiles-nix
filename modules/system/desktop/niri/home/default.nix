@@ -63,6 +63,7 @@ in {
           };
 
           # Monitor outputs
+          # NOTE: Change refresh rate at runtime: niri msg output <name> mode <width>x<height>@<refresh>
           outputs = {
             "DP-1" = {
               mode = {
