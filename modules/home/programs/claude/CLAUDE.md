@@ -15,7 +15,7 @@ These are non-negotiable rules that you MUST follow at all times. They override 
 
 ## Conditional Rules
 
-- When using Rust: Try to minimize code nesting. Use `if-let else` rather than multiple nested `if let`
+- When using Rust: Always reduce nesting. Use `let-else` and early returns rather than multiple nested `if let` statements
 - When using Python: Always use `uv`
 - When working with Github: Use the `gh` and `git` CLI rather than fetching it manually
 
