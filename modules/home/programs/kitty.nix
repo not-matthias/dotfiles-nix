@@ -1,3 +1,5 @@
+# NOTE: Currently not using this because I'd have to handle xterm-kitty everywhere. Also,
+#       I can't easily use `clear` which is super annoying.
 {...}: {
   programs.kitty = {
     settings = {
