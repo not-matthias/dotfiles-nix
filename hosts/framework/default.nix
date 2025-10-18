@@ -53,7 +53,6 @@
     programs = {
       low-battery-alert.enable = true;
       granted.enable = true;
-      alacritty.enable = true;
       nixvim.enable = true;
       claude.enable = true;
       btop.enable = true;

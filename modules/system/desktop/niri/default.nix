@@ -64,7 +64,6 @@ in {
 
       # Essential packages for basic niri functionality
       systemPackages = with pkgs; [
-        alacritty # Terminal (Alt+Q)
         wofi-emoji # Emoji picker (Ctrl+Period)
         wl-clipboard # Wayland clipboard utilities
         wlr-randr # Display configuration

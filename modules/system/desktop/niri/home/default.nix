@@ -26,12 +26,10 @@ in {
         swaylock.enable = true;
         waybar.enable = true;
         vicinae.enable = true;
-      };
-
-      services.system76-scheduler-niri = {
-        enable = true;
+        alacritty.enable = true;
       };
       services = {
+        system76-scheduler-niri.enable = true;
         swayidle.enable = true;
         swww.enable = true;
         dunst.enable = true;
