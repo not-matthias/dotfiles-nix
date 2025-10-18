@@ -10,9 +10,6 @@
       # with newline after prompt for user input
       format = "[\\[$time\\] ]($style)$username[@$container](:)$directory$git_branch$git_status$git_metrics$cmd_duration$battery$status$character\n";
 
-      # Add newline before prompt
-      add_newline = true;
-
       # Time module - [HH:MM] in bright black
       time = {
         disabled = false;
