@@ -94,7 +94,6 @@
                   ./home.nix
                   nixvim.homeManagerModules.nixvim
                   agenix.homeManagerModules.age
-                  flakes.vicinae.homeManagerModules.default
                 ];
               };
             };

@@ -11,9 +11,6 @@
     #   claude-code = super.callPackage ../../pkgs/claude-code/default.nix {};
     # })
     (_self: super: {
-      vicinae = super.callPackage ../../pkgs/vicinae.nix {};
-    })
-    (_self: super: {
       feishin = super.callPackage ../../pkgs/feishin.nix {};
     })
     (_self: super: {

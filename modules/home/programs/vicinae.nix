@@ -5,11 +5,23 @@
   lib,
   ...
 }: {
+  imports = [
+    flakes.vicinae.homeManagerModules.default
+  ];
+
   options.programs.vicinae.enable = lib.mkEnableOption "vicinae launcher";
 
   config = lib.mkIf config.programs.vicinae.enable {
+    # Add vicinae cachix for binary cache
+    nix.settings = {
+      substituters = [
+        "https://vicinae.cachix.org"
+      ];
+      trusted-public-keys = [
+        "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc="
+      ];
+    };
     home.packages = [
-      flakes.vicinae.packages.${pkgs.system}.default
       pkgs.libqalculate
     ];
 
