@@ -62,6 +62,17 @@ in {
             theme = "${pointer.name}";
           };
 
+          # Monitor outputs
+          outputs = {
+            "DP-1" = {
+              mode = {
+                width = 1920;
+                height = 1080;
+                refresh = 74.973;
+              };
+            };
+          };
+
           # Window appearance
           layout = {
             background-color = "transparent";
