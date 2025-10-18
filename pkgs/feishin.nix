@@ -1,51 +1,164 @@
+# https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/fe/feishin/package.nix
+# https://github.com/hlissner/dotfiles/blob/85707eb6448774c8cd3df0ea167ed46a982f7d96/packages/feishin/default.nix
 {
   lib,
-  appimageTools,
-  fetchurl,
   stdenv,
-  makeWrapper,
+  buildNpmPackage,
+  fetchFromGitHub,
+  electron_36,
+  dart-sass,
+  pnpm_10,
+  darwin,
+  copyDesktopItems,
+  makeDesktopItem,
 }: let
   pname = "feishin";
-  version = "0.19.0";
+  version = "0.21.2";
 
-  sources = {
-    x86_64-linux = {
-      url = "https://github.com/jeffvli/feishin/releases/download/v${version}/Feishin-linux-x86_64.AppImage";
-      hash = "sha256-oTOzzZxv63W1GZynwqsQj0fb/tOXfbD4KLCvz9aq12w=";
-    };
-    aarch64-linux = {
-      url = "https://github.com/jeffvli/feishin/releases/download/v${version}/Feishin-linux-arm64.AppImage";
-      hash = lib.fakeHash; # Replace with actual hash after first build attempt
-    };
+  src = fetchFromGitHub {
+    owner = "jeffvli";
+    repo = "feishin";
+    tag = "v${version}";
+    hash = "sha256-F5m0hsN1BLfiUcl2Go54bpFnN8ktn6Rqa/df1xxoCA4=";
   };
 
-  src = fetchurl {
-    inherit (sources.${stdenv.hostPlatform.system}) url hash;
-    name = "Feishin-${stdenv.hostPlatform.system}.AppImage";
-  };
-
-  appimageContents = appimageTools.extractType2 {inherit pname version src;};
+  electron = electron_36;
+  pnpm = pnpm_10;
 in
-  appimageTools.wrapType2 {
-    inherit pname version src;
+  buildNpmPackage {
+    inherit pname version;
 
-    nativeBuildInputs = [makeWrapper];
+    inherit src;
 
-    extraInstallCommands = ''
-      install -m 444 -D ${appimageContents}/feishin.desktop -t $out/share/applications
-      cp -r ${appimageContents}/usr/share/icons $out/share
+    npmConfigHook = pnpm.configHook;
 
-      # Wrap the binary to set Electron Ozone platform hint
-      wrapProgram $out/bin/feishin \
-        --set ELECTRON_OZONE_PLATFORM_HINT auto
+    npmDeps = null;
+    pnpmDeps = pnpm.fetchDeps {
+      inherit
+        pname
+        version
+        src
+        ;
+      fetcherVersion = 2;
+      hash = "sha256-5jEXdQMZ6a0JuhjPS1eZOIGsIGQHd6nKPI02eeR35pg=";
+    };
+
+    env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
+
+    nativeBuildInputs =
+      lib.optionals (stdenv.hostPlatform.isLinux) [copyDesktopItems]
+      ++ lib.optionals stdenv.hostPlatform.isDarwin [darwin.autoSignDarwinBinariesHook];
+
+    postPatch =
+      ''
+        # release/app dependencies are installed on preConfigure
+        substituteInPlace package.json \
+          --replace-fail '"postinstall": "electron-builder install-app-deps",' ""
+
+        # Don't check for updates.
+        substituteInPlace src/main/index.ts \
+          --replace-fail "autoUpdater.checkForUpdatesAndNotify();" ""
+      ''
+      + lib.optionalString stdenv.hostPlatform.isLinux ''
+        # https://github.com/electron/electron/issues/31121
+        substituteInPlace src/main/index.ts \
+          --replace-fail "process.resourcesPath" "'$out/share/feishin/resources'"
+      '';
+
+    preBuild = ''
+      rm -r node_modules/.pnpm/sass-embedded-*
+
+      test -d node_modules/.pnpm/sass-embedded@*
+      dir="$(echo node_modules/.pnpm/sass-embedded@*)/node_modules/sass-embedded/dist/lib/src/vendor/dart-sass"
+      mkdir -p "$dir"
+      ln -s ${dart-sass}/bin/dart-sass "$dir"/sass
     '';
 
-    meta = with lib; {
-      description = "A modern self-hosted music player";
+    postBuild =
+      lib.optionalString stdenv.hostPlatform.isDarwin ''
+        # electron-builder appears to build directly on top of Electron.app, by overwriting the files in the bundle.
+        cp -r ${electron.dist}/Electron.app ./
+        find ./Electron.app -name 'Info.plist' | xargs -d '\n' chmod +rw
+
+        # Disable code signing during build on macOS.
+        # https://github.com/electron-userland/electron-builder/blob/fa6fc16/docs/code-signing.md#how-to-disable-code-signing-during-the-build-process-on-macos
+        export CSC_IDENTITY_AUTO_DISCOVERY=false
+        sed -i "/afterSign/d" package.json
+      ''
+      + ''
+        npm exec electron-builder -- \
+          --dir \
+          -c.electronDist=${
+          if stdenv.hostPlatform.isDarwin
+          then "./"
+          else electron.dist
+        } \
+          -c.electronVersion=${electron.version} \
+          -c.npmRebuild=false
+      '';
+
+    installPhase =
+      ''
+        runHook preInstall
+      ''
+      + lib.optionalString stdenv.hostPlatform.isDarwin ''
+        mkdir -p $out/{Applications,bin}
+        cp -r release/build/**/Feishin.app $out/Applications/
+        makeWrapper $out/Applications/Feishin.app/Contents/MacOS/Feishin $out/bin/feishin
+      ''
+      + lib.optionalString stdenv.hostPlatform.isLinux ''
+        mkdir -p $out/share/feishin
+
+        pushd dist/*-unpacked/
+        cp -r locales resources{,.pak} $out/share/feishin
+        popd
+
+        # Code relies on checking app.isPackaged, which returns false if the executable is electron.
+        # Set ELECTRON_FORCE_IS_PACKAGED=1.
+        # https://github.com/electron/electron/issues/35153#issuecomment-1202718531
+        makeWrapper ${lib.getExe electron} $out/bin/feishin \
+          --add-flags $out/share/feishin/resources/app.asar \
+          --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \
+          --set ELECTRON_FORCE_IS_PACKAGED=1 \
+          --inherit-argv0
+
+        for size in 32 64 128 256 512 1024; do
+          mkdir -p $out/share/icons/hicolor/"$size"x"$size"/apps
+          ln -s \
+            $out/share/feishin/resources/assets/icons/"$size"x"$size".png \
+            $out/share/icons/hicolor/"$size"x"$size"/apps/feishin.png
+        done
+      ''
+      + ''
+        runHook postInstall
+      '';
+
+    desktopItems = [
+      (makeDesktopItem {
+        name = "feishin";
+        desktopName = "Feishin";
+        comment = "Full-featured Subsonic/Jellyfin compatible desktop music player";
+        icon = "feishin";
+        exec = "feishin %u";
+        categories = [
+          "Audio"
+          "AudioVideo"
+        ];
+        mimeTypes = ["x-scheme-handler/feishin"];
+      })
+    ];
+
+    meta = {
+      description = "Full-featured Subsonic/Jellyfin compatible desktop music player";
       homepage = "https://github.com/jeffvli/feishin";
-      license = licenses.gpl3Only;
-      maintainers = with maintainers; [];
-      platforms = platforms.linux;
+      changelog = "https://github.com/jeffvli/feishin/releases/tag/v${version}";
+      sourceProvenance = with lib.sourceTypes; [fromSource];
+      license = lib.licenses.gpl3Plus;
+      platforms = lib.platforms.unix;
       mainProgram = "feishin";
+      maintainers = with lib.maintainers; [
+        onny
+        jlbribeiro
+      ];
     };
   }
