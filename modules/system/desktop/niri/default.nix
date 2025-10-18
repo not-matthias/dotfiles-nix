@@ -68,14 +68,10 @@ in {
         wl-clipboard # Wayland clipboard utilities
         wlr-randr # Display configuration
         wl-mirror # Screen mirroring (use with `wl-present mirror eDP-1`)
-        grim # Screenshot tool
-        slurp # Screen area selection
-        swappy # Screenshot editor
-        tesseract # OCR for screenshot text
         alsa-utils # Volume control (provides amixer)
         brightnessctl # Brightness control
         playerctl # Media control
-        nemo # File manager (Alt+E)
+        nemo-with-extensions # File manager (Alt+E)
         xwayland-satellite # XWayland integration
       ];
     };

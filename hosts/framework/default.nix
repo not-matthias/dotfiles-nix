@@ -35,7 +35,6 @@
       vlc
       evince
       kdePackages.gwenview
-      nemo-with-extensions
       file-roller
       anki
       calibre

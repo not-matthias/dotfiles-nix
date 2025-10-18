@@ -89,11 +89,6 @@ in {
         source ${unstable.granted}/share/assume.fish $argv
         set -e GRANTED_ALIAS_CONFIGURED
       '';
-      nf = ''
-        function nf -d "Open folder with Nemo"
-          nemo . > /dev/null 2>&1 &
-        end
-      '';
     };
   };
 }

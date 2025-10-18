@@ -89,7 +89,7 @@ in {
 
             focus-ring = {
               enable = true;
-              width = 2;
+              width = 3;
               active.color = "#ef5350";
               inactive.color = "#595959";
             };
@@ -100,9 +100,10 @@ in {
               active.color = "#ef5350";
               inactive.color = "#595959";
             };
-            # animations = {
-            #   enable = false;
-            # };
+          };
+          animations = {
+            enable = true;
+            slowdown = 0.5;
           };
 
           # Named workspaces to prevent auto-deletion when empty
