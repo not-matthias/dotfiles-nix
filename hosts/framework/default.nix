@@ -67,7 +67,9 @@
       video-journal = {
         enable = true;
         fps = 5;
-        autoStart = true;
+      };
+      screenshot-journal = {
+        enable = true;
       };
 
       gitui.enable = true;

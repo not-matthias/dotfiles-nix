@@ -1,5 +1,5 @@
 # Video journal for recording screen activity over time
-# Records low-FPS video continuously with start/stop toggle capability
+# Records low-FPS video continuously, auto-starts on login with auto-restart on crashes
 {
   config,
   pkgs,
@@ -15,7 +15,7 @@ with lib; let
     export DISPLAY=:0
     export WAYLAND_DISPLAY=wayland-1
 
-    # Video recording mode
+    # Video recording - create directory structure
     YEAR=$(date +"%Y")
     MONTH=$(date +"%m")
     DAY=$(date +"%d")
@@ -23,100 +23,93 @@ with lib; let
     mkdir -p "$VIDEO_DIR" || { echo "Error: Failed to create directory $VIDEO_DIR" >&2; exit 1; }
 
     BASE_VIDEO_FILE="$VIDEO_DIR/$YEAR-$MONTH-$DAY"
-    PID_FILE="$VIDEO_DIR/.$YEAR-$MONTH-$DAY.pid"
 
-    # Check if recording is already running
-    if [ -f "$PID_FILE" ]; then
-      OLD_PID=$(cat "$PID_FILE")
-      if kill -0 "$OLD_PID" 2>/dev/null; then
-        # Stop existing recording
-        VIDEO_FILE="$BASE_VIDEO_FILE.mkv"
-        kill "$OLD_PID" && rm -f "$PID_FILE"
-        echo "Stopped video recording: $VIDEO_FILE"
-      else
-        # Stale PID file, clean it up
-        rm -f "$PID_FILE"
-      fi
+    # Find next available filename to avoid overwriting
+    COUNTER=0
+    if [ -f "$BASE_VIDEO_FILE.mkv" ]; then
+      COUNTER=1
+      while [ -f "$BASE_VIDEO_FILE-$COUNTER.mkv" ]; do
+        COUNTER=$((COUNTER + 1))
+      done
+      VIDEO_FILE="$BASE_VIDEO_FILE-$COUNTER.mkv"
+    else
+      VIDEO_FILE="$BASE_VIDEO_FILE.mkv"
     fi
 
-    # Only start new recording if we're not in stop mode
-    if [ ! -f "$PID_FILE" ]; then
-      # Find next available filename to avoid overwriting
-      COUNTER=0
-      if [ -f "$BASE_VIDEO_FILE.mkv" ]; then
-        COUNTER=1
-        while [ -f "$BASE_VIDEO_FILE-$COUNTER.mkv" ]; do
-          COUNTER=$((COUNTER + 1))
-        done
-        VIDEO_FILE="$BASE_VIDEO_FILE-$COUNTER.mkv"
-      else
-        VIDEO_FILE="$BASE_VIDEO_FILE.mkv"
-      fi
-      # Detect monitor
-      ${
+    # Detect monitor
+    ${
       if cfg.monitor != null
       then ''
         MONITOR="${cfg.monitor}"
       ''
       else ''
-        # Auto-detect: prefer external monitor, fallback to laptop screen
+        # Auto-detect: prefer external monitor (main), fallback to laptop screen (eDP)
         if pgrep -x niri >/dev/null 2>&1; then
-          # Niri: use wlr-randr
-          EXTERNAL=$(${pkgs.wlr-randr}/bin/wlr-randr | grep -E "^(HDMI|DP|DisplayPort)" | head -1 | cut -d' ' -f1)
+          # Niri: use wlr-randr to detect monitors
+          # Check for external monitors first (HDMI, DisplayPort, DP)
+          EXTERNAL=$(${pkgs.wlr-randr}/bin/wlr-randr 2>/dev/null | grep -E "^(HDMI|DP|DisplayPort)" | grep -v "Disabled" | head -1 | awk '{print $1}')
           if [ -n "$EXTERNAL" ]; then
             MONITOR="$EXTERNAL"
+            echo "Using external monitor: $MONITOR"
           else
-            MONITOR=$(${pkgs.wlr-randr}/bin/wlr-randr | grep -E "^eDP" | head -1 | cut -d' ' -f1)
+            # No external monitor, use laptop screen
+            MONITOR=$(${pkgs.wlr-randr}/bin/wlr-randr 2>/dev/null | grep -E "^eDP" | grep -v "Disabled" | head -1 | awk '{print $1}')
+            if [ -n "$MONITOR" ]; then
+              echo "Using laptop screen: $MONITOR"
+            else
+              echo "Error: No active monitors detected" >&2
+              exit 1
+            fi
           fi
         elif [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ] && command -v hyprctl >/dev/null 2>&1; then
-          # Hyprland: use hyprctl
-          EXTERNAL=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r '.[] | select(.name | test("^(HDMI|DP)")) | .name' | head -1)
+          # Hyprland: use hyprctl to detect monitors
+          # Check for external monitors first
+          EXTERNAL=$(${pkgs.hyprland}/bin/hyprctl monitors -j 2>/dev/null | ${pkgs.jq}/bin/jq -r '.[] | select(.name | test("^(HDMI|DP)")) | .name' | head -1)
           if [ -n "$EXTERNAL" ]; then
             MONITOR="$EXTERNAL"
+            echo "Using external monitor: $MONITOR"
           else
-            MONITOR=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r '.[] | select(.name | test("^eDP")) | .name' | head -1)
+            # No external monitor, use laptop screen
+            MONITOR=$(${pkgs.hyprland}/bin/hyprctl monitors -j 2>/dev/null | ${pkgs.jq}/bin/jq -r '.[] | select(.name | test("^eDP")) | .name' | head -1)
+            if [ -n "$MONITOR" ]; then
+              echo "Using laptop screen: $MONITOR"
+            else
+              echo "Error: No active monitors detected" >&2
+              exit 1
+            fi
           fi
         else
-          # Fallback: capture all monitors
-          MONITOR=""
+          # Fallback: try wlr-randr for other Wayland compositors
+          EXTERNAL=$(${pkgs.wlr-randr}/bin/wlr-randr 2>/dev/null | grep -E "^(HDMI|DP|DisplayPort)" | grep -v "Disabled" | head -1 | awk '{print $1}')
+          if [ -n "$EXTERNAL" ]; then
+            MONITOR="$EXTERNAL"
+            echo "Using external monitor: $MONITOR"
+          else
+            MONITOR=$(${pkgs.wlr-randr}/bin/wlr-randr 2>/dev/null | grep -E "^eDP" | grep -v "Disabled" | head -1 | awk '{print $1}')
+            if [ -n "$MONITOR" ]; then
+              echo "Using laptop screen: $MONITOR"
+            else
+              echo "Error: No active monitors detected" >&2
+              exit 1
+            fi
+          fi
         fi
       ''
     }
 
-      # Start new recording (use nohup to detach properly)
-      # Use MKV for crash resilience (MKV is inherently recoverable if killed)
-      if [ -n "$MONITOR" ]; then
-        nohup ${pkgs.wf-recorder}/bin/wf-recorder -o "$MONITOR" -f "$VIDEO_FILE" -r ${toString cfg.fps} -c hevc_vaapi -p preset=medium >/dev/null 2>&1 &
-        RECORDER_PID=$!
-      else
-        nohup ${pkgs.wf-recorder}/bin/wf-recorder -f "$VIDEO_FILE" -r ${toString cfg.fps} -c hevc_vaapi -p preset=medium >/dev/null 2>&1 &
-        RECORDER_PID=$!
-      fi
+    echo "Starting video recording: $VIDEO_FILE"
 
-      # Wait a moment to ensure process started
-      sleep 0.5
-
-      # Verify the process is actually running and write PID atomically
-      if kill -0 $RECORDER_PID 2>/dev/null; then
-        # Use atomic write with temp file + move
-        echo $RECORDER_PID > "$PID_FILE.tmp" && mv "$PID_FILE.tmp" "$PID_FILE"
-        echo "Started video recording: $VIDEO_FILE (PID: $RECORDER_PID)"
-      else
-        echo "Error: Failed to start wf-recorder" >&2
-        exit 1
-      fi
-    fi # End of "start new recording" block
+    # Start recording in foreground (systemd will supervise)
+    # Use MKV for crash resilience (MKV is inherently recoverable if killed)
+    if [ -n "$MONITOR" ]; then
+      exec ${pkgs.wf-recorder}/bin/wf-recorder -o "$MONITOR" -f "$VIDEO_FILE" -r ${toString cfg.fps} -c hevc_vaapi -p preset=medium
+    else
+      exec ${pkgs.wf-recorder}/bin/wf-recorder -f "$VIDEO_FILE" -r ${toString cfg.fps} -c hevc_vaapi -p preset=medium
+    fi
   '';
 in {
   options.programs.video-journal = {
     enable = mkEnableOption "video journal for recording screen activity over time";
-
-    schedule = mkOption {
-      type = types.str;
-      default = "daily";
-      description = "Schedule for starting/stopping daily recordings (systemd OnCalendar format)";
-      example = "daily";
-    };
 
     monitor = mkOption {
       type = types.nullOr types.str;
@@ -131,8 +124,6 @@ in {
       description = "Frames per second for video recording (1-30). Lower FPS saves disk space.";
       example = 5;
     };
-
-    autoStart = mkEnableOption "automatically start video recording on login";
   };
 
   config = mkIf cfg.enable {
@@ -143,34 +134,19 @@ in {
       jq # JSON parsing (Hyprland)
     ];
 
-    systemd.user.services.video-journal = mkMerge [
-      {
-        Unit = {
-          Description = "Video journal recording toggle";
-        };
-        Service = {
-          Type = "oneshot";
-          ExecStart = "${script}/bin/video-journal";
-          RemainAfterExit = false;
-        };
-      }
-      (mkIf cfg.autoStart {
-        Install = {
-          WantedBy = ["default.target"];
-        };
-      })
-    ];
-
-    systemd.user.timers.video-journal = mkIf (!cfg.autoStart) {
+    systemd.user.services.video-journal = {
       Unit = {
-        Description = "Toggle video journal recording on schedule";
+        Description = "Video journal continuous recording";
+        After = ["graphical-session.target"];
       };
-      Timer = {
-        OnCalendar = "${cfg.schedule}";
-        Persistent = true;
+      Service = {
+        Type = "simple";
+        ExecStart = "${script}/bin/video-journal";
+        Restart = "always";
+        RestartSec = "10s";
       };
       Install = {
-        WantedBy = ["timers.target"];
+        WantedBy = ["default.target"];
       };
     };
   };
