@@ -13,6 +13,7 @@
   ./direnv.nix
   ./dunst.nix
   ./firefox.nix
+  ./ghostty.nix
   ./zen-browser.nix
   ./git.nix
   ./gitui.nix
