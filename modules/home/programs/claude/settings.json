@@ -22,7 +22,7 @@
         "WebSearch"
     ]
   },
-  "model": "sonnet",
+  "model": "haiku",
   "hooks": {
     "Stop": [
       {

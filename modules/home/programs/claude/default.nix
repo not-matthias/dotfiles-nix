@@ -23,9 +23,6 @@ in {
       ".claude/settings.json" = {
         source = ./settings.json;
       };
-      ".claude/mcp.json" = {
-        source = ./mcp.json;
-      };
       ".claude/commands" = {
         source = ./commands;
         recursive = true;
