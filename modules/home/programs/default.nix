@@ -25,6 +25,7 @@
   ./starship.nix
   ./walker.nix
   ./vicinae.nix
+  ./waystt.nix
   # ./wofi.nix
   ./zellij.nix
   ./zoxide.nix

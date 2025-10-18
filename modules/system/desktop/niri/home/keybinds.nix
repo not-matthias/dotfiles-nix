@@ -56,6 +56,9 @@ in {
     "Ctrl+Period".action.spawn = ["wofi-emoji"];
     "Super+Slash".action.show-hotkey-overlay = [];
 
+    # Speech-to-text with waystt
+    "${mod}+Shift+V".action.spawn = ["bash" "-c" "pgrep -x waystt >/dev/null && pkill --signal SIGUSR1 waystt || (waystt --pipe-to 'wl-copy' &)"];
+
     # Column resizing
     "${mod}+Ctrl+I".action.consume-window-into-column = [];
     "${mod}+Ctrl+O".action.expel-window-from-column = [];

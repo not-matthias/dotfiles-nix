@@ -75,6 +75,12 @@
       zen-browser.enable = true;
 
       niri-screen-time.enable = true;
+      waystt = {
+        enable = true;
+        provider = "local";
+        whisperModel = "ggml-base.en.bin";
+        enableAudioFeedback = true;
+      };
 
       obs-studio = {
         enable = true;

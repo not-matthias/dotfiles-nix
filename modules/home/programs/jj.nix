@@ -1,0 +1,53 @@
+{pkgs, ...}: {
+  programs.jujutsu = {
+    enable = true;
+    settings = {
+      user = {
+        name = "not-matthias";
+        email = "26800596+not-matthias@users.noreply.github.com";
+      };
+
+      ui = {
+        default-command = "log";
+        diff-editor = ":builtin";
+        pager = "${pkgs.delta}/bin/delta";
+      };
+
+      # Sign commits by default
+      signing = {
+        sign-all = true;
+        backend = "gpg";
+        key = "D1B0E3E8E62928DD";
+      };
+
+      # Git interop settings
+      git = {
+        auto-local-branch = true;
+        push-branch-prefix = "push-";
+      };
+
+      # Default branches
+      revset-aliases = {
+        "trunk()" = "main@origin | master@origin";
+      };
+
+      # Color and formatting
+      colors = {
+        "working_copy" = "green";
+        "current_operation" = "blue";
+      };
+
+      # Template aliases for common log formats
+      templates = {
+        log_compact = "builtin_log_compact";
+        log_comfortable = "builtin_log_comfortable";
+      };
+    };
+  };
+
+  # Add jj shell completions for fish
+  programs.fish.interactiveShellInit = ''
+    # jj completions
+    source (${pkgs.jujutsu}/bin/jj util completion fish | psub)
+  '';
+}
