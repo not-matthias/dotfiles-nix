@@ -22,6 +22,7 @@
   ./minecraft.nix
   ./neovim.nix
   ./rust.nix
+  ./starship.nix
   ./walker.nix
   ./vicinae.nix
   # ./wofi.nix
