@@ -46,6 +46,9 @@ in {
     "${mod}+D".action.focus-column-or-monitor-right = [];
     "${mod}+BracketLeft".action.focus-column-left = [];
     "${mod}+BracketRight".action.focus-column-right = [];
+    # Monitor navigation
+    "Ctrl+H".action.focus-monitor-left = [];
+    "Ctrl+L".action.focus-monitor-right = [];
 
     # Screenshot keybindings
     "Print".action.screenshot-screen = [];
