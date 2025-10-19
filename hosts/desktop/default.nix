@@ -111,7 +111,7 @@
     ntfy-sh.enable = true;
     twenty.enable = true;
     netdata.enable = true;
-    maybe.enable = true;
+    sure.enable = true;
     # tandoor-recipes.enable = true;
     # jellyfin.enable = true;
     # nocodb.enable = true;
