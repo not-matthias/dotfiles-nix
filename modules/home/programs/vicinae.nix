@@ -14,12 +14,8 @@
   config = lib.mkIf config.programs.vicinae.enable {
     # Add vicinae cachix for binary cache
     nix.settings = {
-      substituters = [
-        "https://vicinae.cachix.org"
-      ];
-      trusted-public-keys = [
-        "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc="
-      ];
+      extra-substituters = ["https://vicinae.cachix.org"];
+      trusted-public-keys = ["vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc="];
     };
     home.packages = [
       pkgs.libqalculate
