@@ -168,7 +168,7 @@ in {
               matches = [
                 {app-id = "^code$";}
                 {app-id = "^VSCodium$";}
-                {app-id = "^zed$";}
+                {app-id = "^dev\\.zed\\.Zed$";}
                 {app-id = "^neovide$";}
               ];
             }
