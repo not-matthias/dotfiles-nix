@@ -31,3 +31,13 @@ These are non-negotiable rules that you MUST follow at all times. They override 
 - **Python:** ALWAYS use uv for all Python package and environment operations.
 - **Navigation:** You can use zoxide for directory jumping (e.g., j <folder>).
 - **NixOS:** When a program isn't installed use `nix-shell` or `nix run`
+
+## Project Knowledge Management
+
+Each project you work on should maintain its own `CLAUDE.md` file at the repository root to document project-specific learnings and patterns. Use the `/update-knowledge` slash command to explicitly update the project's CLAUDE.md with learnings from your current session.
+
+Guidelines:
+- Mark important discoveries before session ends
+- Keep project CLAUDE.md focused on project-specific knowledge
+- Manually update project CLAUDE.md when discovering important patterns or solutions
+- Review and maintain entries periodically to ensure knowledge remains relevant
