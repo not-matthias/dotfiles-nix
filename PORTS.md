@@ -21,6 +21,7 @@
 3001 = logto
 9091 = authelia
 8123 = home-assistant
+24→5006 = actual-budget
 
 https://jellyfin.org/docs/general/networking/
 8096 = jellyfin http
