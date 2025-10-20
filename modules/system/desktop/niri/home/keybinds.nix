@@ -46,14 +46,10 @@ in {
     "${mod}+D".action.focus-column-or-monitor-right = [];
     "${mod}+BracketLeft".action.focus-column-left = [];
     "${mod}+BracketRight".action.focus-column-right = [];
-    # Monitor navigation
-    "Ctrl+H".action.focus-monitor-left = [];
-    "Ctrl+L".action.focus-monitor-right = [];
 
     # Screenshot keybindings
     "Print".action.screenshot-screen = [];
     "${mod}+Shift+S".action.screenshot = [];
-    "${mod}+Shift+O".action.spawn = ["bash" "-c" "grim -g \"$(slurp)\" \"tmp.png\" && tesseract -l eng \"tmp.png\" - | wl-copy && rm \"tmp.png\""];
 
     # Misc
     "Ctrl+Period".action.spawn = ["wofi-emoji"];
@@ -104,8 +100,6 @@ in {
     "XF86AudioNext".action.spawn = ["playerctl" "next"];
     "XF86AudioPrev".action.spawn = ["playerctl" "previous"];
     "XF86AudioStop".action.spawn = ["playerctl" "stop"];
-
-    "${mod}+Tab".action.focus-workspace-previous = [];
 
     # Workspace switching
     "${mod}+1".action.focus-workspace = 1;
