@@ -26,6 +26,9 @@
       unstable.beeper
       flakes.devenv.packages.${pkgs.system}.devenv
 
+      unstable.gemini-cli
+      unstable.qwen-code
+
       # Install desktop apps rather than websites
       # discord
       feishin
@@ -131,6 +134,7 @@
   };
 
   services = {
+    actual.enable = true;
     vpn.enable = true;
     flatpak.enable = true;
     multi-scrobbler.enable = true;
