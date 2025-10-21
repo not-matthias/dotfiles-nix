@@ -112,7 +112,9 @@
       flash = {
         enable = true;
         settings = {
-          modes.char.enabled = false; # Don't override f/F/t/T
+          modes.char.enabled = true;
+          labels = "asdfghjklqwertyuiopzxcvbnm";
+          continue = false;
         };
       };
 
