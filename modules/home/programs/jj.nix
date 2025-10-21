@@ -3,6 +3,10 @@
   unstable,
   ...
 }: {
+  home.packages = with unstable; [
+    lazyjj
+  ];
+
   programs.jujutsu = {
     enable = true;
     package = unstable.jujutsu;
