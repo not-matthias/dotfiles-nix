@@ -16,6 +16,7 @@
   zramSwap.enable = true;
 
   users = {
+    mutableUsers = false;
     defaultUserShell = pkgs.fish;
     users.${user} = {
       isNormalUser = true;
