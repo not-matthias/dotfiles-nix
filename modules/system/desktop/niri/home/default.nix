@@ -64,11 +64,6 @@ in {
           # NOTE: Change refresh rate at runtime: niri msg output <name> mode <width>x<height>@<refresh>
           outputs = {
             "DP-1" = {
-              mode = {
-                width = 1920;
-                height = 1080;
-                refresh = 74.973;
-              };
               variable-refresh-rate = true;
             };
             "eDP-1" = {
