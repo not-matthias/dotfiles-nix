@@ -20,6 +20,10 @@
         "TodoRead",
         "TodoWrite",
         "WebSearch"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)"
     ]
   },
   "model": "haiku",
@@ -39,5 +43,6 @@
   "feedbackSurveyState": {
     "lastShownTime": 1754514815917
   },
+  "cleanupPeriodDays": 99999,
   "$schema": "https://json.schemastore.org/claude-code-settings.json"
 }
