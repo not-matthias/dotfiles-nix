@@ -65,10 +65,6 @@
           desktopName = "Obsidian - Personal Vault";
         };
       };
-      video-journal = {
-        enable = true;
-        fps = 5;
-      };
       screenshot-journal = {
         enable = true;
       };
@@ -95,7 +91,7 @@
     };
 
     services = {
-      activitywatch.enable = true;
+      activitywatch.enable = false;
       gpg-agent.enable = true;
     };
 
@@ -117,12 +113,9 @@
     config.boot.kernelPackages.perf
   ];
 
-  programs.noisetorch = {
-    enable = true;
-    package = pkgs.noisetorch;
-  };
-
   programs = {
+    noisetorch.enable = true;
+    steam.enable = true;
     fcitx5.enable = true;
     nix-ld.enable = true;
     nix-index.enable = true;
