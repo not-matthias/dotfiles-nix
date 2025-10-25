@@ -34,18 +34,22 @@ in {
     "${mod}+T".action.toggle-column-tabbed-display = [];
 
     # Column navigation with HL keys
-    "${mod}+H".action.focus-column-or-monitor-left = [];
-    "${mod}+L".action.focus-column-or-monitor-right = [];
+    "${mod}+H".action.focus-column-left = [];
+    "${mod}+L".action.focus-column-right = [];
     # Workspace navigation with JK and WS keys
     "${mod}+K".action.focus-workspace-up = [];
     "${mod}+J".action.focus-workspace-down = [];
     "${mod}+W".action.focus-workspace-up = [];
     "${mod}+S".action.focus-workspace-down = [];
     # Column navigation with AD keys
-    "${mod}+A".action.focus-column-or-monitor-left = [];
-    "${mod}+D".action.focus-column-or-monitor-right = [];
+    "${mod}+A".action.focus-column-left = [];
+    "${mod}+D".action.focus-column-right = [];
     "${mod}+BracketLeft".action.focus-column-left = [];
     "${mod}+BracketRight".action.focus-column-right = [];
+
+    # Switch monitors with X and Z
+    "${mod}+Z".action.focus-monitor-left = [];
+    "${mod}+X".action.focus-monitor-right = [];
 
     # Screenshot keybindings
     "Print".action.screenshot-screen = [];
