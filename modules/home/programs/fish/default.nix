@@ -32,6 +32,8 @@ in {
       "..." = "cd ../..";
       "...." = "cd ../../..";
 
+      "gl" = "git l";
+      "glb" = "git lb";
       "gca" = "git commit --amend --no-edit";
       "gc" = "git checkout";
       "gcm" = "git commit -m";
