@@ -1,4 +1,8 @@
 {pkgs, ...}: {
+  home.packages = with pkgs; [
+    git-absorb
+  ];
+
   programs.git = {
     enable = true;
     userEmail = "26800596+not-matthias@users.noreply.github.com";
@@ -38,6 +42,75 @@
     aliases = {
       l = "log --pretty=oneline -n 10 --graph --abbrev-commit --decorate=no";
       lb = "log --pretty=oneline -n 10 --graph --abbrev-commit";
+    };
+  };
+
+  programs.fish = {
+    shellAbbrs = {
+      "gl" = "git l";
+      "glb" = "git lb";
+      "gca" = "git commit --amend --no-edit";
+      "gc" = "gco";
+      "gcl" = "git checkout";
+      "gcb" = "git checkout -b";
+      "gcm" = "git commit -m";
+      "gbp" = "gbp";
+      "gst" = "git status";
+      "gs" = "git stash";
+      "gsp" = "git stash pop";
+      "ga" = "git add -A";
+      "gp" = "git pull";
+      "gd" = "git diff";
+      "gps" = "git push";
+      "gpl" = "git pull";
+      "gpsf" = "git push --force-with-lease";
+      "grbi" = "git rebase -i";
+      "grba" = "git rebase --abort";
+      "gwip" = "git commit -m \"chore: wip [skip ci]\" --no-verify";
+    };
+    functions = {
+      # Git helper functions with fzf
+      _ensure_git_repo = ''
+        function _ensure_git_repo -d "Check if we're in a git repository"
+          git rev-parse --is-inside-work-tree &>/dev/null
+          or return 1
+        end
+      '';
+
+      gco = ''
+        function gco -d "Fuzzy checkout a branch"
+          _ensure_git_repo || return 1
+          set -l branch (git branch --list | sed 's/^[* ] //' | fzf --preview 'git log -10 --oneline {1}')
+          and git checkout $branch
+        end
+      '';
+
+      gcof = ''
+        function gcof -d "Fuzzy checkout with commit history preview"
+          _ensure_git_repo || return 1
+          set -l branch (git branch --list | sed 's/^[* ] //' | fzf --preview 'git log --color=always -10 --oneline {1}' --ansi)
+          and git checkout $branch
+        end
+      '';
+
+      gbp = ''
+        function gbp -d "Fuzzy select base branch for PR"
+          _ensure_git_repo || return 1
+          set -l base_branch (git branch -a | sed 's/^[* ] //' | sed 's|remotes/[^/]*/||' | sort -u | fzf --preview 'git log --color=always -10 --oneline {1}' --ansi)
+          if test -n "$base_branch"
+            echo "Creating PR with base branch: $base_branch"
+            gh pr create --base $base_branch
+          end
+        end
+      '';
+
+      # Alternative: Interactive base branch selection that just outputs the name
+      _git_base_branch = ''
+        function _git_base_branch -d "Select base branch (outputs branch name)"
+          _ensure_git_repo || return 1
+          git branch -a | sed 's/^[* ] //' | sed 's|remotes/[^/]*/||' | sort -u | fzf --preview 'git log --color=always -10 --oneline {1}' --ansi
+        end
+      '';
     };
   };
 }

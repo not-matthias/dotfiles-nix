@@ -32,22 +32,6 @@ in {
       "..." = "cd ../..";
       "...." = "cd ../../..";
 
-      "gl" = "git l";
-      "glb" = "git lb";
-      "gca" = "git commit --amend --no-edit";
-      "gc" = "git checkout";
-      "gcm" = "git commit -m";
-      "gs" = "git status";
-      "ga" = "git add -A";
-      "gp" = "git pull";
-      "gd" = "git diff";
-      "gdc" = "git diff";
-      "gps" = "git push";
-      "gpsf" = "git push --force-with-lease";
-      "grbi" = "git rebase -i";
-      "grba" = "git rebase --abort";
-      "gwip" = "git commit -m \"chore: wip [skip ci]\" --no-verify";
-
       "btm" = "btm --battery";
       "ps" = "procs";
 
