@@ -18,6 +18,8 @@ These are non-negotiable rules that you MUST follow at all times. They override 
 - When using Rust: Always reduce nesting. Use `let-else` and early returns rather than multiple nested `if let` statements
 - When using Python: Always use `uv`
 - When working with Github: Use the `gh` and `git` CLI rather than fetching it manually
+  - For PR comments, use: `gh api repos/<owner>/<repo>/pulls/<pr-number>/comments`
+  - Example: `gh api repos/not-matthias/apollo/pulls/154/comments`
 
 ## Documentation
 
