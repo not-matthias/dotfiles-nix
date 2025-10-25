@@ -53,6 +53,7 @@
       nixd
     ];
     programs = {
+      rust.enable = true;
       low-battery-alert.enable = true;
       granted.enable = true;
       nixvim.enable = true;
