@@ -124,7 +124,7 @@ in {
       "d /var/lib/sure 0755 root root -"
       "d /var/lib/sure/app 0755 root root -"
       "d /var/lib/sure/postgres 0755 root root -"
-      "d /var/lib/sure/redis 0755 root root -"
+      "d /var/lib/sure/redis 0777 root root -"
     ];
 
     # Configure Caddy reverse proxy
