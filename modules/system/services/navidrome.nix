@@ -39,7 +39,9 @@ in {
 
     fileSystems."/var/lib/navidrome/music" = {
       device = cfg.musicFolder;
-      options = ["bind"];
+      fsType = "none";
+      options = ["bind" "nofail"];
+      depends = ["/mnt/data/personal"];
     };
 
     services.caddy.virtualHosts."music.${domain}" = {
