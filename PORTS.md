@@ -34,3 +34,4 @@ docker-compose ports:
 3000 = dawarich
 2283 = immich
 8001 = archivebox
+8002 = solidtime

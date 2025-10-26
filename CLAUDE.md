@@ -87,18 +87,100 @@ nix run github:<user>/<repo>        # Run from GitHub flake
 ### Custom Packages (pkgs/)
 Custom Nix packages are defined in `pkgs/` directory. These are included via overlay in the nixosBox factory.
 
-```bash
-# Build a custom package
-nix build -f pkgs/handy.nix
+#### Adding a New Custom Package
 
-# Run a custom package directly
-nix run -f pkgs/handy.nix
+**Step 1: Create the package definition** (`pkgs/<name>.nix`)
 
-# Test custom package build
-nix-build --impure -f pkgs/<package>.nix
+Define the package using `stdenv.mkDerivation` or appropriate builder:
+
+```nix
+{lib, stdenv, fetchurl, ...}: let
+  pname = "my-app";
+  version = "1.0.0";
+in stdenv.mkDerivation rec {
+  inherit pname version;
+  src = fetchurl {
+    url = "https://example.com/my-app-${version}.tar.gz";
+    hash = "sha256-...";  # Use `nix hash file` to generate
+  };
+  # Add buildInputs, nativeBuildInputs, installPhase, etc.
+  meta = {
+    description = "My application";
+    homepage = "https://example.com";
+    license = lib.licenses.mit;
+    platforms = lib.platforms.linux;
+  };
+}
 ```
 
-See `pkgs/README.md` for details on developing custom packages.
+**Common package patterns:**
+- **AppImage**: Use `appimageTools.wrapType2` (see `handy.nix`)
+- **Tarball**: Use `stdenv.mkDerivation` with `fetchurl` (see `solidtime.nix`)
+- **GitHub source**: Use `fetchFromGitHub` with npm/build tools (see `feishin.nix`)
+
+**Step 2: Register in overlay** (`modules/overlays/pkgs.nix`)
+
+Add an overlay entry to expose the package:
+
+```nix
+(_self: super: {
+  my-app = super.callPackage ../../pkgs/my-app.nix {};
+})
+```
+
+**Step 3: Enable in host configuration**
+
+Add the package to either:
+- **User packages** (Home Manager): Add to `home-manager.users.<user>.home.packages` in `hosts/<hostname>/default.nix`
+- **System packages**: Add to `environment.systemPackages` in `hosts/<hostname>/default.nix`
+
+**Example**:
+```nix
+home-manager.users.${user} = {
+  home.packages = with pkgs; [
+    my-app
+    # ... other packages
+  ];
+};
+```
+
+**Step 4: Build and test**
+
+```bash
+# Build the system configuration to validate
+sudo nixos-rebuild build --flake .#framework
+
+# If successful, activate the changes
+sudo nixos-rebuild switch --flake .#framework
+
+# Pre-commit hooks will run automatically on commit
+```
+
+#### Testing Custom Packages During Development
+
+```bash
+# Build a custom package in isolation
+nix build -f pkgs/<name>.nix
+
+# Run a custom package directly
+nix run -f pkgs/<name>.nix
+
+# Test custom package build with impure evaluation
+nix-build --impure -f pkgs/<name>.nix
+```
+
+#### Generating SHA256 Hashes
+
+When updating source URLs:
+
+```bash
+# For URLs with fetchurl
+nix hash file <path-or-url>  # New method
+nix-prefetch-url <url>       # Legacy method
+
+# For GitHub sources (fetchFromGitHub)
+nix hash file ./<source-dir>
+```
 
 ### Secrets Management (agenix)
 ```bash

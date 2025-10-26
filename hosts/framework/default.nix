@@ -33,6 +33,7 @@
       # discord
       feishin
       handy
+      solidtime-desktop
       gh
 
       vlc

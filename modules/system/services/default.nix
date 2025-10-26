@@ -40,6 +40,7 @@
   ./scrutiny.nix
   ./security.nix
   ./slskd.nix
+  ./solidtime.nix
   ./tailscale.nix
   ./tandoor.nix
   ./stump.nix

@@ -16,6 +16,9 @@
     (_self: super: {
       handy = super.callPackage ../../pkgs/handy.nix {};
     })
+    (_self: super: {
+      solidtime-desktop = super.callPackage ../../pkgs/solidtime.nix {};
+    })
     # (_self: super: {
     #   lobe-chat = super.callPackage ../../pkgs/lobe-chat.nix {};
     # })
