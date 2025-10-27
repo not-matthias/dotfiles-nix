@@ -7,6 +7,7 @@
   ...
 }: let
   cfg = config.services.netdata;
+  updateEvery = 30;
 in {
   config = lib.mkIf cfg.enable {
     # Only enable when Nvidia GPU is available
@@ -29,7 +30,7 @@ in {
           "history" = "604800";
           "error log" = "syslog";
           "debug log" = "none";
-          "update every" = 5;
+          "update every" = updateEvery;
           "memory mode" = "ram";
         };
         plugins = {
@@ -47,10 +48,10 @@ in {
         ml = {"enabled" = "true";};
         health = {"enabled" = "no";};
         statsd = {"enabled" = "no";};
-        "plugin:apps" = {"update every" = 10;};
+        "plugin:apps" = {"update every" = updateEvery;};
         "plugin:proc:diskspace" = {
-          "update every" = 10;
-          "check for new mount points every" = 0;
+          "update every" = updateEvery;
+          "check for new mount points every" = updateEvery;
         };
         "plugin:proc" = {
           "/proc/net/snmp" = "no";
