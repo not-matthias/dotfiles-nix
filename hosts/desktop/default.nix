@@ -69,7 +69,7 @@
       podcastFolder = "/mnt/data/personal/podcasts/";
     };
     calibre-web = {
-      enable = true;
+      enable = false;
       options.calibreLibrary = "/mnt/data/personal/books/calibre-library";
     };
     ollama = {
@@ -79,7 +79,7 @@
     open-webui.enable = true;
     lobe-chat.enable = true;
     miniflux.enable = true;
-    memos.enable = true;
+    memos.enable = false;
     scrutiny.enable = true;
     homepage-dashboard.enable = true;
     paperless.enable = true;
@@ -90,7 +90,7 @@
       scrobblerUrl = "http://localhost:42010/apis/listenbrainz/1/";
     };
     slskd = {
-      enable = true;
+      enable = false;
       settings = {
         shares = {
           directories = [
@@ -108,10 +108,11 @@
       useGpu = false;
     };
     karakeep.enable = true;
-    ntfy-sh.enable = true;
+    # ntfy-sh.enable = true;
     twenty.enable = true;
-    netdata.enable = true;
+    # netdata.enable = true;
     sure.enable = true;
+    solidtime.enable = true;
     # tandoor-recipes.enable = true;
     # jellyfin.enable = true;
     # nocodb.enable = true;

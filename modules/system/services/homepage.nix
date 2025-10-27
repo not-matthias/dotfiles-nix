@@ -172,6 +172,46 @@ in {
                 siteMonitor = "https://nocodb.${desktopDomain}";
               };
             })
+            (includeService "solidtime" {
+              Solidtime = {
+                description = "Solidtime";
+                icon = "solidtime";
+                href = "https://solidtime.${desktopDomain}";
+                siteMonitor = "https://solidtime.${desktopDomain}";
+              };
+            })
+            (includeService "lobe-chat" {
+              "Lobe Chat" = {
+                description = "Lobe Chat";
+                icon = "lobe-chat";
+                href = "https://chat.${desktopDomain}";
+                siteMonitor = "https://chat.${desktopDomain}";
+              };
+            })
+            (includeService "navidrome" {
+              Navidrome = {
+                description = "Navidrome";
+                icon = "navidrome";
+                href = "https://music.${desktopDomain}";
+                siteMonitor = "https://music.${desktopDomain}";
+              };
+            })
+            (includeService "twenty" {
+              Twenty = {
+                description = "Twenty";
+                icon = "twenty";
+                href = "https://crm.${desktopDomain}";
+                siteMonitor = "https://crm.${desktopDomain}";
+              };
+            })
+            (includeService "sure" {
+              Sure = {
+                description = "Sure";
+                icon = "sure";
+                href = "https://sure.${desktopDomain}";
+                siteMonitor = "https://sure.${desktopDomain}";
+              };
+            })
           ];
         }
       ];

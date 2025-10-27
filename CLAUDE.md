@@ -305,6 +305,24 @@ Services follow consistent patterns in `modules/system/services/`:
 3. Port allocation documented in `PORTS.md`
 4. Consistent option structure with enable flags
 
+### Homepage Dashboard Integration
+When adding a new service to the desktop host:
+1. **Always add it to `modules/system/services/homepage.nix`** using the `includeService` helper
+2. Use the service name in kebab-case for the `includeService` check
+3. Follow the pattern:
+```nix
+(includeService "service-name" {
+  "Service Name" = {
+    description = "Service Name";
+    icon = "service-name";
+    href = "https://service-url.${desktopDomain}";
+    siteMonitor = "https://service-url.${desktopDomain}";
+  };
+})
+```
+4. The service will automatically appear on the homepage dashboard only if enabled
+5. Check existing services in homepage.nix against enabled services regularly to catch new additions
+
 ### Hardware Abstraction
 Hardware modules provide clean boolean flags:
 ```nix
