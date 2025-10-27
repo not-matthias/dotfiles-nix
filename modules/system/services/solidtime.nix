@@ -23,6 +23,7 @@
     APP_URL = "solidtime.${domain}";
     APP_FORCE_HTTPS = "false";
     TRUSTED_PROXIES = "0.0.0.0/0,2000:0:0:0:0:0:0:0/3";
+    APP_CIPHER = "aes-256-cbc";
 
     # Authentication (REQUIRED)
     # This is set within `solidtime.age`
@@ -125,6 +126,7 @@ in {
           host  all all ::1/128       trust
           host  all all 127.0.0.1/32  trust
           host  all all 172.17.0.0/16 trust
+          host  all all 172.20.0.0/16 trust
           host  all all 172.23.0.0/16 trust
           host  all all 0.0.0.0/0     md5
         '';
