@@ -54,7 +54,7 @@ in {
       alias = {
         b = "build";
         c = "check";
-        t = "nextest";
+        t = "nextest run";
         r = "run";
         rr = "run --release";
         br = "build --release";
