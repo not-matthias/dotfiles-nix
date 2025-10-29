@@ -4,8 +4,9 @@
   pkgs,
   fetchurl,
   makeWrapper,
+  makeShellWrapper,
   autoPatchelfHook,
-  desktop-file-utils,
+  wrapGAppsHook3,
   cairo,
   pango,
   atk,
@@ -25,6 +26,15 @@
   nspr,
   at-spi2-atk,
   at-spi2-core,
+  systemd,
+  libpulseaudio,
+  pipewire,
+  wayland,
+  libappindicator-gtk3,
+  libdbusmenu,
+  fontconfig,
+  freetype,
+  glib,
 }: let
   pname = "solidtime-desktop";
   version = "0.0.40";
@@ -39,11 +49,12 @@ in
 
     nativeBuildInputs = [
       makeWrapper
+      makeShellWrapper
       autoPatchelfHook
-      desktop-file-utils
+      wrapGAppsHook3
     ];
 
-    buildInputs = with pkgs; [
+    buildInputs = [
       cairo
       pango
       atk
@@ -57,34 +68,57 @@ in
       xorg.libXrandr
       xorg.libXtst
       xorg.libXScrnSaver
+      xorg.libxcb
+      xorg.libxshmfence
       libgbm
       expat
-      xorg.libxcb
       libxkbcommon
       alsa-lib
+      libpulseaudio
+      pipewire
       nss
       nspr
       cups
       mesa
       libGL
-      libglvnd
+      pkgs.libglvnd
       libdrm
       dbus
       at-spi2-atk
       at-spi2-core
+      systemd
+      wayland
+      libappindicator-gtk3
+      libdbusmenu
+      fontconfig
+      freetype
+      glib
     ];
 
-    installPhase = ''
-            mkdir -p $out/opt/solidtime
-            tar -xzf $src -C $out/opt/solidtime
+    # Prevent double-wrapping by wrapGAppsHook3
+    dontWrapGApps = true;
 
-            # Create wrapper script
+    installPhase = ''
+      runHook preInstall
+
+      mkdir -p $out/opt/solidtime
+      tar -xzf $src -C $out/opt/solidtime
+
+      runHook postInstall
+    '';
+
+    # Build comprehensive library path for runtime
+    libPath = lib.makeLibraryPath buildInputs;
+
+    preFixup = ''
+            # Manually wrap with both GApps variables and library path
             mkdir -p $out/bin
             makeWrapper $out/opt/solidtime/solidtime-x64/solidtime $out/bin/solidtime-desktop \
-              --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath buildInputs}" \
+              "''${gappsWrapperArgs[@]}" \
+              --prefix LD_LIBRARY_PATH : "${libPath}:$out/opt/solidtime/solidtime-x64" \
               --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}"
 
-            # Desktop entry
+            # Create desktop entry
             mkdir -p $out/share/applications
             cat > $out/share/applications/solidtime.desktop <<EOF
       [Desktop Entry]
