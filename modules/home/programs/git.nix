@@ -80,16 +80,26 @@
       gco = ''
         function gco -d "Fuzzy checkout a branch"
           _ensure_git_repo || return 1
-          set -l branch (git branch --list | sed 's/^[* ] //' | fzf --preview 'git log -10 --oneline {1}')
-          and git checkout $branch
+          # If argument provided, use it directly; otherwise use fzf
+          if test (count $argv) -gt 0
+            git checkout "$argv"
+          else
+            set -l branch (git branch --list | sed 's/^[* \t]*//g' | fzf --preview 'git log -10 --oneline {1}')
+            and test -n "$branch" && git checkout "$branch"
+          end
         end
       '';
 
       gcof = ''
         function gcof -d "Fuzzy checkout with commit history preview"
           _ensure_git_repo || return 1
-          set -l branch (git branch --list | sed 's/^[* ] //' | fzf --preview 'git log --color=always -10 --oneline {1}' --ansi)
-          and git checkout $branch
+          # If argument provided, use it directly; otherwise use fzf
+          if test (count $argv) -gt 0
+            git checkout "$argv"
+          else
+            set -l branch (git branch --list | sed 's/^[* \t]*//g' | fzf --preview 'git log --color=always -10 --oneline {1}' --ansi)
+            and test -n "$branch" && git checkout "$branch"
+          end
         end
       '';
 
