@@ -68,6 +68,7 @@ in {
             };
             "eDP-1" = {
               variable-refresh-rate = true;
+              scale = 1.5;
             };
           };
 
