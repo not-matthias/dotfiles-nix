@@ -50,7 +50,7 @@
       "gl" = "git l";
       "glb" = "git lb";
       "gca" = "git commit --amend --no-edit";
-      "gc" = "gco";
+      "gc" = "git checkout";
       "gcl" = "git checkout";
       "gcb" = "git checkout -b";
       "gcm" = "git commit -m";
