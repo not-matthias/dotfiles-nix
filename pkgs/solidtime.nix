@@ -111,24 +111,28 @@ in
     libPath = lib.makeLibraryPath buildInputs;
 
     preFixup = ''
-            # Manually wrap with both GApps variables and library path
-            mkdir -p $out/bin
-            makeWrapper $out/opt/solidtime/solidtime-x64/solidtime $out/bin/solidtime-desktop \
-              "''${gappsWrapperArgs[@]}" \
-              --prefix LD_LIBRARY_PATH : "${libPath}:$out/opt/solidtime/solidtime-x64" \
-              --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}"
+                  # Manually wrap with both GApps variables and library path
+                  mkdir -p $out/bin
+                  makeWrapper $out/opt/solidtime/solidtime-x64/solidtime $out/bin/solidtime-desktop \
+                    "''${gappsWrapperArgs[@]}" \
+                    --prefix LD_LIBRARY_PATH : "${libPath}:$out/opt/solidtime/solidtime-x64" \
+                    --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}"
 
-            # Create desktop entry
-            mkdir -p $out/share/applications
-            cat > $out/share/applications/solidtime.desktop <<EOF
+                  # Create desktop entry with URL scheme handler
+                  mkdir -p $out/share/applications
+                  cat > $out/share/applications/solidtime.desktop <<EOF
       [Desktop Entry]
       Name=Solidtime
       Comment=Solidtime Desktop Client
-      Exec=$out/bin/solidtime-desktop
+      Exec=$out/bin/solidtime-desktop %u
       Icon=$out/opt/solidtime/solidtime-x64/resources/app.asar.unpacked/resources/solidtime.png
       Terminal=false
       Type=Application
       Categories=Utility;
+      MimeType=x-scheme-handler/solidtime;
+      StartupNotify=true
+      SingleMainWindow=true
+      DBusActivatable=false
       EOF
     '';
 
