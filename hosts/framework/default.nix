@@ -36,6 +36,9 @@
       solidtime-desktop
       gh
 
+      protonmail-bridge-gui
+      thunderbird
+
       vlc
       evince
       kdePackages.gwenview
@@ -129,9 +132,7 @@
   };
 
   services = {
-    actual.enable = true;
     vpn.enable = true;
-    flatpak.enable = true;
     multi-scrobbler.enable = true;
     restic = {
       enable = true;
