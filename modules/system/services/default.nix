@@ -42,6 +42,7 @@
   ./slskd.nix
   ./solidtime.nix
   ./tailscale.nix
+  ./ziit.nix
   ./tandoor.nix
   ./stump.nix
   ./traggo.nix

@@ -34,4 +34,5 @@ in {
   "spotify-client-secret.age".publicKeys = systems;
   "slskd-env.age".publicKeys = systems;
   "solidtime.age".publicKeys = systems;
+  "ziit.age".publicKeys = systems;
 }
