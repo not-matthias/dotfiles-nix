@@ -113,6 +113,7 @@
     # netdata.enable = true;
     sure.enable = true;
     solidtime.enable = true;
+    wakapi.enable = true;
     # tandoor-recipes.enable = true;
     # jellyfin.enable = true;
     # nocodb.enable = true;
