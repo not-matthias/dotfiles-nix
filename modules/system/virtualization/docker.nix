@@ -31,5 +31,9 @@ in {
       iptables -A INPUT -i br+ -j ACCEPT
       iptables -A INPUT -i docker0 -j ACCEPT
     '';
+
+    networking.firewall.trustedInterfaces = [
+      "docker0"
+    ];
   };
 }
