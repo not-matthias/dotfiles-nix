@@ -36,3 +36,4 @@ docker-compose ports:
 8001 = archivebox
 8002 = solidtime
 8003 = ziit
+8004 = wakapi

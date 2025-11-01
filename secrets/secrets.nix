@@ -35,4 +35,5 @@ in {
   "slskd-env.age".publicKeys = systems;
   "solidtime.age".publicKeys = systems;
   "ziit.age".publicKeys = systems;
+  "wakapi-salt.age".publicKeys = systems;
 }

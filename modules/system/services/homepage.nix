@@ -212,6 +212,14 @@ in {
                 siteMonitor = "https://sure.${desktopDomain}";
               };
             })
+            (includeService "wakapi" {
+              Wakapi = {
+                description = "Wakapi";
+                icon = "wakatime";
+                href = "https://wakapi.${desktopDomain}";
+                siteMonitor = "https://wakapi.${desktopDomain}";
+              };
+            })
           ];
         }
       ];

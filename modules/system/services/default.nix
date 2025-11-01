@@ -49,6 +49,7 @@
   ./twenty.nix
   ./vaultwarden.nix
   ./vpn.nix
+  ./wakapi.nix
   ./watchyourlan.nix
   ./wordpress.nix
   ./yubikey.nix
