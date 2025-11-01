@@ -38,6 +38,8 @@
       ".vscode"
       "__pycache__"
       ".direnv"
+      ".envrc"
+      ".shell.nix"
     ];
     aliases = {
       l = "log --pretty=oneline -n 10 --graph --abbrev-commit --decorate=no";
