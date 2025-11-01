@@ -13,7 +13,7 @@
   serverEnv = {
     NODE_PORT = "3000";
     SERVER_URL = "https://twenty.${domain}";
-    REDIS_URL = "redis://twenty_redis:6379";
+    REDIS_URL = "redis://host.docker.internal:6382";
     PG_DATABASE_URL = "postgres://postgres:postgres@twenty_db:5432/default";
     STORAGE_TYPE = "local";
     APP_SECRET = "your-app-secret-here";
@@ -28,6 +28,11 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    services.redis.servers.twenty = {
+      enable = true;
+      port = 6382;
+    };
+
     systemd.tmpfiles.rules = [
       "d ${dataDir} 0755 root root -"
       "d ${dataDir}/db 0755 70 70 -"
@@ -61,15 +66,6 @@ in {
           extraOptions = ["--network=${network}"];
         };
 
-        twenty_redis = {
-          autoStart = true;
-          image = "redis:alpine";
-          cmd = [
-            "--maxmemory-policy"
-            "noeviction"
-          ];
-          extraOptions = ["--network=${network}"];
-        };
         twenty_server = {
           autoStart = true;
           image = "twentycrm/twenty:${cfg.version}";
@@ -80,10 +76,12 @@ in {
             "${dataDir}/storage:/app/packages/twenty-server/.local-storage"
           ];
           environment = serverEnv;
-          extraOptions = ["--network=${network}"];
+          extraOptions = [
+            "--network=${network}"
+            "--add-host=host.docker.internal:host-gateway"
+          ];
           dependsOn = [
             "twenty_db"
-            "twenty_redis"
           ];
         };
 
@@ -102,10 +100,12 @@ in {
             // {
               DISABLE_DB_MIGRATIONS = "true";
             };
-          extraOptions = ["--network=${network}"];
+          extraOptions = [
+            "--network=${network}"
+            "--add-host=host.docker.internal:host-gateway"
+          ];
           dependsOn = [
             "twenty_db"
-            "twenty_redis"
             "twenty_server"
           ];
         };

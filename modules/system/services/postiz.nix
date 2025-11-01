@@ -12,13 +12,17 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    services.redis.servers.postiz = {
+      enable = true;
+      port = 6383;
+    };
+
     # Create required directories
     systemd.tmpfiles.rules = [
       "d /var/lib/postiz 0755 root root -"
       "d /var/lib/postiz/config 0755 root root -"
       "d /var/lib/postiz/uploads 0755 root root -"
       "d /var/lib/postiz/postgres-data 0755 root root -"
-      "d /var/lib/postiz/redis-data 0755 root root -"
     ];
 
     # Create network for containers
@@ -48,7 +52,7 @@ in {
           "NEXT_PUBLIC_BACKEND_URL" = "https://postiz.${domain}/api";
           "NEXT_PUBLIC_UPLOAD_DIRECTORY" = "/uploads";
           "NTBA_FIX_350" = "1";
-          "REDIS_URL" = "redis://postiz-redis:6379";
+          "REDIS_URL" = "redis://host.docker.internal:6383";
           "STORAGE_PROVIDER" = "local";
           "UPLOAD_DIRECTORY" = "/uploads";
         };
@@ -57,11 +61,12 @@ in {
           "/var/lib/postiz/uploads:/uploads:rw"
         ];
         ports = ["11436:5000/tcp"];
-        dependsOn = ["postiz-postgres" "postiz-redis"];
+        dependsOn = ["postiz-postgres"];
         log-driver = "journald";
         extraOptions = [
           "--network-alias=postiz"
           "--network=postiz-network"
+          "--add-host=host.docker.internal:host-gateway"
         ];
       };
 
@@ -80,20 +85,6 @@ in {
           "--health-retries=3"
           "--health-timeout=3s"
           "--network-alias=postiz-postgres"
-          "--network=postiz-network"
-        ];
-      };
-
-      "postiz-redis" = {
-        image = "redis:7.2";
-        volumes = ["/var/lib/postiz/redis-data:/data:rw"];
-        log-driver = "journald";
-        extraOptions = [
-          "--health-cmd=redis-cli ping"
-          "--health-interval=10s"
-          "--health-retries=3"
-          "--health-timeout=3s"
-          "--network-alias=postiz-redis"
           "--network=postiz-network"
         ];
       };

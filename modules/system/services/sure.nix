@@ -24,6 +24,11 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    services.redis.servers.sure = {
+      enable = true;
+      port = 6381;
+    };
+
     virtualisation.arion.backend = "docker";
 
     virtualisation.arion.projects.sure.settings.services = {
@@ -44,11 +49,13 @@ in {
           DB_PORT = "5432";
           POSTGRES_DB = "sure_production";
           POSTGRES_USER = "sure_user";
-          REDIS_URL = "redis://redis:6379/1";
+          REDIS_URL = "redis://host.docker.internal:6381";
         };
+        extra_hosts = [
+          "host.docker.internal:host-gateway"
+        ];
         depends_on = {
           db.condition = "service_healthy";
-          redis.condition = "service_healthy";
         };
         env_file = [
           "${secretsFile}"
@@ -70,11 +77,13 @@ in {
           DB_PORT = "5432";
           POSTGRES_DB = "sure_production";
           POSTGRES_USER = "sure_user";
-          REDIS_URL = "redis://redis:6379/1";
+          REDIS_URL = "redis://host.docker.internal:6381";
         };
+        extra_hosts = [
+          "host.docker.internal:host-gateway"
+        ];
         depends_on = {
           db.condition = "service_healthy";
-          redis.condition = "service_healthy";
         };
         env_file = [
           "${secretsFile}"
@@ -102,21 +111,6 @@ in {
           "${secretsFile}"
         ];
       };
-
-      redis.service = {
-        image = "redis:latest";
-        restart = "unless-stopped";
-        volumes = [
-          "/var/lib/sure/redis:/data:rw"
-        ];
-        healthcheck = {
-          test = ["CMD" "redis-cli" "ping"];
-          interval = "5s";
-          timeout = "5s";
-          retries = 5;
-          start_period = "1m";
-        };
-      };
     };
 
     # Ensure directories exist with proper permissions
@@ -124,7 +118,6 @@ in {
       "d /var/lib/sure 0755 root root -"
       "d /var/lib/sure/app 0755 root root -"
       "d /var/lib/sure/postgres 0755 root root -"
-      "d /var/lib/sure/redis 0777 root root -"
     ];
 
     # Configure Caddy reverse proxy
@@ -137,7 +130,6 @@ in {
     services.restic.paths = [
       "/var/lib/sure/app"
       "/var/lib/sure/postgres"
-      "/var/lib/sure/redis"
     ];
   };
 }
