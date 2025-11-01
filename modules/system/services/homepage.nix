@@ -4,7 +4,6 @@
   lib,
   ...
 }: let
-  desktopDomain = "desktopnm.duckdns.org";
   cfg = config.services.homepage-dashboard;
 
   # Helper function to conditionally include a service
@@ -48,176 +47,176 @@ in {
               "AdGuard Home" = {
                 description = "AdGuard Home";
                 icon = "adguard-home";
-                href = "https://adguard.${desktopDomain}";
-                siteMonitor = "https://adguard.${desktopDomain}";
+                href = "https://adguard.${domain}";
+                siteMonitor = "https://adguard.${domain}";
               };
             })
             (includeService "open-webui" {
               "OpenWebUI (server)" = {
                 description = "OpenWebUI";
                 icon = "ollama";
-                href = "https://ollama.${desktopDomain}";
-                siteMonitor = "https://ollama.${desktopDomain}";
+                href = "https://ollama.${domain}";
+                siteMonitor = "https://ollama.${domain}";
               };
             })
             (includeService "miniflux" {
               Miniflux = {
                 description = "Miniflux";
                 icon = "miniflux";
-                href = "https://rss.${desktopDomain}";
-                siteMonitor = "https://rss.${desktopDomain}";
+                href = "https://rss.${domain}";
+                siteMonitor = "https://rss.${domain}";
               };
             })
             (includeService "scrutiny" {
               Scrutiny = {
                 description = "S.M.A.R.T. Monitoring";
                 icon = "scrutiny";
-                href = "https://scrutiny.${desktopDomain}";
-                siteMonitor = "https://scrutiny.${desktopDomain}";
+                href = "https://scrutiny.${domain}";
+                siteMonitor = "https://scrutiny.${domain}";
               };
             })
             (includeService "memos" {
               Memos = {
                 description = "Memos";
                 icon = "memos";
-                href = "https://memos.${desktopDomain}";
-                siteMonitor = "https://memos.${desktopDomain}";
+                href = "https://memos.${domain}";
+                siteMonitor = "https://memos.${domain}";
               };
             })
             (includeService "netdata" {
               Netdata = {
                 description = "Netdata";
                 icon = "netdata";
-                href = "https://netdata.${desktopDomain}";
-                siteMonitor = "https://netdata.${desktopDomain}";
+                href = "https://netdata.${domain}";
+                siteMonitor = "https://netdata.${domain}";
               };
             })
             (includeService "immich" {
               Immich = {
                 description = "Immich";
                 icon = "immich";
-                href = "https://immich.${desktopDomain}";
-                siteMonitor = "https://immich.${desktopDomain}";
+                href = "https://immich.${domain}";
+                siteMonitor = "https://immich.${domain}";
               };
             })
             (includeService "paperless" {
               Paperless = {
                 description = "Paperless";
                 icon = "paperless";
-                href = "https://paperless.${desktopDomain}";
-                siteMonitor = "https://paperless.${desktopDomain}";
+                href = "https://paperless.${domain}";
+                siteMonitor = "https://paperless.${domain}";
               };
             })
             (includeService "gitea" {
               Gitea = {
                 description = "Gitea";
                 icon = "gitea";
-                href = "https://git.${desktopDomain}";
-                siteMonitor = "https://git.${desktopDomain}";
+                href = "https://git.${domain}";
+                siteMonitor = "https://git.${domain}";
               };
             })
             (includeService "stump" {
               Stump = {
                 description = "Stump";
                 icon = "stump";
-                href = "https://books.${desktopDomain}";
-                siteMonitor = "https://books.${desktopDomain}";
+                href = "https://books.${domain}";
+                siteMonitor = "https://books.${domain}";
               };
             })
             (includeService "maloja" {
               Maloja = {
                 description = "Maloja";
                 icon = "maloja";
-                href = "https://maloja.${desktopDomain}";
-                siteMonitor = "https://maloja.${desktopDomain}";
+                href = "https://maloja.${domain}";
+                siteMonitor = "https://maloja.${domain}";
               };
             })
             (includeService "audiobookshelf" {
               Audiobookshelf = {
                 description = "Audiobookshelf";
                 icon = "audiobookshelf";
-                href = "https://audiobooks.${desktopDomain}";
-                siteMonitor = "https://audiobooks.${desktopDomain}";
+                href = "https://audiobooks.${domain}";
+                siteMonitor = "https://audiobooks.${domain}";
               };
             })
             (includeService "jellyfin" {
               Jellyfin = {
                 description = "Jellyfin";
                 icon = "jellyfin";
-                href = "https://jellyfin.${desktopDomain}";
-                siteMonitor = "https://jellyfin.${desktopDomain}";
+                href = "https://jellyfin.${domain}";
+                siteMonitor = "https://jellyfin.${domain}";
               };
             })
             (includeService "karakeep" {
               Karakeep = {
                 description = "Karakeep";
                 icon = "karakeep";
-                href = "https://links.${desktopDomain}";
-                siteMonitor = "https://links.${desktopDomain}";
+                href = "https://links.${domain}";
+                siteMonitor = "https://links.${domain}";
               };
             })
             (includeService "n8n" {
               n8n = {
                 description = "n8n";
                 icon = "n8n";
-                href = "https://n8n.${desktopDomain}";
-                siteMonitor = "https://n8n.${desktopDomain}";
+                href = "https://n8n.${domain}";
+                siteMonitor = "https://n8n.${domain}";
               };
             })
             (includeService "nocodb" {
               NocoDB = {
                 description = "NocoDB";
                 icon = "nocodb";
-                href = "https://nocodb.${desktopDomain}";
-                siteMonitor = "https://nocodb.${desktopDomain}";
+                href = "https://nocodb.${domain}";
+                siteMonitor = "https://nocodb.${domain}";
               };
             })
             (includeService "solidtime" {
               Solidtime = {
                 description = "Solidtime";
                 icon = "solidtime";
-                href = "https://solidtime.${desktopDomain}";
-                siteMonitor = "https://solidtime.${desktopDomain}";
+                href = "https://solidtime.${domain}";
+                siteMonitor = "https://solidtime.${domain}";
               };
             })
             (includeService "lobe-chat" {
               "Lobe Chat" = {
                 description = "Lobe Chat";
                 icon = "lobe-chat";
-                href = "https://chat.${desktopDomain}";
-                siteMonitor = "https://chat.${desktopDomain}";
+                href = "https://chat.${domain}";
+                siteMonitor = "https://chat.${domain}";
               };
             })
             (includeService "navidrome" {
               Navidrome = {
                 description = "Navidrome";
                 icon = "navidrome";
-                href = "https://music.${desktopDomain}";
-                siteMonitor = "https://music.${desktopDomain}";
+                href = "https://music.${domain}";
+                siteMonitor = "https://music.${domain}";
               };
             })
             (includeService "twenty" {
               Twenty = {
                 description = "Twenty";
                 icon = "twenty";
-                href = "https://crm.${desktopDomain}";
-                siteMonitor = "https://crm.${desktopDomain}";
+                href = "https://twenty.${domain}";
+                siteMonitor = "https://twenty.${domain}";
               };
             })
             (includeService "sure" {
               Sure = {
                 description = "Sure";
                 icon = "sure";
-                href = "https://sure.${desktopDomain}";
-                siteMonitor = "https://sure.${desktopDomain}";
+                href = "https://sure.${domain}";
+                siteMonitor = "https://sure.${domain}";
               };
             })
             (includeService "wakapi" {
               Wakapi = {
                 description = "Wakapi";
                 icon = "wakatime";
-                href = "https://wakapi.${desktopDomain}";
-                siteMonitor = "https://wakapi.${desktopDomain}";
+                href = "https://wakapi.${domain}";
+                siteMonitor = "https://wakapi.${domain}";
               };
             })
           ];
