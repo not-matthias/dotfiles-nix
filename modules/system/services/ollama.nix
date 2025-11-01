@@ -1,10 +1,11 @@
 {
-  unstable,
+  pkgs,
   config,
   lib,
   ...
 }: let
   cfg = config.services.ollama;
+  unstable = pkgs;
 in {
   options.services.ollama = {
     useNvidia = lib.mkOption {
