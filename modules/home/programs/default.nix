@@ -7,6 +7,7 @@
   ./atuin.nix
   ./bat.nix
   ./claude
+  ./editorconfig.nix
   ./fish
   ./tmux
   ./waybar
