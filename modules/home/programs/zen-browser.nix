@@ -606,30 +606,31 @@ in {
     nativeMessagingHosts = [unstable.firefoxpwa];
   };
 
-  # xdg = {
-  #   enable = true;
-  #   mimeApps = let
-  #     associations = builtins.listToAttrs (map (name: {
-  #         inherit name;
-  #         value = "zen-beta.desktop";
-  #       }) [
-  #         "x-scheme-handler/https"
-  #         "x-scheme-handler/http"
-  #         "text/html"
-  #         "application/xhtml+xml"
-  #         "application/x-extension-html"
-  #         "application/x-extension-htm"
-  #         "application/x-extension-shtml"
-  #         "application/x-extension-xhtml"
-  #         "application/x-extension-xht"
-  #         "application/json"
-  #         "text/plain"
-  #         "x-scheme-handler/about"
-  #         "x-scheme-handler/unknown"
-  #         "x-scheme-handler/mailto"
-  #       ]);
-  #   in {
-  #     associations.added = associations;
-  #     defaultApplications = associations;
-  #   };
+  xdg = {
+    enable = true;
+    mimeApps = let
+      associations = builtins.listToAttrs (map (name: {
+          inherit name;
+          value = "zen-beta.desktop";
+        }) [
+          "x-scheme-handler/https"
+          "x-scheme-handler/http"
+          "text/html"
+          "application/xhtml+xml"
+          "application/x-extension-html"
+          "application/x-extension-htm"
+          "application/x-extension-shtml"
+          "application/x-extension-xhtml"
+          "application/x-extension-xht"
+          "application/json"
+          "text/plain"
+          "x-scheme-handler/about"
+          "x-scheme-handler/unknown"
+          "x-scheme-handler/mailto"
+        ]);
+    in {
+      associations.added = associations;
+      defaultApplications = associations;
+    };
+  };
 }
