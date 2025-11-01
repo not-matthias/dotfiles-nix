@@ -33,6 +33,7 @@
   ./open-webui.nix
   ./paperless.nix
   ./postiz.nix
+  ./postgresql.nix
   ./postgresql-backup.nix
   ./redlib.nix
   ./restic.nix

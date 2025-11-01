@@ -36,37 +36,20 @@ in {
       };
     };
 
-    services = {
-      postgresql = {
-        enable = true;
-        enableTCPIP = true;
-        settings = {
-          listen_addresses = lib.mkForce "*";
-        };
-        ensureDatabases = ["ziit"];
-        ensureUsers = [
-          {
-            name = "ziit";
-            ensureDBOwnership = true;
-            ensureClauses = {
-              login = true;
-              superuser = true;
-            };
-          }
-        ];
-        authentication = lib.mkAfter ''
-          # Allow local connections for ziit user
-          local all all               trust
-          host  all all ::1/128       trust
-          host  all all 127.0.0.1/32  trust
-          host  all all 172.17.0.0/16 trust
-          host  all all 172.23.0.0/16 trust
-          host  all all 0.0.0.0/0     trust
-        '';
-        extensions = ps: [
-          ps.timescaledb
-        ];
-      };
+    services.postgresql = {
+      enable = true;
+      extensions = ps: [ps.timescaledb];
+      ensureDatabases = ["ziit"];
+      ensureUsers = [
+        {
+          name = "ziit";
+          ensureDBOwnership = true;
+          ensureClauses = {
+            login = true;
+            superuser = true;
+          };
+        }
+      ];
     };
 
     systemd.tmpfiles.rules = [

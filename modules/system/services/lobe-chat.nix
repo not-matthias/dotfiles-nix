@@ -34,19 +34,6 @@ in {
       package = pkgs.postgresql_16;
       enableJIT = true;
       extensions = ps: with ps; [pgvector];
-      settings = {
-        listen_addresses = lib.mkForce "*";
-      };
-      authentication = ''
-        # TYPE  DATABASE        USER            ADDRESS                 METHOD
-        local all       all     trust
-        # ipv4
-        host  all      all     127.0.0.1/32   trust
-        host  all      all     172.17.0.0/16  trust
-        host  all      all     100.64.0.0/10  trust
-        # ipv6
-        host all       all     ::1/128        trust
-      '';
       ensureDatabases = ["lobe"];
       ensureUsers = [
         {
@@ -55,9 +42,6 @@ in {
           ensureClauses = {
             superuser = true;
           };
-          # ensurePermissions = {
-          #   "DATABASE lobe" = "ALL PRIVILEGES";
-          # };
         }
       ];
     };

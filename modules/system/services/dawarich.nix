@@ -5,12 +5,30 @@
   ...
 }: let
   cfg = config.services.dawarich;
+  dbName = "dawarich";
+  dbUser = "dawarich";
+  dbPort = config.services.postgresql.settings.port;
 in {
   options.services.dawarich = {
     enable = lib.mkEnableOption "Enable Dawarich location tracking service";
   };
 
   config = lib.mkIf cfg.enable {
+    services.postgresql = {
+      enable = true;
+      ensureDatabases = [dbName];
+      ensureUsers = [
+        {
+          name = dbUser;
+          ensureDBOwnership = true;
+          ensureClauses = {
+            login = true;
+            superuser = true;
+          };
+        }
+      ];
+    };
+
     virtualisation.oci-containers.containers = {
       dawarich-redis = {
         image = "redis:7.4-alpine";
@@ -22,26 +40,11 @@ in {
         ];
       };
 
-      dawarich-db = {
-        image = "postgres:17-alpine";
-        environment = {
-          POSTGRES_DB = "dawarich";
-          POSTGRES_USER = "dawarich";
-          POSTGRES_PASSWORD = "dawarich";
-        };
-        volumes = [
-          "/var/lib/dawarich/postgres:/var/lib/postgresql/data"
-        ];
-        extraOptions = [
-          "--network=dawarich"
-        ];
-      };
-
       dawarich-app = {
         image = "freikin/dawarich:latest";
         environment = {
           RAILS_ENV = "production";
-          DATABASE_URL = "postgresql://dawarich:dawarich@dawarich-db:5432/dawarich";
+          DATABASE_URL = "postgresql://${dbUser}@host.docker.internal:${toString dbPort}/${dbName}";
           REDIS_URL = "redis://dawarich-redis:6379/0";
           SECRET_KEY_BASE = "your-secret-key-base-change-this-in-production";
           TIME_ZONE = "UTC";
@@ -53,11 +56,11 @@ in {
           "3000:3000/tcp"
         ];
         dependsOn = [
-          "dawarich-db"
           "dawarich-redis"
         ];
         extraOptions = [
           "--network=dawarich"
+          "--add-host=host.docker.internal:host-gateway"
         ];
       };
     };
@@ -66,7 +69,7 @@ in {
     systemd.services.init-dawarich-network = {
       description = "Create Dawarich Docker network";
       wantedBy = ["multi-user.target"];
-      before = ["docker-dawarich-db.service" "docker-dawarich-redis.service" "docker-dawarich-app.service"];
+      before = ["docker-dawarich-redis.service" "docker-dawarich-app.service"];
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = "yes";
@@ -86,7 +89,6 @@ in {
     # Ensure directories exist with proper permissions
     systemd.tmpfiles.rules = [
       "d /var/lib/dawarich 0755 root root -"
-      "d /var/lib/dawarich/postgres 0755 root root -"
       "d /var/lib/dawarich/redis 0755 root root -"
       "d /var/lib/dawarich/app 0755 root root -"
     ];

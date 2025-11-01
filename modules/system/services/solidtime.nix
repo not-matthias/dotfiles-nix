@@ -102,39 +102,28 @@ in {
       };
     };
 
-    services = {
-      postgresql = {
-        enable = true;
-        enableTCPIP = true;
-        settings = {
-          listen_addresses = lib.mkForce "*";
-        };
-        ensureDatabases = ["solidtime"];
-        ensureUsers = [
-          {
-            name = "solidtime";
-            ensureDBOwnership = true;
-            ensureClauses = {
-              login = true;
-              superuser = true;
-            };
-          }
-        ];
-        authentication = lib.mkAfter ''
-          # Allow local connections for solidtime user
-          local all all               trust
-          host  all all ::1/128       trust
-          host  all all 127.0.0.1/32  trust
-          host  all all 172.17.0.0/16 trust
-          host  all all 172.20.0.0/16 trust
-          host  all all 172.23.0.0/16 trust
-          host  all all 0.0.0.0/0     md5
-        '';
-      };
-      gotenberg = {
-        enable = true;
-        port = 3001;
-      };
+    services.postgresql = {
+      enable = true;
+      ensureDatabases = ["solidtime"];
+      ensureUsers = [
+        {
+          name = "solidtime";
+          ensureDBOwnership = true;
+          ensureClauses = {
+            login = true;
+            superuser = true;
+          };
+        }
+      ];
+      authentication = lib.mkAfter ''
+        # WARNING: 0.0.0.0/0 with md5 allows connections from ANY IP
+        host  all all 0.0.0.0/0     md5
+      '';
+    };
+
+    services.gotenberg = {
+      enable = true;
+      port = 3001;
     };
 
     systemd.tmpfiles.rules = [
