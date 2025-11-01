@@ -219,6 +219,70 @@ in {
                 siteMonitor = "https://wakapi.${domain}";
               };
             })
+            (includeService "librechat" {
+              LibreChat = {
+                description = "LibreChat";
+                icon = "librechat";
+                href = "https://librechat.${domain}";
+                siteMonitor = "https://librechat.${domain}";
+              };
+            })
+            (includeService "multi-scrobbler" {
+              "Multi Scrobbler" = {
+                description = "Multi Scrobbler";
+                icon = "multi-scrobbler";
+                href = "https://scrobbler.${domain}";
+                siteMonitor = "https://scrobbler.${domain}";
+              };
+            })
+            (includeService "slskd" {
+              Slskd = {
+                description = "Slskd";
+                icon = "slskd";
+                href = "https://slskd.${domain}";
+                siteMonitor = "https://slskd.${domain}";
+              };
+            })
+            (includeService "ziit" {
+              Ziit = {
+                description = "Ziit";
+                icon = "ziit";
+                href = "https://ziit.${domain}";
+                siteMonitor = "https://ziit.${domain}";
+              };
+            })
+            (includeService "redlib" {
+              Redlib = {
+                description = "Redlib";
+                icon = "reddit";
+                href = "https://redlib.${domain}";
+                siteMonitor = "https://redlib.${domain}";
+              };
+            })
+            (includeService "postiz" {
+              Postiz = {
+                description = "Postiz";
+                icon = "postiz";
+                href = "https://postiz.${domain}";
+                siteMonitor = "https://postiz.${domain}";
+              };
+            })
+            (includeService "calibre-web" {
+              "Calibre Web" = {
+                description = "Calibre Web";
+                icon = "calibre-web";
+                href = "https://calibre.${domain}";
+                siteMonitor = "https://calibre.${domain}";
+              };
+            })
+            (includeService "dawarich" {
+              Dawarich = {
+                description = "Dawarich";
+                icon = "dawarich";
+                href = "https://dawarich.${domain}";
+                siteMonitor = "https://dawarich.${domain}";
+              };
+            })
           ];
         }
       ];
