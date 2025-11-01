@@ -37,4 +37,5 @@
   ./swaylock.nix
   ./webapps.nix
   ./obsidian.nix
+  ./solidtime-desktop.nix
 ]

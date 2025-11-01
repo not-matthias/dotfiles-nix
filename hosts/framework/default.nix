@@ -33,7 +33,6 @@
       # discord
       feishin
       handy
-      solidtime-desktop
       gh
 
       protonmail-bridge-gui
@@ -93,6 +92,7 @@
           obs-pipewire-audio-capture
         ];
       };
+      solidtime-desktop.enable = true;
     };
 
     services = {

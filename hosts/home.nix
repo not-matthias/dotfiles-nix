@@ -91,14 +91,6 @@
     claude.enable = true;
   };
 
-  # TODO: Move this to a solidtime-desktop.nix
-  xdg.mimeApps = {
-    enable = true;
-    defaultApplications = {
-      "x-scheme-handler/solidtime" = ["solidtime.desktop"];
-    };
-  };
-
   # https://github.com/NixOS/nixpkgs/issues/12757#issuecomment-2605654661
   home.activation.linkDesktopFiles = lib.hm.dag.entryAfter ["installPackages"] ''
     if [ -d "${config.home.profileDirectory}/share/applications" ]; then
