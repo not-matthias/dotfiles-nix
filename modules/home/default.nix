@@ -1,1 +1,1 @@
-(import ./programs) ++ (import ./services)
+[./xdg.nix] ++ (import ./programs) ++ (import ./services)
