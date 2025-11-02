@@ -108,11 +108,15 @@ in {
 
     security = {
       polkit.enable = true;
-      pam.services.swaylock = {
-        text = ''
-          auth include login
-        '';
-        fprintAuth = true;
+      pam.services = {
+        login.enableGnomeKeyring = true;
+        swaylock = {
+          text = ''
+            auth include login
+          '';
+          fprintAuth = true;
+          enableGnomeKeyring = true;
+        };
       };
     };
 

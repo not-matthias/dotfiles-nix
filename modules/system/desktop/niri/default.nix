@@ -110,10 +110,14 @@ in {
     # Security services
     security = {
       polkit.enable = true;
-      pam.services.swaylock = {
-        text = ''
-          auth include login
-        '';
+      pam.services = {
+        login.enableGnomeKeyring = true;
+        swaylock = {
+          text = ''
+            auth include login
+          '';
+          enableGnomeKeyring = true;
+        };
       };
     };
 
