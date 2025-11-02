@@ -36,9 +36,11 @@ in {
       settings.protected-mode = "no";
     };
 
+    virtualisation.oci-containers.backend = "docker";
     virtualisation.oci-containers.containers = {
       dawarich-app = {
-        image = "freikin/dawarich:latest";
+        image = "docker.io/freikin/dawarich:latest";
+        cmd = ["rails" "server" "-b" "0.0.0.0"];
         environment = {
           RAILS_ENV = "production";
           DATABASE_URL = "postgresql://${dbUser}@host.docker.internal:${toString dbPort}/${dbName}";
@@ -50,7 +52,7 @@ in {
           "/var/lib/dawarich/app:/var/app"
         ];
         ports = [
-          "3002:3000/tcp"
+          "8008:3000/tcp"
         ];
         extraOptions = [
           "--add-host"
@@ -61,7 +63,7 @@ in {
 
     services.caddy.virtualHosts."dawarich.${domain}".extraConfig = ''
       encode zstd gzip
-      reverse_proxy http://127.0.0.1:3002
+      reverse_proxy http://127.0.0.1:8008
     '';
 
     services.restic.paths = [
