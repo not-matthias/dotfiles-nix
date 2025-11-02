@@ -31,6 +31,8 @@ in {
     services.redis.servers.twenty = {
       enable = true;
       port = 6382;
+      bind = "0.0.0.0";
+      settings.protected-mode = "no";
     };
 
     systemd.tmpfiles.rules = [

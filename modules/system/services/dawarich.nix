@@ -32,6 +32,8 @@ in {
     services.redis.servers.dawarich = {
       enable = true;
       port = 6380;
+      bind = "0.0.0.0";
+      settings.protected-mode = "no";
     };
 
     virtualisation.oci-containers.containers = {
@@ -48,17 +50,18 @@ in {
           "/var/lib/dawarich/app:/var/app"
         ];
         ports = [
-          "3000:3000/tcp"
+          "3002:3000/tcp"
         ];
         extraOptions = [
-          "--add-host=host.docker.internal:host-gateway"
+          "--add-host"
+          "host.docker.internal:host-gateway"
         ];
       };
     };
 
     services.caddy.virtualHosts."dawarich.${domain}".extraConfig = ''
       encode zstd gzip
-      reverse_proxy http://127.0.0.1:3000
+      reverse_proxy http://127.0.0.1:3002
     '';
 
     services.restic.paths = [

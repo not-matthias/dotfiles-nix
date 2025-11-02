@@ -15,6 +15,8 @@ in {
     services.redis.servers.postiz = {
       enable = true;
       port = 6383;
+      bind = "0.0.0.0";
+      settings.protected-mode = "no";
     };
 
     # Create required directories

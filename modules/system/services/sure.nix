@@ -27,6 +27,8 @@ in {
     services.redis.servers.sure = {
       enable = true;
       port = 6381;
+      bind = "0.0.0.0";
+      settings.protected-mode = "no";
     };
 
     virtualisation.arion.backend = "docker";
