@@ -66,6 +66,9 @@ in {
             "DP-1" = {
               variable-refresh-rate = true;
             };
+            "DP-2" = {
+              variable-refresh-rate = true;
+            };
             "eDP-1" = {
               variable-refresh-rate = true;
               scale = 1.5;
@@ -106,27 +109,27 @@ in {
           workspaces = {
             "1" = {
               name = "web";
-              open-on-output = "DP-1";
+              open-on-output = "DP-2";
             };
             "2" = {
               name = "code";
-              open-on-output = "DP-1";
+              open-on-output = "DP-2";
             };
             "3" = {
               name = "notes";
-              open-on-output = "DP-1";
+              open-on-output = "DP-2";
             };
             "4" = {
               name = "chat";
-              open-on-output = "DP-1";
+              open-on-output = "DP-2";
             };
             "5" = {
               name = "music";
-              open-on-output = "DP-1";
+              open-on-output = "DP-2";
             };
             "99" = {
               name = "scratchpad";
-              open-on-output = "DP-1";
+              open-on-output = "DP-2";
             };
           };
 
