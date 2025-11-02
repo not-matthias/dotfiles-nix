@@ -12,8 +12,6 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    boot.kernelModules = ["kvm-intel"];
-
     users.groups.libvirtd.members = ["root" "${user}"];
     virtualisation = {
       lxc.enable = true;
