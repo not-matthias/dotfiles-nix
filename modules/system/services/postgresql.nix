@@ -20,6 +20,7 @@ with lib; {
         host  all all 172.17.0.0/16 trust
         host  all all 172.20.0.0/16 trust
         host  all all 172.23.0.0/16 trust
+        host  all all 172.16.0.0/12 trust
 
         # Tailscale
         host  all all 100.64.0.0/10 trust
