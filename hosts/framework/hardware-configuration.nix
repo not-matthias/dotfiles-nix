@@ -4,16 +4,18 @@
 {
   modulesPath,
   pkgs,
+  lib,
+  config,
   nixos-hardware,
   ...
 }: {
   imports = [
-    nixos-hardware.nixosModules.framework-12th-gen-intel
+    nixos-hardware.nixosModules.framework-13-7040-amd
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
-  boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "nvme" "usb_storage" "usbhid" "sd_mod"];
+  boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "thunderbolt"];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e33d79b0-4de1-47d3-a3fe-ab53c3f7f390";
@@ -30,4 +32,6 @@
   swapDevices = [
     {device = "/dev/disk/by-uuid/8feea14d-3406-4e2f-9608-f36ad9082e4b";}
   ];
+
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

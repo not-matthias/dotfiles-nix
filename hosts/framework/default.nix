@@ -198,10 +198,6 @@
   };
   desktop = {
     niri.enable = true;
-    hyprland = {
-      enable = false;
-      useIntel = true;
-    };
     fonts.enable = true;
   };
 
