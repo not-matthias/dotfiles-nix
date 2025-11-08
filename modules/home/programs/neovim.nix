@@ -545,7 +545,7 @@
 
       # Session management
       auto-session = {
-        enable = true;
+        enable = false;
         settings = {
           auto_save_enabled = true;
           auto_restore_enabled = true;
@@ -773,6 +773,9 @@
 
       # Claude Code integration
       # claude-code.enable = true;
+
+      # Time tracking
+      wakatime.enable = true;
 
       # git
       trouble.enable = true;
