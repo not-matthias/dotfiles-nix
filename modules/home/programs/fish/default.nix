@@ -32,7 +32,7 @@ in {
       "..." = "cd ../..";
       "...." = "cd ../../..";
 
-      "btm" = "btm --battery";
+      "btm" = "btop";
       "ps" = "procs";
 
       # di = direnv
