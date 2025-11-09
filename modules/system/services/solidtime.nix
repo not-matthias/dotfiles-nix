@@ -116,8 +116,10 @@ in {
         }
       ];
       authentication = lib.mkAfter ''
-        # WARNING: 0.0.0.0/0 with md5 allows connections from ANY IP
-        host  all all 0.0.0.0/0     md5
+        # Allow passwordless connections from local Docker bridge network; keeps external IPs requiring md5 below.
+        host  all all 172.17.0.0/16  trust
+        # WARNING: 0.0.0.0/0 with md5 allows connections from ANY IP (still requires password if provided)
+        host  all all 0.0.0.0/0      md5
       '';
     };
 
@@ -183,7 +185,6 @@ in {
       "solidtime-scheduler" = {
         image = "solidtime/solidtime:${cfg.version}";
         user = "1000:1000";
-        ports = ["${toString (cfg.port + 1)}:8000"];
         volumes = [
           "${dataDir}/storage:/var/www/html/storage"
           "${dataDir}/logs:/var/www/html/storage/logs"
@@ -206,7 +207,6 @@ in {
       "solidtime-queue" = {
         image = "solidtime/solidtime:${cfg.version}";
         user = "1000:1000";
-        ports = ["${toString (cfg.port + 1)}:8000"];
         volumes = [
           "${dataDir}/storage:/var/www/html/storage"
           "${dataDir}/logs:/var/www/html/storage/logs"
