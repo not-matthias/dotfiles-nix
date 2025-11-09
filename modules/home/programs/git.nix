@@ -57,8 +57,7 @@
       "gcb" = "git checkout -b";
       "gcm" = "git commit -m";
       "gbp" = "gbp";
-      "gst" = "git status";
-      "gs" = "git stash";
+      "gs" = "git status";
       "gsp" = "git stash pop";
       "ga" = "git add -A";
       "gp" = "git pull";
