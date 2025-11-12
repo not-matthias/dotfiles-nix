@@ -28,6 +28,7 @@
 
       unstable.gemini-cli
       unstable.qwen-code
+      binary-ninja
 
       # Install desktop apps rather than websites
       # discord

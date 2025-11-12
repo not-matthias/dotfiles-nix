@@ -1,23 +1,50 @@
 #
 {
   stdenv,
-  buildFHSUserEnv,
   makeWrapper,
   fetchzip,
+  lib,
+  patchelf,
+  libxml2,
+  dbus,
+  fontconfig,
+  freetype,
+  libGL,
+  libxkbcommon,
+  python3,
+  xorg,
+  wayland,
+  zlib,
 }: let
-  binaryninja = stdenv.mkDerivation rec {
-    name = "binaryninja";
-    nativeBuildInputs = [makeWrapper];
+  requiredLibs = [
+    libxml2
+    dbus
+    fontconfig
+    freetype
+    libGL
+    libxkbcommon
+    python3
+    wayland
+    zlib
+    xorg.libX11
+    xorg.libxcb
+    xorg.xcbutilimage
+    xorg.xcbutilkeysyms
+    xorg.xcbutilrenderutil
+    xorg.xcbutilwm
+  ];
 
-    # src = fetchzip {
-    #   url = "https://cdn.binary.ninja/installers/BinaryNinja-demo.zip";
-    #   sha256 = "SGMVj+LR1bsSK+0Yeh1JXEokTHQl580n1M0IuMmE2xk=";
-    # };
+  libPath = lib.makeLibraryPath requiredLibs;
+in
+  stdenv.mkDerivation rec {
+    pname = "binaryninja";
+    version = "6";
+    nativeBuildInputs = [makeWrapper patchelf];
+    buildInputs = requiredLibs;
 
-    file = ./BinaryNinja-personal-dev.zip;
     src = fetchzip {
-      url = "file://${file}";
-      sha256 = "sha256-sOY4w5qE3XO7wwi+xje7SVVmP7vMuNNPmcsD9ARrt1Y=";
+      url = "https://cdn.binary.ninja/installers/binaryninja_free_linux.zip";
+      sha256 = "sha256-vdx4L/iAyO9zvwXctZ1LgDgY6rIJHkkghmGZOtfMlD0=";
     };
 
     installPhase = ''
@@ -25,34 +52,21 @@
       mkdir -p $out/opt/binaryninja
       cp -r * $out/opt/binaryninja
       chmod +x $out/opt/binaryninja/binaryninja
+
+      # Build RPATH including all subdirectories with libraries
+      libDirs="$out/opt/binaryninja"
+      libDirs="$libDirs:$out/opt/binaryninja/plugins/lldb/lib"
+      libDirs="$libDirs:${libPath}"
+
+      # Patch all ELF binaries and libraries in the opt directory
+      find $out/opt/binaryninja -type f \( -executable -o -name "*.so*" \) -print0 | while IFS= read -r -d "" f; do
+        patchelf --set-rpath "$libDirs" "$f" 2>/dev/null || true
+      done
+
       makeWrapper $out/opt/binaryninja/binaryninja \
-        $out/bin/binaryninja
+        $out/bin/binaryninja \
+        --set LD_LIBRARY_PATH "$libDirs"
     '';
 
     dontPatchELF = true;
-  };
-in
-  buildFHSUserEnv {
-    name = binaryninja.name;
-
-    targetPkgs = pkgs:
-      with pkgs; [
-        dbus
-        fontconfig
-        freetype
-        libGL
-        libxkbcommon
-        python3
-        xorg.libX11
-        xorg.libxcb
-        xorg.xcbutilimage
-        xorg.xcbutilkeysyms
-        xorg.xcbutilrenderutil
-        xorg.xcbutilwm
-        wayland
-        zlib
-        binaryninja
-      ];
-
-    runScript = "binaryninja";
   }

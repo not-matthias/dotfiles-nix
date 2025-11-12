@@ -1,6 +1,9 @@
 {...}: {
   nixpkgs.overlays = [
     (_self: super: {
+      binary-ninja = super.callPackage ../../pkgs/binary-ninja.nix {};
+    })
+    (_self: super: {
       detect-it-easy = super.callPackage ../../pkgs/detect-it-easy.nix {};
     })
     (_self: super: {
