@@ -74,6 +74,25 @@ in
       mkdir -p $out/bin
       makeWrapper $out/opt/antigravity/antigravity $out/bin/antigravity \
         --prefix LD_LIBRARY_PATH : "${libPath}:$out/opt/antigravity"
+
+      # Install the icon
+      mkdir -p $out/share/icons/hicolor/512x512/apps
+      cp $out/opt/antigravity/resources/app/out/vs/workbench/contrib/antigravityCustomAppIcon/browser/media/antigravity/antigravity.png \
+        $out/share/icons/hicolor/512x512/apps/antigravity.png
+
+      # Create desktop entry
+      mkdir -p $out/share/applications
+      cat > $out/share/applications/antigravity.desktop <<EOF
+      [Desktop Entry]
+      Name=Antigravity
+      Comment=Collaborative whiteboard application
+      Exec=$out/bin/antigravity
+      Icon=antigravity
+      Type=Application
+      Categories=Utility;
+      Terminal=false
+      StartupNotify=true
+      EOF
     '';
 
     meta = {
