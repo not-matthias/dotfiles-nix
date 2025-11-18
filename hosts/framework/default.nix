@@ -26,14 +26,19 @@
       unstable.beeper
       flakes.devenv.packages.${pkgs.system}.devenv
 
+      unstable.jetbrains.rust-rover
+
       unstable.gemini-cli
       unstable.qwen-code
+      unstable.github-copilot-cli
       binary-ninja
+      unstable.ida-free
 
       # Install desktop apps rather than websites
       # discord
       feishin
       handy
+      antigravity
       gh
 
       protonmail-bridge-gui
@@ -97,6 +102,7 @@
     };
 
     services = {
+      ollama.enable = true;
       activitywatch.enable = false;
       gpg-agent.enable = true;
     };
@@ -133,6 +139,7 @@
   };
 
   services = {
+    # solidtime.enable = true;
     vpn.enable = true;
     multi-scrobbler.enable = true;
     restic = {
