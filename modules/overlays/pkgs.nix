@@ -22,6 +22,12 @@
     (_self: super: {
       solidtime-desktop = super.callPackage ../../pkgs/solidtime.nix {};
     })
+    (_self: super: {
+      zessionizer = super.callPackage ../../pkgs/zessionizer.nix {inherit (super) fenix;};
+    })
+    (_self: super: {
+      antigravity = super.callPackage ../../pkgs/antigravity.nix {};
+    })
     # (_self: super: {
     #   lobe-chat = super.callPackage ../../pkgs/lobe-chat.nix {};
     # })
