@@ -20,14 +20,14 @@
   libdrm,
 }: let
   pname = "antigravity";
-  version = "1.11.2";
+  version = "1.11.5";
 in
   stdenv.mkDerivation rec {
     inherit pname version;
 
     src = fetchurl {
-      url = "https://edgedl.me.gvt1.com/edgedl/release2/j0qc3/antigravity/stable/1.11.2-6251250307170304/linux-x64/Antigravity.tar.gz";
-      hash = "sha256-0bERWudsJ1w3bqZg4eTS3CDrPnLWogawllBblEpfZLc=";
+      url = "https://edgedl.me.gvt1.com/edgedl/release2/j0qc3/antigravity/stable/1.11.5-5234145629700096/linux-x64/Antigravity.tar.gz";
+      hash = "sha256-TgMVGlV0PPMPrFlauzQ8nrWjtqgNJUATbXW06tgHIRI=";
     };
 
     nativeBuildInputs = [
