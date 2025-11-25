@@ -21,6 +21,7 @@
   ./jj.nix
   ./helix.nix
   ./idea-copilot.nix
+  ./ghidra.nix
   ./kitty.nix
   ./minecraft.nix
   ./neovim.nix

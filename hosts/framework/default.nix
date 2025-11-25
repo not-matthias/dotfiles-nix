@@ -75,6 +75,21 @@
           desktopName = "Obsidian - Personal Vault";
         };
       };
+      ghidra = {
+        enable = true;
+        extensions = [
+          "findcrypt"
+          "ret-sync"
+          "lightkeeper"
+          "wasm"
+          "kaiju"
+          "ghidra-delinker-extension"
+          "ghidraninja-ghidra-scripts"
+          "gnudisassembler"
+          "machinelearning"
+          "sleighdevtools"
+        ];
+      };
       screenshot-journal = {
         enable = true;
       };
