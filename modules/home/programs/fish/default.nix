@@ -15,6 +15,9 @@ in {
       "clear" = "clear -x";
       "x" = "exit";
 
+      "z" = "zeditor . && exit";
+      "co" = "code . && exit";
+
       "ns" = "nix-shell -p";
       "find" = "fd";
       "diff" = "delta";
