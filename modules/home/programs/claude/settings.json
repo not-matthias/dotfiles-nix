@@ -28,6 +28,17 @@
   },
   "model": "haiku",
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "@load-agents-md-hook@",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "matcher": "",
