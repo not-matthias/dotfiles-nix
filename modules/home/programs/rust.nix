@@ -46,9 +46,11 @@ in {
       target.x86_64-unknown-linux-gnu = {
         # rustflags = ["-C" "link-arg=-fuse-ld=${pkgs.mold}/bin/mold"];
         # rustflags = ["-Zthreads=8"];
+        rustflags = ["-Clink-arg=-fuse-ld=lld"];
       };
       build = {
-        rustc-wrapper = "${pkgs.sccache}/bin/sccache";
+        rustflags = ["-Clink-arg=-fuse-ld=lld"];
+        # rustc-wrapper = "${pkgs.sccache}/bin/sccache";
       };
 
       alias = {
