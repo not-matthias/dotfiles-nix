@@ -600,10 +600,10 @@
             options.desc = "Find files (including hidden)";
           };
           "<space>fg" = {
-            action = "git_files";
-            options.desc = "Find git files";
+            action = "live_grep";
+            options.desc = "Live grep";
           };
-          "<space>gg" = "live_grep";
+          "<space>gg" = "git_files";
           "<space>lg" = "live_grep";
           "<space>fk" = "keymaps";
           "<space>ft" = "colorscheme";
@@ -642,6 +642,18 @@
         settings = {
           notify.enabled = true;
           messages.enabled = true;
+          views = {
+            notify = {
+              replace = true;
+              max_height = 2;
+            };
+          };
+          routes = [
+            {
+              filter = {event = "msg_show";};
+              view = "mini";
+            }
+          ];
         };
       };
       notify.enable = true;
