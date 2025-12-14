@@ -6,6 +6,8 @@
   lib,
   patchelf,
   libxml2,
+  libxcrypt,
+  libuuid,
   dbus,
   fontconfig,
   freetype,
@@ -23,6 +25,8 @@
     freetype
     libGL
     libxkbcommon
+    libxcrypt
+    libuuid
     python3
     wayland
     zlib
@@ -47,25 +51,25 @@ in
       sha256 = "sha256-vdx4L/iAyO9zvwXctZ1LgDgY6rIJHkkghmGZOtfMlD0=";
     };
 
+    dontPatchELF = true;
+    allowBrokenSymlinks = true;
+
     installPhase = ''
             mkdir -p $out/bin
             mkdir -p $out/opt/binaryninja
             cp -r * $out/opt/binaryninja
             chmod +x $out/opt/binaryninja/binaryninja
 
-            # Build RPATH including all subdirectories with libraries
-            libDirs="$out/opt/binaryninja"
-            libDirs="$libDirs:$out/opt/binaryninja/plugins/lldb/lib"
-            libDirs="$libDirs:${libPath}"
+            # Find libxml2.so files to create symlinks
+            libxml2lib=$(find /nix/store -name "libxml2.so.16.1.1" -print -quit 2>/dev/null)
+            if [ -f "$libxml2lib" ]; then
+              ln -sf "$libxml2lib" $out/opt/binaryninja/libxml2.so.2
+            fi
 
-            # Patch all ELF binaries and libraries in the opt directory
-            find $out/opt/binaryninja -type f \( -executable -o -name "*.so*" \) -print0 | while IFS= read -r -d "" f; do
-              patchelf --set-rpath "$libDirs" "$f" 2>/dev/null || true
-            done
-
+            # Create wrapper with LD_LIBRARY_PATH for all required libraries
             makeWrapper $out/opt/binaryninja/binaryninja \
               $out/bin/binaryninja \
-              --set LD_LIBRARY_PATH "$libDirs"
+              --prefix LD_LIBRARY_PATH : "$out/opt/binaryninja:${libPath}:$out/opt/binaryninja/plugins/lldb/lib"
 
             # Desktop entry + icon
             mkdir -p $out/share/applications
@@ -93,7 +97,15 @@ in
       EOF
     '';
 
-    dontPatchELF = true;
+    postFixupPhases = ["finalPatchPhase"];
+    finalPatchPhase = ''
+      # Patch all ELF binaries and libraries with RPATH
+      find $out/opt/binaryninja -type f \( -executable -o -name "*.so*" \) -print0 | while IFS= read -r -d "" f; do
+        if file "$f" | grep -q "ELF"; then
+          patchelf --set-rpath "${libPath}:$out/opt/binaryninja:$out/opt/binaryninja/plugins/lldb/lib" "$f" 2>/dev/null || true
+        fi
+      done
+    '';
 
     meta = with lib; {
       description = "Binary Ninja free edition - reverse engineering platform";
