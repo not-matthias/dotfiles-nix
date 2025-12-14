@@ -43,7 +43,7 @@ in {
       "vm.dirty_background_ratio" = 1;
 
       # Memory overcommit settings to reduce swap usage
-      "vm.overcommit_memory" = 1;
+      "vm.overcommit_memory" = lib.mkDefault 1;
       "vm.overcommit_ratio" = 50;
 
       # Additional laptop-mode-tools inspired settings

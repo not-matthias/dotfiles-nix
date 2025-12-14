@@ -22,7 +22,6 @@ in {
         onShutdown = "shutdown";
         qemu = {
           runAsRoot = true;
-          ovmf.enable = true;
           package = pkgs.qemu_kvm;
         };
       };
@@ -35,7 +34,6 @@ in {
         virt-viewer
         qemu
         qemu_kvm
-        OVMF
         gvfs # Used for shared folders between linux and windows
       ];
     };

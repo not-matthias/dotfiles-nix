@@ -2,7 +2,7 @@
 {pkgs, ...}: {
   # Enable all unfree hardware support.
   # See: https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/hardware/all-firmware.nix
-  hardware.firmware = with pkgs; [firmwareLinuxNonfree];
+  hardware.firmware = with pkgs; [linux-firmware];
   hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;
 

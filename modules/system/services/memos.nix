@@ -4,9 +4,10 @@
   domain,
   ...
 }: let
-  cfg = config.services.memos;
+  # FIXME: Move to native nixos definition
+  cfg = config.services.memos-docker;
 in {
-  options.services.memos = {
+  options.services.memos-docker = {
     enable = lib.mkEnableOption "Enable memos";
   };
 

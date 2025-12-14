@@ -20,7 +20,7 @@
       tealdeer
       kalker
       ripgrep
-      du-dust
+      dust
       topgrade
       hexyl
       fd

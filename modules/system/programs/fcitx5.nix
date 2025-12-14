@@ -22,7 +22,7 @@ in {
         waylandFrontend = true;
         addons = with pkgs; [
           fcitx5-gtk
-          fcitx5-chinese-addons # Hanzi
+          qt6Packages.fcitx5-chinese-addons # Hanzi
           fcitx5-m17n # Pinyin
           fcitx5-material-color
         ];

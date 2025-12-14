@@ -7,30 +7,26 @@
 }: let
   cfg = config.programs.obsidian;
 in {
-  options.programs.obsidian = {
-    enable = lib.mkEnableOption "Obsidian with custom desktop entries";
-
-    vaults = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.submodule {
-        options = {
-          vaultName = lib.mkOption {
-            type = lib.types.str;
-            description = "The vault name to open (URL encoded if needed)";
-          };
-          desktopName = lib.mkOption {
-            type = lib.types.str;
-            description = "Display name for the desktop entry";
-          };
-          icon = lib.mkOption {
-            type = lib.types.str;
-            default = "obsidian";
-            description = "Icon name for the desktop entry";
-          };
+  options.programs.obsidian."vault-links" = lib.mkOption {
+    type = lib.types.attrsOf (lib.types.submodule {
+      options = {
+        vaultName = lib.mkOption {
+          type = lib.types.str;
+          description = "The vault name to open (URL encoded if needed)";
         };
-      });
-      default = {};
-      description = "Obsidian vaults to create desktop entries for";
-    };
+        desktopName = lib.mkOption {
+          type = lib.types.str;
+          description = "Display name for the desktop entry";
+        };
+        icon = lib.mkOption {
+          type = lib.types.str;
+          default = "obsidian";
+          description = "Icon name for the desktop entry";
+        };
+      };
+    });
+    default = {};
+    description = "Obsidian vaults to create desktop entries for";
   };
 
   config = lib.mkIf cfg.enable {
@@ -62,6 +58,6 @@ in {
               ];
             }
         )
-        cfg.vaults);
+        cfg."vault-links");
   };
 }

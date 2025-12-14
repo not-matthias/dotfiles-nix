@@ -33,10 +33,6 @@ in {
         swayidle.enable = true;
         swww.enable = true;
         dunst.enable = true;
-        vicinae = {
-          enable = true;
-          autoStart = true;
-        };
       };
 
       xdg.portal = {
@@ -50,6 +46,7 @@ in {
 
       programs.niri = {
         enable = true;
+        package = pkgs.niri;
         settings = {
           xwayland-satellite.enable = true;
           prefer-no-csd = true;

@@ -69,8 +69,7 @@
       claude.enable = true;
       btop.enable = true;
       obsidian = {
-        enable = true;
-        vaults.personal = {
+        vault-links.personal = {
           vaultName = "personal-vault-v2";
           desktopName = "Obsidian - Personal Vault";
         };
@@ -79,13 +78,8 @@
         enable = true;
         extensions = [
           "findcrypt"
-          "ret-sync"
           "lightkeeper"
           "wasm"
-          "kaiju"
-          "ghidra-delinker-extension"
-          "ghidraninja-ghidra-scripts"
-          "gnudisassembler"
           "machinelearning"
           "sleighdevtools"
         ];

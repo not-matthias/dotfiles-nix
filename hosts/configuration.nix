@@ -69,7 +69,13 @@
     defaultPackages = lib.mkForce [];
   };
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    permittedInsecurePackages = [
+      "electron-31.7.7"
+      "electron-36.9.5"
+    ];
+  };
   nix = {
     optimise.automatic = true;
     gc = {
