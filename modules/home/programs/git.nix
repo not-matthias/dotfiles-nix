@@ -29,9 +29,7 @@
     };
     ignores = [
       ".claude"
-      "CLAUDE.md"
       "GEMINI.md"
-      "AGENTS.md"
       "SCRATCHPAD.md"
       ".idea"
       ".zed"
