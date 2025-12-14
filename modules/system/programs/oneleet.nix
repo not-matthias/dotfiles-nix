@@ -90,7 +90,8 @@ in {
             mv $out/bin/oneleet-agent $out/bin/oneleet-agent-unwrapped
             makeWrapper $out/bin/oneleet-agent-unwrapped $out/bin/oneleet-agent \
               --prefix LD_LIBRARY_PATH : $out/lib:$out/lib64 \
-              --add-flags "--password-store=gnome-libsecret"
+              --add-flags "--password-store=gnome-libsecret" \
+              --add-flags "--ozone-platform=x11"
             echo "Created wrapper for oneleet-agent with libsecret password store flag"
           fi
         '';
