@@ -14,7 +14,7 @@
     home.stateVersion = "22.05";
     home.packages = with pkgs; [
       unstable.zed-editor
-      vscode
+      unstable.vscode
       bun
       google-chrome
       notepad-next
@@ -27,18 +27,20 @@
       flakes.devenv.packages.${pkgs.system}.devenv
 
       unstable.jetbrains.rust-rover
+      unstable.jetbrains.clion
 
       unstable.gemini-cli
       unstable.qwen-code
       unstable.github-copilot-cli
+      unstable.amp-cli
       binary-ninja
       unstable.ida-free
+      unstable.antigravity-fhs
 
       # Install desktop apps rather than websites
       # discord
       feishin
       handy
-      antigravity
       gh
 
       protonmail-bridge-gui
@@ -55,6 +57,7 @@
       slack
       awscli2
       imhex
+      unstable.obsidian
 
       # Language servers
       taplo
