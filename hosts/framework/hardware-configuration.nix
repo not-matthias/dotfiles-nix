@@ -17,6 +17,21 @@
   boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "thunderbolt"];
 
+  # Fixes AMD gpu crashes/timeouts which seems to be a known issue
+  #
+  # See:
+  # - https://gitlab.freedesktop.org/drm/amd/-/issues/4141#note_2894301
+  # - https://community.frame.work/t/framework-13-amd-gpu-crash-debian/68629
+  # - https://forum.manjaro.org/t/unstable-update-october-2024-edition/168715/44
+  # - https://wiki.archlinux.org/title/AMDGPU#Frozen_or_unresponsive_display_(flip_done_timed_out)
+  #
+  # The exact error:
+  # [56699.794754] amdgpu 0000:c1:00.0: [drm] *ERROR* flip_done timed out
+  # [56699.794761] amdgpu 0000:c1:00.0: [drm] *ERROR* [CRTC:80:crtc-0] commit wait timed out
+  # [56710.034725] amdgpu 0000:c1:00.0: [drm] *ERROR* flip_done timed out
+  # [56710.034732] amdgpu 0000:c1:00.0: [drm] *ERROR* [PLANE:59:plane-3] commit wait timed out
+  boot.kernelParams = ["amdgpu.dcdebugmask=0x10"];
+
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e33d79b0-4de1-47d3-a3fe-ab53c3f7f390";
     fsType = "ext4";
