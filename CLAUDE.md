@@ -1,8 +1,5 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
-
 ## IMPORTANT NOTES
 
 - **Primary development machine**: Always build for framework (`sudo nixos-rebuild switch --flake .#framework`) when in doubt
