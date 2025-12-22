@@ -59,7 +59,11 @@ in {
 
           # Monitor outputs
           # NOTE: Change refresh rate at runtime: niri msg output <name> mode <width>x<height>@<refresh>
+          # NOTE: First output in the list is the primary/default monitor
           outputs = {
+            "DP-3" = {
+              variable-refresh-rate = false;
+            };
             "DP-1" = {
               variable-refresh-rate = true;
             };
@@ -103,30 +107,32 @@ in {
           };
 
           # Named workspaces to prevent auto-deletion when empty
-          workspaces = {
+          workspaces = let
+            main-monitor = "DP-3";
+          in {
             "1" = {
               name = "web";
-              open-on-output = "DP-2";
+              open-on-output = main-monitor;
             };
             "2" = {
               name = "code";
-              open-on-output = "DP-2";
+              open-on-output = main-monitor;
             };
             "3" = {
               name = "notes";
-              open-on-output = "DP-2";
+              open-on-output = main-monitor;
             };
             "4" = {
               name = "chat";
-              open-on-output = "DP-2";
+              open-on-output = main-monitor;
             };
             "5" = {
               name = "music";
-              open-on-output = "DP-2";
+              open-on-output = main-monitor;
             };
             "99" = {
               name = "scratchpad";
-              open-on-output = "DP-2";
+              open-on-output = main-monitor;
             };
           };
 
