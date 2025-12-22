@@ -16,6 +16,7 @@
       unstable.zed-editor
       unstable.vscode
       bun
+      nodejs
       google-chrome
       notepad-next
       # msty
@@ -65,7 +66,7 @@
       nixd
     ];
     programs = {
-      rust.enable = true;
+      # rust.enable = true;
       low-battery-alert.enable = true;
       granted.enable = true;
       nixvim.enable = true;
