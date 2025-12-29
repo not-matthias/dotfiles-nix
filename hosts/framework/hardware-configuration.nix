@@ -14,7 +14,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "thunderbolt"];
 
   # Fixes AMD gpu crashes/timeouts which seems to be a known issue
