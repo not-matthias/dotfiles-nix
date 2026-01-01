@@ -18,6 +18,8 @@
 in {
   imports = [flakes.zen-browser.homeModules.default];
 
+  stylix.targets.zen-browser.enable = false;
+
   programs.zen-browser = {
     policies = {
       NoDefaultBookmarks = true;
