@@ -7,6 +7,7 @@
   ./atuin.nix
   ./bat.nix
   ./claude
+  ./gemini
   ./editorconfig.nix
   ./fish
   ./tmux

@@ -30,7 +30,6 @@
       unstable.jetbrains.rust-rover
       unstable.jetbrains.clion
 
-      unstable.gemini-cli
       unstable.qwen-code
       unstable.github-copilot-cli
       unstable.amp-cli
@@ -72,6 +71,7 @@
       granted.enable = true;
       nixvim.enable = true;
       claude.enable = true;
+      gemini.enable = true;
       btop.enable = true;
       obsidian = {
         vault-links.personal = {
