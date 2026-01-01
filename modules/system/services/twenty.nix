@@ -55,11 +55,25 @@ in {
       '';
     };
 
+    # Ensure containers wait for network to be created
+    systemd.services.docker-twenty_db = {
+      after = ["init-twenty-network.service"];
+      requires = ["init-twenty-network.service"];
+    };
+    systemd.services.docker-twenty_server = {
+      after = ["init-twenty-network.service"];
+      requires = ["init-twenty-network.service"];
+    };
+    systemd.services.docker-twenty_worker = {
+      after = ["init-twenty-network.service"];
+      requires = ["init-twenty-network.service"];
+    };
+
     virtualisation.oci-containers = {
       containers = {
         twenty_db = {
           autoStart = true;
-          image = "postgres:17-alpine";
+          image = "postgres:16-alpine";
           volumes = ["${dataDir}/db:/var/lib/postgresql/data"];
           environment = {
             POSTGRES_USER = "postgres";
