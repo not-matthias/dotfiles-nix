@@ -93,7 +93,7 @@
               users.${user} = {
                 imports = [
                   ./home.nix
-                  nixvim.homeManagerModules.nixvim
+                  nixvim.homeModules.nixvim
                   agenix.homeManagerModules.age
                 ];
               };

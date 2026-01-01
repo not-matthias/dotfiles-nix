@@ -662,11 +662,13 @@
         enable = true;
         filters = {
         };
-        git = {
-          enable = true;
-          ignore = false;
+        settings = {
+          git = {
+            enable = true;
+            ignore = false;
+          };
+          modified.enable = true;
         };
-        modified.enable = true;
       };
 
       # TODO: Setup dap-rr, dap-ui, ...

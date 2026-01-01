@@ -96,12 +96,12 @@
       gitui.enable = true;
       firefox.enable = false;
       zen-browser.enable = true;
-      waystt = {
-        enable = true;
-        provider = "local";
-        whisperModel = "ggml-base.en.bin";
-        enableAudioFeedback = true;
-      };
+      # waystt = {
+      #   enable = true;
+      #   provider = "local";
+      #   whisperModel = "ggml-base.en.bin";
+      #   enableAudioFeedback = true;
+      # };
 
       obs-studio = {
         enable = true;

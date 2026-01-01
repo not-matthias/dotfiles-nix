@@ -5,11 +5,13 @@
 
   programs.git = {
     enable = true;
-    userEmail = "26800596+not-matthias@users.noreply.github.com";
-    userName = "not-matthias";
     lfs.enable = true;
-    delta.enable = true;
-    extraConfig = {
+    settings = {
+      user = {
+        email = "26800596+not-matthias@users.noreply.github.com";
+        name = "not-matthias";
+        signingKey = "D1B0E3E8E62928DD";
+      };
       init.defaultBranch = "main";
       pull.rebase = true;
       rebase.updateRefs = true;
@@ -25,7 +27,10 @@
 
       # Sign by default
       commit.gpgsign = true;
-      user.signingKey = "D1B0E3E8E62928DD";
+      alias = {
+        l = "log --pretty=oneline -n 10 --graph --abbrev-commit --decorate=no";
+        lb = "log --pretty=oneline -n 10 --graph --abbrev-commit";
+      };
     };
     ignores = [
       ".claude"
@@ -39,10 +44,11 @@
       ".envrc"
       ".shell.nix"
     ];
-    aliases = {
-      l = "log --pretty=oneline -n 10 --graph --abbrev-commit --decorate=no";
-      lb = "log --pretty=oneline -n 10 --graph --abbrev-commit";
-    };
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
   };
 
   programs.fish = {
