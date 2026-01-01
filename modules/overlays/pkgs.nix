@@ -28,6 +28,9 @@
     (_self: super: {
       antigravity = super.callPackage ../../pkgs/antigravity.nix {};
     })
+    (_self: super: {
+      vmprotect = super.callPackage ../../pkgs/vmprotect.nix {};
+    })
     # (_self: super: {
     #   lobe-chat = super.callPackage ../../pkgs/lobe-chat.nix {};
     # })

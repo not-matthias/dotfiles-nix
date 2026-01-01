@@ -35,6 +35,7 @@
       unstable.github-copilot-cli
       unstable.amp-cli
       binary-ninja
+      vmprotect
       unstable.ida-free
       unstable.antigravity-fhs
 
