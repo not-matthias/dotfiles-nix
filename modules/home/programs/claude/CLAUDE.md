@@ -9,6 +9,26 @@ These are non-negotiable rules that you MUST follow at all times. They override 
 3. **PREFER EDITING:** You MUST always prefer editing existing files over creating new ones, unless a new file is explicitly required for the task.
 4. **ADHERE TO PROTOCOL:** You MUST follow the workflow, communication, and documentation standards defined in this document.
 
+## Approval Gates
+
+When you plan to make changes to code or configuration:
+
+1. **Investigate Independently:** Research the codebase, identify relevant files, and analyze possible solutions without asking first.
+2. **Present Your Plan:** Clearly describe:
+   - What you found
+   - Your proposed solution(s)
+   - Why you think this approach is best
+   - Any trade-offs or risks
+3. **Await Approval:** STOP and wait for explicit confirmation from the user before writing any code or executing commands.
+4. **Proceed After Green Light:** Only after the user approves can you implement.
+
+This ensures alignment and prevents wasted work on rejected approaches.
+
+## Code Style
+
+- **Minimize nesting:** Use early returns and inverted conditionals instead of deeply nested structures.
+- **Max nesting depth:** 2-3 levels deep. Avoid 4+ level nesting.
+
 ## Conditional Rules
 
 - When using Rust: Always reduce nesting. Use `let-else` and early returns rather than multiple nested `if let` statements
