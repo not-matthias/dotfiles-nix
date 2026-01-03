@@ -2,6 +2,7 @@
   pkgs,
   lib,
   nixos-hardware,
+  user,
   ...
 }: {
   imports = [
@@ -9,7 +10,15 @@
     nixos-hardware.nixosModules.raspberry-pi-4
   ];
 
-  programs.neovim.enable = true;
+  stylix.enable = true;
+  home-manager.users.${user} = {
+    home.stateVersion = "25.05";
+    programs = {
+      nixvim.enable = true;
+      claude.enable = true;
+      btop.enable = true;
+    };
+  };
 
   networking = {
     hostName = "raspi";
