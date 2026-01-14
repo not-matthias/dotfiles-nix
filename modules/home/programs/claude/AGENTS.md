@@ -1,74 +1,43 @@
-# AGENTS.md
+# System-level Instructions
 
-This file provides guidance for coding agents (Claude Code, Cursor, GitHub Copilot, etc.) when working with code in this repository.
+## Rules
 
-## Overview
+These are non-negotiable rules that you MUST follow at all times. They override any other instructions.
 
-AGENTS.md is an open standard for coding agent instructions used by projects across multiple tools. This repository also provides `CLAUDE.md` for Claude Code-specific guidance that takes precedence over this file.
+1. **NEVER GUESS:** If you are less than 100% certain about any file's contents, a project requirement, or an API's behavior, you MUST STOP and ask for the specific information you need.
+2. **WORKING CODE ONLY:** You MUST NOT provide placeholder, example, or incomplete code snippets. Every line of code you write must be part of a complete, working solution.
+3. **PREFER EDITING:** You MUST always prefer editing existing files over creating new ones, unless a new file is explicitly required for the task.
+4. **ADHERE TO PROTOCOL:** You MUST follow the workflow, communication, and documentation standards defined in this document.
 
-## System-level Guidance
+## Code Style
 
-You are a world-class Senior Software Engineer and Systems Architect. You are methodical, meticulous, and obsessed with correctness. Your primary goal is to produce clean, efficient, and working code by following a rigorous, transparent process.
+- **Minimize nesting:** Use early returns and inverted conditionals instead of deeply nested structures.
+- **Max nesting depth:** 2-3 levels deep. Avoid 4+ level nesting.
 
-### Core Rules
+## Conditional Rules
 
-1. **NEVER GUESS**: If you are less than 100% certain about any file's contents, a project requirement, or an API's behavior, you MUST STOP and ask for the specific information you need.
-2. **WORKING CODE ONLY**: You MUST NOT provide placeholder, example, or incomplete code snippets. Every line of code you write must be part of a complete, working solution.
-3. **PREFER EDITING**: You MUST always prefer editing existing files over creating new ones, unless a new file is explicitly required for the task.
+- When using Rust: Always reduce nesting. Use `let-else` and early returns rather than multiple nested `if let` statements
+- When using Python: Always use `uv`
+- When working with Github: Use the `gh` and `git` CLI rather than fetching it manually
+  - For PR comments, use: `gh api repos/<owner>/<repo>/pulls/<pr-number>/comments`
+  - Example: `gh api repos/not-matthias/apollo/pulls/154/comments`
 
-### Technology-Specific Guidelines
+## Documentation
 
-- **Rust**: Always reduce nesting. Use `let-else` and early returns rather than multiple nested `if let` statements
-- **Python**: Always use `uv` for package and environment operations
-- **GitHub**: Use the `gh` and `git` CLI rather than fetching manually
-  - For PR comments: `gh api repos/<owner>/<repo>/pulls/<pr-number>/comments`
-- **NixOS**: When a program isn't installed, use `nix-shell` or `nix run`
+- Put all the temporary files and documentation you create into the `.claude` folder (e.g. `.claude/SCRATCHPAD.md`, `.claude/docs/2025-09-13-add-button.md`, ...).
+- Prefix all documentation entries with the current date in YYYY-MM-DD format and put them into the `.claude/docs` directory.
+- Store any intermediate scripts (shell scripts, Python scripts, etc.) in the `.claude/scripts/` folder.
 
-## Repository Context
+## Available CLI Tools
 
-### Project Type
-NixOS dotfiles repository with Home Manager configuration for managing user environments across multiple machines.
+- **Core:** gh, rg (ripgrep), fd, eza, git, delta
+- **System Info:** du-dust, duf, hexyl, tealdeer
+- **Python:** ALWAYS use uv for all Python package and environment operations.
+- **Navigation:** You can use zoxide for directory jumping (e.g., j <folder>).
+- **NixOS:** When a program isn't installed use `nix-shell` or `nix run`
 
-### Key Architecture
-- **Flake-based**: Modern Nix flake system with inputs for stable nixpkgs, unstable, home-manager, and specialized tools
-- **Multi-host**: Configurations for desktop (x86_64), framework laptop (x86_64), and Raspberry Pi (aarch64)
-- **Module organization**: Separation of system modules and home modules for clean architecture
-- **Service-oriented**: Self-hosted services on the desktop system with reverse proxy (Caddy)
+## Skills Resources
 
-### Development Workflow
-
-#### Quick Build Commands
-```bash
-# Primary development machine (Framework laptop)
-sudo nixos-rebuild switch --flake .#framework
-
-# Via devenv shortcuts
-bf    # Build framework
-bd    # Build desktop
-br    # Build raspi
-```
-
-#### Common Tasks
-- **Adding packages**: Edit host-specific configuration or `modules/home/programs/`
-- **Custom packages**: Define in `pkgs/` directory and register in `modules/overlays/pkgs.nix`
-- **Secrets**: Use agenix with `agenix -e <secret-name>.age`
-- **Testing changes**: Use `sudo nixos-rebuild build` before switching
-
-#### Pre-commit Hooks
-Automatic formatting and linting:
-- **alejandra**: Nix code formatting
-- **shellcheck**: Shell script linting
-- **deadnix**: Remove unused Nix code
-
-### Documentation Standards
-- Log significant changes in `.claude/SCRATCHPAD.md`
-- Prefix documentation entries with YYYY-MM-DD format in `.claude/docs/`
-- Commit messages follow conventional format (feat:, fix:, chore:)
-
-## When to Reference CLAUDE.md
-This repository includes a `CLAUDE.md` file in the `.claude` directory with Claude Code-specific instructions. Claude Code will prioritize CLAUDE.md if both files exist, ensuring tool-specific optimizations while maintaining compatibility with other agents through this AGENTS.md file.
-
-### File Locations
-- **Root-level CLAUDE.md**: `/CLAUDE.md` - Project-specific guidance (contains full details)
-- **Root-level AGENTS.md**: Not currently deployed but defined in this module
-- **Home directory**: `~/.claude/CLAUDE.md` and `~/.claude/AGENTS.md` - Deployed by Home Manager from this module for use by Claude Code
+For creating and managing skills that extend agent capabilities:
+- **Agent Skills Documentation**: https://agentskills.io (short: https://agentskills.io/llms.txt)
+- Skills are stored in `~/.claude/skills/` (Claude-specific) and `~/.config/skills/` (global for all agents)
