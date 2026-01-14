@@ -108,7 +108,7 @@ in {
 
           # Named workspaces to prevent auto-deletion when empty
           workspaces = let
-            main-monitor = "DP-3";
+            main-monitor = "DP-2";
           in {
             "1" = {
               name = "web";
