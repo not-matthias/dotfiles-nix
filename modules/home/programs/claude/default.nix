@@ -41,7 +41,7 @@ with lib; let
 
         # Main logic
         if agents_md_path=$(find_agents_md); then
-            # File found, read it and return as JSON with additionalContext
+            # File found, read it and return as JSON with systemMessage
             content=$(<"$agents_md_path")
 
             # Escape the content for JSON using jq and prepend header
@@ -50,18 +50,14 @@ with lib; let
     ''${content}"
             context_json=$(printf '%s' "$context_text" | jq -Rs .)
 
-            # Return JSON response with the file content as additional context
+            # Return JSON response with the file content as systemMessage
             printf '{
-          "hookSpecificOutput": {
-            "additionalContext": %s
-          }
+          "systemMessage": %s
         }' "$context_json"
         else
             # No AGENTS.md found in project, return empty JSON
             # This allows the hook to exit gracefully without blocking the session
-            printf '{
-          "hookSpecificOutput": {}
-        }'
+            printf '{}'
         fi
   '';
 in {
