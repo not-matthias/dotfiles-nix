@@ -37,6 +37,7 @@
     settings.mainbar =
       customModules
       // {
+        output = "DP-2";
         layer = "top";
         position = "top";
         height = 32;
