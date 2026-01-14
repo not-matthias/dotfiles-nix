@@ -7,6 +7,7 @@
 in {
   home.packages = with pkgs; [
     trash-cli
+    prek
   ];
   programs.fish = {
     enable = true;
@@ -52,6 +53,12 @@ in {
       "cc" = "bunx @anthropic-ai/claude-code";
       "ccc" = "bunx @anthropic-ai/claude-code --continue";
       "ccr" = "bunx @anthropic-ai/claude-code --resume";
+
+      # pre-commit (using prek)
+      "pc" = "prek";
+      "pcr" = "prek run --all-files";
+      "pci" = "prek install";
+      "pcu" = "prek auto-update";
     };
     interactiveShellInit =
       ''
