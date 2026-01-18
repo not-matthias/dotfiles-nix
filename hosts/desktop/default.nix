@@ -26,7 +26,7 @@
     #
     programs = {
       nixvim.enable = true;
-      claude.enable = true;
+      cli-agents.claude.enable = true;
       btop.enable = true;
       #alacritty.enable = true;
       #waybar.enable = true;

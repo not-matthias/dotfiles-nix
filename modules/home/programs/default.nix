@@ -6,8 +6,7 @@
   ./alacritty.nix
   ./atuin.nix
   ./bat.nix
-  ./claude
-  ./gemini
+  ./cli-agents
   ./editorconfig.nix
   ./fish
   ./tmux

@@ -88,7 +88,6 @@
       enable = true;
       clean.enable = true;
     };
-    claude.enable = true;
   };
 
   # https://github.com/NixOS/nixpkgs/issues/12757#issuecomment-2605654661

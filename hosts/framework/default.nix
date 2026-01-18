@@ -70,8 +70,12 @@
       low-battery-alert.enable = true;
       granted.enable = true;
       nixvim.enable = true;
-      claude.enable = true;
-      gemini.enable = true;
+      cli-agents = {
+        claude.enable = true;
+        gemini.enable = true;
+        opencode.enable = true;
+        amp.enable = true;
+      };
       btop.enable = true;
       obsidian = {
         vault-links.personal = {
