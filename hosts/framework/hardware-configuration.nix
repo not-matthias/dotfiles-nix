@@ -30,7 +30,10 @@
   # [56699.794761] amdgpu 0000:c1:00.0: [drm] *ERROR* [CRTC:80:crtc-0] commit wait timed out
   # [56710.034725] amdgpu 0000:c1:00.0: [drm] *ERROR* flip_done timed out
   # [56710.034732] amdgpu 0000:c1:00.0: [drm] *ERROR* [PLANE:59:plane-3] commit wait timed out
-  boot.kernelParams = ["amdgpu.dcdebugmask=0x10"];
+  boot.kernelParams = [
+    "amdgpu.dcdebugmask=0x10"
+    "btusb.enable_autosuspend=0"
+  ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e33d79b0-4de1-47d3-a3fe-ab53c3f7f390";
