@@ -21,7 +21,7 @@
     {command = ["uwsm" "app" "--" "blueman-applet"];}
     {command = ["uwsm" "app" "--" "dunst"];}
     {command = ["uwsm" "app" "--" "vicinae" "server"];}
-    {command = ["uwsm" "app" "--" "polkit-gnome-authentication-agent-1"];}
+    {command = ["uwsm" "app" "--" "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"];}
     {command = ["uwsm" "app" "--" "xwayland-satellite"];}
   ];
 }
