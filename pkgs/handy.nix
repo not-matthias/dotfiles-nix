@@ -4,10 +4,10 @@
   fetchurl,
 }: let
   pname = "handy";
-  version = "0.5.3";
+  version = "0.7.0";
   src = fetchurl {
     url = "https://github.com/cjpais/Handy/releases/download/v${version}/Handy_${version}_amd64.AppImage";
-    hash = "sha256-A6d/EijWXSZvxibNXa6/oiFQqTG5+dp8z6i2Xr4awtk=";
+    hash = "sha256-tTswFYLCPGtMbHAb2bQMsklRiRCVXLrtu4pQC8IHdqQ=";
   };
 in
   appimageTools.wrapType2 {

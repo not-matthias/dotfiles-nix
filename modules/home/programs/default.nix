@@ -18,6 +18,7 @@
   ./zen-browser.nix
   ./git.nix
   ./gitui.nix
+  ./handy.nix
   ./jj.nix
   ./helix.nix
   ./idea-copilot.nix
