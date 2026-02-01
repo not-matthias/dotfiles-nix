@@ -32,6 +32,17 @@ in {
         source = ../shared/skills;
         recursive = true;
       };
+
+      # OpenCode configuration with auth plugins
+      ".opencode/opencode.json" = {
+        text = builtins.toJSON {
+          "$schema" = "https://opencode.ai/config.json";
+          "plugin" = [
+            "opencode-antigravity-auth@latest"
+            "opencode-gemini-auth@latest"
+          ];
+        };
+      };
     };
   };
 }
