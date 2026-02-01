@@ -6,7 +6,6 @@
   ./caddy.nix
   ./calibre-web.nix
   ./change-detection.nix
-  ./dawarich.nix
   ./earlyoom.nix
   # ./firefly-iii.nix
   ./gitea.nix

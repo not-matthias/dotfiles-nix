@@ -114,7 +114,6 @@
     sure.enable = true;
     solidtime.enable = true;
     wakapi.enable = true;
-    dawarich.enable = true;
     # tandoor-recipes.enable = true;
     # jellyfin.enable = true;
     # nocodb.enable = true;
