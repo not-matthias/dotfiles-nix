@@ -209,8 +209,10 @@ shared/
 └── skills/            # Reusable agent skills
     ├── README.md                  # This file
     ├── ast-grep.md               # Code search with AST patterns
+    ├── cmkr-build.md             # cmkr.build CMake/TOML build system
     ├── fact-checker.md           # Technical content verification
     ├── github-raw-fetch.md       # Fetch raw GitHub files
+    ├── humanizer.md              # Humanize technical content
     ├── rust.md                   # Rust/Cargo development
     ├── technical-researcher.md   # Research methodology
     └── worktree-parallel.md      # Git worktree management
