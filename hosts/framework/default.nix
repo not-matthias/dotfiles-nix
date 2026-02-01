@@ -200,7 +200,7 @@
         };
       };
     };
-    safeeyes.enable = false;
+    safeeyes.enable = true;
     navidrome = {
       enable = true;
       scrobblerUrl = "http://desktop.local:42010/apis/listenbrainz/1/";
