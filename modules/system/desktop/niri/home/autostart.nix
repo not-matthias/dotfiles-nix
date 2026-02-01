@@ -15,7 +15,7 @@
     {command = ["${pkgs.xdg-desktop-portal-gnome}/libexec/xdg-desktop-portal-gnome"];}
 
     # Launch apps via 'uwsm app' to integrate with systemd session management
-    {command = ["uwsm app -- swww img ~/.wallpaper.png"];}
+    {command = ["uwsm app -- swww img ~/.config/niri/wallpaper.png"];}
     {command = ["uwsm" "app" "--" "waybar"];}
     {command = ["uwsm" "app" "--" "nm-applet" "--indicator"];}
     {command = ["uwsm" "app" "--" "blueman-applet"];}
