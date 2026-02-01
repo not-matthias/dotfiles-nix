@@ -1,6 +1,7 @@
 ---
 name: cmkr-build
 description: Guide for setting up and using cmkr.build, a modern CMake-based build system using TOML configuration. Use when creating new C++ projects, setting up CMake builds, converting from CMakeLists.txt, or when users mention cmkr, cmake.toml, or "CMake TOML".
+license: MIT
 ---
 
 <!-- Source: Original work based on https://cmkr.build/ documentation -->

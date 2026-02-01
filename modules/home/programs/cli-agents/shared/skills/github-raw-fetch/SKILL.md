@@ -1,21 +1,17 @@
 ---
 name: github-raw-fetch
 description: Fetch and display raw content from GitHub file URLs by automatically converting standard GitHub URLs to raw.githubusercontent.com format and retrieving the file content.
+license: MIT
 ---
 
-<!-- Source: Created based on user request, combining information from:
-     - https://www.codegenes.net/blog/how-to-link-files-directly-from-github-raw-github-com/
-     - https://www.reddit.com/r/shortcuts/comments/1dv2mxn/github_link_converter_raw_repo_urls_easily_get/
-     - https://gist.github.com/fedarko/4fc177cff9084b9e325dcbe954547edc
-     - https://github.com/marketplace/actions/github-raw-url
-     - https://github.com/orgs/community/discussions/44370
--->
+<!-- Source: Created based on user request, combining information from multiple sources -->
 
 # GitHub Raw Fetch Skill
 
 This skill enables fetching raw content from GitHub file URLs by automatically converting standard GitHub URLs to their raw form and retrieving the content.
 
 ## Key Purpose
+
 "Fetch and display raw content from GitHub file URLs" by converting standard GitHub URLs to raw.githubusercontent.com format and retrieving the file content.
 
 ## Core Workflow Steps

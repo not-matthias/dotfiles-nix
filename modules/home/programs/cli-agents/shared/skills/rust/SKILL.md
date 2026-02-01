@@ -1,6 +1,7 @@
 ---
 name: rust
 description: Use cargo for Rust development with check-first workflow. Prefer cargo check over cargo build, use debug builds for testing, AVOID release builds unless explicitly needed.
+license: MIT
 ---
 
 <!-- Source: https://github.com/lanej/dotfiles/blob/311ae0021fccc5ef19895fb0d15af434621945f4/claude/skills/rust/SKILL.md -->
@@ -9,7 +10,7 @@ description: Use cargo for Rust development with check-first workflow. Prefer ca
 
 You are a Rust development specialist using cargo and related tools. This skill provides comprehensive workflows, best practices, and common patterns for Rust development.
 
-## IMPORTANT: Build Strategy
+## Build Strategy
 
 **AVOID expensive builds:**
 - **DON'T** use `cargo build --release` or `cargo install --path .` (very slow)
@@ -70,7 +71,7 @@ cargo build --release    # WARNING: Very slow, only use when explicitly needed
 
 **Best practice**: Use the standard 2-minute timeout for check/test/debug builds. Only use extended timeout if you absolutely must do a release build.
 
-## Clippy - Linting and Code Quality
+## Clippy
 
 ### Auto-fix Workflow
 
@@ -267,9 +268,7 @@ cargo package                  # Create distributable package
 cargo tree                     # Show dependency tree
 ```
 
-## Process Management
-
-### Cleaning Up Background Processes
+### Process Management
 
 Cargo can leave processes running that cause "resource busy" or lock errors:
 
@@ -282,17 +281,6 @@ Use this before running cargo commands if you encounter:
 - Cargo.lock contention
 - Build hanging
 - File lock errors
-
-### Common Lock Issues
-
-**Problem**: Multiple cargo processes fighting for Cargo.lock
-
-**Solution**:
-```bash
-pkill -f cargo
-cargo clean
-cargo build
-```
 
 ## Configuration Best Practices
 
@@ -439,36 +427,6 @@ cargo test --quiet && cargo check --quiet && cargo clippy
 # the binary artifact. For validation, cargo check is sufficient and much faster.
 ```
 
-## Performance Optimization
-
-### Build Performance
-
-```bash
-# Use cargo check for fast iteration (PREFER THIS)
-cargo check
-
-# Parallel builds (default, but can tune)
-cargo build -j 8
-
-# Use cache-friendly flags (ONLY for actual releases)
-cargo build --release --locked  # WARNING: SLOW - only for production releases
-```
-
-**Development tip**: `cargo check` is 2-10x faster than `cargo build` and sufficient for most development.
-
-### Test Performance
-
-```bash
-# Run only unit tests (fast)
-cargo test --lib
-
-# Skip slow integration tests
-cargo test --lib --bins
-
-# Run specific test module
-cargo test module_name::
-```
-
 ## Common Patterns and Tips
 
 ### Pattern 1: Iterative Development
@@ -550,45 +508,4 @@ cargo clippy --fix --allow-dirty
 # Solution: This is normal - fix clippy issues or suppress appropriately
 cargo clippy --fix --allow-dirty
 # Then review and add strategic suppressions
-```
-
-## Quick Reference
-
-```bash
-# Development cycle (PREFER - use check for validation)
-cargo test --quiet && cargo check --quiet && cargo clippy
-
-# Auto-fix clippy
-cargo clippy --fix --allow-dirty
-
-# Clean and re-check
-pkill -f cargo && cargo clean && cargo check
-
-# Update dependencies
-cargo update && cargo test --quiet && cargo check --quiet
-
-# Documentation
-cargo doc --open
-
-# Add dependency
-cargo add <crate>
-
-# Fast iteration (just checking compilation)
-cargo check
-
-# Only build when you need the binary artifact
-cargo build
-```
-
-## Integration with Git
-
-After validation, use the git commit message writer agent:
-- Captures comprehensive commit context
-- Follows project conventions
-- Professional, human-written style (no AI attribution per CLAUDE.md)
-
-```bash
-# After cargo validation passes:
-git add .
-# Then request commit (use commit message writer agent)
 ```

@@ -1,6 +1,6 @@
 ---
 name: fact-checker
-description: "Systematic fact-checking for technical blog posts. Extracts every claim (explicit and implicit), cross-references against attached specifications, architecture manuals, source code, and documentation, then generates a verification report with citations and verdicts."
+description: Systematic fact-checking for technical blog posts. Extracts every claim (explicit and implicit), cross-references against attached specifications, architecture manuals, source code, and documentation, then generates a verification report with citations and verdicts.
 license: MIT
 ---
 
@@ -23,8 +23,6 @@ Technical content is uniquely dangerous when inaccurate. A misstatement about re
 3. **Cross-Reference Everything**: Each claim must be traced back to its authoritative source with exact citations.
 4. **Implicit Claims Matter Most**: The assumptions an author doesn't realize they're making are often where errors hide.
 5. **Precision Over Generosity**: In technical writing, "close enough" is wrong. An instruction that sets flags is not equivalent to one that preserves them. A syscall that returns `-EINVAL` is not the same as one that returns `-EFAULT`.
-
----
 
 ## Phase 1: Technical Claim Extraction
 
@@ -106,8 +104,6 @@ For every explicit claim you extract, ask: "What is this claim assuming? What mu
 
 **Fourth pass—cross-reference setup**: For each claim, note which authoritative source should be able to confirm or refute it. The architecture manual? The kernel source? The specification document? This prepares you for systematic verification.
 
----
-
 ## Phase 2: Source Authority and Cross-Referencing
 
 ### 2.1 Attached Materials as Ground Truth
@@ -160,7 +156,7 @@ For each claim:
 
 2. **Locate the relevant section.** Don't just confirm the source exists—find the exact passage, table entry, or code that addresses this claim. Architecture manuals span thousands of pages; vague references are insufficient.
 
-3. **Extract the evidence.** Copy the exact text, pseudocode, table entry, or code that serves as evidence. Paraphrasing introduces interpretation errors.
+3. **Extract the evidence.** Copy the exact text, pseudocode, or definition that serves as evidence. Paraphrasing introduces interpretation errors.
 
 4. **Compare precisely.** Place the claim and the evidence side by side. Do they match exactly? Are there discrepancies in terminology, values, or behavior?
 
@@ -172,8 +168,6 @@ When cross-referencing against attached specifications:
 - Verify structural claims against the spec's definitions. If the spec defines specific bit fields in a control register, verify the article's representation of those fields.
 - Check constraints explicitly. If the spec says an operand must be aligned, verify the article doesn't omit this requirement.
 - Verify examples against the spec. Code or assembly examples should be valid according to the specification—correct encodings, valid operand combinations, appropriate modes.
-
----
 
 ## Phase 3: Systematic Verification
 
@@ -198,53 +192,6 @@ For each claim, execute this process:
 **Render a verdict.** Based on your comparison, categorize the claim. Document your reasoning.
 
 **Record everything.** Your verification is only valuable if it's documented. Record: the claim, your interpretation, the source consulted, the evidence found, your comparison, your verdict, and your reasoning.
-
-### 3.2 Verification Patterns for Technical Claims
-
-Different types of technical claims require different verification approaches:
-
-**Instruction and Opcode Claims**
-Verify against the instruction set reference. Check: exact mnemonic spelling, valid operand types and sizes, encoding bytes, affected flags, exception conditions, valid modes. Every field of an instruction description is independently verifiable.
-
-**Register and Architectural State Claims**
-Verify against architecture state descriptions. Check: register names, widths, subregister relationships, special-purpose behaviors, initialization values, accessibility from different privilege levels.
-
-**Memory and Addressing Claims**
-Verify against memory model specifications. Check: address space sizes, canonical forms, alignment requirements, page sizes, permission models, memory types and attributes. Memory claims often involve multiple interacting systems.
-
-**System Call and Kernel Interface Claims**
-Verify against kernel documentation and source. Check: syscall numbers, argument types and semantics, return values, error conditions, side effects, permission requirements. Be alert to OS-specific variations.
-
-**Behavioral and Semantic Claims**
-Behavioral claims assert what happens at runtime. The ultimate authority is the specification for architectural guarantees, or the implementation for implementation-specific behavior. Be alert to the distinction—architectural behavior is guaranteed; implementation behavior may vary.
-
-**Microarchitectural Claims**
-These are implementation-specific and may vary across processor generations. Verify against optimization guides, empirical measurements, or vendor documentation. Be skeptical of claims presented as universal when they're implementation-specific.
-
-**Concurrency and Ordering Claims**
-These are notoriously subtle. Verify against memory model specifications. Check: ordering guarantees, fence semantics, atomic operation guarantees, visibility rules. Many "obvious" concurrency claims are wrong.
-
-**Code and Assembly Example Verification**
-Every example is a dense collection of claims. Verify: instruction validity, operand compatibility, register availability in context, addressing mode legality, implicit operands, assumed processor state. Trace each element against the specification.
-
-**Numerical and Constraint Claims**
-Verify exact values against specifications. Sizes, offsets, bit positions, and limits are frequently wrong due to transcription errors or version differences. A claim about a "48-bit virtual address" versus "57-bit" is verifiable and consequential.
-
-### 3.3 Handling Uncertainty
-
-Sometimes verification is not straightforward:
-
-**When sources conflict:** Prefer the more authoritative source. Prefer the more specific source for detailed claims. If authoritative sources genuinely conflict (e.g., documentation vs. implementation), document the conflict—this is valuable information.
-
-**When claims span scope:** A claim might be true for one architecture variant but not another, true in one processor mode but not another, true for one OS but not another. Note the scope of validity.
-
-**When claims are ambiguous:** State your interpretation and verify that interpretation. Note that other interpretations exist. Recommend the author clarify.
-
-**When evidence is incomplete:** If the authoritative source simply doesn't address the claim, you cannot verify it. Some behavior is explicitly implementation-defined or undefined. Mark as unable to verify and note what you checked.
-
-**When verification requires empirical testing:** Some claims can only be verified by running code on hardware. You may need to note that documentary verification is insufficient and empirical verification would be required.
-
----
 
 ## Phase 4: Verdict Assignment
 
@@ -271,18 +218,6 @@ When assigning partial, specify exactly what is correct and what is incorrect or
 Despite consulting appropriate sources, you cannot confirm or refute the claim. This might be because: the claim concerns implementation-defined behavior, sources conflict without clear resolution, the claim requires empirical verification, or the claim is outside the scope of available sources.
 
 Unable to verify is not a hedge for uncertainty about incorrect claims. If you found contradicting evidence, the verdict is incorrect. Unable to verify means you found no evidence either way.
-
-### 4.2 Confidence Assessment
-
-Each verdict carries a confidence level:
-
-**HIGH**: The authoritative source directly and unambiguously addresses the claim. The manual explicitly states this behavior. The specification defines this exactly. There is no room for interpretation.
-
-**MEDIUM**: The source addresses the claim but requires some interpretation, or the claim is at the boundary of what the source covers, or you relied on semi-authoritative sources. You're confident but acknowledge some uncertainty.
-
-**LOW**: The verdict is based on indirect evidence, inference, or lower-tier sources. The claim might be about implementation-specific behavior where authoritative documentation is sparse. You believe the verdict is correct but cannot prove it definitively.
-
----
 
 ## Phase 5: Report Generation
 
@@ -321,99 +256,3 @@ Every verdict must be backed by explicit evidence. A complete citation includes:
 4. **Version or date**—specifications evolve; note which version you consulted
 
 Do not paraphrase evidence. A paraphrase is your interpretation; a quote is proof.
-
-### 5.3 Standards for Technical Accuracy
-
-Your report must meet the same accuracy standards you're applying to the article:
-
-**Precision**: Use exact terminology from the sources. Don't casually rename things. Don't round values or simplify encodings.
-
-**Completeness**: Account for every extracted claim. Do not skip claims because they seem trivial or verification is tedious.
-
-**Traceability**: Every verdict must trace back to evidence. A reader should be able to follow your citation, find the source, locate the passage, and see why you reached your verdict.
-
-**Honesty**: Acknowledge uncertainty. If verification was difficult or evidence was indirect, say so. Don't overstate confidence.
-
----
-
-## Workflow Summary
-
-```
-1. INTAKE
-   Receive article and all attached materials
-   Read attached specifications/manuals/source completely
-   Build mental model of authoritative sources
-
-2. EXTRACTION
-   First pass: extract explicit technical claims
-   Second pass: parse code/assembly examples for implicit claims
-   Third pass: identify assumptions and omissions
-   Fourth pass: map claims to verification sources
-
-3. VERIFICATION
-   Process each claim systematically
-   Locate evidence in authoritative sources
-   Extract verbatim quotes as evidence
-   Compare claim to evidence precisely
-   Identify all discrepancies
-   Assign verdict with confidence level
-   Document reasoning completely
-
-4. CROSS-REFERENCE CHECK
-   Verify all specification references are accurate
-   Confirm examples match specifications
-   Validate all names, values, encodings exactly
-   Check for version-specific or variant-specific issues
-
-5. REPORT
-   Compile findings by verdict category
-   Provide corrections for all errors
-   Include complete citations
-   Prioritize recommendations
-
-6. QUALITY VERIFICATION
-   Confirm every claim has a verdict
-   Verify all citations are complete
-   Check that corrections are actionable
-   Ensure report meets accuracy standards
-```
-
----
-
-## Quality Checklist
-
-Before delivering your report:
-
-- [ ] Every claim from the article has been examined
-- [ ] All attached materials have been thoroughly reviewed
-- [ ] Each claim has been cross-referenced against appropriate sources
-- [ ] All verdicts include verbatim evidence citations
-- [ ] Incorrect claims specify what is actually true
-- [ ] Partial claims specify exactly what is right and wrong
-- [ ] Unable to verify claims document all sources checked
-- [ ] Code and assembly examples have been verified
-- [ ] Scope limitations (architecture variants, OS versions, etc.) are noted
-- [ ] Recommendations are specific and actionable
-- [ ] Your report itself meets accuracy standards
-
----
-
-## Mindset
-
-Technical fact-checking requires a specific mental posture:
-
-**Assume errors exist.** Technical content almost always contains errors. Your job is to find them. If you finish verification having found nothing wrong, question whether you verified thoroughly enough.
-
-**Be literal.** Technical systems are literal. Register names are case-sensitive where applicable. Bit positions are exact. Encodings must be byte-accurate. Behavior descriptions must match specification pseudocode. Read literally, verify literally.
-
-**Respect the specification.** When you have an authoritative specification, it defines architectural truth. The article's job is to accurately represent the specification, not to interpret or improve upon it. Discrepancies are errors in the article.
-
-**Distinguish architecture from implementation.** Architectural specifications define guaranteed behavior. Implementations may provide additional behaviors not architecturally guaranteed. Know which category a claim falls into and verify against the appropriate source.
-
-**Extract implicit claims aggressively.** Authors don't realize the claims they're making by omission, example, or assumption. These invisible claims are where most errors hide. Your value is in surfacing them.
-
-**Scope matters.** A claim might be true for one processor generation but not another, one operating system but not another, one mode but not another. Identifying scope limitations is as important as identifying outright errors.
-
-**Document everything.** Unrecorded verification has no value. If you checked something and found it correct, record that. If you couldn't verify something, record what you tried. Your documentation is the proof your verification happened.
-
-**Deliver corrections, not just criticism.** Finding errors is only half the job. The author needs to know what to write instead. Every incorrect verdict should include the correct information from the authoritative source.

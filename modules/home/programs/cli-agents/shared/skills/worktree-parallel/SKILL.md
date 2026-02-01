@@ -1,6 +1,7 @@
 ---
 name: worktree-parallel
 description: Create and manage Git worktrees for parallel feature development. Use when user wants to work on multiple features simultaneously or needs isolated development environments.
+license: MIT
 ---
 
 <!-- Source: Original work -->
@@ -10,6 +11,7 @@ description: Create and manage Git worktrees for parallel feature development. U
 This skill automates creating and managing Git worktrees for simultaneous feature development.
 
 ## Key Purpose
+
 "Create and manage a git worktree for parallel feature development, then open the new worktree in the editor" for concurrent coding sessions.
 
 ## Core Workflow Steps

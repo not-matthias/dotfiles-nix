@@ -1,6 +1,7 @@
 ---
 name: humanizer
 description: Identifies and removes AI-generated text patterns. Detects inflated symbolism, promotional language, superficial analyses, vague attributions, em dash overuse, and AI vocabulary. Adds personality through opinions, varied rhythm, complexity acknowledgment, and specific details.
+license: MIT
 ---
 
 <!-- Source: https://github.com/blader/humanizer/raw/refs/heads/main/SKILL.md -->
@@ -133,12 +134,3 @@ Read the result aloud to check for:
 6. **Use this for revision, not initial writing**: Humanizer works best when editing existing text, not as guidance for initial composition.
 
 7. **Remember the core principle**: Good writing is specific, opinionated, and acknowledges complexity. If your humanized text lacks these, add them—pattern removal alone won't create authentic writing.
-
-## Reference
-
-This skill draws methodology from Wikipedia's "Signs of AI writing" guide, which observes that large language models gravitate toward statistically likely patterns that work broadly across contexts. Understanding these patterns helps both in identifying AI-generated text and in writing more naturally.
-
----
-
-**Tool Version**: humanizer v2.1.1
-**Source**: https://github.com/blader/humanizer

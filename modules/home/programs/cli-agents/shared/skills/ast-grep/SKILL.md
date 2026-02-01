@@ -1,6 +1,7 @@
 ---
 name: ast-grep
-description: Guide for writing ast-grep rules to perform structural code search and analysis. Use when users need to search codebases using Abstract Syntax Tree (AST) patterns, find specific code structures, or perform complex code queries that go beyond simple text search. This skill should be used when users ask to search for code patterns, find specific language constructs, or locate code with particular structural characteristics.
+description: Guide for writing ast-grep rules to perform structural code search and analysis. Use when users need to search codebases using Abstract Syntax Tree patterns, find specific code structures, or perform complex code queries that go beyond simple text search.
+license: MIT
 ---
 
 <!-- Source: https://github.com/ampcode/amp-contrib/blob/main/.agents/skills/ast-grep/SKILL.md -->
@@ -22,8 +23,6 @@ Use this skill when users:
 - Need to perform complex code queries that traditional text search cannot handle
 
 ## General Workflow
-
-Follow this process to help users write effective ast-grep rules:
 
 ### Step 1: Understand the Query
 
