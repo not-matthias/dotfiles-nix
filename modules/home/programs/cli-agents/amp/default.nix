@@ -12,8 +12,9 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with unstable; [
-      amp-cli
+    home.packages = [
+      # bun add -g @sourcegraph/amp@latest
+      unstable.amp-cli
     ];
 
     home.file = {

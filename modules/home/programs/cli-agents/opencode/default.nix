@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  pkgs,
+  unstable,
   ...
 }:
 with lib; let
@@ -12,9 +12,14 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      opencode
+    home.packages = [
+      # bun add -g opencode-ai
+      unstable.opencode
     ];
+
+    programs.fish.shellAliases = {
+      "oc" = "opencode";
+    };
 
     home.file = {
       # Shared instruction files
