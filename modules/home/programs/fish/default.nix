@@ -55,6 +55,9 @@ in {
       "pcr" = "prek run --all-files";
       "pci" = "prek install";
       "pcu" = "prek auto-update";
+
+      # rust/cargo
+      "cipf" = "cargo install --path . --locked -f";
     };
     interactiveShellInit =
       ''
