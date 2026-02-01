@@ -72,7 +72,18 @@
     base.lib.nixosSystem {
       system = arch;
       specialArgs = {
-        inherit flakes user domain nixvim stable unstable nixos-hardware stylix quickshell niri;
+        inherit
+          flakes
+          user
+          domain
+          nixvim
+          stable
+          unstable
+          nixos-hardware
+          stylix
+          quickshell
+          niri
+          ;
       };
       modules =
         commonModules
@@ -87,7 +98,14 @@
               useUserPackages = true;
               backupFileExtension = "backup";
               extraSpecialArgs = {
-                inherit flakes user nixvim stable unstable stylix;
+                inherit
+                  flakes
+                  user
+                  nixvim
+                  stable
+                  unstable
+                  stylix
+                  ;
                 addons = nur.repos.rycee.firefox-addons;
               };
               users.${user} = {

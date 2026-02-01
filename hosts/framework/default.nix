@@ -8,7 +8,7 @@
   ...
 }: {
   imports = [
-    (import ./hardware-configuration.nix)
+    ./hardware-configuration.nix
   ];
   home-manager.users.${user} = {
     home.stateVersion = "22.05";

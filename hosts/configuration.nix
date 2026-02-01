@@ -22,7 +22,16 @@
     users.${user} = {
       isNormalUser = true;
       description = "${user}";
-      extraGroups = ["wheel" "video" "audio" "camera" "networkmanager" "kvm" "libvirtd" "docker"];
+      extraGroups = [
+        "wheel"
+        "video"
+        "audio"
+        "camera"
+        "networkmanager"
+        "kvm"
+        "libvirtd"
+        "docker"
+      ];
       shell = pkgs.fish;
     };
   };
@@ -93,7 +102,10 @@
 
     # Cachix
     settings = {
-      trusted-users = ["root" "${user}"];
+      trusted-users = [
+        "root"
+        "${user}"
+      ];
       substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
