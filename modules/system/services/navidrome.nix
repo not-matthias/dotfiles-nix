@@ -2,7 +2,6 @@
   config,
   lib,
   unstable,
-  user,
   domain,
   ...
 }: let
@@ -11,8 +10,7 @@ in {
   options.services.navidrome = {
     musicFolder = lib.mkOption {
       type = lib.types.str;
-      default = "/home/${user}/Music/";
-      description = "The path to the music folder";
+      description = "The path to the music folder (must be the real path, not a bind mount target)";
     };
 
     # Requires /1/ at the end!
@@ -23,6 +21,13 @@ in {
       type = lib.types.str;
       description = "The URL to the ListenBrainz API";
     };
+
+    requiredMount = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      example = "mnt-data-personal.mount";
+      description = "Systemd mount unit that must be available before Navidrome starts";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -31,17 +36,20 @@ in {
       settings = {
         Port = 11424;
         Address = "0.0.0.0";
+        MusicFolder = cfg.musicFolder;
 
         ListenBrainz.BaseURL = cfg.scrobblerUrl;
         ListenBrainz.Enabled = cfg.scrobblerUrl != "";
       };
     };
 
-    fileSystems."/var/lib/navidrome/music" = {
-      device = cfg.musicFolder;
-      fsType = "none";
-      options = ["bind" "nofail"];
-      depends = ["/mnt/data/personal"];
+    # Ensure Navidrome only starts after the music folder mount is available.
+    # This prevents the previous issue where a bind mount would resolve to an
+    # empty directory if /mnt/data/personal wasn't mounted yet.
+    systemd.services.navidrome = lib.mkIf (cfg.requiredMount != null) {
+      requires = [cfg.requiredMount];
+      after = [cfg.requiredMount];
+      serviceConfig.RequiresMountsFor = [cfg.musicFolder];
     };
 
     services.caddy.virtualHosts."music.${domain}" = {
@@ -53,7 +61,6 @@ in {
 
     services.restic.paths = ["/var/lib/navidrome"];
     services.restic.excludes = [
-      "/var/lib/navidrome/music"
       "/var/lib/navidrome/cache"
     ];
   };

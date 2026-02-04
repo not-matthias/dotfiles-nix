@@ -87,6 +87,7 @@
     navidrome = {
       enable = true;
       musicFolder = "/mnt/data/personal/music/library";
+      requiredMount = "mnt-data-personal.mount";
       scrobblerUrl = "http://localhost:42010/apis/listenbrainz/1/";
     };
     slskd = {
