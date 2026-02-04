@@ -116,10 +116,8 @@ in {
         }
       ];
       authentication = lib.mkAfter ''
-        # Allow passwordless connections from local Docker bridge network; keeps external IPs requiring md5 below.
+        # Allow passwordless connections from local Docker bridge network (must come BEFORE 0.0.0.0/0)
         host  all all 172.17.0.0/16  trust
-        # WARNING: 0.0.0.0/0 with md5 allows connections from ANY IP (still requires password if provided)
-        host  all all 0.0.0.0/0      md5
       '';
     };
 
