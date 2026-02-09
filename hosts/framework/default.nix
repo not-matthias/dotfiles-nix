@@ -205,6 +205,7 @@
     safeeyes.enable = true;
     navidrome = {
       enable = true;
+      musicFolder = "/home/${user}/Music";
       scrobblerUrl = "http://desktop.local:42010/apis/listenbrainz/1/";
     };
     yubikey.enable = true;
