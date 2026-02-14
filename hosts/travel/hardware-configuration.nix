@@ -10,24 +10,20 @@
   ...
 }: {
   imports = [
-    nixos-hardware.nixosModules.framework-12th-gen-intel
+    nixos-hardware.nixosModules.framework-13-7040-amd
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod"];
   boot.initrd.kernelModules = [];
-  boot.kernelModules = ["kvm-intel"];
+  boot.kernelModules = [];
   boot.extraModulePackages = [];
 
   boot.kernelParams = [
-    # For Power consumption
-    # https://kvark.github.io/linux/framework/2021/10/17/framework-nixos.html
-    "mem_sleep_default=deep"
-
-    # For Power consumption
-    # https://community.frame.work/t/linux-battery-life-tuning/6665/156
-    "nvme.noacpi=1"
+    # AMD GPU settings
+    "amdgpu.dcdebugmask=0x10"
+    "btusb.enable_autosuspend=0"
   ];
 
   fileSystems."/" = {
@@ -53,5 +49,5 @@
   # networking.interfaces.wlp166s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
