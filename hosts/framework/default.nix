@@ -36,7 +36,7 @@
       binary-ninja
       vmprotect
       unstable.ida-free
-      unstable.antigravity-fhs
+      # unstable.antigravity-fhs
 
       # Install desktop apps rather than websites
       # discord
