@@ -23,12 +23,10 @@
       # mission-center
       # jujutsu
       # planify
-      todoist
+      unstable.todoist # Requires v0.23+
       unstable.beeper
       flakes.devenv.packages.${pkgs.system}.devenv
-
-      unstable.jetbrains.rust-rover
-      unstable.jetbrains.clion
+      jetbrains.idea
 
       unstable.qwen-code
       unstable.github-copilot-cli
