@@ -79,7 +79,13 @@ in {
           # Window appearance
           layout = {
             background-color = "transparent";
-            gaps = 16;
+            gaps = 8;
+            struts = {
+              left = 4;
+              right = 4;
+              top = 4;
+              bottom = 4;
+            };
             preset-column-widths = [
               {proportion = 1. / 3.;}
               {proportion = 1. / 2.;}
