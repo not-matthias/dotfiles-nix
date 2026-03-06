@@ -103,5 +103,27 @@
         inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix stylix quickshell niri nix-webapps;
       }
     );
+
+    homeConfigurations."${user}@jetson" = let
+      system = "aarch64-linux";
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      unstable = import nixpkgs-unstable {
+        inherit system;
+        config.allowUnfree = true;
+      };
+    in
+      home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        extraSpecialArgs = {
+          inherit user unstable nixvim flakes;
+        };
+        modules = [
+          ./hosts/jetson/home.nix
+          nixvim.homeModules.nixvim
+        ];
+      };
   };
 }
