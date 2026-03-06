@@ -42,6 +42,22 @@ sudo nixos-rebuild switch --flake .#<hostname>
 
 Replace `<hostname>` with the name of your host (e.g., `desktop`, `laptop`).
 
+### Jetson (Home Manager only)
+
+The Jetson uses a standalone Home Manager configuration (no NixOS). To set it up on a Jetson device:
+
+```bash
+git clone https://github.com/not-matthias/dotfiles-nix
+cd dotfiles-nix
+nix run home-manager/release-25.11 -- switch --flake .#not-matthias@jetson
+```
+
+Once `home-manager` is on your `PATH` (after the first activation), subsequent updates are just:
+
+```bash
+home-manager switch --flake .#not-matthias@jetson
+```
+
 ## Usage
 
 ### Updating the system
