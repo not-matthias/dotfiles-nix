@@ -21,6 +21,7 @@ These are non-negotiable rules that you MUST follow at all times. They override 
 - When working with Github: Use the `gh` and `git` CLI rather than fetching it manually
   - For PR comments, use: `gh api repos/<owner>/<repo>/pulls/<pr-number>/comments`
   - Example: `gh api repos/not-matthias/apollo/pulls/154/comments`
+- When committing: Always use semantic commit messages (e.g. `feat: add new feature`)
 
 ## Documentation
 
