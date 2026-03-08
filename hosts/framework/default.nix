@@ -34,6 +34,7 @@
       binary-ninja
       vmprotect
       unstable.ida-free
+      ghidra-cli
       # unstable.antigravity-fhs
 
       # Install desktop apps rather than websites
