@@ -56,6 +56,7 @@
       procs
       bun
       gh
+      devenv
     ];
   };
 
@@ -63,5 +64,11 @@
     fish_add_path --prepend ~/.nix-profile/bin /etc/profiles/per-user/$USER/bin
   '';
 
-  programs.home-manager.enable = true;
+  programs = {
+    home-manager.enable = true;
+    nh = {
+      enable = true;
+      clean.enable = true;
+    };
+  };
 }
