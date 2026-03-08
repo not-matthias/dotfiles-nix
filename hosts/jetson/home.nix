@@ -55,8 +55,13 @@
       fzf
       procs
       bun
+      gh
     ];
   };
+
+  programs.fish.shellInit = ''
+    fish_add_path --prepend ~/.nix-profile/bin /etc/profiles/per-user/$USER/bin
+  '';
 
   programs.home-manager.enable = true;
 }

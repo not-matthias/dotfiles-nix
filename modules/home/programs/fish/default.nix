@@ -66,7 +66,12 @@ in {
       ''
       + fishPrompt;
     shellInit = ''
-      any-nix-shell fish --info-right | source
+      # Ensure user profile binaries are available in fish, even with minimal login environments.
+      fish_add_path --prepend ~/.nix-profile/bin /etc/profiles/per-user/$USER/bin
+
+      if command -sq any-nix-shell
+        any-nix-shell fish --info-right | source
+      end
     '';
     functions = {
       fish_greeting = '''';
