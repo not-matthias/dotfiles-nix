@@ -60,7 +60,7 @@ in {
 
     virtualisation.oci-containers.containers = {
       "lobe-chat" = {
-        image = "docker.io/lobehub/lobe-chat-database:latest";
+        image = "docker.io/lobehub/lobe-chat-database:1.143.3";
         environment = {
           "APP_URL" = "https://lobe-chat.${domain}";
 

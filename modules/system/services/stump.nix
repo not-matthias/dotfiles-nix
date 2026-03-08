@@ -13,7 +13,7 @@ in {
   config = lib.mkIf cfg.enable {
     virtualisation.oci-containers.containers = {
       stump = {
-        image = "docker.io/aaronleopold/stump:latest";
+        image = "docker.io/aaronleopold/stump:0.0.12";
         environment = {
           PUID = "1000";
           PGID = "1000";

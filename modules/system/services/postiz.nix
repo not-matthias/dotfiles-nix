@@ -42,7 +42,7 @@ in {
 
     virtualisation.oci-containers.containers = {
       "postiz" = {
-        image = "ghcr.io/gitroomhq/postiz-app:latest";
+        image = "ghcr.io/gitroomhq/postiz-app:v2.15.1";
         environment = {
           "BACKEND_INTERNAL_URL" = "http://localhost:3000";
           "DATABASE_URL" = "postgresql://postiz-user:postiz-password@postiz-postgres:5432/postiz-db-local";

@@ -14,7 +14,7 @@ in {
 
     virtualisation.arion.projects.traggo.settings.services = {
       traggo.service = {
-        image = "traggo/server:latest";
+        image = "traggo/server:0.8.3";
         environment = {
           "TRAGGO_DEFAULT_USER_NAME" = "admin";
           "TRAGGO_DEFAULT_USER_PASS" = "admin";

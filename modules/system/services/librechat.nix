@@ -19,7 +19,7 @@ in {
   config = lib.mkIf cfg.enable {
     virtualisation.oci-containers.containers = {
       librechat = {
-        image = "ghcr.io/danny-avila/librechat:latest";
+        image = "ghcr.io/danny-avila/librechat:v0.8.2";
         environment = {
           HOST = "0.0.0.0";
           PORT = "3080";

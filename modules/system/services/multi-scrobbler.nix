@@ -31,7 +31,7 @@ in {
     virtualisation.oci-containers.containers = {
       multi-scrobbler = {
         # https://hub.docker.com/r/foxxmd/multi-scrobbler
-        image = "foxxmd/multi-scrobbler:latest";
+        image = "foxxmd/multi-scrobbler:0.11.4";
         environment = {
           TZ = "Etc/GMT";
           MALOJA_URL = "http://desktop.local:42010";
