@@ -10,6 +10,9 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    # Increase TXG sync interval to reduce CPU overhead from frequent syncs
+    boot.kernelParams = ["zfs.zfs_txg_timeout=10"];
+
     # Backup
     #
     services.zrepl = {
@@ -19,7 +22,7 @@ in {
           logging = [
             {
               type = "syslog";
-              level = "debug";
+              level = "warn";
               format = "human";
             }
           ];
@@ -44,7 +47,7 @@ in {
             filesystems = fs;
             snapshotting = {
               type = "periodic";
-              interval = "15m";
+              interval = "6h";
               prefix = "zrepl-";
             };
             pruning = {
@@ -57,13 +60,13 @@ in {
                 }
 
                 # fade-out scheme for snapshots starting with `zrepl-`
-                # - keep all created in the last hour
-                # - then destroy snapshots such that we keep 24 each 1 hour apart
-                # - then destroy snapshots such that we keep 14 each 1 day apart
+                # - keep all created in the last 6 hours
+                # - then keep 4 each 6 hours apart (1 day)
+                # - then keep 14 each 1 day apart
                 # - then destroy all older snapshots
                 {
                   type = "grid";
-                  grid = "1x1h(keep=all) | 24x1h | 14x1d";
+                  grid = "1x6h(keep=all) | 4x6h | 14x1d";
                   regex = "^zrepl-.*$";
                 }
 
@@ -115,7 +118,7 @@ in {
                 # longer retention on the backup drive, we have more space there
                 {
                   type = "grid";
-                  grid = "1x1h(keep=all) | 24x1h | 360x1d";
+                  grid = "1x6h(keep=all) | 4x6h | 90x1d";
                   regex = "^zrepl-.*";
                 }
                 # retain all non-zrepl snapshots on the backup drive
