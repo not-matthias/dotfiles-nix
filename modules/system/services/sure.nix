@@ -35,7 +35,7 @@ in {
 
     virtualisation.arion.projects.sure.settings.services = {
       web.service = {
-        image = "ghcr.io/we-promise/sure:latest";
+        image = "ghcr.io/we-promise/sure:v0.6.8";
         restart = "unless-stopped";
         volumes = [
           "/var/lib/sure/app:/rails/storage:rw"
@@ -65,7 +65,7 @@ in {
       };
 
       worker.service = {
-        image = "ghcr.io/we-promise/sure:latest";
+        image = "ghcr.io/we-promise/sure:v0.6.8";
         command = "bundle exec sidekiq";
         restart = "unless-stopped";
         volumes = [
