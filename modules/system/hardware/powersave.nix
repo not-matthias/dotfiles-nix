@@ -54,23 +54,23 @@ in {
     services = {
       power-profiles-daemon.enable = false;
       thermald.enable = true;
-      auto-cpufreq = {
-        enable = true;
-        settings = {
-          battery = {
-            governor = "powersave";
-            turbo = "never";
+    };
+    programs.auto-cpufreq = {
+      enable = true;
+      settings = {
+        battery = {
+          governor = "powersave";
+          turbo = "never";
 
-            # Maximize battery
-            energy_performance_preference = "power";
-            energy_perf_bias = "power";
-            scaling_min_freq = 400000;
-            scaling_max_freq = 1200000;
-          };
-          charger = {
-            governor = "performance";
-            turbo = "auto";
-          };
+          # Maximize battery
+          energy_performance_preference = "power";
+          energy_perf_bias = "power";
+          scaling_min_freq = 400000;
+          scaling_max_freq = 1200000;
+        };
+        charger = {
+          governor = "performance";
+          turbo = "auto";
         };
       };
     };

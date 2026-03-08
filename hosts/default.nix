@@ -65,6 +65,7 @@
       agenix.nixosModules.default
       stylix.nixosModules.stylix
       flakes.determinate.nixosModules.default
+      flakes.auto-cpufreq.nixosModules.default
 
       ./configuration.nix
     ];
