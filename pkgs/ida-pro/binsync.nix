@@ -59,6 +59,7 @@
       pycparser
       ply
       prompt-toolkit
+      requests
       tqdm
       wordfreq
     ];
