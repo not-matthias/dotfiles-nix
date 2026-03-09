@@ -117,6 +117,17 @@ in {
     "${mod}+9".action.focus-workspace = 9;
     "${mod}+Y".action.focus-workspace = "scratchpad";
 
+    # Focus column by index (horizontal windows)
+    "${mod1}+1".action.focus-column = 1;
+    "${mod1}+2".action.focus-column = 2;
+    "${mod1}+3".action.focus-column = 3;
+    "${mod1}+4".action.focus-column = 4;
+    "${mod1}+5".action.focus-column = 5;
+    "${mod1}+6".action.focus-column = 6;
+    "${mod1}+7".action.focus-column = 7;
+    "${mod1}+8".action.focus-column = 8;
+    "${mod1}+9".action.focus-column = 9;
+
     # Move window to workspace
     "${mod}+Shift+1".action.move-window-to-workspace = 1;
     "${mod}+Shift+2".action.move-window-to-workspace = 2;
