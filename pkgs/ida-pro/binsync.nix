@@ -27,6 +27,7 @@
       dependencies = with ps; [
         filelock
         networkx
+        packaging
         platformdirs
         ply
         prompt-toolkit

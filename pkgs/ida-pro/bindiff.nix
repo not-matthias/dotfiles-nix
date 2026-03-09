@@ -12,11 +12,7 @@ pkgs.stdenv.mkDerivation {
     sha256 = "1njd5w4mymxy9rms0xyplmmjgb46ai40wdwl6xrzd7aajzir06c2";
   };
 
-  nativeBuildInputs = [pkgs.dpkg pkgs.autoPatchelfHook];
-
-  buildInputs = with pkgs; [
-    stdenv.cc.cc
-  ];
+  nativeBuildInputs = [pkgs.dpkg pkgs.patchelf];
 
   dontUnpack = true;
 
@@ -26,11 +22,12 @@ pkgs.stdenv.mkDerivation {
     dpkg-deb -x $src unpacked
     mkdir -p $out/plugins
 
-    # Copy the IDA Pro plugin .so files.
-    cp unpacked/opt/bindiff/plugins/idapro/bindiff8_ida.so   $out/plugins/
-    cp unpacked/opt/bindiff/plugins/idapro/bindiff8_ida64.so $out/plugins/
-    cp unpacked/opt/bindiff/plugins/idapro/binexport12_ida.so   $out/plugins/
-    cp unpacked/opt/bindiff/plugins/idapro/binexport12_ida64.so $out/plugins/
+    # Copy the IDA Pro plugin .so files and set RPATH so they find libida*.so
+    # in the parent directory (IDA's install dir) at runtime.
+    for f in bindiff8_ida.so bindiff8_ida64.so binexport12_ida.so binexport12_ida64.so; do
+      cp "unpacked/opt/bindiff/plugins/idapro/$f" "$out/plugins/"
+      patchelf --set-rpath '$ORIGIN/..' "$out/plugins/$f"
+    done
 
     runHook postInstall
   '';
