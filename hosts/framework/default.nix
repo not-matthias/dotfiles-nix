@@ -33,7 +33,7 @@
       unstable.amp-cli
       binary-ninja
       vmprotect
-      unstable.ida-free
+      ida-pro
       ghidra-cli
       # unstable.antigravity-fhs
 

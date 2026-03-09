@@ -37,5 +37,6 @@
     # (_self: super: {
     #   lobe-chat = super.callPackage ../../pkgs/lobe-chat.nix {};
     # })
+    (import ../../pkgs/ida-pro)
   ];
 }
