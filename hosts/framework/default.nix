@@ -35,6 +35,7 @@
       vmprotect
       ida-pro
       ghidra-cli
+      rizin
       # unstable.antigravity-fhs
 
       # Install desktop apps rather than websites
