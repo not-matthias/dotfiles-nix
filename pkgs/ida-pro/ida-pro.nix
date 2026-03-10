@@ -8,6 +8,11 @@
   pythonForIDA = pkgs.python313.withPackages (
     ps: with ps; [rpyc] ++ extraPythonPackages ps
   );
+
+  hexraysCert = pkgs.fetchurl {
+    url = "https://abda.nl/lumen/hexrays.crt";
+    sha256 = "1h06akmrc79wrnq0ran0pnqf8vnni6qqb6dvg8kqr62d9nkaxgs8";
+  };
 in
   pkgs.stdenv.mkDerivation rec {
     pname = "ida-pro";
@@ -48,6 +53,7 @@ in
 
     # Add everything to the RPATH, in case IDA decides to dlopen things.
     runtimeDependencies = with pkgs; [
+      socat
       cairo
       dbus
       fontconfig
@@ -135,6 +141,9 @@ in
         '')
         plugins}
 
+            # Install Lumen certificate for socat TLS proxy.
+            cp ${hexraysCert} $IDADIR/hexrays.crt
+
             # Link the binaries to the output.
             for bb in ida; do
               wrapProgram $IDADIR/$bb \
@@ -144,8 +153,20 @@ in
                 --prefix PATH : ${pythonForIDA}/bin:$IDADIR \
                 --prefix LD_LIBRARY_PATH : $out/lib \
                 --set PYTHONHOME ${pythonForIDA} \
-                --set _PYTHON_SYSCONFIGDATA_NAME _sysconfigdata__linux_x86_64-linux-gnu
-              ln -s $IDADIR/$bb $out/bin/$bb
+                --set _PYTHON_SYSCONFIGDATA_NAME _sysconfigdata__linux_x86_64-linux-gnu \
+                --set LUMINA_TLS false \
+                --set LUMINA_HOST 127.0.0.1 \
+                --set LUMINA_PORT 1234 \
+                --set LUMINA_PRIMARY_TLS false \
+                --set LUMINA_PRIMARY guest:guest@localhost:1234 \
+                --set LUMINA_SECONDARY guest:guest@localhost:1234 \
+                --set LUMINA_SECONDARY_TLS false
+
+              # Outer shell wrapper: starts socat TLS proxy for lumen.abda.nl, then execs the C-wrapped ida.
+              # makeShellWrapper is used here because makeCWrapper (used by wrapProgram) does not support --run.
+              makeShellWrapper $IDADIR/$bb $out/bin/$bb \
+                --run "pkill -f 'openssl:lumen.abda.nl' 2>/dev/null || true" \
+                --run "${pkgs.socat}/bin/socat -s tcp4-listen:1234,fork,reuseaddr openssl:lumen.abda.nl:1235,cafile=$IDADIR/hexrays.crt &"
             done
 
             # Install desktop entry.
