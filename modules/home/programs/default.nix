@@ -41,4 +41,5 @@
   ./webapps.nix
   ./obsidian.nix
   ./solidtime-desktop.nix
+  ./ssh.nix
 ]
