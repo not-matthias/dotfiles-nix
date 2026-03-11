@@ -1,7 +1,7 @@
 {
   programs.niri.settings.input = {
     # workspace-auto-back-and-forth = true;
-    focus-follows-mouse.enable = true;
+    focus-follows-mouse.enable = false;
     warp-mouse-to-focus.enable = false;
     keyboard.xkb = {
       layout = "us,de";
