@@ -86,11 +86,13 @@
     ];
   };
   nix = {
-    optimise.automatic = true;
+    optimise = {
+      automatic = true;
+      dates = "weekly";
+    };
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 7d";
     };
     registry.nixpkgs.flake = flakes.nixpkgs;
     extraOptions = ''
