@@ -1,3 +1,35 @@
 {
-  "contextFileName": "GEMINI.md"
+  "context": {
+    "fileName": "AGENTS.md"
+  },
+  "enabled": true,
+  "general": {
+    "preferredEditor": "vscode",
+    "previewFeatures": true
+  },
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
+  },
+  "telemetry": {
+    "enabled": false,
+    "target": "local"
+  },
+  "ui": {
+    "theme": "Ayu",
+    "footer": {
+      "hideContextPercentage": false
+    },
+    "showMemoryUsage": true
+  },
+  "tools": {
+    "shell": {
+      "showColor": false
+    }
+  },
+  "hasSeenIdeIntegrationNudge": true,
+  "ide": {
+    "enabled": true
+  }
 }
