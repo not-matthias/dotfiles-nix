@@ -59,6 +59,7 @@
       (import ../modules/overlays/pkgs.nix)
       {
         nixpkgs.overlays = overlays;
+        nixpkgs.hostPlatform = arch;
       }
       home-manager.nixosModules.home-manager
       arion.nixosModules.arion
@@ -71,7 +72,6 @@
     ];
   in
     base.lib.nixosSystem {
-      system = arch;
       specialArgs = {
         inherit
           flakes

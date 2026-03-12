@@ -3,7 +3,6 @@
   unstable,
   user,
   lib,
-  config,
   flakes,
   ...
 }: {
@@ -140,7 +139,6 @@
   };
 
   environment.systemPackages = [
-    config.boot.kernelPackages.perf
     pkgs.envfs
   ];
 
