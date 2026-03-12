@@ -4,3 +4,7 @@ sandbox_mode = "workspace-write"
 
 [features]
 multi_agent = true
+skills = true
+
+[tui]
+show_tooltips = false
