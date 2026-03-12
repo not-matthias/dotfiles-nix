@@ -23,9 +23,6 @@ in {
 
     home.file = {
       # Shared instruction files
-      ".opencode/INSTRUCTIONS.md" = {
-        source = ../shared/INSTRUCTIONS.md;
-      };
       ".opencode/AGENTS.md" = {
         source = ../shared/AGENTS.md;
       };

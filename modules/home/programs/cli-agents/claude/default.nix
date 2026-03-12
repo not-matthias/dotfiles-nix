@@ -32,9 +32,6 @@ in {
     home.file = {
       # Shared instruction files
       ".claude/CLAUDE.md" = {
-        source = ../shared/INSTRUCTIONS.md;
-      };
-      ".claude/AGENTS.md" = {
         source = ../shared/AGENTS.md;
       };
       ".claude/commands" = {

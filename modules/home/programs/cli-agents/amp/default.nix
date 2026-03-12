@@ -19,9 +19,6 @@ in {
 
     home.file = {
       # Shared instruction files
-      ".amp/INSTRUCTIONS.md" = {
-        source = ../shared/INSTRUCTIONS.md;
-      };
       ".amp/AGENTS.md" = {
         source = ../shared/AGENTS.md;
       };

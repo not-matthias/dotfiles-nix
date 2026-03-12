@@ -18,9 +18,6 @@ in {
 
     # Create config directory with shared instructions
     home.file = {
-      ".pi-mono/INSTRUCTIONS.md" = {
-        source = ../shared/INSTRUCTIONS.md;
-      };
       ".pi-mono/AGENTS.md" = {
         source = ../shared/AGENTS.md;
       };

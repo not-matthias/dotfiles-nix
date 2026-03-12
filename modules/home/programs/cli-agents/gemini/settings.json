@@ -17,7 +17,6 @@
     "target": "local"
   },
   "ui": {
-    "theme": "Ayu",
     "footer": {
       "hideContextPercentage": false
     },
