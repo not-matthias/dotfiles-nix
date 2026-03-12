@@ -90,10 +90,15 @@ in {
             mv $out/bin/oneleet-agent $out/bin/oneleet-agent-unwrapped
             makeWrapper $out/bin/oneleet-agent-unwrapped $out/bin/oneleet-agent \
               --prefix LD_LIBRARY_PATH : $out/lib:$out/lib64 \
-              --add-flags "--password-store=gnome-libsecret" \
-              --add-flags "--ozone-platform=x11"
+              --add-flags "--password-store=gnome-libsecret"
             echo "Created wrapper for oneleet-agent with libsecret password store flag"
           fi
+
+          # Fix .desktop files to use the wrapped binary so launchers (e.g. vicinae) work correctly
+          for desktop in $(find $out/share/applications -name "*.desktop" 2>/dev/null); do
+            sed -i "s|^Exec=.*|Exec=$out/bin/oneleet-agent|" "$desktop"
+            echo "Patched Exec= in $desktop"
+          done
         '';
 
         meta = with lib; {
@@ -119,18 +124,18 @@ in {
       };
     };
 
-    systemd.services.oneleet = mkIf cfg.service.enable {
+    systemd.user.services.oneleet = mkIf cfg.service.enable {
       description = "OneLeet Agent Service";
+      after = ["graphical-session.target"];
       serviceConfig = {
         Type = "oneshot";
-        User = "root";
         ExecStart = "${cfg.package}/bin/oneleet-agent";
       };
     };
 
-    systemd.timers.oneleet = mkIf cfg.service.enable {
+    systemd.user.timers.oneleet = mkIf cfg.service.enable {
       timerConfig = {
-        OnCalendar = "weekly";
+        OnCalendar = "Mon *-*-* 09:45:00";
         Persistent = true;
       };
       wantedBy = ["timers.target"];
