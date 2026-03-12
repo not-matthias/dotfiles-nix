@@ -283,6 +283,15 @@ Use docx-js. See [DOCX-JS.md](references/DOCX-JS.md).
 - [ ] Common issues documented
 - [ ] Under ~500 lines
 
+### Step 7: Periodic Review (Life Cycle Management)
+
+Skills should be treated as living documentation. Periodically:
+
+- **Check for `llms.txt`**: See if the target tool has an AI-friendly index.
+- **Update examples**: Ensure patterns match current library/tool versions.
+- **Link resources**: Add MCP servers or playground links (e.g., CodSpeed, ast-grep).
+- **Prune dead patterns**: Remove advice for deprecated workflows.
+
 ## Best Practices
 
 ### Concise is Key

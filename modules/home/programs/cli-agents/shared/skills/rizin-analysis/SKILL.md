@@ -3,8 +3,14 @@ name: rizin-analysis
 description: Guide to using Rizin and Radare2 for binary analysis - lookup instructions, functions, basic blocks, and control flow graphs. Use when analyzing binary structure, investigating control flow graphs, disassembling code, or exploring function calls and jumps.
 license: MIT
 ---
-
 # Rizin/Radare2 Binary Analysis
+
+## Resources
+
+- **Official Documentation**: [https://rizin.re/](https://rizin.re/) - Modern fork of Radare2.
+- **Rizin AI Plugin**: [https://github.com/rizinorg/rizin-plugin-ai](https://github.com/rizinorg/rizin-plugin-ai) - AI-assisted analysis and decompilation using LLMs.
+
+## Overview
 
 This skill provides practical guidance for analyzing binaries using Rizin (modern, faster fork of Radare2) or Radare2. Use this when you need to inspect binary code, understand function structure, trace control flow, or extract architectural information.
 

@@ -8,6 +8,10 @@ license: MIT
 
 Guide for integrating CodSpeed into Rust and Python projects, based on working with the codspeed-rust and related repositories.
 
+## Resources
+
+- **LLM Context**: [https://codspeed.io/docs/llms.txt](https://codspeed.io/docs/llms.txt) - Full documentation map for AI assistants.
+
 ## When to Use This Skill
 
 - Setting up CodSpeed in a new project

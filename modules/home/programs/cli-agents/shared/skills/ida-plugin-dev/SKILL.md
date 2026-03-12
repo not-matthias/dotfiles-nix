@@ -8,6 +8,11 @@ license: MIT
 
 Patterns for developing IDA Pro plugins (C++ and Python), building against the IDA SDK, and packaging for NixOS.
 
+## Resources
+
+- **Official Documentation**: [https://hex-rays.com/products/ida/support/idadoc/](https://hex-rays.com/products/ida/support/idadoc/)
+- **IDA Pro MCP**: [https://github.com/mrexodia/ida-pro-mcp](https://github.com/mrexodia/ida-pro-mcp) - Model Context Protocol server for IDA Pro to enable AI-driven reverse engineering.
+
 ## When to Use This Skill
 
 - Creating a new IDA plugin (C++ or Python)

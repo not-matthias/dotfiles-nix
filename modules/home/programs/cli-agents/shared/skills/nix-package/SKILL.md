@@ -16,6 +16,28 @@ Guide for creating custom Nix packages, debugging build failures, and integratin
 - Wrapping an AppImage or prebuilt binary
 - Adding a package to the overlay
 
+## Rapid Prototyping
+
+Before writing a full package, test dependencies or binaries in a shell:
+
+```bash
+# Enter shell with specific packages
+nix-shell -p openssl pkg-config gnumake
+
+# Test a prebuilt binary's dynamic links
+nix-shell -p ldd --run "ldd ./my-binary"
+```
+
+### Boilerplate Generation
+
+Use **`nix-init`** to automatically generate a package from a URL or repo:
+
+```bash
+nix-shell -p nix-init --run "nix-init https://github.com/user/repo"
+```
+
+It handles hash generation, fetchers, and standard build inputs automatically.
+
 ## Adding a New Package
 
 ### Step 1: Create `pkgs/<name>/default.nix` (or `pkgs/<name>.nix`)
@@ -106,6 +128,22 @@ home.packages = with pkgs; [my-app];
 environment.systemPackages = with pkgs; [my-app];
 ```
 
+## Updating Existing Packages
+
+Before editing a package for a new version, check what changed upstream:
+
+```bash
+# For electron apps — fetch package.json from the new tag to verify:
+# - electron version (may need electron_NN bump in nix)
+# - dropped dependencies (e.g. sass-embedded removed → delete preBuild hook)
+curl -s "https://raw.githubusercontent.com/<owner>/<repo>/refs/tags/v<version>/package.json" | jq '{electron: .devDependencies.electron}'
+```
+
+Changes to watch for:
+- **Electron version bump** → update `electron_NN` input
+- **Dropped build-time deps** (sass, native addons) → remove corresponding `nativeBuildInputs` and build hooks
+- **New postPatch substitutions** → check if old `substituteInPlace` paths still exist in the new source
+
 ## Getting Hashes
 
 **Start with a fake hash — Nix will tell you the real one:**
@@ -144,8 +182,9 @@ Common eval errors:
 
 ```bash
 # Build single package in isolation
-nix build -f pkgs/<name>.nix
-nix-build pkgs/<name>.nix
+# NOTE: nix build -f pkgs/<name>.nix only works for argument-free packages.
+# For callPackage-style packages (with lib, stdenv, etc.) use:
+nix build --impure --expr 'let pkgs = import <nixpkgs> {}; in pkgs.callPackage ./pkgs/<name>.nix {}'
 
 # Interactive build env
 nix develop .#<derivation>
