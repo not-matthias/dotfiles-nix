@@ -1,0 +1,6 @@
+model = "gpt-5.3-codex"
+approval_policy = "never"
+sandbox_mode = "workspace-write"
+
+[features]
+multi_agent = true
