@@ -9,9 +9,9 @@ These are non-negotiable rules that you MUST follow at all times. They override 
 3. **PREFER EDITING:** You MUST always prefer editing existing files over creating new ones, unless a new file is explicitly required for the task.
 4. **ADHERE TO PROTOCOL:** You MUST follow the workflow, communication, and documentation standards defined in this document.
 
-## Approval Gates
+## Approval Gates (only if the user asks for it)
 
-When you plan to make changes to code or configuration:
+When the users asks you to **propose** changes, or if they want to **approve** a change:
 
 1. **Investigate Independently:** Research the codebase, identify relevant files, and analyze possible solutions without asking first.
 2. **Present Your Plan:** Clearly describe:
