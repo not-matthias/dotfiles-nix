@@ -13,6 +13,7 @@ in {
   config = mkIf cfg.enable {
     # Add fish alias for pi-mono
     programs.fish.shellAbbrs = {
+      "pi" = "bunx @mariozechner/pi-coding-agent";
       "pm" = "bunx @mariozechner/pi-coding-agent";
     };
 
