@@ -19,6 +19,11 @@ in {
         gcc
         rustup
 
+        # Dependencies for building Rust packages
+        pkg-config
+        openssl
+        zlib
+
         # Cargo tools
         cargo-edit
         cargo-expand
