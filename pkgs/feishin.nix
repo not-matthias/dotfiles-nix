@@ -5,24 +5,23 @@
   stdenv,
   buildNpmPackage,
   fetchFromGitHub,
-  electron_36,
-  dart-sass,
+  electron_39,
   pnpm_10,
   darwin,
   copyDesktopItems,
   makeDesktopItem,
 }: let
   pname = "feishin";
-  version = "0.21.2";
+  version = "1.8.0";
 
   src = fetchFromGitHub {
     owner = "jeffvli";
     repo = "feishin";
     tag = "v${version}";
-    hash = "sha256-F5m0hsN1BLfiUcl2Go54bpFnN8ktn6Rqa/df1xxoCA4=";
+    hash = "sha256-sd6j3gPtNFN1hMiOMIiTICNH8mYJvO9FSXPqUFotis8=";
   };
 
-  electron = electron_36;
+  electron = electron_39;
   pnpm = pnpm_10;
 in
   buildNpmPackage {
@@ -40,7 +39,7 @@ in
         src
         ;
       fetcherVersion = 2;
-      hash = "sha256-5jEXdQMZ6a0JuhjPS1eZOIGsIGQHd6nKPI02eeR35pg=";
+      hash = "sha256-cGIdcMcBIoSbtaN4ZcS/hM0fVsW08fqac4LIlpj/nb4=";
     };
 
     env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
@@ -64,15 +63,6 @@ in
         substituteInPlace src/main/index.ts \
           --replace-fail "process.resourcesPath" "'$out/share/feishin/resources'"
       '';
-
-    preBuild = ''
-      rm -r node_modules/.pnpm/sass-embedded-*
-
-      test -d node_modules/.pnpm/sass-embedded@*
-      dir="$(echo node_modules/.pnpm/sass-embedded@*)/node_modules/sass-embedded/dist/lib/src/vendor/dart-sass"
-      mkdir -p "$dir"
-      ln -s ${dart-sass}/bin/dart-sass "$dir"/sass
-    '';
 
     postBuild =
       lib.optionalString stdenv.hostPlatform.isDarwin ''
