@@ -40,6 +40,8 @@
   ./scrutiny.nix
   ./security.nix
   ./slskd.nix
+  ./soulsync.nix
+  ./nanoclaw.nix
   ./solidtime.nix
   ./tailscale.nix
   ./ziit.nix

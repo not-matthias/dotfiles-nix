@@ -31,6 +31,9 @@
     (_self: super: {
       ghidra-cli = super.callPackage ../../pkgs/ghidra-cli.nix {};
     })
+    (_self: super: {
+      soulsync = super.callPackage ../../pkgs/soulsync.nix {};
+    })
     # (_self: super: {
     #   lobe-chat = super.callPackage ../../pkgs/lobe-chat.nix {};
     # })

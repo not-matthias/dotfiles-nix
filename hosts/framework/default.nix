@@ -206,6 +206,7 @@
       musicFolder = "/home/${user}/Music";
       scrobblerUrl = "http://desktop.local:42010/apis/listenbrainz/1/";
     };
+    soulsync.enable = true;
     yubikey.enable = true;
     systembus-notify.enable = lib.mkForce true;
   };
