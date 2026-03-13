@@ -205,7 +205,14 @@
       enable = true;
       musicFolder = "/home/${user}/Music";
       scrobblerUrl = "http://desktop.local:42010/apis/listenbrainz/1/";
+      settings.Plugins = {
+        Enabled = true;
+        AutoReload = true;
+        Folder = "/var/lib/navidrome/plugins";
+        LogLevel = "info";
+      };
     };
+    audiomuse.enable = true;
     soulsync.enable = true;
     yubikey.enable = true;
     systembus-notify.enable = lib.mkForce true;

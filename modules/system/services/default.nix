@@ -1,6 +1,7 @@
 [
   ./actual.nix
   ./adguard.nix
+  ./audiomuse.nix
   ./audiobookshelf.nix
   ./authelia.nix
   ./caddy.nix
