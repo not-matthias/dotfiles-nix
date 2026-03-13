@@ -40,7 +40,6 @@
       # Install desktop apps rather than websites
       # discord
       feishin
-      handy
       gh
 
       protonmail-bridge-gui
@@ -65,6 +64,7 @@
       nixd
     ];
     programs = {
+      handy.enable = true;
       rust.enable = true;
       low-battery-alert.enable = true;
       granted.enable = true;

@@ -17,9 +17,6 @@
       feishin = super.callPackage ../../pkgs/feishin.nix {};
     })
     (_self: super: {
-      handy = super.callPackage ../../pkgs/handy.nix {};
-    })
-    (_self: super: {
       solidtime-desktop = super.callPackage ../../pkgs/solidtime.nix {};
     })
     (_self: super: {
