@@ -33,6 +33,10 @@
   boot.kernelParams = [
     "amdgpu.dcdebugmask=0x10"
     "btusb.enable_autosuspend=0"
+
+    # USB HID polling rate: 1ms = 1000Hz (lower input latency)
+    "usbhid.mousepoll=1"
+    "usbhid.kbpoll=1"
   ];
 
   fileSystems."/" = {
