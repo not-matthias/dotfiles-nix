@@ -1,6 +1,6 @@
 ---
 name: skill-creator
-description: Guide for creating effective agent skills. Use when users want to create, update, or understand skills that extend AI agent capabilities with specialized knowledge, workflows, or tool integrations. This skill explains the skill format, anatomy, creation process, and best practices.
+description: Guide for creating or importing agent skills. Use when users ask to add/create/update/copy/adapt a skill (including from URLs or GitHub). Enforces skill format, trigger-quality descriptions, and source attribution via an HTML comment at the end of SKILL.md when externally sourced.
 license: MIT
 ---
 
