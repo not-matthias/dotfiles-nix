@@ -258,7 +258,7 @@
       # ============================================================================
       {
         mode = "n";
-        key = "<C-o>";
+        key = "<C-p>";
         action = "<cmd>Telescope find_files<cr>";
         options = {
           silent = true;
@@ -276,15 +276,6 @@
       }
       {
         mode = "n";
-        key = "<C-f>";
-        action = "<cmd>Telescope current_buffer_fuzzy_find<cr>";
-        options = {
-          silent = true;
-          desc = "Find in current buffer";
-        };
-      }
-      {
-        mode = "n";
         key = "<C-S-n>";
         action = "<cmd>Telescope lsp_document_symbols<cr>";
         options = {
@@ -294,35 +285,17 @@
       }
       {
         mode = "n";
-        key = "<C-S-a>";
+        key = "<C-S-p>";
         action = "<cmd>Telescope commands<cr>";
         options = {
           silent = true;
-          desc = "Find action (command palette)";
+          desc = "Command palette";
         };
       }
 
       # ============================================================================
       # EDITOR ACTIONS
       # ============================================================================
-      {
-        mode = "n";
-        key = "<C-d>";
-        action = "<cmd>normal! yyp<cr>";
-        options = {
-          silent = true;
-          desc = "Duplicate line";
-        };
-      }
-      {
-        mode = "v";
-        key = "<C-d>";
-        action = "<cmd>normal! y`>p<cr>";
-        options = {
-          silent = true;
-          desc = "Duplicate selection";
-        };
-      }
       {
         mode = "n";
         key = "<C-/>";
@@ -370,24 +343,6 @@
           desc = "New buffer/tab";
         };
       }
-      {
-        mode = "n";
-        key = "<C-w>";
-        action = "<cmd>bdelete<cr>";
-        options = {
-          silent = true;
-          desc = "Close buffer/tab";
-        };
-      }
-      {
-        mode = "n";
-        key = "<C-S-t>";
-        action = "<cmd>BufferLineGroupClose ungrouped<cr>";
-        options = {
-          silent = true;
-          desc = "Reopen closed buffer";
-        };
-      }
 
       # ============================================================================
       # TERMINAL
@@ -408,33 +363,6 @@
         options = {
           silent = true;
           desc = "Toggle terminal (from terminal mode)";
-        };
-      }
-      {
-        mode = "n";
-        key = "<C-F12>";
-        action = "<cmd>ToggleTerm<cr>";
-        options = {
-          silent = true;
-          desc = "Toggle terminal";
-        };
-      }
-      {
-        mode = "t";
-        key = "<C-F12>";
-        action = "<cmd>ToggleTerm<cr>";
-        options = {
-          silent = true;
-          desc = "Toggle terminal (from terminal mode)";
-        };
-      }
-      {
-        mode = "n";
-        key = "<C-S-F12>";
-        action = "<cmd>ToggleTerm size=40 direction=float<cr>";
-        options = {
-          silent = true;
-          desc = "New floating terminal";
         };
       }
 
@@ -459,24 +387,6 @@
           desc = "Toggle Git (Neogit)";
         };
       }
-      {
-        mode = "n";
-        key = "<C-a>";
-        action = "<cmd>AerialToggle<cr>";
-        options = {
-          silent = true;
-          desc = "Toggle symbol outline";
-        };
-      }
-      {
-        mode = "n";
-        key = "<C-u>";
-        action = "<cmd>UndotreeToggle<cr>";
-        options = {
-          silent = true;
-          desc = "Toggle undo tree";
-        };
-      }
 
       # ============================================================================
       # LEGACY SPACE-BASED KEYBINDS (preserved for compatibility)
@@ -488,14 +398,6 @@
         options = {
           silent = true;
           desc = "Toggle file manager";
-        };
-      }
-      {
-        mode = "n";
-        key = "<space>gg";
-        action = "<cmd>Neogit<cr>";
-        options = {
-          desc = "Git status (Neogit)";
         };
       }
       {
@@ -530,7 +432,6 @@
 
       auto-save.enable = true;
       autoclose.enable = true;
-      commentary.enable = true;
       comment.enable = true;
       todo-comments.enable = true;
       rainbow-delimiters.enable = true;
@@ -603,7 +504,7 @@
             action = "live_grep";
             options.desc = "Live grep";
           };
-          "<space>gg" = "git_files";
+          "<space>gf" = "git_files";
           "<space>lg" = "live_grep";
           "<space>fk" = "keymaps";
           "<space>ft" = "colorscheme";
@@ -617,6 +518,25 @@
         };
         extensions = {
           file-browser.enable = true;
+        };
+      };
+
+      # Statusline
+      lualine = {
+        enable = true;
+        settings = {
+          options = {
+            theme = "auto";
+            globalstatus = true;
+          };
+          sections = {
+            lualine_a = ["mode"];
+            lualine_b = ["branch" "diff" "diagnostics"];
+            lualine_c = ["filename"];
+            lualine_x = ["encoding" "fileformat" "filetype"];
+            lualine_y = ["progress"];
+            lualine_z = ["location"];
+          };
         };
       };
 
@@ -663,11 +583,17 @@
         filters = {
         };
         settings = {
+          disable_netrw = true;
+          hijack_netrw = false;
           git = {
             enable = true;
             ignore = false;
           };
           modified.enable = true;
+          view = {
+            side = "left";
+            centralize_selection = false;
+          };
         };
       };
 
@@ -706,6 +632,7 @@
           nixd.enable = true;
           pylsp.enable = true;
           beancount.enable = true;
+          lua_ls.enable = true;
           # rust_analyzer.enable = true;
         };
       };
@@ -734,7 +661,7 @@
             json = ["prettier"];
             yaml = ["prettier"];
             markdown = ["prettier"];
-            typst = ["typstfmt"];
+            typst = ["typstyle"];
           };
         };
       };
@@ -772,11 +699,14 @@
         enable = true;
         settings.sources.default = [
           "lsp"
+          "copilot"
           "path"
           "buffer"
+          "git"
+          "spell"
+          "dictionary"
         ];
       };
-      blink-copilot.enable = true;
       blink-cmp-copilot.enable = true;
       blink-cmp-dictionary.enable = true;
       blink-cmp-git.enable = true;

@@ -27,14 +27,9 @@
       flakes.devenv.packages.${pkgs.system}.devenv
       jetbrains.idea
 
-      unstable.qwen-code
-      unstable.github-copilot-cli
-      unstable.amp-cli
       binary-ninja
       vmprotect
       ida-pro
-      ghidra-cli
-      rizin
       # unstable.antigravity-fhs
 
       # Install desktop apps rather than websites
@@ -70,6 +65,7 @@
       granted.enable = true;
       nixvim.enable = true;
       cli-agents = {
+        agent-browser.enable = true;
         claude.enable = true;
         codex.enable = true;
         gemini.enable = true;
@@ -128,11 +124,13 @@
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
         "https://install.determinate.systems"
+        "https://cache.garnix.io"
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
+        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
       ];
     };
   };
@@ -187,8 +185,42 @@
         schedule = "daily";
       };
     };
+    scx = {
+      enable = true;
+      scheduler = "scx_bpfland";
+    };
     system76-scheduler = {
       enable = true;
+      useStockConfig = false;
+      settings = {
+        cfsProfiles.enable = true;
+        processScheduler = {
+          enable = true;
+          useExecsnoop = true;
+          refreshInterval = 30;
+          foregroundBoost = {
+            enable = true;
+            foreground = {
+              nice = -2;
+              ioClass = "best-effort";
+              ioPrio = 0;
+            };
+            background = {
+              nice = 8;
+              ioClass = "best-effort";
+              ioPrio = 4;
+            };
+          };
+          pipewireBoost = {
+            enable = true;
+            profile = {
+              nice = -10;
+              ioClass = "best-effort";
+              ioPrio = 0;
+            };
+          };
+        };
+      };
       assignments = {
         nix-builds = {
           nice = 15;
@@ -198,7 +230,36 @@
             "nix-daemon"
           ];
         };
+        dev-tools = {
+          class = "batch";
+          matchers = [
+            "rust-analyzer"
+            "clangd"
+            "nil"
+            "nixd"
+          ];
+        };
+        browsers = {
+          nice = -2;
+          ioClass = "best-effort";
+          ioPrio = 0;
+          matchers = ["firefox" "zen" "chromium"];
+        };
+        compositor = {
+          nice = -5;
+          ioClass = "best-effort";
+          ioPrio = 0;
+          matchers = ["niri"];
+        };
       };
+      exceptions = [
+        "schedtool"
+        "nice"
+        "chrt"
+        "ionice"
+        "taskset"
+        "rtkit-daemon"
+      ];
     };
     safeeyes.enable = true;
     navidrome = {
@@ -213,7 +274,7 @@
       };
     };
     audiomuse.enable = true;
-    soulsync.enable = true;
+    # soulsync.enable = true;
     yubikey.enable = true;
     systembus-notify.enable = lib.mkForce true;
   };
@@ -237,6 +298,7 @@
   };
 
   age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
+  age.secrets = {};
 
   networking = {
     hostName = "framework";
