@@ -122,7 +122,8 @@ in {
         Restart = "on-failure";
         RestartSec = "5s";
         NoNewPrivileges = true;
-        PrivateTmp = true;
+        PrivateTmp = false;
+        LimitNOFILE = 65536;
       };
     };
 
