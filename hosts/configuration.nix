@@ -104,6 +104,9 @@
 
     # Cachix
     settings = {
+      # Keep Determinate parallel evaluation disabled.
+      "eval-cores" = 1;
+
       trusted-users = [
         "root"
         "${user}"
