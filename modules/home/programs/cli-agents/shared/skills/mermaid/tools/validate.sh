@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Validate a Mermaid diagram by parsing + rendering to a temp SVG.
 # Usage: validate.sh diagram.mmd [output.svg]
 # Source: https://github.com/mitsuhiko/agent-stuff/blob/main/skills/mermaid/tools/validate.sh
