@@ -52,6 +52,11 @@ This ensures alignment and prevents wasted work on rejected approaches.
 - **Navigation:** You can use zoxide for directory jumping (e.g., j <folder>).
 - **NixOS:** When a program isn't installed use `nix-shell` or `nix run`
 
+## Testing
+
+- When writing code: Use red-green testing (write a failing test first, make it pass, refactor).
+- When fixing a bug: Write a test that reproduces the bug before fixing it.
+
 ## Skills Resources
 
 For creating and managing skills that extend agent capabilities:
