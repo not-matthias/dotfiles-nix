@@ -57,3 +57,4 @@ This ensures alignment and prevents wasted work on rejected approaches.
 For creating and managing skills that extend agent capabilities:
 - **Agent Skills Documentation**: https://agentskills.io (short: https://agentskills.io/llms.txt)
 - Skills are stored in `~/.claude/skills/` (Claude-specific) and `~/.config/skills/` (global for all agents)
+- **Source of truth for shared skills**: `modules/home/programs/cli-agents/shared/skills/` in the dotfiles-nix repo (symlinked to `~/.claude/skills/` etc. via Nix)

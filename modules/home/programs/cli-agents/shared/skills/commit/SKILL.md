@@ -27,6 +27,27 @@ Create a git commit for the current changes using a concise Conventional Commits
   - File paths or globs should limit which files to commit. If files are specified, only stage/commit those unless the user explicitly asks otherwise.
   - If arguments combine files and instructions, honor both.
 
+## Examples
+
+Good commit messages are specific about *why* the change matters, not just *what* changed:
+```
+fix: keep keyboards and mice awake despite powertop autosuspend
+fix(ida-pro): fix plugin loading errors for bindiff and binsync
+fix: pin docker container images to specific versions instead of latest
+fix: tune ZFS txg_sync and zrepl retention to reduce CPU overhead
+feat: add agent-browser with versioned npm cache and corruption recovery
+feat(niri): add shortcuts for focusing on columns
+```
+
+Bad — vague, just restates the diff
+```
+feat: update config
+fix: fix bug
+feat: add pi-mono Nix package with extension system
+chore: update flake
+fix: soulsync stuff
+```
+
 ## Steps
 
 1. Infer from the prompt if the user provided specific file paths/globs and/or additional instructions.
