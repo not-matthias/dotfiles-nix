@@ -54,6 +54,9 @@ in {
     services = {
       power-profiles-daemon.enable = false;
       thermald.enable = true;
+      # Disable TLP — nixos-hardware's framework module enables it, but it conflicts
+      # with auto-cpufreq and overrides our governor/EPP/sysctl settings on battery.
+      tlp.enable = lib.mkForce false;
     };
     programs.auto-cpufreq = {
       enable = true;
@@ -81,21 +84,39 @@ in {
       cpuFreqGovernor = lib.mkDefault "performance";
     };
 
-    # services.udev.extraRules = ''
-    #   # USB autosuspend blacklist
+    # Powertop auto-tune sets all USB devices to autosuspend. This service runs
+    # after powertop and re-disables autosuspend for HID input devices.
+    systemd.services.usb-hid-wakeup = {
+      description = "Disable USB autosuspend for HID input devices";
+      wantedBy = ["multi-user.target"];
+      after = ["powertop.service"];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = pkgs.writeShellScript "usb-hid-wakeup" ''
+          for dev in /sys/bus/usb/devices/*/; do
+            # Check if any interface on this device is HID (class 03)
+            is_hid=0
+            for iface in "$dev"/*/bInterfaceClass; do
+              [ -f "$iface" ] && [ "$(cat "$iface")" = "03" ] && is_hid=1 && break
+            done
+            if [ "$is_hid" = "1" ] && [ -f "$dev/power/control" ]; then
+              echo on > "$dev/power/control"
+            fi
+          done
+        '';
+      };
+    };
 
-    #   # Logitech G502 mouse
-    #   ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="062a", ATTR{idProduct}=="5918", GOTO="power_usb_rules_end"
+    services.udev.extraRules = ''
+      # Disable autosuspend for HID input devices (keyboards, mice, receivers)
+      # Uses parent device match since power/control is at the device level
+      ACTION=="add|change", SUBSYSTEM=="usb", ATTR{product}=="*[Kk]eyboard*", TEST=="power/control", ATTR{power/control}="on"
+      ACTION=="add|change", SUBSYSTEM=="usb", ATTR{product}=="*[Mm]ouse*", TEST=="power/control", ATTR{power/control}="on"
+      ACTION=="add|change", SUBSYSTEM=="usb", ATTR{product}=="*[Rr]eceiver*", TEST=="power/control", ATTR{power/control}="on"
 
-    #   # Enable USB autosuspend by default for all other devices.
-    #   #ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="auto"
-    #   LABEL="power_usb_rules_end"
-    # '';
-
-    # boot.extraModprobeConfig = mkIf cfg.disableMouseAutosuspend ''
-    #   # Increase autosuspend delay for USB devices to 5 seconds (default is 2)
-    #   # This gives USB hubs more time to remain active for input events
-    #   options usbcore autosuspend=15
-    # '';
+      # Enable USB autosuspend for non-input devices
+      ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="auto"
+    '';
   };
 }
