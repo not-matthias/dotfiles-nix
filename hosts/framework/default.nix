@@ -71,6 +71,7 @@
         gemini.enable = true;
         opencode.enable = true;
         amp.enable = true;
+        pi-mono.enable = true;
       };
       btop.enable = true;
       obsidian = {
