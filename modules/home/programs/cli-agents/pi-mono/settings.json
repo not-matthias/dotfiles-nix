@@ -1,0 +1,15 @@
+{
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.3-codex",
+  "defaultThinkingLevel": "medium",
+  "showHardwareCursor": false,
+  "doubleEscapeAction": "tree",
+  "theme": "dark",
+  "enabledModels": [
+    "openai-codex/gpt-5.3-codex:medium",
+    "openai-codex/gpt-5.4:medium",
+    "anthropic/claude-opus-4-6:medium",
+    "anthropic/claude-sonnet-4-6:medium",
+    "anthropic/claude-haiku-4-5:off"
+  ]
+}
