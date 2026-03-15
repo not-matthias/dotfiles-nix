@@ -48,6 +48,9 @@ in {
         ".pi/agent/AGENTS.md" = {
           source = ../shared/AGENTS.md;
         };
+        ".pi/agent/settings.json" = {
+          source = ./settings.json;
+        };
         ".pi/agent/prompts/shared" = {
           source = ../shared/commands;
           recursive = true;
