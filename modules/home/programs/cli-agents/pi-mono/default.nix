@@ -14,11 +14,13 @@ with lib; let
   # into the appropriate ~/.pi/agent/<type>/<name> directory.
   mkExtensionFiles = name: ext: let
     resources = ext.resources or {};
-    isAbsolute = ext.extensionsAbsolute or false;
+    isAbsolute = type:
+      (type == "extensions" && (ext.extensionsAbsolute or false))
+      || (type == "skills" && (ext.skillsAbsolute or false));
     mkEntry = type: subdir: {
       ".pi/agent/${type}/${name}" = {
         source =
-          if type == "extensions" && isAbsolute
+          if isAbsolute type
           then subdir
           else "${ext.src}/${subdir}";
         recursive = true;

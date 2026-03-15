@@ -10,11 +10,11 @@ in {
     resources.extensions = "extensions";
   };
 
-  token-burden = {
-    src = call (import ./token-burden.nix);
-    # Whole repo is the extension (src/, package.json at root)
-    resources.extensions = ".";
-  };
+  # token-burden: disabled, requires npm dep gpt-tokenizer
+  # claude-agent-sdk: disabled, requires npm dep @anthropic-ai/claude-agent-sdk
+  # fzf: disabled, requires npm dep fzf
+  # mermaid (ext): disabled, requires npm dep beautiful-mermaid
+  # readcache: disabled, requires npm dep diff
 
   amplike = {
     src = call (import ./amplike.nix);
@@ -38,40 +38,15 @@ in {
     resources.extensions = "apps/pi-extension";
   };
 
-  readcache = {
-    src = call (import ./readcache.nix);
-    # Whole repo is the extension (src/, package.json at root)
-    resources.extensions = ".";
-  };
-
   notify = {
     src = call (import ./notify.nix);
     # Root-level index.ts + package.json
     resources.extensions = ".";
   };
 
-  claude-agent-sdk = {
-    src = call (import ./claude-agent-sdk.nix);
-    # Root-level index.ts + package.json
-    resources.extensions = ".";
-  };
-
-  fzf = {
-    src = call (import ./fzf.nix);
-    # Root-level extension with .pi/prompts/
-    resources.extensions = ".";
-    resources.prompts = ".pi/prompts";
-  };
-
   tasks = {
     src = call (import ./tasks.nix);
     # Whole repo is the extension (src/, package.json at root)
-    resources.extensions = ".";
-  };
-
-  mermaid = {
-    src = call (import ./mermaid.nix);
-    # Root-level index.ts + package.json
     resources.extensions = ".";
   };
 
@@ -101,13 +76,20 @@ in {
         cp ${src}/pi-extensions/$f $out/
       done
     '';
+    # Exclude skills that collide with our shared skills
+    filteredSkills = pkgs.runCommand "agent-stuff-skills" {} ''
+      cp -r ${src}/skills $out
+      chmod -R u+w $out
+      rm -rf $out/commit $out/github $out/mermaid $out/uv
+    '';
   in {
     inherit src;
     resources.extensions = filteredExtensions;
     resources.themes = "pi-themes";
-    resources.skills = "skills";
+    resources.skills = filteredSkills;
     resources.prompts = "commands";
-    # extensions uses an absolute path (derivation output), not a relative subdir
+    # extensions and skills use absolute paths (derivation outputs), not relative subdirs
     extensionsAbsolute = true;
+    skillsAbsolute = true;
   };
 }
