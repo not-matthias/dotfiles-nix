@@ -40,6 +40,9 @@
     (_self: super: {
       soulsync = super.callPackage ../../pkgs/soulsync.nix {};
     })
+    (_self: super: {
+      pi-coding-agent = super.callPackage ../../pkgs/pi-mono {};
+    })
     # (_self: super: {
     #   lobe-chat = super.callPackage ../../pkgs/lobe-chat.nix {};
     # })

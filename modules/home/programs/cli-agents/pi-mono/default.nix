@@ -1,35 +1,60 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 with lib; let
   cfg = config.programs.cli-agents.pi-mono;
+
+  extensions = import ../../../../../pkgs/pi-mono/extensions {inherit pkgs;};
+
+  # Generate home.file entries for a single extension's resources.
+  # Each resource type (extensions, skills, themes, prompts) gets symlinked
+  # into the appropriate ~/.pi/agent/<type>/<name> directory.
+  mkExtensionFiles = name: ext: let
+    resources = ext.resources or {};
+    isAbsolute = ext.extensionsAbsolute or false;
+    mkEntry = type: subdir: {
+      ".pi/agent/${type}/${name}" = {
+        source =
+          if type == "extensions" && isAbsolute
+          then subdir
+          else "${ext.src}/${subdir}";
+        recursive = true;
+      };
+    };
+  in
+    (optionalAttrs (resources ? extensions) (mkEntry "extensions" resources.extensions))
+    // (optionalAttrs (resources ? skills) (mkEntry "skills" resources.skills))
+    // (optionalAttrs (resources ? themes) (mkEntry "themes" resources.themes))
+    // (optionalAttrs (resources ? prompts) (mkEntry "prompts" resources.prompts));
+
+  # Merge all extension file entries
+  extensionFiles = foldlAttrs (acc: name: ext: acc // mkExtensionFiles name ext) {} extensions;
 in {
   options.programs.cli-agents.pi-mono = {
     enable = mkEnableOption "Pi-Mono CLI agent";
   };
 
   config = mkIf cfg.enable {
-    # Add fish alias for pi-mono
-    programs.fish.shellAbbrs = {
-      "pi" = "bunx @mariozechner/pi-coding-agent";
-      "pm" = "bunx @mariozechner/pi-coding-agent";
-    };
+    home.packages = [pkgs.pi-coding-agent];
 
-    # Create config directory with shared instructions
-    home.file = {
-      ".pi-mono/AGENTS.md" = {
-        source = ../shared/AGENTS.md;
-      };
-      ".pi-mono/commands" = {
-        source = ../shared/commands;
-        recursive = true;
-      };
-      ".pi-mono/skills" = {
-        source = ../shared/skills;
-        recursive = true;
-      };
-    };
+    # Pi uses ~/.pi/agent/ as its config directory
+    home.file =
+      {
+        ".pi/agent/AGENTS.md" = {
+          source = ../shared/AGENTS.md;
+        };
+        ".pi/agent/prompts/shared" = {
+          source = ../shared/commands;
+          recursive = true;
+        };
+        ".pi/agent/skills/shared" = {
+          source = ../shared/skills;
+          recursive = true;
+        };
+      }
+      // extensionFiles;
   };
 }
