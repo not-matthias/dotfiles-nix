@@ -3,6 +3,7 @@
   ./dconf
   ./gtk.nix
 
+  ./ai-commit.nix
   ./alacritty.nix
   ./atuin.nix
   ./bat.nix

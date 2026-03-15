@@ -59,6 +59,7 @@
       nixd
     ];
     programs = {
+      ai-commit.enable = true;
       handy.enable = true;
       rust.enable = true;
       low-battery-alert.enable = true;
