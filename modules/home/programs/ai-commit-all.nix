@@ -12,7 +12,7 @@ with lib; let
     then commitCfg.model
     else if commitCfg.provider == "claude"
     then "haiku"
-    else "gpt-5.3-codex";
+    else "gpt-5-mini";
 
   package = pkgs.writeShellScriptBin "ai-commit-all" ''
     set -euo pipefail
@@ -20,11 +20,15 @@ with lib; let
     git=${pkgs.git}/bin/git
     jq=${pkgs.jq}/bin/jq
     fzf=${pkgs.fzf}/bin/fzf
+    pre_commit=${pkgs.pre-commit}/bin/pre-commit
 
     if $git diff --quiet && $git diff --cached --quiet && [ -z "$($git ls-files --others --exclude-standard)" ]; then
       echo "No changes to commit."
       exit 1
     fi
+
+    echo "Running pre-commit hooks..."
+    $pre_commit run --all-files
 
     # Unstage everything so we control what goes into each commit
     $git reset HEAD --quiet 2>/dev/null || true
