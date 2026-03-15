@@ -50,6 +50,12 @@ in {
     resources.extensions = ".";
   };
 
+  pi-subagents = {
+    src = call (import ./pi-subagents.nix);
+    # Whole repo is the extension (index.ts, package.json at root)
+    resources.extensions = ".";
+  };
+
   rtk = {
     src = call (import ./rtk.nix);
     # Root-level index.ts + package.json
