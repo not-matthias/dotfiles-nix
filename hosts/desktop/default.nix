@@ -25,6 +25,10 @@
     #   ];
     #
     programs = {
+      ai-commit = {
+        enable = true;
+        provider = "codex";
+      };
       nixvim.enable = true;
       cli-agents.claude.enable = true;
       btop.enable = true;

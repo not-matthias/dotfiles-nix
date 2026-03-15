@@ -59,7 +59,10 @@
       nixd
     ];
     programs = {
-      ai-commit.enable = true;
+      ai-commit = {
+        enable = true;
+        provider = "claude";
+      };
       handy.enable = true;
       rust.enable = true;
       low-battery-alert.enable = true;
