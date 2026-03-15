@@ -4,6 +4,7 @@
   ./gtk.nix
 
   ./ai-commit.nix
+  ./ai-commit-all.nix
   ./alacritty.nix
   ./atuin.nix
   ./bat.nix

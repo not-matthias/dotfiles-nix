@@ -29,6 +29,7 @@
         enable = true;
         provider = "codex";
       };
+      ai-commit-all.enable = true;
       nixvim.enable = true;
       cli-agents.claude.enable = true;
       btop.enable = true;
