@@ -4,98 +4,118 @@
 #   resources - which pi resource directories to symlink (relative to src)
 {pkgs}: let
   call = f: f {inherit (pkgs) fetchFromGitHub;};
-in {
-  multi-pass = {
-    src = call (import ./multi-pass.nix);
-    resources.extensions = "extensions";
-  };
+  withRuntimeDeps = args: pkgs.callPackage ./with-runtime-deps.nix args;
+  agentStuff = import ./agent-stuff.nix {inherit pkgs;};
+in
+  {
+    multi-pass = {
+      src = call (import ./multi-pass.nix);
+      resources.extensions = "extensions";
+    };
 
-  # token-burden: disabled, requires npm dep gpt-tokenizer
-  # claude-agent-sdk: disabled, requires npm dep @anthropic-ai/claude-agent-sdk
-  # fzf: disabled, requires npm dep fzf
-  # mermaid (ext): disabled, requires npm dep beautiful-mermaid
-  # readcache: disabled, requires npm dep diff
+    token-burden = {
+      src = withRuntimeDeps {
+        src = call (import ./token-burden.nix);
+        pnpmDepsHash = "sha256-TRMoNKN9LtnES/f3PFE8DKc1JoE1vb+PrWwgOl/xF/w=";
+      };
+      # Whole repo is the extension (package.json pi.extensions points to ./src/index.ts)
+      resources.extensions = ".";
+    };
 
-  amplike = {
-    src = call (import ./amplike.nix);
-    resources.extensions = "extensions";
-    resources.skills = "skills";
-  };
+    claude-agent-sdk = {
+      src = withRuntimeDeps {
+        src = call (import ./claude-agent-sdk.nix);
+        npmDepsHash = "sha256-MX8nXlde5N2Wrw6Iu0mUE1l9z8/ht1SNB4yU8CT9/28=";
+      };
+      # Root-level index.ts + package.json
+      resources.extensions = ".";
+    };
 
-  askuserquestion = {
-    src = call (import ./askuserquestion.nix);
-    # Whole repo is the extension (src/, package.json at root)
-    resources.extensions = ".";
-  };
+    fzf = {
+      src = withRuntimeDeps {
+        src = call (import ./fzf.nix);
+        npmDepsHash = "sha256-Ewq0UJfXjuMx6KoCDf/PYhtv4VM4Cqrw3pyX4mXHxow=";
+      };
+      # Root-level index.ts + package.json
+      resources.extensions = ".";
+    };
 
-  terminal-theme = {
-    src = call (import ./terminal-theme.nix);
-    resources.themes = "themes";
-  };
+    mermaid = {
+      src = withRuntimeDeps {
+        src = call (import ./mermaid.nix);
+        npmDepsHash = "sha256-rHFkSF+v9MeXXfq8x7Vl9al7EmLgGrC1AMH+WVyxviA=";
+      };
+      # Root-level index.ts + package.json
+      resources.extensions = ".";
+    };
 
-  plannotator = {
-    src = call (import ./plannotator.nix);
-    resources.extensions = "apps/pi-extension";
-  };
+    readcache = {
+      src = withRuntimeDeps {
+        src = call (import ./readcache.nix);
+        npmDepsHash = "sha256-+dsZ+44d/N6H4yUBO1cBp2XGMQq0Psid/kopP2W8QYs=";
+      };
+      # Root-level index.ts + package.json
+      resources.extensions = ".";
+    };
 
-  notify = {
-    src = call (import ./notify.nix);
-    # Root-level index.ts + package.json
-    resources.extensions = ".";
-  };
+    amplike = {
+      src = call (import ./amplike.nix);
+      resources.extensions = "extensions";
+      resources.skills = "skills";
+    };
 
-  tasks = {
-    src = call (import ./tasks.nix);
-    # Whole repo is the extension (src/, package.json at root)
-    resources.extensions = ".";
-  };
+    askuserquestion = {
+      src = call (import ./askuserquestion.nix);
+      # Whole repo is the extension (src/, package.json at root)
+      resources.extensions = ".";
+    };
 
-  pi-subagents = {
-    src = call (import ./pi-subagents.nix);
-    # Whole repo is the extension (index.ts, package.json at root)
-    resources.extensions = ".";
-  };
+    terminal-theme = {
+      src = call (import ./terminal-theme.nix);
+      resources.themes = "themes";
+    };
 
-  rtk = {
-    src = call (import ./rtk.nix);
-    # Root-level index.ts + package.json
-    resources.extensions = ".";
-  };
+    plannotator = {
+      src = call (import ./plannotator.nix);
+      resources.extensions = "apps/pi-extension";
+    };
 
-  tau = {
-    src = call (import ./tau.nix);
-    resources.extensions = "extensions";
-  };
+    notify = {
+      src = call (import ./notify.nix);
+      # Root-level index.ts + package.json
+      resources.extensions = ".";
+    };
 
-  aliases = {
-    src = call (import ./aliases.nix);
-    # Whole repo is the extension (src/, package.json at root)
-    resources.extensions = ".";
-  };
+    tasks = {
+      src = withRuntimeDeps {
+        src = call (import ./tasks.nix);
+        npmDepsHash = "sha256-7FT8wePpkEfLbHXZkLQinbWAdvYNJn7V/UZmWXy59K8=";
+      };
+      # Whole repo is the extension (src/, package.json at root)
+      resources.extensions = ".";
+    };
 
-  agent-stuff = let
-    src = call (import ./agent-stuff.nix);
-    # Only include selected extensions from pi-extensions/
-    filteredExtensions = pkgs.runCommand "agent-stuff-extensions" {} ''
-      mkdir -p $out
-      for f in answer.ts context.ts multi-edit.ts notify.ts session-breakdown.ts todos.ts uv.ts; do
-        cp ${src}/pi-extensions/$f $out/
-      done
-    '';
-    # Exclude skills that collide with our shared skills
-    filteredSkills = pkgs.runCommand "agent-stuff-skills" {} ''
-      cp -r ${src}/skills $out
-      chmod -R u+w $out
-      rm -rf $out/commit $out/github $out/mermaid $out/uv
-    '';
-  in {
-    inherit src;
-    resources.extensions = filteredExtensions;
-    resources.themes = "pi-themes";
-    resources.skills = filteredSkills;
-    resources.prompts = "commands";
-    # extensions and skills use absolute paths (derivation outputs), not relative subdirs
-    extensionsAbsolute = true;
-    skillsAbsolute = true;
-  };
-}
+    pi-subagents = {
+      src = call (import ./pi-subagents.nix);
+      # Whole repo is the extension (index.ts, package.json at root)
+      resources.extensions = ".";
+    };
+
+    rtk = {
+      src = call (import ./rtk.nix);
+      # Root-level index.ts + package.json
+      resources.extensions = ".";
+    };
+
+    tau = {
+      src = call (import ./tau.nix);
+      resources.extensions = "extensions";
+    };
+
+    aliases = {
+      src = call (import ./aliases.nix);
+      # Whole repo is the extension (src/, package.json at root)
+      resources.extensions = ".";
+    };
+  }
+  // agentStuff
