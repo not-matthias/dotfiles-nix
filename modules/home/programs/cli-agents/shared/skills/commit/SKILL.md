@@ -17,7 +17,7 @@ Create a git commit for the current changes using a concise Conventional Commits
 
 ## Notes
 
-- Body is OPTIONAL. If needed, add a blank line after the subject and write short paragraphs.
+- Body is **strongly encouraged** — always include one unless the change is trivially obvious (e.g., fixing a typo). The body should explain **what** changed, **why** it changed, the approach taken, and any notable decisions. A reader of `git log` should understand the change without looking at the diff.
 - Do NOT include breaking-change markers or footers.
 - Do NOT add sign-offs (no `Signed-off-by`).
 - Only commit; do NOT push.
@@ -56,3 +56,5 @@ fix: soulsync stuff
 4. If there are ambiguous extra files, ask the user for clarification before committing.
 5. Stage only the intended files (all changes if no files specified).
 6. Run `git commit -m "<subject>"` (and `-m "<body>"` if needed).
+
+<!-- Reference: https://github.com/HazAT/pi-config/blob/main/skills/commit/SKILL.md -->
