@@ -35,7 +35,9 @@ buildNpmPackage rec {
 
   postInstall = ''
     wrapProgram $out/bin/pi \
-      --set PI_SKIP_VERSION_CHECK 1
+      --set PI_SKIP_VERSION_CHECK 1 \
+      --run 'export NPM_CONFIG_PREFIX="''${NPM_CONFIG_PREFIX:-$HOME/.npm-global}"' \
+      --run 'export PATH="''${NPM_CONFIG_PREFIX:-$HOME/.npm-global}/bin:$PATH"'
   '';
 
   meta = {

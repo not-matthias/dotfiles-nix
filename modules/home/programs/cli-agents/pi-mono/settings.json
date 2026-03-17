@@ -2,9 +2,16 @@
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.3-codex",
   "defaultThinkingLevel": "medium",
+  "steeringMode": "all",
+  "followUpMode": "all",
   "showHardwareCursor": false,
   "doubleEscapeAction": "tree",
   "theme": "dark",
+  "packages": [
+    "npm:pi-web-providers",
+    "npm:pi-agentic-compaction",
+    "npm:@kaiserlich-dev/pi-queue-picker"
+  ],
   "enabledModels": [
     "openai-codex/gpt-5.3-codex:medium",
     "openai-codex/gpt-5.4:medium",

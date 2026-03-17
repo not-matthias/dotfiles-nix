@@ -48,16 +48,6 @@ in {
     entry = "context";
   };
 
-  agent-stuff-multi-edit = mkWrappedExtension {
-    name = "agent-stuff-multi-edit";
-    entry = "multi-edit";
-    prePackageJson = ''
-      mkdir -p $out/node_modules
-      # multi-edit imports "diff"; copy it locally so extension resolution works.
-      cp -r ${pkgs.pi-coding-agent}/lib/node_modules/@mariozechner/pi-coding-agent/node_modules/diff $out/node_modules/diff
-    '';
-  };
-
   agent-stuff-notify = mkWrappedExtension {
     name = "agent-stuff-notify";
     entry = "notify";
