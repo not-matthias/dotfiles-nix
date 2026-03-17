@@ -28,6 +28,7 @@
   ./kitty.nix
   ./minecraft.nix
   ./neovim.nix
+  ./niri-organize.nix
   ./rust.nix
   ./starship.nix
   ./walker.nix
