@@ -147,7 +147,7 @@ in {
             # Default rule for all windows
             {
               matches = [{}];
-              shadow.enable = true;
+              shadow.enable = false;
               geometry-corner-radius = {
                 bottom-left = 5.0;
                 bottom-right = 5.0;
