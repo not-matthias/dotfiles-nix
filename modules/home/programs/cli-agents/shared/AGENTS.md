@@ -24,6 +24,10 @@ When the users asks you to **propose** changes, or if they want to **approve** a
 
 This ensures alignment and prevents wasted work on rejected approaches.
 
+## Communication
+
+- **Asking questions:** When you need to ask the user a question, ALWAYS use the `AskUserQuestion` tool if it is available in your toolset. Never substitute plain text output for a structured question tool call.
+
 ## Code Style
 
 - **Minimize nesting:** Use early returns and inverted conditionals instead of deeply nested structures.
