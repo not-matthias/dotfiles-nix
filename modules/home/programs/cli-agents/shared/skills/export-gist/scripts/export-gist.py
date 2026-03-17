@@ -6,6 +6,7 @@ import sys
 import os
 import glob
 import subprocess
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
@@ -19,44 +20,28 @@ def find_current_conversation(project_dir: str) -> str | None:
     return max(files, key=os.path.getmtime)
 
 
-def extract_text_content(content) -> str:
-    """Extract readable text from message content (string or content blocks)."""
-    if isinstance(content, str):
-        return content
+def extract_message_parts(content) -> tuple[str, list[str]]:
+    """Extract prose text and tool call names from message content.
 
-    parts = []
+    Returns (prose_text, tool_names).
+    """
+    if isinstance(content, str):
+        return content, []
+
+    prose_parts = []
+    tool_names = []
+
     for block in content:
-        if isinstance(block, dict):
-            btype = block.get("type", "")
-            if btype == "text":
-                parts.append(block["text"])
-            elif btype == "tool_use":
-                name = block.get("name", "unknown_tool")
-                inp = block.get("input", {})
-                # Show tool calls compactly
-                if name in ("Read", "Glob", "Grep", "Edit", "Write", "Bash"):
-                    if name == "Bash":
-                        cmd = inp.get("command", "")
-                        parts.append(f"```bash\n# Tool: {name}\n{cmd}\n```")
-                    elif name == "Read":
-                        parts.append(f"*Read `{inp.get('file_path', '?')}`*")
-                    elif name == "Edit":
-                        fp = inp.get("file_path", "?")
-                        parts.append(f"*Edit `{fp}`*")
-                    elif name == "Write":
-                        fp = inp.get("file_path", "?")
-                        parts.append(f"*Write `{fp}`*")
-                    elif name == "Glob":
-                        parts.append(f"*Glob `{inp.get('pattern', '?')}`*")
-                    elif name == "Grep":
-                        parts.append(f"*Grep `{inp.get('pattern', '?')}`*")
-                else:
-                    parts.append(f"*Tool: {name}*")
-            elif btype == "tool_result":
-                # Skip tool results (too verbose)
-                pass
-            # Skip thinking blocks
-    return "\n\n".join(parts)
+        if not isinstance(block, dict):
+            continue
+        btype = block.get("type", "")
+        if btype == "text":
+            prose_parts.append(block["text"])
+        elif btype == "tool_use":
+            tool_names.append(block.get("name", "unknown"))
+        # Skip tool_result and thinking blocks
+
+    return "\n\n".join(prose_parts), tool_names
 
 
 def convert_to_markdown(jsonl_path: str) -> str:
@@ -104,19 +89,37 @@ def convert_to_markdown(jsonl_path: str) -> str:
         content = msg.get("content", "")
 
         if msg_type == "user":
-            text = extract_text_content(content)
-            if text.strip():
-                lines.append(f"## User")
+            text, _ = extract_message_parts(content)
+            prose = text.strip()
+            if prose:
+                # Inline for single-line, block for multi-line
+                if "\n" in prose:
+                    lines.append(f"**You:**\n\n{prose}")
+                else:
+                    lines.append(f"**You:** {prose}")
                 lines.append(f"")
-                lines.append(text)
+                lines.append(f"---")
                 lines.append(f"")
         elif msg_type == "assistant":
-            text = extract_text_content(content)
-            if text.strip():
-                model = msg.get("model", "")
-                lines.append(f"## Assistant" + (f" ({model})" if model else ""))
+            text, tool_names = extract_message_parts(content)
+            prose = text.strip()
+            if prose or tool_names:
+                if prose:
+                    if "\n" in prose:
+                        lines.append(f"**Claude:**\n\n{prose}")
+                    else:
+                        lines.append(f"**Claude:** {prose}")
+                if tool_names:
+                    # Summarize tool calls without listing each individually
+                    counts = Counter(tool_names)
+                    summary = ", ".join(
+                        f"{name} × {n}" if n > 1 else name
+                        for name, n in counts.most_common()
+                    )
+                    lines.append(f"")
+                    lines.append(f"*[tool calls: {summary}]*")
                 lines.append(f"")
-                lines.append(text)
+                lines.append(f"---")
                 lines.append(f"")
 
     return "\n".join(lines)
