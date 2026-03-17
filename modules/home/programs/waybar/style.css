@@ -46,16 +46,11 @@ window#waybar {
     color: @base00;
 }
 
-#idle_inhibitor,
-#custom-dnd {
-    font-size: 14px;
-    margin: 0 2px;
-    padding: 2px 6px;
-    background: transparent;
-}
-
+#custom-claude-usage,
+#custom-codex-usage,
 #custom-niri-window-index,
 #workspaces,
+.group-ai-usage,
 .group-niri-info,
 .group-system,
 .group-connectivity,
@@ -72,6 +67,13 @@ window#waybar {
     margin: 2px 1px;
     border-radius: 5px;
     color: @base00;
+}
+
+/* Items inside groups inherit group background */
+#idle_inhibitor,
+#custom-dnd {
+    padding: 3px 6px;
+    background: transparent;
 }
 
 #clock {
@@ -101,8 +103,26 @@ window#waybar {
 #custom-weather:hover,
 #custom-power_profile:hover,
 #custom-temperature:hover,
+#custom-claude-usage:hover,
+#custom-codex-usage:hover,
 #custom-niri-window-index:hover,
 #tray:hover {
     background: rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease-in-out;
+}
+
+/* AI Usage color states */
+#custom-claude-usage.claude-low,
+#custom-codex-usage.codex-low {
+    color: #a6e3a1;
+}
+
+#custom-claude-usage.claude-mid,
+#custom-codex-usage.codex-mid {
+    color: #f9e2af;
+}
+
+#custom-claude-usage.claude-high,
+#custom-codex-usage.codex-high {
+    color: #f38ba8;
 }

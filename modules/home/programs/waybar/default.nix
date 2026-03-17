@@ -25,6 +25,7 @@
     powerProfileModule = import ./modules/power-profile.nix {inherit pkgs;};
     temperatureModule = import ./modules/temperature.nix {inherit pkgs;};
     niriWindowIndexModule = import ./modules/niri-window-index.nix {inherit pkgs;};
+    aiUsageModule = import ./modules/ai-usage.nix {inherit pkgs;};
 
     # Merge all custom module configurations
     customModules =
@@ -32,7 +33,8 @@
       // weatherModule.config
       // powerProfileModule.config
       // temperatureModule.config
-      // niriWindowIndexModule.config;
+      // niriWindowIndexModule.config
+      // aiUsageModule.config;
   in {
     settings.mainbar =
       customModules
@@ -52,6 +54,7 @@
         ];
         modules-right =
           [
+            "group/ai-usage"
             "group/utils"
           ]
           ++ (
@@ -72,6 +75,14 @@
           orientation = "horizontal";
           modules = [
             "custom/niri-window-index"
+          ];
+        };
+
+        "group/ai-usage" = {
+          orientation = "horizontal";
+          modules = [
+            "custom/claude-usage"
+            "custom/codex-usage"
           ];
         };
 
