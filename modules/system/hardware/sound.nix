@@ -49,7 +49,24 @@ in {
               };
             };
           };
-          "12-bluetooth-volume" = {
+          # Use software mixer instead of hardware mixer for ALSA outputs.
+          # Prevents L/R channel imbalance when adjusting volume, which is
+          # a known issue on some hardware (e.g. Framework laptops).
+          "12-alsa-soft-mixer" = {
+            "monitor.alsa.rules" = [
+              {
+                matches = [
+                  {"node.name" = "~alsa_output.*";}
+                ];
+                actions = {
+                  "update-props" = {
+                    "api.alsa.soft-mixer" = true;
+                  };
+                };
+              }
+            ];
+          };
+          "13-bluetooth-volume" = {
             "monitor.bluez.rules" = [
               {
                 matches = [
