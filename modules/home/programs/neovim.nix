@@ -582,9 +582,13 @@
         enable = true;
         filters = {
         };
+        autoClose = true;
         settings = {
           disable_netrw = true;
           hijack_netrw = false;
+          hijack_directories = {
+            enable = false;
+          };
           git = {
             enable = true;
             ignore = false;
