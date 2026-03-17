@@ -42,6 +42,9 @@ in {
   config = mkIf cfg.enable {
     home.packages = [pkgs.pi-coding-agent];
 
+    # Exclude per-project Pi state/config from git by default
+    programs.git.ignores = mkAfter [".pi"];
+
     # Pi uses ~/.pi/agent/ as its config directory
     home.file =
       {
