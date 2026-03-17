@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  unstable,
   ...
 }:
 with lib; let
@@ -11,6 +12,10 @@ in {
   };
 
   config = mkIf cfg.enable {
+    home.packages = [
+      unstable.codex
+    ];
+
     programs.fish.shellAbbrs = {
       "cx" = "bunx @openai/codex@latest";
     };
