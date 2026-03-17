@@ -6,39 +6,26 @@
   "permissions": {
     "defaultMode": "bypassPermissions",
     "allow": [
-        "Bash",
-        "Read",
-        "Edit",
-        "Write",
-        "WebFetch",
-        "Grep",
-        "Glob",
-        "LS",
-        "MultiEdit",
-        "NotebookRead",
-        "NotebookEdit",
-        "TodoRead",
-        "TodoWrite",
-        "WebSearch"
+      "Bash",
+      "Read",
+      "Edit",
+      "Write",
+      "WebFetch",
+      "Grep",
+      "Glob",
+      "LS",
+      "MultiEdit",
+      "NotebookRead",
+      "NotebookEdit",
+      "TodoRead",
+      "TodoWrite",
+      "WebSearch"
     ],
-    "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)"
-    ]
+    "deny": ["Read(./.env)", "Read(./.env.*)"]
   },
-  "model": "haiku",
+  "model": "opus",
+  "theme": "light",
   "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "@load-agents-md-hook@",
-            "timeout": 5000
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "matcher": "",
@@ -56,5 +43,16 @@
   },
   "cleanupPeriodDays": 99999,
   "skipDangerousModePermissionPrompt": true,
+  "enabledPlugins": {
+    "codspeed-internal@codspeed-internal-marketplace": true
+  },
+  "extraKnownMarketplaces": {
+    "codspeed-internal-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "CodSpeedHQ/platform"
+      }
+    }
+  },
   "$schema": "https://json.schemastore.org/claude-code-settings.json"
 }
