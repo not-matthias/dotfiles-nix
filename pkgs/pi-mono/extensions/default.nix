@@ -8,15 +8,6 @@
   agentStuff = import ./agent-stuff.nix {inherit pkgs;};
 in
   {
-    fzf = {
-      src = withRuntimeDeps {
-        src = call (import ./fzf.nix);
-        npmDepsHash = "sha256-Ewq0UJfXjuMx6KoCDf/PYhtv4VM4Cqrw3pyX4mXHxow=";
-      };
-      # Root-level index.ts + package.json
-      resources.extensions = ".";
-    };
-
     mermaid = {
       src = withRuntimeDeps {
         src = call (import ./mermaid.nix);
@@ -28,6 +19,27 @@ in
 
     askuserquestion = {
       src = call (import ./askuserquestion.nix);
+      # Whole repo is the extension (src/, package.json at root)
+      resources.extensions = ".";
+    };
+
+    hashline-edit = {
+      src = withRuntimeDeps {
+        src = pkgs.runCommand "pi-hashline-edit-with-lock" {} ''
+          mkdir -p $out
+          cp -R ${call (import ./hashline-edit.nix)}/. $out/
+          chmod -R u+w $out
+          ${pkgs.nodejs_22}/bin/node -e "
+            const fs = require('fs');
+            const path = '$out/package.json';
+            const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+            delete pkg.peerDependencies;
+            fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
+          "
+          cp ${./hashline-edit-package-lock.json} $out/package-lock.json
+        '';
+        npmDepsHash = "sha256-keKUkm42SqfWT3heuV5/cLRC2TPP4qaKR8rYoYcHtO0=";
+      };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
     };

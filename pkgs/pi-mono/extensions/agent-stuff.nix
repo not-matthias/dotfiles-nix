@@ -21,20 +21,13 @@
     '';
     resources.extensions = ".";
   };
-
-  filteredSkills = pkgs.runCommand "agent-stuff-skills" {} ''
-    cp -r ${src}/skills $out
-    chmod -R u+w $out
-    rm -rf $out/commit $out/github $out/mermaid $out/uv
-  '';
 in {
   # Shared non-extension resources from the upstream repo.
+  # Intentionally do not expose upstream agent-stuff skills.
   agent-stuff = {
     inherit src;
     resources.themes = "pi-themes";
-    resources.skills = filteredSkills;
     resources.prompts = "commands";
-    skillsAbsolute = true;
   };
 
   # Separate packages so pi discovers each extension as its own path.
@@ -56,11 +49,6 @@ in {
   agent-stuff-session-breakdown = mkWrappedExtension {
     name = "agent-stuff-session-breakdown";
     entry = "session-breakdown";
-  };
-
-  agent-stuff-todos = mkWrappedExtension {
-    name = "agent-stuff-todos";
-    entry = "todos";
   };
 
   agent-stuff-uv = mkWrappedExtension {
