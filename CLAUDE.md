@@ -350,7 +350,7 @@ hardware.ssd.enable = true;
 6. Commit with conventional message format
 
 ### Documentation
-- Keep an append-only log in `.claude/SCRATCHPAD.md` for significant changes
+- Keep an append-only log in `.agents/SCRATCHPAD.md` for significant changes
 - Include date and brief description of what changed and why
 - Useful for future reference and understanding decision history
 
