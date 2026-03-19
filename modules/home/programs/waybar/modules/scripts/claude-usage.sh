@@ -70,7 +70,35 @@ rl_note=""
 if [ "$rate_limited" -eq 1 ]; then
   rl_note="\n⚠ Rate limited — showing cached data"
 fi
-tooltip="Claude Code Usage\n━━━━━━━━━━━━━━━━━━━━━━━━\n5h:  ${fh_pct}%  ${fh_eta}\n7d:  ${sd_pct}%  ${sd_eta}${rl_note}"
 
-printf '{"text":"󰜡 %s%%","tooltip":"%s","class":"%s","percentage":%s}\n' \
-  "$fh_pct" "$tooltip" "$cls" "$fh_pct"
+# Fetch 2x promo status (best-effort, don't block on failure)
+twox_note=""
+twox_json=$(curl -s --max-time 3 "https://isclaude2x.com/json" 2>/dev/null || true)
+if [ -n "$twox_json" ]; then
+  is2x=$(echo "$twox_json" | jq -r '.is2x // false')
+  promo_active=$(echo "$twox_json" | jq -r '.promoActive // false')
+  if [ "$promo_active" = "true" ]; then
+    if [ "$is2x" = "true" ]; then
+      expires_in=$(echo "$twox_json" | jq -r '.["2xWindowExpiresIn"] // ""')
+      twox_note="\n🐇 2× active"
+      [ -n "$expires_in" ] && twox_note="${twox_note} (expires in ${expires_in})"
+    else
+      std_expires=$(echo "$twox_json" | jq -r '.standardWindowExpiresIn // ""')
+      twox_note="\n🐢 1× mode"
+      [ -n "$std_expires" ] && twox_note="${twox_note} (2× in ${std_expires})"
+    fi
+  fi
+fi
+
+tooltip="Claude Code Usage\n━━━━━━━━━━━━━━━━━━━━━━━━\n5h:  ${fh_pct}%  ${fh_eta}\n7d:  ${sd_pct}%  ${sd_eta}${twox_note}${rl_note}"
+
+# At 100%: show reset timer instead of percentage (7d takes priority)
+bar_text="${fh_pct}%"
+if [ "$sd_pct" -ge 100 ]; then
+  bar_text="${sd_eta}"
+elif [ "$fh_pct" -ge 100 ]; then
+  bar_text="${fh_eta}"
+fi
+
+printf '{"text":"󰜡 %s","tooltip":"%s","class":"%s","percentage":%s}\n' \
+  "$bar_text" "$tooltip" "$cls" "$fh_pct"

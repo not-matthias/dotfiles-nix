@@ -65,5 +65,13 @@ if [ "$rate_limited" -eq 1 ]; then
 fi
 tooltip="Codex CLI Usage\n━━━━━━━━━━━━━━━━━━━━━━━━\n5h:  ${fh_pct}%  ${fh_eta}\n7d:  ${sd_pct}%  ${sd_eta}${rl_note}"
 
-printf '{"text":"󰚩 %s%%","tooltip":"%s","class":"%s","percentage":%s}\n' \
-  "$fh_pct" "$tooltip" "$cls" "$fh_pct"
+# At 100%: show reset timer instead of percentage (7d takes priority)
+bar_text="${fh_pct}%"
+if [ "$sd_pct" -ge 100 ]; then
+  bar_text="${sd_eta}"
+elif [ "$fh_pct" -ge 100 ]; then
+  bar_text="${fh_eta}"
+fi
+
+printf '{"text":"󰚩 %s","tooltip":"%s","class":"%s","percentage":%s}\n' \
+  "$bar_text" "$tooltip" "$cls" "$fh_pct"

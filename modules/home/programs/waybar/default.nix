@@ -83,6 +83,7 @@
           modules = [
             "custom/claude-usage"
             "custom/codex-usage"
+            "custom/amp-usage"
           ];
         };
 

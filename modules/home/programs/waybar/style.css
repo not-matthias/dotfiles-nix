@@ -48,6 +48,7 @@ window#waybar {
 
 #custom-claude-usage,
 #custom-codex-usage,
+#custom-amp-usage,
 #custom-niri-window-index,
 #workspaces,
 .group-ai-usage,
@@ -105,24 +106,10 @@ window#waybar {
 #custom-temperature:hover,
 #custom-claude-usage:hover,
 #custom-codex-usage:hover,
+#custom-amp-usage:hover,
 #custom-niri-window-index:hover,
 #tray:hover {
     background: rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease-in-out;
 }
 
-/* AI Usage color states */
-#custom-claude-usage.claude-low,
-#custom-codex-usage.codex-low {
-    color: #a6e3a1;
-}
-
-#custom-claude-usage.claude-mid,
-#custom-codex-usage.codex-mid {
-    color: #f9e2af;
-}
-
-#custom-claude-usage.claude-high,
-#custom-codex-usage.codex-high {
-    color: #f38ba8;
-}
