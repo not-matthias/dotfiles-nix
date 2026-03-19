@@ -32,22 +32,6 @@ in
       resources.extensions = ".";
     };
 
-    terminal-theme = {
-      src = call (import ./terminal-theme.nix);
-      resources.themes = "themes";
-    };
-
-    plannotator = {
-      src = call (import ./plannotator.nix);
-      resources.extensions = "apps/pi-extension";
-    };
-
-    rtk = {
-      src = call (import ./rtk.nix);
-      # Root-level index.ts + package.json
-      resources.extensions = ".";
-    };
-
     tasks = {
       src = withRuntimeDeps {
         src = call (import ./tasks.nix);
@@ -57,16 +41,10 @@ in
       resources.extensions = ".";
     };
 
-    pi-subagents = {
-      src = call (import ./pi-subagents.nix);
-      # Whole repo is the extension (index.ts, package.json at root)
+    # Custom local extensions (no fetching needed)
+    tab-queue = {
+      src = ./custom/tab-queue;
       resources.extensions = ".";
-    };
-
-    sub-bar = {
-      src = call (import ./sub-bar.nix);
-      # Use workspace package path so ../pi-sub-core/index.ts resolves inside the fetched monorepo
-      resources.extensions = "packages/sub-bar";
     };
   }
   // agentStuff
