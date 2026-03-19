@@ -63,6 +63,10 @@ in {
       ''
         eval (${pkgs.direnv}/bin/direnv hook fish)
         atuin init fish --disable-up-arrow | source
+
+        # Disable kitty keyboard protocol — VSCode's xterm.js doesn't fully support it,
+        # causing raw escape sequences (e.g. Shift+Space → "\e[32:32;2u") to leak through.
+        printf '\e[<u'
       ''
       + fishPrompt;
     shellInit = ''
@@ -82,6 +86,17 @@ in {
         	mkdir -p $path
         	and cd $path
         end
+      '';
+
+      zj = ''
+        set -l dir (zoxide query $argv)
+        and zeditor $dir
+        and exit
+      '';
+      cj = ''
+        set -l dir (zoxide query $argv)
+        and code $dir
+        and exit
       '';
 
       # FIXME: We still have to use 'export GRANTED_ALIAS_CONFIGURED="true"' when running with bash
