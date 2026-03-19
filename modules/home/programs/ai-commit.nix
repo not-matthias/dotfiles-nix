@@ -21,6 +21,13 @@ with lib; let
           exit 1
         fi
 
+        if [ -f .pre-commit-config.yaml ] || [ -f .pre-commit-config.yml ]; then
+          echo "Running pre-commit hooks..."
+          if ! ${pkgs.pre-commit}/bin/pre-commit run --all-files; then
+            echo "Warning: pre-commit hooks failed, continuing anyway."
+          fi
+        fi
+
         diff=$(${pkgs.git}/bin/git diff --cached)
         log=$(${pkgs.git}/bin/git log -20 --pretty=format:"%s")
 
