@@ -1,6 +1,6 @@
 # Documentation Helper
 
-Creates a new documentation entry in `.claude/docs/` following the established patterns.
+Creates a new documentation entry in `.agents/docs/` following the established patterns.
 
 Usage: `/doc <title>`
 
@@ -14,7 +14,7 @@ Example:
 /doc fix-waybar-battery-issue
 ```
 
-Creates: `.claude/docs/2025-09-26-fix-waybar-battery-issue.md`
+Creates: `.agents/docs/2025-09-26-fix-waybar-battery-issue.md`
 
 ## Template Structure
 - Date and title header

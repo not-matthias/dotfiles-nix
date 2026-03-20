@@ -30,6 +30,10 @@ This ensures alignment and prevents wasted work on rejected approaches.
 
 ## Code Style
 
+<critical>
+Write extremely easy to consume code. Optimize for how easy the code is to read. Make the code skimmable. Avoid cleverness. Use early returns. This is the single most important code style rule.
+</critical>
+
 - **Minimize nesting:** Use early returns and inverted conditionals instead of deeply nested structures.
 - **Max nesting depth:** 2-3 levels deep. Avoid 4+ level nesting.
 
@@ -44,26 +48,19 @@ This ensures alignment and prevents wasted work on rejected approaches.
 
 ## Documentation
 
-- Put all the temporary files and documentation you create into the `.claude` folder (e.g. `.claude/SCRATCHPAD.md`, `.claude/docs/2025-09-13-add-button.md`, ...).
-- Prefix all documentation entries with the current date in YYYY-MM-DD format and put them into the `.claude/docs` directory.
-- Store any intermediate scripts (shell scripts, Python scripts, etc.) in the `.claude/scripts/` folder.
+- Put all the temporary files and documentation you create into the `.agents` folder (e.g. `.agents/SCRATCHPAD.md`, `.agents/docs/2025-09-13-add-button.md`, ...).
+- Prefix all documentation entries with the current date in YYYY-MM-DD format and put them into the `.agents/docs` directory.
+- Store any intermediate scripts (shell scripts, Python scripts, etc.) in the `.agents/scripts/` folder.
 
 ## Available CLI Tools
 
 - **Core:** gh, rg (ripgrep), fd, eza, git, delta
 - **System Info:** du-dust, duf, hexyl, tealdeer
 - **Python:** ALWAYS use uv for all Python package and environment operations.
-- **Navigation:** You can use zoxide for directory jumping (e.g., j <folder>).
+- **Navigation:** When the user references a project or directory by name (e.g. "save this to dotfiles", "open apollo", "check the logs in my-service"), use zoxide (`z <name>`) to resolve the full path. Zoxide tracks frecency so partial names usually resolve correctly. Use it any time you need to locate a directory — navigating, saving files, reading from it, etc.
 - **NixOS:** When a program isn't installed use `nix-shell` or `nix run`
 
 ## Testing
 
 - When writing code: Use red-green testing (write a failing test first, make it pass, refactor).
 - When fixing a bug: Write a test that reproduces the bug before fixing it.
-
-## Skills Resources
-
-For creating and managing skills that extend agent capabilities:
-- **Agent Skills Documentation**: https://agentskills.io (short: https://agentskills.io/llms.txt)
-- Skills are stored in `~/.claude/skills/` (Claude-specific) and `~/.config/skills/` (global for all agents)
-- **Source of truth for shared skills**: `modules/home/programs/cli-agents/shared/skills/` in the dotfiles-nix repo (symlinked to `~/.claude/skills/` etc. via Nix)

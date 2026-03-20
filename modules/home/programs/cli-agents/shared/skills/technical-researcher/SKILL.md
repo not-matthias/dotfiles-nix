@@ -2,6 +2,8 @@
 name: technical-researcher
 description: Systematic technical research and brainstorming. Given a question, recursively explores attached specifications, source code, documentation, GitHub repositories, and authoritative online sources to build comprehensive, accurate answers. Surfaces edge cases, caveats, and implementation details that matter.
 license: MIT
+context: fork
+agent: Explore
 ---
 
 <!-- Source: https://github.com/0avx/claude-skills/blob/main/technical-researcher.md -->

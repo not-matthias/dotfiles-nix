@@ -2,6 +2,8 @@
 name: extract-knowledge
 description: Extract patterns and challenges from past Claude Code conversation logs and convert them into reusable skills or memory entries. Run periodically to capture recurring solutions.
 license: MIT
+context: fork
+agent: Explore
 ---
 
 # Knowledge Extraction from Claude Code Logs

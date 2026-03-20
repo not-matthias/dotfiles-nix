@@ -2,6 +2,8 @@
 name: learn-codebase
 description: Discover project conventions and surface security concerns. Use when starting work in a new or unfamiliar project, when asked to "learn the codebase", "check project rules", "what are the conventions", "onboard to this project", or "anything shady in this codebase". Scans agent config files (.claude/, .cursor/, CLAUDE.md, etc.) and runs a security/smell sweep for hardcoded secrets, insecure patterns, suspicious dependencies, and dangerous configurations.
 license: From HazAT/pi-config
+context: fork
+agent: Explore
 ---
 
 <!-- Source: https://github.com/HazAT/pi-config/blob/main/skills/learn-codebase/SKILL.md -->

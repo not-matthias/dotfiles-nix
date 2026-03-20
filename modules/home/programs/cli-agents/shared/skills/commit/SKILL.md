@@ -48,13 +48,19 @@ chore: update flake
 fix: soulsync stuff
 ```
 
+## Context
+
+- Working tree status: !`git status --short`
+- Staged diff: !`git diff --cached`
+- Unstaged diff: !`git diff`
+- Recent commit style: !`git log -n 20 --pretty=format:%s`
+
 ## Steps
 
 1. Infer from the prompt if the user provided specific file paths/globs and/or additional instructions.
-2. Review `git status` and `git diff` to understand the current changes (limit to argument-specified files if provided).
-3. (Optional) Run `git log -n 50 --pretty=format:%s` to see commonly used scopes.
-4. If there are ambiguous extra files, ask the user for clarification before committing.
-5. Stage only the intended files (all changes if no files specified).
-6. Run `git commit -m "<subject>"` (and `-m "<body>"` if needed).
+2. Review the embedded context above to understand the current changes (limit to argument-specified files if provided).
+3. If there are ambiguous extra files, ask the user for clarification before committing.
+4. Stage only the intended files (all changes if no files specified).
+5. Run `git commit -m "<subject>"` (and `-m "<body>"` if needed).
 
 <!-- Reference: https://github.com/HazAT/pi-config/blob/main/skills/commit/SKILL.md -->

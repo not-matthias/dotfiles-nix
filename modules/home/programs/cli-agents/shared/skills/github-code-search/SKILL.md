@@ -2,6 +2,8 @@
 name: github-code-search
 description: Search GitHub code using gh code-search command. Use when looking for reference implementations, code examples, or specific patterns across GitHub repositories. Particularly useful for Nix configurations, language-specific patterns, or learning how others solved similar problems.
 license: MIT
+context: fork
+agent: Explore
 ---
 
 # GitHub Code Search via gh CLI

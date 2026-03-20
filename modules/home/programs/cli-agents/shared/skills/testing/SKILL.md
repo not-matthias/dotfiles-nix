@@ -271,6 +271,84 @@ fn total_never_negative_after_large_discount() {
 
 ---
 
+## Worked Example: Executable Detection
+
+Parameterized tests shine when testing a single function against many inputs. Use two test functions (positive and negative) instead of a boolean parameter — it's more readable and the test names are self-documenting.
+
+### Bad: one test per case
+
+```rust
+#[test]
+fn basic_java_command() {
+    assert!(command_has_executable("java -jar bench.jar", &["java"]));
+}
+
+#[test]
+fn java_with_absolute_path() {
+    assert!(command_has_executable("/usr/bin/java -jar bench.jar", &["java"]));
+}
+
+#[test]
+fn java_with_env_prefix() {
+    assert!(command_has_executable("FOO=bar java -jar bench.jar", &["java"]));
+}
+
+#[test]
+fn gradle_chained_with_and() {
+    assert!(command_has_executable("cd /app && gradle bench", &["gradle"]));
+}
+
+#[test]
+fn javascript_must_not_match_java() {
+    assert!(!command_has_executable("javascript-runtime run", &["java"]));
+}
+
+#[test]
+fn javascript_path_must_not_match_java() {
+    assert!(!command_has_executable("/home/user/javascript/run.sh", &["java"]));
+}
+
+#[test]
+fn scargoship_must_not_match_cargo() {
+    assert!(!command_has_executable("scargoship build", &["cargo"]));
+}
+```
+
+7 tests, lots of boilerplate. Adding a new case means copy-pasting an entire function. The positive/negative intent is buried in `assert!` vs `assert!`.
+
+### Good: parameterized with two functions
+
+```rust
+use rstest::rstest;
+
+#[rstest]
+#[case("java -jar bench.jar", &["java"])]
+#[case("/usr/bin/java -jar bench.jar", &["java"])]
+#[case("FOO=bar java -jar bench.jar", &["java"])]
+#[case("cd /app && gradle bench", &["gradle"])]
+#[case("cat file | python script.py", &["python"])]
+#[case("sudo java -jar bench.jar", &["java"])]
+#[case("(cd /app && java -jar bench.jar)", &["java"])]
+#[case("setup.sh; java -jar bench.jar", &["java"])]
+#[case("try_first || java -jar bench.jar", &["java"])]
+fn matches(#[case] command: &str, #[case] names: &[&str]) {
+    assert!(command_has_executable(command, names));
+}
+
+#[rstest]
+#[case("javascript-runtime run", &["java"])]
+#[case("/home/user/javascript/run.sh", &["java"])]
+#[case("scargoship build", &["cargo"])]
+#[case("node index.js", &["gradle", "java", "maven", "mvn"])]
+fn does_not_match(#[case] command: &str, #[case] names: &[&str]) {
+    assert!(!command_has_executable(command, names));
+}
+```
+
+Same coverage, adding a case is one line. The function names (`matches` / `does_not_match`) make the intent obvious without reading the assertion.
+
+---
+
 ## References
 
 - [Testing Implementation Details — Kent C. Dodds](https://kentcdodds.com/blog/testing-implementation-details)

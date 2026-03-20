@@ -1,6 +1,8 @@
 ---
 name: skill-hunter
 description: Find and download skills. Use when you need to discover existing skills from GitHub repositories and store them in the correct local skills category. Results in discovered skills being downloaded into the users dotfile repo.
+context: fork
+agent: Explore
 ---
 
 # Skill Hunting.

@@ -1,5 +1,5 @@
 ---
-name: tmux-cli
+name: tmux
 description: Use when manipulating tmux sessions, creating windows or panes, or looking up tmux CLI commands for terminal multiplexer operations
 ---
 

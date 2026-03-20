@@ -6,6 +6,8 @@ description: >
   "turn this paper into a skill", "make this PDF reusable", "encode this research",
   or wants project-specific decisions backed by a specific paper without re-uploading it.
 license: MIT
+context: fork
+agent: Explore
 ---
 
 # Paper to Skill

@@ -2,6 +2,8 @@
 name: fact-checker
 description: Systematic fact-checking for technical blog posts. Extracts every claim (explicit and implicit), cross-references against attached specifications, architecture manuals, source code, and documentation, then generates a verification report with citations and verdicts.
 license: MIT
+context: fork
+agent: Explore
 ---
 
 <!-- Source: https://github.com/0avx/claude-skills/blob/main/fact-checker.md -->
