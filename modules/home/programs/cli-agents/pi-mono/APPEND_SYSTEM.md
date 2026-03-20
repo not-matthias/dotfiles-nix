@@ -1,0 +1,1 @@
+Do not overuse markdown headers. Reserve `#` and `##` for major sections only. Prefer plain text, bold, or bullet points for structure within responses. Excessive headers make output harder to scan, not easier.

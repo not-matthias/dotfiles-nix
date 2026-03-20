@@ -2,21 +2,17 @@
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.3-codex",
   "defaultThinkingLevel": "medium",
-  "steeringMode": "all",
-  "followUpMode": "all",
+  "hideThinkingBlock": "true",
+  "quietStartup": true,
+  "collapseChangelog": "true",
+  "steeringMode": "one-at-a-time",
+  "followUpMode": "one-at-a-time",
   "showHardwareCursor": false,
   "doubleEscapeAction": "tree",
-  "theme": "dark",
-  "packages": [
-    "npm:pi-web-providers",
-    "npm:pi-agentic-compaction",
-    "npm:@kaiserlich-dev/pi-queue-picker"
-  ],
+  "theme": "stylix-latte-red",
   "enabledModels": [
     "openai-codex/gpt-5.3-codex:medium",
     "openai-codex/gpt-5.4:medium",
-    "openai-codex/gpt-5.4-mini:medium",
-    "openai-codex/gpt-5.4-nano:medium",
     "anthropic/claude-opus-4-6:medium",
     "anthropic/claude-sonnet-4-6:medium",
     "anthropic/claude-haiku-4-5:off"

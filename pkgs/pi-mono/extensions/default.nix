@@ -53,6 +53,15 @@ in
       resources.extensions = ".";
     };
 
+    subagents = {
+      src = withRuntimeDeps {
+        src = call (import ./subagents.nix);
+        npmDepsHash = "sha256-eryAWduGdUNWyXHj+H8GFjtUxAOY+sGUqxxIcbeC6ls=";
+      };
+      # Whole repo is the extension (src/, package.json at root)
+      resources.extensions = ".";
+    };
+
     # Custom local extensions (no fetching needed)
     tab-queue = {
       src = ./custom/tab-queue;

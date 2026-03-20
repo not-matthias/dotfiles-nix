@@ -8,6 +8,7 @@ with lib; let
   cfg = config.programs.cli-agents.pi-mono;
 
   extensions = import ../../../../../pkgs/pi-mono/extensions {inherit pkgs;};
+  packages = import ../../../../../pkgs/pi-mono/packages {inherit pkgs;};
 
   # Generate home.file entries for a single extension's resources.
   # Each resource type (extensions, skills, themes, prompts) gets symlinked
@@ -34,6 +35,23 @@ with lib; let
 
   # Merge all extension file entries
   extensionFiles = foldlAttrs (acc: name: ext: acc // mkExtensionFiles name ext) {} extensions;
+
+  # Symlink npm packages into ~/.pi/agent/packages/<name> so settings.json
+  # can reference them as local paths instead of runtime npm: installs
+  packageFiles = mapAttrs' (name: src:
+    nameValuePair ".pi/agent/packages/${name}" {
+      source = src;
+    })
+  packages;
+
+  # Generate settings.json with local package paths instead of npm: prefixes
+  settingsBase = builtins.fromJSON (builtins.readFile ./settings.json);
+  settings =
+    settingsBase
+    // {
+      packages = map (name: "./packages/${name}") (builtins.attrNames packages);
+    };
+  settingsFile = pkgs.writeText "pi-settings.json" (builtins.toJSON settings);
 in {
   options.programs.cli-agents.pi-mono = {
     enable = mkEnableOption "Pi-Mono CLI agent";
@@ -51,8 +69,14 @@ in {
         ".pi/agent/AGENTS.md" = {
           source = ../shared/AGENTS.md;
         };
+        ".pi/APPEND_SYSTEM.md" = {
+          source = ./APPEND_SYSTEM.md;
+        };
         ".pi/agent/settings.json" = {
-          source = ./settings.json;
+          source = settingsFile;
+        };
+        ".pi/agent/themes/stylix-latte-red.json" = {
+          source = ./themes/stylix-latte-red.json;
         };
         ".pi/agent/prompts/shared" = {
           source = ../shared/commands;
@@ -62,7 +86,12 @@ in {
           source = ../shared/skills;
           recursive = true;
         };
+        ".pi/agent/agents/shared" = {
+          source = ../shared/sub-agents;
+          recursive = true;
+        };
       }
-      // extensionFiles;
+      // extensionFiles
+      // packageFiles;
   };
 }
