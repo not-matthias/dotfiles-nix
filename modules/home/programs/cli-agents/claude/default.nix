@@ -35,6 +35,10 @@ in {
         source = ../shared/skills;
         recursive = true;
       };
+      ".claude/agents" = {
+        source = ../shared/sub-agents;
+        recursive = true;
+      };
       ".claude/settings.json" = {
         source = ./settings.json;
       };

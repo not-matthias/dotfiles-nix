@@ -32,6 +32,10 @@ in {
         source = ../shared/skills;
         recursive = true;
       };
+      ".codex/agents" = {
+        source = ../shared/sub-agents;
+        recursive = true;
+      };
       ".codex/config.toml" = {
         source = ./config.toml;
       };
