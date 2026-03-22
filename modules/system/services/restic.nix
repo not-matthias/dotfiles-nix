@@ -389,6 +389,12 @@ in {
             default = "hourly";
             description = "Backup schedule (systemd timer format)";
           };
+
+          randomizedDelay = mkOption {
+            type = types.str;
+            default = "15min";
+            description = "Randomized delay for backup start";
+          };
         };
       };
       default = {};
@@ -776,6 +782,7 @@ in {
           timerConfig = {
             OnCalendar = config.services.restic.localBackup.schedule;
             Persistent = true;
+            RandomizedDelaySec = config.services.restic.localBackup.randomizedDelay;
           };
           notificationTitle = "Local Backup";
           notificationTags = "backup,local,restic";
