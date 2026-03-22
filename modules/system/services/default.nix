@@ -28,6 +28,7 @@
   ./nfs.nix
   ./nitter.nix
   ./nocodb.nix
+  ./octo-fiesta.nix
   ./ntfy.nix
   ./ollama.nix
   ./open-webui.nix

@@ -195,6 +195,14 @@ in {
                 siteMonitor = "https://music.${domain}";
               };
             })
+            (includeService "octo-fiesta" {
+              "Octo Fiesta" = {
+                description = "Subsonic Proxy";
+                icon = "navidrome";
+                href = "https://music-proxy.${domain}";
+                siteMonitor = "https://music-proxy.${domain}";
+              };
+            })
             (includeService "twenty" {
               Twenty = {
                 description = "Twenty";
