@@ -51,13 +51,21 @@ in {
       target.x86_64-unknown-linux-gnu = {
         # rustflags = ["-C" "link-arg=-fuse-ld=${pkgs.mold}/bin/mold"];
         # rustflags = ["-Zthreads=8"];
-        rustflags = ["-Clink-arg=-fuse-ld=lld"];
+        # rustflags = ["-Clink-arg=-fuse-ld=lld" "-Zthreads=8" "-Csymbol-mangling-version=v0"];
       };
       build = {
-        rustflags = ["-Clink-arg=-fuse-ld=lld"];
+        # rustflags = ["-Clink-arg=-fuse-ld=lld" "-Zthreads=8" "-Csymbol-mangling-version=v0"];
         # rustc-wrapper = "${pkgs.sccache}/bin/sccache";
       };
 
+      # unstable = {
+      #   build-dir-new-layout = true;
+      #   gc = true;
+      #   gitoxide = true;
+      #   mtime-on-use = true;
+      #   checksum-freshness = true;
+      #   fine-grain-locking = true;
+      # };
       alias = {
         b = "build";
         c = "check";
