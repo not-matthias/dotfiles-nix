@@ -24,7 +24,7 @@ with lib; let
           if isAbsolute type
           then subdir
           else "${ext.src}/${subdir}";
-        recursive = true;
+        recursive = false;
       };
     };
   in
@@ -80,15 +80,15 @@ in {
         };
         ".pi/agent/prompts/shared" = {
           source = ../shared/commands;
-          recursive = true;
+          recursive = false;
         };
         ".pi/agent/skills/shared" = {
           source = ../shared/skills;
-          recursive = true;
+          recursive = false;
         };
         ".pi/agent/agents/shared" = {
           source = ../shared/sub-agents;
-          recursive = true;
+          recursive = false;
         };
         # Extension config files
         ".pi/agent/extensions/guardrails.json" = {
