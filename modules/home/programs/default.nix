@@ -42,6 +42,7 @@
   ./video-journal.nix
   ./swaylock.nix
   ./webapps.nix
+  ./noctalia.nix
   ./obsidian.nix
   ./solidtime-desktop.nix
   ./ssh.nix

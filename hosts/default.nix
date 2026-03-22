@@ -13,6 +13,7 @@
   stylix,
   quickshell,
   niri,
+  noctalia,
   ...
 }: let
   nixosBox = arch: base: name: domain: let
@@ -84,6 +85,7 @@
           stylix
           quickshell
           niri
+          noctalia
           ;
       };
       modules =
@@ -106,6 +108,7 @@
                   stable
                   unstable
                   stylix
+                  noctalia
                   ;
                 addons = nur.repos.rycee.firefox-addons;
               };

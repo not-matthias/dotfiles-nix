@@ -86,6 +86,15 @@
       url = "github:AdnanHodzic/auto-cpufreq";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.noctalia-qs.follows = "noctalia-qs";
+    };
+    noctalia-qs = {
+      url = "github:noctalia-dev/noctalia-qs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs = {
@@ -110,6 +119,7 @@
       import ./hosts {
         inherit (nixpkgs) lib;
         inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix stylix quickshell niri nix-webapps;
+        inherit (flakes) noctalia;
       }
     );
 
