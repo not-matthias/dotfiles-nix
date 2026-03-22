@@ -35,6 +35,9 @@ with lib; let
     }
   ];
 
+  # Desired workspace order (first = topmost)
+  desiredOrder = map (r: r.workspace) workspaceRules;
+
   jq = "${pkgs.jq}/bin/jq";
   niri = "niri";
 
@@ -94,6 +97,26 @@ with lib; let
       else
         echo "  Skip '$title' ($app_id) - no matching rule"
       fi
+    done
+
+    echo ""
+    echo "=== Reordering workspaces ==="
+
+    # Push each workspace to the top in reverse desired order.
+    # After the loop, the first desired workspace is at the top.
+    max_moves=20
+    for ws_name in ${lib.concatMapStringsSep " " (ws: ''"${ws}"'') (lib.reverseList desiredOrder)}; do
+      ws_id=$(${niri} msg -j workspaces | ${jq} -r --arg name "$ws_name" --arg mon "$MAIN_MONITOR" \
+        '.[] | select(.name == $name and .output == $mon) | .id')
+      if [ -z "$ws_id" ]; then
+        continue
+      fi
+
+      ${niri} msg action focus-workspace "$ws_name"
+      for _ in $(seq 1 $max_moves); do
+        ${niri} msg action move-workspace-up 2>/dev/null || true
+      done
+      echo "  Pinned '$ws_name' to top"
     done
 
     echo ""
