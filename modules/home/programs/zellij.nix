@@ -1,4 +1,36 @@
 {unstable, ...}: {
+  programs.fish.interactiveShellInit = ''
+    # Wrap zellij to auto-name sessions (rename-session is broken inside zellij, so we set it at launch)
+    function zellij --wraps=zellij
+      if test (count $argv) -eq 0
+        set -l name
+        if set -l git_root (git rev-parse --show-toplevel 2>/dev/null)
+          set name (basename $git_root)
+        else
+          set name (basename $PWD)
+        end
+        command zellij attach --create "$name"
+      else
+        command zellij $argv
+      end
+    end
+
+    # Auto-rename zellij tab to git repo or directory name on cd
+    if set -q ZELLIJ
+      function __zellij_update_tabname --on-variable PWD
+        set -l name
+        if set -l git_root (git rev-parse --show-toplevel 2>/dev/null)
+          set name (basename $git_root)
+        else
+          set name (basename $PWD)
+        end
+        command nohup zellij action rename-tab "$name" >/dev/null 2>&1 &
+        disown
+      end
+
+      __zellij_update_tabname
+    end
+  '';
   programs.zellij = {
     enable = true;
     package = unstable.zellij;
