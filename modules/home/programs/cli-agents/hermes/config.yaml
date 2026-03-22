@@ -1,0 +1,18 @@
+model:
+  provider: "codex"
+  default: "gpt-5.3-codex"
+
+terminal:
+  backend: "local"
+  timeout: 180
+
+agent:
+  max_turns: 60
+  reasoning_effort: "medium"
+
+memory:
+  memory_enabled: true
+  user_profile_enabled: true
+
+toolsets:
+  - "all"

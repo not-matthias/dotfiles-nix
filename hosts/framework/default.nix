@@ -125,6 +125,10 @@
       gpg-agent.enable = true;
     };
 
+    systemd.user.services.home-manager = {
+      serviceConfig.TimeoutStartSec = "1min";
+    };
+
     nix.settings = {
       substituters = [
         "https://cache.nixos.org"
