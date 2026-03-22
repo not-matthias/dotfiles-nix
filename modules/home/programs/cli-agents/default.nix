@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  unstable,
   ...
 }: let
   anyCliAgentEnabled =
@@ -24,6 +25,7 @@ in {
       rizin
       ghidra-cli
       rtk
+      unstable.gogcli
     ];
 
     # Exclude shared agent scratch/working files from git by default
