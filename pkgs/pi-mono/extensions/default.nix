@@ -62,6 +62,24 @@ in
       resources.extensions = ".";
     };
 
+    # TODO: add pnpmDepsHash once off mobile hotspot
+    guardrails = {
+      src = call (import ./guardrails.nix);
+      resources.extensions = ".";
+    };
+
+    # TODO: add pnpmDepsHash once off mobile hotspot
+    toolchain = {
+      src = call (import ./toolchain.nix);
+      resources.extensions = ".";
+    };
+
+    # TODO: add pnpmDepsHash once off mobile hotspot
+    processes = {
+      src = call (import ./processes.nix);
+      resources.extensions = ".";
+    };
+
     # Custom local extensions (no fetching needed)
     tab-queue = {
       src = ./custom/tab-queue;

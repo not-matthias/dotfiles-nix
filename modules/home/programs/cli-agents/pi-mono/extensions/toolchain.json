@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "features": {
+    "enforcePackageManager": "disabled",
+    "rewritePython": "rewrite",
+    "gitRebaseEditor": "rewrite",
+    "preventBrew": "block",
+    "preventDockerSecrets": "block"
+  },
+  "ui": {
+    "showRewriteNotifications": false
+  }
+}

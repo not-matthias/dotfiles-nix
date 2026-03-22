@@ -43,9 +43,24 @@
     (_self: super: {
       pi-coding-agent = super.callPackage ../../pkgs/pi-mono {};
     })
+    (_self: super: {
+      paperclip = super.callPackage ../../pkgs/paperclip.nix {};
+    })
+    (_self: super: {
+      qmd = super.callPackage ../../pkgs/qmd.nix {};
+    })
     # (_self: super: {
     #   lobe-chat = super.callPackage ../../pkgs/lobe-chat.nix {};
     # })
+    (_self: super: {
+      rtk = super.callPackage ../../pkgs/rtk.nix {};
+    })
+    (_self: super: {
+      hermes-agent = super.callPackage ../../pkgs/hermes-agent.nix {};
+    })
+    (_self: super: {
+      pi-session-cli = super.callPackage ../../pkgs/pi-session-manager.nix {};
+    })
     (import ../../pkgs/ida-pro)
   ];
 }

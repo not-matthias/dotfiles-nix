@@ -58,7 +58,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = [pkgs.pi-coding-agent];
+    home.packages = [pkgs.pi-coding-agent pkgs.pi-session-cli];
 
     # Exclude per-project Pi state/config from git by default
     programs.git.ignores = mkAfter [".pi"];
@@ -89,6 +89,13 @@ in {
         ".pi/agent/agents/shared" = {
           source = ../shared/sub-agents;
           recursive = true;
+        };
+        # Extension config files
+        ".pi/agent/extensions/guardrails.json" = {
+          source = ./extensions/guardrails.json;
+        };
+        ".pi/agent/extensions/toolchain.json" = {
+          source = ./extensions/toolchain.json;
         };
       }
       // extensionFiles
