@@ -84,39 +84,8 @@ in {
       cpuFreqGovernor = lib.mkDefault "performance";
     };
 
-    # Powertop auto-tune sets all USB devices to autosuspend. This service runs
-    # after powertop and re-disables autosuspend for HID input devices.
-    systemd.services.usb-hid-wakeup = {
-      description = "Disable USB autosuspend for HID input devices";
-      wantedBy = ["multi-user.target"];
-      after = ["powertop.service"];
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        ExecStart = pkgs.writeShellScript "usb-hid-wakeup" ''
-          for dev in /sys/bus/usb/devices/*/; do
-            # Check if any interface on this device is HID (class 03)
-            is_hid=0
-            for iface in "$dev"/*/bInterfaceClass; do
-              [ -f "$iface" ] && [ "$(cat "$iface")" = "03" ] && is_hid=1 && break
-            done
-            if [ "$is_hid" = "1" ] && [ -f "$dev/power/control" ]; then
-              echo on > "$dev/power/control"
-            fi
-          done
-        '';
-      };
+    programs.fish.shellAbbrs = {
+      "cpuf" = "sudo systemctl restart auto-cpufreq.service";
     };
-
-    services.udev.extraRules = ''
-      # Disable autosuspend for HID input devices (keyboards, mice, receivers)
-      # Uses parent device match since power/control is at the device level
-      ACTION=="add|change", SUBSYSTEM=="usb", ATTR{product}=="*[Kk]eyboard*", TEST=="power/control", ATTR{power/control}="on"
-      ACTION=="add|change", SUBSYSTEM=="usb", ATTR{product}=="*[Mm]ouse*", TEST=="power/control", ATTR{power/control}="on"
-      ACTION=="add|change", SUBSYSTEM=="usb", ATTR{product}=="*[Rr]eceiver*", TEST=="power/control", ATTR{power/control}="on"
-
-      # Enable USB autosuspend for non-input devices
-      ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="auto"
-    '';
   };
 }
