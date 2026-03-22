@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "tintinweb";
   repo = "pi-tasks";
-  rev = "b200c7e5b0d1a6f44e558c38af1d37fcad75430d";
-  hash = "sha256-qgfSZKFZSd1SJSHWrz3uq7GgSNWd0wY4BfM5DzKyVKA=";
+  rev = "ccddf935908d059c6cd4eaa9ea848eab524c2d72";
+  hash = "sha256-qFd7T9te6gJAYoMPkdUzUgvjWXN/Nbg7GJzHGRvt68g=";
 }

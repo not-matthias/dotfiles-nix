@@ -7,16 +7,16 @@
 }:
 buildNpmPackage rec {
   pname = "pi-coding-agent";
-  version = "0.60.0";
+  version = "0.61.1";
 
   nodejs = nodejs_22;
 
   src = fetchzip {
     url = "https://registry.npmjs.org/@mariozechner/pi-coding-agent/-/pi-coding-agent-${version}.tgz";
-    hash = "sha256-G7xWVmnXcu7VhrN5fCkyd1SGGH00+mvPWVpcgJnUiAM=";
+    hash = "sha256-XhVH0WG1MqezyUnpnRgVoXnFgMRxq/6id0CSEpPCWEQ=";
   };
 
-  npmDepsHash = "sha256-u1d2qgb5ucOvfl8heh/GggIv7gUFsG1ZHGkf24DiPwQ=";
+  npmDepsHash = "sha256-WyMbS+OGremzPX8InS6Z3IpKuRSrqukCQTJ8DwFZZsg=";
 
   postPatch = ''
     cp ${./package-lock.json} package-lock.json

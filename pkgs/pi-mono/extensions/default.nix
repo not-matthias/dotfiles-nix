@@ -38,7 +38,7 @@ in
           "
           cp ${./hashline-edit-package-lock.json} $out/package-lock.json
         '';
-        npmDepsHash = "sha256-keKUkm42SqfWT3heuV5/cLRC2TPP4qaKR8rYoYcHtO0=";
+        npmDepsHash = "sha256-gp9WMX+Xoq+JK0QTORD1ljDtc7NrriaxqNnkMQJGxog=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
@@ -47,7 +47,7 @@ in
     tasks = {
       src = withRuntimeDeps {
         src = call (import ./tasks.nix);
-        npmDepsHash = "sha256-7FT8wePpkEfLbHXZkLQinbWAdvYNJn7V/UZmWXy59K8=";
+        npmDepsHash = "sha256-BuGvosnONRl6H+iJzTXMRXx0S/V9p2+C5+0aAJkXZhM=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
@@ -62,22 +62,48 @@ in
       resources.extensions = ".";
     };
 
-    # TODO: add pnpmDepsHash once off mobile hotspot
     guardrails = {
-      src = call (import ./guardrails.nix);
+      src = withRuntimeDeps {
+        src = call (import ./guardrails.nix);
+        pnpmDepsHash = "sha256-173+8Mc/AR25Fav07TOT281YX7fjcPD3g/jOyOQ8ziQ=";
+      };
       resources.extensions = ".";
     };
 
-    # TODO: add pnpmDepsHash once off mobile hotspot
     toolchain = {
-      src = call (import ./toolchain.nix);
+      src = withRuntimeDeps {
+        src = call (import ./toolchain.nix);
+        pnpmDepsHash = "sha256-mVJH0BX0dV/lFWdve2JQotWbbpALXwoFoKeBzxqMbGA=";
+      };
       resources.extensions = ".";
     };
 
-    # TODO: add pnpmDepsHash once off mobile hotspot
     processes = {
-      src = call (import ./processes.nix);
+      src = withRuntimeDeps {
+        src = call (import ./processes.nix);
+        pnpmDepsHash = "sha256-kksuQ/MQSNtZQta0UntQD38LuNXFz6dAR5HHIHplJ80=";
+      };
       resources.extensions = ".";
+    };
+
+    "pi-ptc" = {
+      src = withRuntimeDeps {
+        src = call (import ./pi-ptc.nix);
+        npmDepsHash = "sha256-5qnicFVwaHGgM+yVTrRtwwMC2RF7huX66o8+XFWsc64=";
+      };
+      resources.extensions = ".";
+    };
+
+    "pi-memory" = {
+      src = withRuntimeDeps {
+        src = pkgs.runCommand "pi-memory-extension-src" {} ''
+          mkdir -p $out
+          cp -R ${call (import ./pi-memory.nix)}/extensions/pi-memory/. $out/
+        '';
+        npmDepsHash = "sha256-EZj2c5kGW3rjZEAhijaOZiILqKhe0hoYJSH+Knrw2ao=";
+      };
+      resources.extensions = ".";
+      resources.skills = "skills";
     };
 
     # Custom local extensions (no fetching needed)
