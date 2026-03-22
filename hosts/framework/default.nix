@@ -67,14 +67,13 @@
       handy.enable = true;
       rust.enable = true;
       low-battery-alert.enable = true;
+      niri-organize.enable = true;
       granted.enable = true;
       nixvim.enable = true;
       cli-agents = {
         agent-browser.enable = true;
         claude.enable = true;
         codex.enable = true;
-        gemini.enable = true;
-        opencode.enable = true;
         amp.enable = true;
         pi-mono.enable = true;
       };
@@ -149,6 +148,11 @@
     pkgs.perf
     pkgs.envfs
   ];
+
+  # Disable Determinate Nix's built-in auto-GC (we use our own weekly nix-gc.timer)
+  environment.etc."determinate/config.json".text = builtins.toJSON {
+    garbageCollector.strategy = "disabled";
+  };
 
   programs = {
     noisetorch.enable = true;
