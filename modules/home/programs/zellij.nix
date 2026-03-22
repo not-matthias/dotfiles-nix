@@ -11,17 +11,22 @@
     pane_frames false
 
     keybinds {
+      // Unbind Ctrl o (Session mode) and Shift+Enter — terminals can
+      // encode Shift+Enter as a sequence Zellij interprets as entering
+      // Session mode, which unexpectedly opens the session manager.
+      shared_except "locked" {
+        unbind "Ctrl o"
+      }
+      normal {
+        unbind "Shift Enter"
+      }
+
       normal {
         bind "Ctrl b" { SwitchToMode "Tmux"; }
         bind "Ctrl j" {
           LaunchOrFocusPlugin "zellij:session-manager" {
             floating true
             move_to_focused_tab true
-          }
-        }
-        bind "Ctrl s" {
-          LaunchOrFocusPlugin "https://github.com/laperlej/zellij-sessionizer/releases/latest/download/zellij-sessionizer.wasm" {
-            floating true
           }
         }
         bind "Ctrl f" {
