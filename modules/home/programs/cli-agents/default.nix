@@ -12,6 +12,7 @@ in {
     ./claude/default.nix
     ./codex/default.nix
     ./gemini/default.nix
+    ./hermes/default.nix
     ./opencode/default.nix
     ./amp/default.nix
     ./pi-mono/default.nix
@@ -22,6 +23,10 @@ in {
       ast-grep
       rizin
       ghidra-cli
+      rtk
     ];
+
+    # Exclude shared agent scratch/working files from git by default
+    programs.git.ignores = lib.mkAfter [".agents"];
   };
 }

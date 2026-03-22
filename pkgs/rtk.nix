@@ -1,26 +1,31 @@
 {
   lib,
-  rustPlatform,
-  fetchFromGitHub,
+  stdenv,
+  fetchurl,
+  autoPatchelfHook,
 }:
-rustPlatform.buildRustPackage rec {
+stdenv.mkDerivation rec {
   pname = "rtk";
-  version = "0.29.0";
+  version = "0.31.0";
 
-  src = fetchFromGitHub {
-    owner = "rtk-ai";
-    repo = "rtk";
-    rev = "188ec996b34806d0b5b72b527952c019d3766d8f";
-    hash = "sha256-QGHCa8rO4YBFXdrz78FhWKFxY7DmRxCXM8iYQv4yTYE=";
+  src = fetchurl {
+    url = "https://github.com/rtk-ai/rtk/releases/download/v${version}/rtk-x86_64-unknown-linux-musl.tar.gz";
+    hash = "sha256-sBIRpwEecOJ0aTjn1rMXBTKIv49gaXS7uIk+nZ2EEek=";
   };
 
-  cargoHash = lib.fakeHash;
+  sourceRoot = ".";
+
+  nativeBuildInputs = [autoPatchelfHook];
+
+  installPhase = ''
+    install -Dm755 rtk $out/bin/rtk
+  '';
 
   meta = {
-    description = "Rust Token Killer - High-performance CLI proxy to minimize LLM token consumption";
+    description = "High-performance CLI proxy to minimize LLM token consumption";
     homepage = "https://github.com/rtk-ai/rtk";
     license = lib.licenses.mit;
-    platforms = lib.platforms.linux;
+    platforms = ["x86_64-linux"];
     mainProgram = "rtk";
   };
 }
