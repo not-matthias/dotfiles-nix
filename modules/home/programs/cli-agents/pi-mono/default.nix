@@ -69,7 +69,7 @@ in {
         ".pi/agent/AGENTS.md" = {
           source = ../shared/AGENTS.md;
         };
-        ".pi/APPEND_SYSTEM.md" = {
+        ".pi/agent/APPEND_SYSTEM.md" = {
           source = ./APPEND_SYSTEM.md;
         };
         ".pi/agent/settings.json" = {
