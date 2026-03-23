@@ -14,6 +14,7 @@
     src = pkgs.runCommand "${name}-extension" {} ''
       mkdir -p $out
       cp ${src}/pi-extensions/${entry}.ts $out/index.ts
+      chmod +w $out/index.ts
       ${prePackageJson}
       cat >$out/package.json <<'EOF'
       {"name":"${name}","private":true,"type":"module"}
@@ -51,8 +52,28 @@ in {
     entry = "session-breakdown";
   };
 
-  agent-stuff-uv = mkWrappedExtension {
-    name = "agent-stuff-uv";
-    entry = "uv";
+  agent-stuff-multi-edit = {
+    src = pkgs.callPackage ./with-runtime-deps.nix {
+      src = pkgs.runCommand "agent-stuff-multi-edit-src" {} ''
+        mkdir -p $out
+        cp ${src}/pi-extensions/multi-edit.ts $out/index.ts
+        chmod +w $out/index.ts
+        ${pkgs.nodejs_22}/bin/node -e "
+          const fs = require('fs');
+          const p = '$out/index.ts';
+          const s = fs.readFileSync(p, 'utf8');
+          fs.writeFileSync(
+            p,
+            s.replace('name: \"edit\"', 'name: \"multi-edit\"').replace('label: \"edit\"', 'label: \"multi-edit\"')
+          );
+        "
+        cat >$out/package.json <<'EOF'
+        {"name":"agent-stuff-multi-edit","private":true,"type":"module","dependencies":{"diff":"^7.0.0"}}
+        EOF
+        cp ${./multi-edit-package-lock.json} $out/package-lock.json
+      '';
+      npmDepsHash = "sha256-SNWeJcipUnwQhUAuf1ugCaGlNuKJRAQTEwW4qZfMu+s=";
+    };
+    resources.extensions = ".";
   };
 }

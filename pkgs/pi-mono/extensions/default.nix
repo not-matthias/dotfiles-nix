@@ -106,6 +106,11 @@ in
       resources.skills = "skills";
     };
 
+    "pi-curated-themes" = {
+      src = call (import ./pi-curated-themes.nix);
+      resources.themes = "themes";
+    };
+
     # Custom local extensions (no fetching needed)
     tab-queue = {
       src = ./custom/tab-queue;
