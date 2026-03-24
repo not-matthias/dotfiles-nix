@@ -37,14 +37,14 @@
   glib,
 }: let
   pname = "solidtime-desktop";
-  version = "0.0.40";
+  version = "0.0.70-beta";
 in
   stdenv.mkDerivation rec {
     inherit pname version;
 
     src = fetchurl {
       url = "https://github.com/solidtime-io/solidtime-desktop/releases/download/v${version}/solidtime-x64.tar.gz";
-      hash = "sha256-N92PK46Dltq6PgQIOsPdMk09udjLu0FSvhlTzkCl3D8=";
+      hash = "sha256-fxuiVPoRdr2fD4906IRUUH4gVD5dYWBOcdxGMnDqq9k=";
     };
 
     nativeBuildInputs = [

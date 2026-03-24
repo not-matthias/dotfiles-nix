@@ -87,7 +87,7 @@ in {
 
     version = lib.mkOption {
       type = lib.types.str;
-      default = "0.9.0";
+      default = "0.12.0";
       description = "Docker image version tag for Solidtime";
     };
   };
