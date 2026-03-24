@@ -31,7 +31,12 @@
       };
       ai-commit-all.enable = true;
       nixvim.enable = true;
-      cli-agents.claude.enable = true;
+      # rust.enable = true;
+      cli-agents = {
+        claude.enable = true;
+        codex.enable = true;
+        amp.enable = true;
+      };
       btop.enable = true;
       #alacritty.enable = true;
       #waybar.enable = true;
@@ -122,6 +127,7 @@
     wakapi.enable = true;
     # tandoor-recipes.enable = true;
     jellyfin.enable = true;
+    # soulsync.enable = true;
     # nocodb.enable = true;
     # nitter.enable = true;
     # redlib.enable = true;
