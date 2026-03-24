@@ -1,30 +1,41 @@
 {pkgs}: let
   script = pkgs.writeShellScriptBin "power_profile" ''
-    if command -v powerprofilesctl >/dev/null 2>&1; then
-        PROFILE=$(powerprofilesctl get 2>/dev/null || echo "unknown")
-        case "$PROFILE" in
-            "power-saver") echo '{"text": "eco", "tooltip": "Power Saver Mode", "class": "power-saver"}' ;;
-            "balanced") echo '{"text": "bal", "tooltip": "Balanced Mode", "class": "balanced"}' ;;
-            "performance") echo '{"text": "perf", "tooltip": "Performance Mode", "class": "performance"}' ;;
-            *) echo '{"text": "pwr", "tooltip": "Power Profile Unknown", "class": "unknown"}' ;;
-        esac
+    GOVERNOR=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 2>/dev/null || echo "unknown")
+
+    if [ -f /var/run/override.pickle ]; then
+      # Forced mode — show the governor with a force indicator
+      case "$GOVERNOR" in
+        "performance") echo '{"text": "󱐌", "tooltip": "Performance (forced)", "class": "performance"}' ;;
+        "powersave")   echo '{"text": "󰌪", "tooltip": "Powersave (forced)", "class": "power-saver"}' ;;
+        *)             echo '{"text": "⚡", "tooltip": "Forced: '"$GOVERNOR"'", "class": "unknown"}' ;;
+      esac
     else
-        echo '{"text": "pwr", "tooltip": "Power Profiles Not Available", "class": "unavailable"}'
+      # Auto mode — auto-cpufreq manages it
+      echo '{"text": "󰗑", "tooltip": "Auto ('"$GOVERNOR"')", "class": "auto"}'
     fi
+  '';
+
+  toggle = pkgs.writeShellScriptBin "power_profile_toggle" ''
+    if [ ! -f /var/run/override.pickle ]; then
+      sudo auto-cpufreq --force performance
+    elif [ "$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)" = "performance" ]; then
+      sudo auto-cpufreq --force powersave
+    else
+      sudo auto-cpufreq --force reset
+    fi
+    pkill -RTMIN+9 waybar
   '';
 in {
   inherit script;
 
-  # Module configuration for waybar settings
   config = {
     "custom/power_profile" = {
       return-type = "json";
       format = "{text}";
       exec = "${script}/bin/power_profile";
       interval = 30;
-      on-click = "powerprofilesctl set performance";
-      on-click-right = "powerprofilesctl set power-saver";
-      on-click-middle = "powerprofilesctl set balanced";
+      on-click = "${toggle}/bin/power_profile_toggle";
+      signal = 9;
     };
   };
 }

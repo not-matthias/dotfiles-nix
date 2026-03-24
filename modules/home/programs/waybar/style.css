@@ -72,9 +72,11 @@ window#waybar {
 
 /* Items inside groups inherit group background */
 #idle_inhibitor,
+#custom-power_profile,
 #custom-dnd {
     padding: 3px 6px;
     background: transparent;
+    font-size: 14px;
 }
 
 #clock {
@@ -86,8 +88,13 @@ window#waybar {
 #idle_inhibitor.activated,
 #bluetooth.on,
 #bluetooth.connected,
-#custom-dnd.paused {
+#custom-dnd.paused,
+#custom-power_profile.performance {
     color: @base0D;
+}
+
+#custom-power_profile.power-saver {
+    color: @base0B;
 }
 
 /* Hover effects */

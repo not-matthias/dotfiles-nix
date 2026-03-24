@@ -101,6 +101,7 @@
           modules = [
             "idle_inhibitor"
             "custom/dnd"
+            "custom/power_profile"
           ];
         };
 
