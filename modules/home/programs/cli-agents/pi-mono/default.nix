@@ -52,13 +52,32 @@ with lib; let
       packages = map (name: "./packages/${name}") (builtins.attrNames packages);
     };
   settingsFile = pkgs.writeText "pi-settings.json" (builtins.toJSON settings);
+
+  wrappedPi =
+    if cfg.envFile != null
+    then
+      pkgs.symlinkJoin {
+        name = "pi-coding-agent-wrapped";
+        paths = [pkgs.pi-coding-agent];
+        nativeBuildInputs = [pkgs.makeWrapper];
+        postBuild = ''
+          wrapProgram $out/bin/pi \
+            --run '[ -f "${cfg.envFile}" ] && set -a && . "${cfg.envFile}" && set +a'
+        '';
+      }
+    else pkgs.pi-coding-agent;
 in {
   options.programs.cli-agents.pi-mono = {
     enable = mkEnableOption "Pi-Mono CLI agent";
+    envFile = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = "Path to an environment file sourced before launching pi (e.g. an agenix secret)";
+    };
   };
 
   config = mkIf cfg.enable {
-    home.packages = [pkgs.pi-coding-agent pkgs.pi-session-cli];
+    home.packages = [wrappedPi pkgs.pi-session-cli];
 
     # Exclude per-project Pi state/config from git by default
     programs.git.ignores = mkAfter [".pi"];

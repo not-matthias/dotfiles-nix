@@ -9,7 +9,7 @@
   imports = [
     ./hardware-configuration.nix
   ];
-  home-manager.users.${user} = {
+  home-manager.users.${user} = {lib, ...}: {
     home.stateVersion = "22.05";
     home.packages = with pkgs; [
       unstable.zed-editor
@@ -75,7 +75,10 @@
         claude.enable = true;
         codex.enable = true;
         amp.enable = true;
-        pi-mono.enable = true;
+        pi-mono = {
+          enable = true;
+          envFile = "/run/agenix/pi-mono-env";
+        };
       };
       btop.enable = true;
       obsidian = {
@@ -116,6 +119,28 @@
         ];
       };
       solidtime-desktop.enable = true;
+      openclaw = {
+        enable = true;
+
+        config = {
+          gateway = {
+            mode = "local";
+            auth.token = "__OPENCLAW_GATEWAY_TOKEN__";
+          };
+          channels.whatsapp = {
+            enabled = true;
+            accounts.default = {
+              authDir = "/home/${user}/.openclaw/whatsapp-auth";
+              allowFrom = ["__OPENCLAW_WHATSAPP_NUMBER__"];
+              dmPolicy = "allowlist";
+            };
+          };
+        };
+        bundledPlugins.summarize.enable = true;
+        systemd.enable = true;
+        exposePluginPackages = false;
+        excludeTools = ["gogcli"];
+      };
     };
 
     services = {
@@ -123,6 +148,20 @@
       activitywatch.enable = false;
       gpg-agent.enable = true;
     };
+
+    home.activation.openclawPatchSecrets = lib.hm.dag.entryAfter ["openclawConfigFiles"] ''
+      config_path="$HOME/.openclaw/openclaw.json"
+      if [ -L "$config_path" ]; then
+        store_path="$(readlink "$config_path")"
+        rm "$config_path"
+        cp --no-preserve=mode "$store_path" "$config_path"
+        token="$(cat /run/agenix/openclaw-gateway-token)"
+        number="$(cat /run/agenix/openclaw-whatsapp-number)"
+        escaped_token="$(printf '%s' "$token" | ${pkgs.gnused}/bin/sed -e 's/[\\/&]/\\\\&/g')"
+        ${pkgs.gnused}/bin/sed -i "s/__OPENCLAW_GATEWAY_TOKEN__/$escaped_token/" "$config_path"
+        ${pkgs.gnused}/bin/sed -i "s/__OPENCLAW_WHATSAPP_NUMBER__/$number/" "$config_path"
+      fi
+    '';
 
     systemd.user.services.home-manager = {
       serviceConfig.TimeoutStartSec = "1min";
@@ -312,7 +351,20 @@
   };
 
   age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
-  age.secrets = {};
+  age.secrets = {
+    openclaw-gateway-token = {
+      file = ../../secrets/openclaw-gateway-token.age;
+      owner = user;
+    };
+    openclaw-whatsapp-number = {
+      file = ../../secrets/openclaw-whatsapp-number.age;
+      owner = user;
+    };
+    pi-mono-env = {
+      file = ../../secrets/pi-mono-env.age;
+      owner = user;
+    };
+  };
 
   networking = {
     hostName = "framework";

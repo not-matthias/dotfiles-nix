@@ -36,4 +36,7 @@ in {
   "solidtime.age".publicKeys = systems;
   "ziit.age".publicKeys = systems;
   "wakapi-salt.age".publicKeys = systems;
+  "openclaw-gateway-token.age".publicKeys = systems;
+  "openclaw-whatsapp-number.age".publicKeys = systems;
+  "pi-mono-env.age".publicKeys = systems;
 }
