@@ -39,6 +39,26 @@
   #   options zfs l2arc_noprefetch=0 l2arc_write_boost=33554432 l2arc_write_max=16777216 zfs_arc_max=2147483648
   # '';
 
+  # Ensure backup-pool uses failmode=continue after import.
+  # With failmode=wait (default), an I/O failure suspends the pool and blocks
+  # txg_sync indefinitely, which prevents clean shutdown/reboot.
+  systemd.services.zfs-backup-pool-failmode = {
+    description = "Set backup-pool failmode=continue to prevent shutdown hangs";
+    wantedBy = ["multi-user.target"];
+    after = ["zfs-import-backup-pool.service"];
+    wants = ["zfs-import-backup-pool.service"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = pkgs.writeShellScript "zfs-backup-pool-failmode" ''
+        if ${pkgs.zfs}/bin/zpool list -H backup-pool >/dev/null 2>&1; then
+          ${pkgs.zfs}/bin/zpool set failmode=continue backup-pool
+          ${pkgs.zfs}/bin/zfs set com.sun:auto-snapshot=false backup-pool
+        fi
+      '';
+    };
+  };
+
   services.zfs = {
     autoScrub.enable = true;
     trim.enable = true;
