@@ -63,7 +63,7 @@ fi
 # Calculate usage percentage (inverted: remaining/total = how much is USED)
 used_pct=0
 if [ -n "$total" ] && [ -n "$remaining" ] && [ "$(echo "$total > 0" | bc -l)" -eq 1 ]; then
-  used_pct=$(echo "scale=0; (1 - $remaining / $total) * 100" | bc -l)
+  used_pct=$(printf '%.0f' "$(echo "scale=4; (1 - $remaining / $total) * 100" | bc -l)")
   if [ "$used_pct" -lt 0 ]; then used_pct=0; fi
   if [ "$used_pct" -gt 100 ]; then used_pct=100; fi
 fi
