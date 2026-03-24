@@ -38,7 +38,7 @@ in
           "
           cp ${./hashline-edit-package-lock.json} $out/package-lock.json
         '';
-        npmDepsHash = "sha256-gp9WMX+Xoq+JK0QTORD1ljDtc7NrriaxqNnkMQJGxog=";
+        npmDepsHash = "sha256-Vj3T6WbXcuJURulGztjtwR9O2JsjXTo9FZABaVSl0rA=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
@@ -47,7 +47,7 @@ in
     tasks = {
       src = withRuntimeDeps {
         src = call (import ./tasks.nix);
-        npmDepsHash = "sha256-BuGvosnONRl6H+iJzTXMRXx0S/V9p2+C5+0aAJkXZhM=";
+        npmDepsHash = "sha256-awJSYTCs0RILhDQ70uTLMYHgpAS3v69VLRyHvnTyUkM=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
