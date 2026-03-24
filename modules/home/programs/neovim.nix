@@ -23,6 +23,7 @@
       smartindent = true;
       tabstop = 4;
       shiftwidth = 4;
+      swapfile = false;
     };
     keymaps = [
       # ============================================================================
@@ -787,9 +788,6 @@
               "copilot"
               "path"
               "buffer"
-              "git"
-              "spell"
-              "dictionary"
             ];
             providers.copilot = {
               name = "copilot";
@@ -797,13 +795,16 @@
               score_offset = 100;
               async = true;
             };
+            providers.git = {
+              name = "git";
+              module = "blink-cmp-git";
+              enabled_filetypes = ["gitcommit" "markdown"];
+            };
           };
         };
       };
       blink-cmp-copilot.enable = true;
-      blink-cmp-dictionary.enable = true;
       blink-cmp-git.enable = true;
-      blink-cmp-spell.enable = true;
       blink-compat.enable = true;
 
       nix.enable = true;
