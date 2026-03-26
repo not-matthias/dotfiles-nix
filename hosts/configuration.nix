@@ -40,7 +40,7 @@
     dconf.enable = true;
     command-not-found.enable = false;
   };
-  security.sudo.wheelNeedsPassword = false;
+  security.sudo.wheelNeedsPassword = true;
 
   time.timeZone = "Europe/Vienna";
   i18n = {
