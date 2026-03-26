@@ -12,6 +12,52 @@
   ...
 }: let
   cfg = config.hardware.powersave;
+
+  sysctlBin = "${pkgs.procps}/bin/sysctl";
+
+  # Detect current power state and apply the matching sysctl profile.
+  # Switches between performance (AC) and powersave (battery) values.
+  #
+  # dirty_ratio            - % of RAM allowed dirty before processes block on writes
+  # dirty_background_ratio - % of RAM allowed dirty before background flushing starts
+  # dirty_writeback_centisecs - how often the kernel flusher wakes up (in 1/100s)
+  # dirty_expire_centisecs - how long dirty pages stay in memory before forced write (in 1/100s)
+  # laptop_mode            - batches disk writes to allow longer disk idle time (0=off, 5=aggressive)
+  # swappiness             - how aggressively the kernel swaps pages to disk (0-200, lower=less swap)
+  # overcommit_memory      - 0=heuristic deny, 1=always allow (risks OOM), 2=strict limit
+  # overcommit_ratio       - % of RAM for overcommit (only applies when overcommit_memory=2)
+  # vfs_cache_pressure     - how aggressively the kernel reclaims inode/dentry caches (lower=keep longer)
+  #
+  # References:
+  # - https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/
+  # - https://wiki.archlinux.org/title/Power_management#Writeback_Time
+  # - https://www.kernel.org/doc/Documentation/laptops/laptop-mode.txt
+  powerSysctlScript = pkgs.writeShellScript "power-sysctl" ''
+    ac_online=$(cat /sys/class/power_supply/AC*/online 2>/dev/null || echo "1")
+
+    if [ "$ac_online" = "1" ]; then
+      # Performance profile (AC)
+      ${sysctlBin} vm.dirty_ratio=10
+      ${sysctlBin} vm.dirty_background_ratio=5
+      ${sysctlBin} vm.dirty_writeback_centisecs=500
+      ${sysctlBin} vm.dirty_expire_centisecs=1500
+      ${sysctlBin} vm.laptop_mode=0
+      ${sysctlBin} vm.swappiness=10
+      ${sysctlBin} vm.overcommit_memory=0
+      ${sysctlBin} vm.vfs_cache_pressure=50
+    else
+      # Powersave profile (battery)
+      ${sysctlBin} vm.dirty_ratio=3
+      ${sysctlBin} vm.dirty_background_ratio=1
+      ${sysctlBin} vm.dirty_writeback_centisecs=1500
+      ${sysctlBin} vm.dirty_expire_centisecs=3000
+      ${sysctlBin} vm.laptop_mode=5
+      ${sysctlBin} vm.swappiness=1
+      ${sysctlBin} vm.overcommit_memory=1
+      ${sysctlBin} vm.overcommit_ratio=50
+      ${sysctlBin} vm.vfs_cache_pressure=100
+    fi
+  '';
 in {
   options.hardware.powersave = {
     enable = lib.mkEnableOption "Powersave Configuration";
@@ -26,30 +72,24 @@ in {
       # Disable Watchdog, can lead to significant power savings
       # See: https://wiki.archlinux.org/title/Power_management#Disabling_NMI_watchdog
       "kernel.nmi_watchdog" = 0;
-
-      # https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/
-      # https://askubuntu.com/questions/847703/how-to-change-the-value-of-dirty-writeback-centisecs
-      # https://wiki.archlinux.org/title/Power_management#Writeback_Time
-      "vm.dirty_writeback_centisecs" = 1500;
-
-      # Swap to disk less
-      "vm.swappiness" = 1;
-
-      # https://www.kernel.org/doc/Documentation/laptops/laptop-mode.txt
-      "vm.laptop_mode" = 5;
-
-      # Optimize dirty page ratios for SSD
-      "vm.dirty_ratio" = 3;
-      "vm.dirty_background_ratio" = 1;
-
-      # Memory overcommit settings to reduce swap usage
-      "vm.overcommit_memory" = lib.mkDefault 1;
-      "vm.overcommit_ratio" = 50;
-
-      # Additional laptop-mode-tools inspired settings
-      # Longer dirty expire time when in laptop mode
-      "vm.dirty_expire_centisecs" = 3000;
     };
+
+    # Apply correct sysctl profile on boot
+    systemd.services.power-sysctl = {
+      description = "Apply power-aware sysctl values";
+      wantedBy = ["multi-user.target"];
+      after = ["sysinit.target"];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = powerSysctlScript;
+      };
+    };
+
+    # Switch sysctl profile on AC plug/unplug
+    services.udev.extraRules = ''
+      SUBSYSTEM=="power_supply", ATTR{type}=="Mains", RUN+="${powerSysctlScript}"
+    '';
 
     services = {
       power-profiles-daemon.enable = false;
@@ -74,13 +114,14 @@ in {
         charger = {
           governor = "performance";
           turbo = "auto";
+          scaling_max_freq = 5134889; # 5.1GHz (max CPU freq)
         };
       };
     };
 
     powerManagement = {
       enable = true;
-      powertop.enable = true;
+      powertop.enable = false;
       cpuFreqGovernor = lib.mkDefault "performance";
     };
 
