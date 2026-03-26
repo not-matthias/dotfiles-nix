@@ -52,8 +52,7 @@
     );
     overlays = [
       fenix.overlays.default
-      flakes.nix-openclaw.overlays.default
-      (import ../modules/overlays/openclaw-fix-manifests.nix)
+
       fontsOverlay
     ];
 
@@ -117,7 +116,6 @@
                   ./home.nix
                   nixvim.homeModules.nixvim
                   agenix.homeManagerModules.age
-                  flakes.nix-openclaw.homeManagerModules.openclaw
                 ];
               };
             };

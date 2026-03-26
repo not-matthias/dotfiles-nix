@@ -3,9 +3,7 @@
   "features": {
     "enforcePackageManager": "disabled",
     "rewritePython": "rewrite",
-    "gitRebaseEditor": "rewrite",
-    "preventBrew": "block",
-    "preventDockerSecrets": "block"
+    "gitRebaseEditor": "rewrite"
   },
   "ui": {
     "showRewriteNotifications": false
