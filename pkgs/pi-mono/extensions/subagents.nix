@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "tintinweb";
   repo = "pi-subagents";
-  rev = "af012a936322ab238096d933c5caa797c8238edd";
-  hash = "sha256-/C844jtSioOg2y4ejOHZ98y7Zh9fz/Uh29Lds9BMioM=";
+  rev = "2c8e1c1080ec5552c930ebb70eb208bcdc76c7cc";
+  hash = "sha256-FZjYBEGGxAYQx/bMPayk5Lv4tlo7XosPxxuqK8ZgeIw=";
 }

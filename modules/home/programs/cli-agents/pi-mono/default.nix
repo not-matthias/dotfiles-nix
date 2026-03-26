@@ -18,13 +18,16 @@ with lib; let
     isAbsolute = type:
       (type == "extensions" && (ext.extensionsAbsolute or false))
       || (type == "skills" && (ext.skillsAbsolute or false));
+    isRecursive = type:
+      (type == "extensions" && (ext.extensionsRecursive or false))
+      || (type == "skills" && (ext.skillsRecursive or false));
     mkEntry = type: subdir: {
       ".pi/agent/${type}/${name}" = {
         source =
           if isAbsolute type
           then subdir
           else "${ext.src}/${subdir}";
-        recursive = false;
+        recursive = isRecursive type;
       };
     };
   in
@@ -115,6 +118,14 @@ in {
         };
         ".pi/agent/extensions/toolchain.json" = {
           source = ./extensions/toolchain.json;
+        };
+        ".pi/agent/extensions/pi-tool-display/config.json" = {
+          text = builtins.toJSON {
+            readOutputMode = "summary";
+            searchOutputMode = "count";
+            bashOutputMode = "opencode";
+            diffViewMode = "auto";
+          };
         };
       }
       // extensionFiles

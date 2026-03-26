@@ -47,7 +47,7 @@ in
     tasks = {
       src = withRuntimeDeps {
         src = call (import ./tasks.nix);
-        npmDepsHash = "sha256-awJSYTCs0RILhDQ70uTLMYHgpAS3v69VLRyHvnTyUkM=";
+        npmDepsHash = "sha256-ng0q5Ml2hWPBV7cAnbqCRPukWCCC7WeANcEvyTYPO9c=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
@@ -56,7 +56,7 @@ in
     subagents = {
       src = withRuntimeDeps {
         src = call (import ./subagents.nix);
-        npmDepsHash = "sha256-eryAWduGdUNWyXHj+H8GFjtUxAOY+sGUqxxIcbeC6ls=";
+        npmDepsHash = "sha256-6+j4DtELaPovAyf80EiDSyybsiTHOJ+4QAPnw77LRug=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
@@ -93,6 +93,13 @@ in
       };
       resources.extensions = ".";
     };
+
+    # Currently not compatible with hashline-edit
+    # "pi-tool-display" = {
+    #   src = call (import ./pi-tool-display.nix);
+    #   resources.extensions = ".";
+    #   extensionsRecursive = true;
+    # };
 
     "pi-memory" = {
       src = withRuntimeDeps {
