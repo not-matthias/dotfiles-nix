@@ -15,6 +15,7 @@
       init.defaultBranch = "main";
       pull.rebase = true;
       rebase.updateRefs = true;
+      rebase.autoSquash = true;
       push.autoSetupRemote = true;
       absorb.autoStageIfNothingStaged = true;
       absorb.oneFixupPerCommit = true;
