@@ -34,7 +34,7 @@ const tabQueue: ExtensionFactory = (pi) => {
     return textParts.join("\n");
   };
 
-  pi.registerShortcut("tab", {
+  pi.registerShortcut("ctrl+alt+q", {
     description: "Submit message as follow-up (queued until agent finishes)",
     handler: async (ctx) => {
       const editorText = ctx.ui.getEditorText();
@@ -54,7 +54,7 @@ const tabQueue: ExtensionFactory = (pi) => {
     },
   });
 
-  pi.registerShortcut("escape", {
+  pi.registerShortcut("ctrl+alt+c", {
     description: "Clear the follow-up queue",
     handler: async (ctx) => {
       if (queue.length === 0) return;
@@ -63,7 +63,7 @@ const tabQueue: ExtensionFactory = (pi) => {
     },
   });
 
-  pi.registerShortcut("up", {
+  pi.registerShortcut("ctrl+alt+u", {
     description: "Pop last queued message back into the editor",
     handler: async (ctx) => {
       if (queue.length === 0) return;
