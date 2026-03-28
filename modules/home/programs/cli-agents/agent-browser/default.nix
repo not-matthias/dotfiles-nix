@@ -6,7 +6,7 @@
 }:
 with lib; let
   cfg = config.programs.cli-agents.agent-browser;
-  version = "0.20.2";
+  version = "0.22.3";
   cacheDir = "/tmp/agent-browser-npm-cache-${version}";
   prefixDir = "/tmp/agent-browser-npm-prefix-${version}";
   package = pkgs.writeShellScriptBin "agent-browser" ''
