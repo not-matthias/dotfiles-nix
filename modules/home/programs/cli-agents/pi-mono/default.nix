@@ -97,6 +97,9 @@ in {
         ".pi/agent/settings.json" = {
           source = settingsFile;
         };
+        ".pi/agent/verbosity.json" = {
+          source = ./verbosity.json;
+        };
         ".pi/agent/themes/stylix-latte-red.json" = {
           source = ./themes/stylix-latte-red.json;
         };
