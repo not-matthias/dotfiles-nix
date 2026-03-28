@@ -113,9 +113,29 @@ in
       resources.skills = "skills";
     };
 
+    "pi-subdir-context" = {
+      src = call (import ./pi-subdir-context.nix);
+      resources.extensions = ".";
+    };
+
     "pi-curated-themes" = {
       src = call (import ./pi-curated-themes.nix);
       resources.themes = "themes";
+    };
+
+    "pi-finder" = {
+      src = call (import ./pi-finder.nix);
+      resources.extensions = "extensions";
+    };
+
+    "pi-librarian" = {
+      src = call (import ./pi-librarian.nix);
+      resources.extensions = "extensions";
+    };
+
+    "pi-verbosity-control" = {
+      src = call (import ./pi-verbosity-control.nix);
+      resources.extensions = ".";
     };
 
     # Custom local extensions (no fetching needed)
