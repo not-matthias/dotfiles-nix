@@ -103,6 +103,9 @@ in {
         ".pi/agent/themes/stylix-latte-red.json" = {
           source = ./themes/stylix-latte-red.json;
         };
+        ".pi/agent/themes/stylix-mocha-red.json" = {
+          source = ./themes/stylix-mocha-red.json;
+        };
         ".pi/agent/prompts/shared" = {
           source = ../shared/commands;
           recursive = false;

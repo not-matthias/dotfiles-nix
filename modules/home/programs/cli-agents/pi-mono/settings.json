@@ -3,8 +3,8 @@
   "defaultModel": "gpt-5.3-codex",
   "defaultThinkingLevel": "medium",
   "hideThinkingBlock": "true",
-  "quietStartup": true,
-  "collapseChangelog": "true",
+  "quietStartup": false,
+  "collapseChangelog": "false",
   "steeringMode": "one-at-a-time",
   "followUpMode": "one-at-a-time",
   "showHardwareCursor": false,
@@ -12,9 +12,8 @@
   "theme": "stylix-latte-red",
   "enabledModels": [
     "openai-codex/gpt-5.3-codex:medium",
+    "openai-codex/gpt-5.3-codex:high",
     "openai-codex/gpt-5.4:medium",
-    "anthropic/claude-opus-4-6:medium",
-    "anthropic/claude-sonnet-4-6:medium",
-    "anthropic/claude-haiku-4-5:off"
+    "openai-codex/gpt-5.4:high"
   ]
 }
