@@ -119,10 +119,10 @@
         ];
       };
       solidtime-desktop.enable = true;
+      ultra-power-saver.enable = true;
     };
 
     services = {
-      ollama.enable = true;
       activitywatch.enable = false;
       gpg-agent.enable = true;
     };
@@ -206,6 +206,7 @@
       enable = true;
       scheduler = "scx_bpfland";
     };
+    opensnitch.enable = true;
     safeeyes.enable = true;
     navidrome = {
       enable = true;
