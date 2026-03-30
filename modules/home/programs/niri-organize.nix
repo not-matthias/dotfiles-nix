@@ -8,7 +8,7 @@ with lib; let
   cfg = config.programs.niri-organize;
 
   # Main monitor to move workspaces to
-  mainMonitor = "DP-3";
+  mainMonitor = "DP-2";
 
   # Workspace rules: app-id regex -> workspace name
   # Mirrors the window-rules in niri config
