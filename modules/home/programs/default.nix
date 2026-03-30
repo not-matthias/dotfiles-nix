@@ -45,4 +45,5 @@
   ./obsidian.nix
   ./solidtime-desktop.nix
   ./ssh.nix
+  ./ultra-power-saver
 ]
