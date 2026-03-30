@@ -125,6 +125,19 @@ in {
       cpuFreqGovernor = lib.mkDefault "performance";
     };
 
+    # Allow passwordless auto-cpufreq --force for Waybar/Walker toggles
+    security.sudo.extraRules = [
+      {
+        users = ["not-matthias"];
+        commands = [
+          {
+            command = "/run/current-system/sw/bin/auto-cpufreq --force *";
+            options = ["NOPASSWD"];
+          }
+        ];
+      }
+    ];
+
     programs.fish.shellAbbrs = {
       "cpuf" = "sudo systemctl restart auto-cpufreq.service";
     };
