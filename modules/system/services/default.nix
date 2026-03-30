@@ -32,6 +32,7 @@
   ./ntfy.nix
   ./ollama.nix
   ./open-webui.nix
+  ./opensnitch.nix
   ./paperless.nix
   ./postiz.nix
   ./postgresql.nix
