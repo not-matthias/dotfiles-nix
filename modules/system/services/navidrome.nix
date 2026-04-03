@@ -43,14 +43,21 @@ in {
       };
     };
 
-    # Ensure Navidrome only starts after the music folder mount is available.
-    # This prevents the previous issue where a bind mount would resolve to an
-    # empty directory if /mnt/data/personal wasn't mounted yet.
-    systemd.services.navidrome = lib.mkIf (cfg.requiredMount != null) {
-      requires = [cfg.requiredMount];
-      after = [cfg.requiredMount];
-      serviceConfig.RequiresMountsFor = [cfg.musicFolder];
-    };
+    systemd.services.navidrome = lib.mkMerge [
+      # When MusicFolder is under /home, ProtectHome=yes (the NixOS default) makes
+      # /home inaccessible and the BindReadOnlyPaths mount fails.  Switching to
+      # "tmpfs" mounts an empty tmpfs over /home so the bind mount can attach.
+      (lib.mkIf (lib.hasPrefix "/home" cfg.musicFolder) {
+        serviceConfig.ProtectHome = lib.mkForce "tmpfs";
+      })
+
+      # Ensure Navidrome only starts after the music folder mount is available.
+      (lib.mkIf (cfg.requiredMount != null) {
+        requires = [cfg.requiredMount];
+        after = [cfg.requiredMount];
+        serviceConfig.RequiresMountsFor = [cfg.musicFolder];
+      })
+    ];
 
     services.caddy.virtualHosts."music.${domain}" = {
       extraConfig = ''
