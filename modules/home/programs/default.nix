@@ -46,4 +46,5 @@
   ./solidtime-desktop.nix
   ./ssh.nix
   ./ultra-power-saver
+  ./package-security.nix
 ]
