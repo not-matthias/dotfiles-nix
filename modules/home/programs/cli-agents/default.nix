@@ -16,6 +16,7 @@ in {
     ./hermes/default.nix
     ./opencode/default.nix
     ./amp/default.nix
+    ./droid/default.nix
     ./pi-mono/default.nix
   ];
 
