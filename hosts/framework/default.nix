@@ -206,7 +206,7 @@
       enable = true;
       scheduler = "scx_bpfland";
     };
-    opensnitch.enable = true;
+    opensnitch.enable = false;
     safeeyes.enable = true;
     navidrome = {
       enable = true;
