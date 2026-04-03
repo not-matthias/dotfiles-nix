@@ -231,7 +231,79 @@
     sound.enable = true;
     ssd.enable = true;
     fingerprint.enable = true;
-    fw-fanctrl.enable = true;
+    fw-fanctrl = {
+      enable = true;
+      config = {
+        defaultStrategy = "quiet";
+        strategyOnDischarging = "quiet";
+        strategies = {
+          quiet = {
+            fanSpeedUpdateFrequency = 5;
+            movingAverageInterval = 45;
+            speedCurve = [
+              {
+                temp = 0;
+                speed = 0;
+              }
+              {
+                temp = 45;
+                speed = 0;
+              }
+              {
+                temp = 55;
+                speed = 15;
+              }
+              {
+                temp = 65;
+                speed = 25;
+              }
+              {
+                temp = 75;
+                speed = 40;
+              }
+              {
+                temp = 80;
+                speed = 60;
+              }
+              {
+                temp = 85;
+                speed = 100;
+              }
+            ];
+          };
+          perf = {
+            fanSpeedUpdateFrequency = 2;
+            movingAverageInterval = 5;
+            speedCurve = [
+              {
+                temp = 0;
+                speed = 15;
+              }
+              {
+                temp = 45;
+                speed = 15;
+              }
+              {
+                temp = 55;
+                speed = 30;
+              }
+              {
+                temp = 65;
+                speed = 50;
+              }
+              {
+                temp = 75;
+                speed = 75;
+              }
+              {
+                temp = 80;
+                speed = 100;
+              }
+            ];
+          };
+        };
+      };
+    };
   };
 
   virtualisation = {
