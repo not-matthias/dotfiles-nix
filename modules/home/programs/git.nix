@@ -8,7 +8,7 @@
     lfs.enable = true;
     settings = {
       user = {
-        email = "26800596+not-matthias@users.noreply.github.com";
+        email = "matthias@codspeed.io";
         name = "not-matthias";
         signingKey = "D1B0E3E8E62928DD";
       };
