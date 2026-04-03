@@ -1,11 +1,13 @@
 {
   config,
   lib,
+  pkgs,
   unstable,
   ...
 }:
 with lib; let
   cfg = config.programs.cli-agents.opencode;
+  superpowers = import ../shared/superpowers.nix {inherit (pkgs) fetchFromGitHub;};
 in {
   options.programs.cli-agents.opencode = {
     enable = mkEnableOption "OpenCode CLI agent";
@@ -32,6 +34,16 @@ in {
       };
       ".opencode/skills" = {
         source = ../shared/skills;
+        recursive = true;
+      };
+
+      # Superpowers skills and commands
+      ".opencode/skills/superpowers" = {
+        source = "${superpowers}/skills";
+        recursive = true;
+      };
+      ".opencode/commands/superpowers" = {
+        source = "${superpowers}/commands";
         recursive = true;
       };
 
