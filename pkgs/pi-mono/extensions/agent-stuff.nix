@@ -2,8 +2,8 @@
   src = pkgs.fetchFromGitHub {
     owner = "mitsuhiko";
     repo = "agent-stuff";
-    rev = "7ca2deb75f4a1853bad7d93416c72838080c5e55";
-    hash = "sha256-VZFa3PCOYM3Iz8b+TXPTnQDHNpRK5wvkateuQz0lu0E=";
+    rev = "80e1e96fa563ffc0c9d60422eac6dc9e67440385";
+    hash = "sha256-JKMqt5ionfF/aBFTSQe9BD49wAErNtEnf3Mnekk3nzk=";
   };
 
   mkWrappedExtension = {

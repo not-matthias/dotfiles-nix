@@ -5,18 +5,18 @@
 }:
 buildNpmPackage rec {
   pname = "pi-amplike";
-  version = "1.3.2";
+  version = "1.3.3";
 
   nodejs = nodejs_22;
 
   src = fetchFromGitHub {
     owner = "pasky";
     repo = "pi-amplike";
-    rev = "d28294026ba13e5c4eb21a227c6af1478d95ddc4";
-    hash = "sha256-xEIbNjHpP3pDmQ6wY1AvMBzkGXWsHax580LcedCRg54=";
+    rev = "7fbf6fb60cda5e9610929bfebf923b5034b80eb0";
+    hash = "sha256-AAQwkwc09dvV538IiscP2izRqI+/h/UKVvEfD0H57+o=";
   };
 
-  npmDepsHash = "sha256-blKzjY9YyeOmiqoYgLDMpbiJ/FP003TFy4flbf1kqGQ=";
+  npmDepsHash = "sha256-BCE1G9P9c17Vpdmfi64t6iYcXYcld9btAHqJAoziT0E=";
 
   postPatch = ''
     cp ${./pi-amplike-package-lock.json} package-lock.json

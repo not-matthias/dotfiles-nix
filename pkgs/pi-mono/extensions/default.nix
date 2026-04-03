@@ -56,7 +56,7 @@ in
     subagents = {
       src = withRuntimeDeps {
         src = call (import ./subagents.nix);
-        npmDepsHash = "sha256-6+j4DtELaPovAyf80EiDSyybsiTHOJ+4QAPnw77LRug=";
+        npmDepsHash = "sha256-RkAlOtCfdARVUDr/NUtf+puNt5YQNQJoqtPvYt9Y9VQ=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
@@ -73,7 +73,7 @@ in
     toolchain = {
       src = withRuntimeDeps {
         src = call (import ./toolchain.nix);
-        pnpmDepsHash = "sha256-mVJH0BX0dV/lFWdve2JQotWbbpALXwoFoKeBzxqMbGA=";
+        pnpmDepsHash = "sha256-HL47aV8RNBergJ93FLCxo2Yu4MOIiElbJm22B31RFoo=";
       };
       resources.extensions = ".";
     };
@@ -133,8 +133,24 @@ in
       resources.extensions = "extensions";
     };
 
+    "pi-diff-review" = {
+      src = withRuntimeDeps {
+        src = call (import ./pi-diff-review.nix);
+        npmDepsHash = "sha256-4BeJ4Tjjpk30xBs/GZ4J3+w3WRHNTAfRk75VUf8Ee3U=";
+      };
+      resources.extensions = ".";
+    };
+
     "pi-verbosity-control" = {
       src = call (import ./pi-verbosity-control.nix);
+      resources.extensions = ".";
+    };
+
+    "claude-agent-sdk" = {
+      src = withRuntimeDeps {
+        src = call (import ./claude-agent-sdk.nix);
+        npmDepsHash = "sha256-MX8nXlde5N2Wrw6Iu0mUE1l9z8/ht1SNB4yU8CT9/28=";
+      };
       resources.extensions = ".";
     };
 

@@ -5,13 +5,13 @@
 }:
 buildNpmPackage rec {
   pname = "pi-agentic-compaction";
-  version = "0.3.0";
+  version = "0.3.1";
 
   nodejs = nodejs_22;
 
   src = fetchzip {
     url = "https://registry.npmjs.org/${pname}/-/${pname}-${version}.tgz";
-    hash = "sha256-Ayhc/rE1CzXeo+g1t+6OoYMwDVUSV01MDVcs88Uytc4=";
+    hash = "sha256-l+O/ba20SAjURITWoEHDq/oWEJZnMbamM3HOV6rCMq0=";
   };
 
   npmDepsHash = "sha256-jwA4yaWq+Nvn5JLPqEmnmbse4Aeqoq7YXZOJNW0lV+U=";
