@@ -11,9 +11,8 @@
   "doubleEscapeAction": "tree",
   "theme": "stylix-latte-red",
   "enabledModels": [
-    "openai-codex/gpt-5.3-codex:medium",
     "openai-codex/gpt-5.3-codex:high",
-    "openai-codex/gpt-5.4:medium",
-    "openai-codex/gpt-5.4:high"
+    "openai-codex/gpt-5.4:high",
+    "openrouter/qwen/qwen3.6-plus-preview:free"
   ]
 }
