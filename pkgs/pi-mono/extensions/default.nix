@@ -146,10 +146,18 @@ in
       resources.extensions = ".";
     };
 
-    "claude-agent-sdk" = {
+    # "claude-agent-sdk" = {
+    #   src = withRuntimeDeps {
+    #     src = call (import ./claude-agent-sdk.nix);
+    #     npmDepsHash = "sha256-MX8nXlde5N2Wrw6Iu0mUE1l9z8/ht1SNB4yU8CT9/28=";
+    #   };
+    #   resources.extensions = ".";
+    # };
+
+    "pi-claude-bridge" = {
       src = withRuntimeDeps {
-        src = call (import ./claude-agent-sdk.nix);
-        npmDepsHash = "sha256-MX8nXlde5N2Wrw6Iu0mUE1l9z8/ht1SNB4yU8CT9/28=";
+        src = pkgs.callPackage ./pi-claude-bridge.nix {};
+        npmDepsHash = "sha256-wdbGzV9rVpvKrD81qdEl0OpUicYSILnMfR/Rcjvobqo=";
       };
       resources.extensions = ".";
     };
