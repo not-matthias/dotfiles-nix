@@ -31,7 +31,7 @@
     ],
     "deny": ["Read(./.env)", "Read(./.env.*)"]
   },
-  "model": "opus",
+  "model": "opus[1m]",
   "theme": "light",
   "hooks": {
     "Stop": [
