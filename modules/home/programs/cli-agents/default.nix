@@ -27,6 +27,7 @@ in {
       ghidra-cli
       rtk
       unstable.gogcli
+      jq
     ];
 
     # Exclude shared agent scratch/working files from git by default
