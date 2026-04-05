@@ -50,12 +50,14 @@ with lib; let
 
   # Generate settings.json with local package paths instead of npm: prefixes
   settingsBase = builtins.fromJSON (builtins.readFile ./settings.json);
+  keybindings = settingsBase.keybindings or {};
   settings =
     settingsBase
     // {
       packages = map (name: "./packages/${name}") (builtins.attrNames packages);
     };
   settingsFile = pkgs.writeText "pi-settings.json" (builtins.toJSON settings);
+  keybindingsFile = pkgs.writeText "pi-keybindings.json" (builtins.toJSON keybindings);
 
   wrappedPi =
     if cfg.envFile != null
@@ -97,6 +99,9 @@ in {
         };
         ".pi/agent/settings.json" = {
           source = settingsFile;
+        };
+        ".pi/agent/keybindings.json" = {
+          source = keybindingsFile;
         };
         ".pi/agent/verbosity.json" = {
           source = ./verbosity.json;

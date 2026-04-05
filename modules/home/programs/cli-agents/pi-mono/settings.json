@@ -17,5 +17,15 @@
     "claude-bridge/claude-opus-4-6",
     "claude-bridge/claude-haiku-4-5",
     "claude-bridge/claude-sonnet-4-6"
-  ]
+  ],
+  "keybindings": {
+    "tui.select.up": [
+      "up",
+      "k"
+    ],
+    "tui.select.down": [
+      "down",
+      "j"
+    ]
+  }
 }
