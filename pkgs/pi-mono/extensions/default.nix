@@ -124,16 +124,6 @@ in
       resources.themes = "themes";
     };
 
-    "pi-finder" = {
-      src = call (import ./pi-finder.nix);
-      resources.extensions = "extensions";
-    };
-
-    "pi-librarian" = {
-      src = call (import ./pi-librarian.nix);
-      resources.extensions = "extensions";
-    };
-
     "pi-diff-review" = {
       src = withRuntimeDeps {
         src = call (import ./pi-diff-review.nix);
@@ -146,14 +136,6 @@ in
       src = call (import ./pi-verbosity-control.nix);
       resources.extensions = ".";
     };
-
-    # "claude-agent-sdk" = {
-    #   src = withRuntimeDeps {
-    #     src = call (import ./claude-agent-sdk.nix);
-    #     npmDepsHash = "sha256-MX8nXlde5N2Wrw6Iu0mUE1l9z8/ht1SNB4yU8CT9/28=";
-    #   };
-    #   resources.extensions = ".";
-    # };
 
     "pi-claude-bridge" = {
       src = withRuntimeDeps {
