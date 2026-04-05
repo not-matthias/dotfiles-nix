@@ -155,5 +155,10 @@ in
       src = ./custom/effort;
       resources.extensions = ".";
     };
+
+    theme = {
+      src = ./custom/theme;
+      resources.extensions = ".";
+    };
   }
   // agentStuff
