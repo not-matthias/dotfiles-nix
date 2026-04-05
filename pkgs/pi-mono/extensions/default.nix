@@ -150,5 +150,10 @@ in
       src = ./custom/tab-queue;
       resources.extensions = ".";
     };
+
+    effort = {
+      src = ./custom/effort;
+      resources.extensions = ".";
+    };
   }
   // agentStuff
