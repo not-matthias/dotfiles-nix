@@ -1,4 +1,4 @@
-import type { ExtensionFactory } from "@anthropic-ai/pi-coding-agent";
+import type { ExtensionFactory } from "@mariozechner/pi-coding-agent";
 
 const tabQueue: ExtensionFactory = (pi) => {
   const queue: string[] = [];
@@ -89,7 +89,7 @@ const tabQueue: ExtensionFactory = (pi) => {
     updateWidget(ctx);
   });
 
-  pi.on("agent_end", (ctx) => {
+  pi.on("agent_end", (_event, ctx) => {
     queue.length = 0;
     updateWidget(ctx);
   });
