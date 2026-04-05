@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  unstable,
   ...
 }:
 with lib; let
@@ -14,8 +13,8 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with unstable; [
-      claude-code
+    home.packages = [
+      pkgs.claude-code
     ];
 
     # Add fish aliases for claude
