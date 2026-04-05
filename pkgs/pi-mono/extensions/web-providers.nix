@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "mavam";
   repo = "pi-web-providers";
-  rev = "0e24dcb8778018bf9867111eb7915fdc5056f050";
-  hash = "sha256-2N5g3ct+6duXq7eYQP/KcIUyDLwnbp4mGZu6S57N4kY=";
+  rev = "6512f17af306781c9fbdfdff63e09108032c4766";
+  hash = "sha256-jK6HUs+YEq9vsVGiFLr/8iNzgfnxwnW1NzSxVjmlUj8=";
 }

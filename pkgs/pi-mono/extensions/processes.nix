@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "aliou";
   repo = "pi-processes";
-  rev = "2bdee75d5180c6935a6a04e05858f07f4fa7a94d";
-  hash = "sha256-DJd3J8zaPV/22sIgjOJob06YP9e3+8ewR6TxEP1E1nA=";
+  rev = "36fd5c6a7ee991c3e6aa3ed550f5e8fb929412c6";
+  hash = "sha256-anRP8bClOUv/wPMQe/HcRI1orzUmBErF5u8J/qC95b8=";
 }

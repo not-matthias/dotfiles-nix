@@ -34,11 +34,12 @@ in
             const path = '$out/package.json';
             const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
             delete pkg.peerDependencies;
+            delete pkg.devDependencies;
             fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
           "
           cp ${./hashline-edit-package-lock.json} $out/package-lock.json
         '';
-        npmDepsHash = "sha256-Vj3T6WbXcuJURulGztjtwR9O2JsjXTo9FZABaVSl0rA=";
+        npmDepsHash = "sha256-y1UdDFcMfloiJV/auTRe2+3IfSqYgfYqmK1Dmu50Sxc=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
@@ -65,7 +66,7 @@ in
     guardrails = {
       src = withRuntimeDeps {
         src = call (import ./guardrails.nix);
-        pnpmDepsHash = "sha256-173+8Mc/AR25Fav07TOT281YX7fjcPD3g/jOyOQ8ziQ=";
+        pnpmDepsHash = "sha256-LC6CN/Jktol7Gf4NtOStywJOgXTsuIm1H1hZBeN/RiY=";
       };
       resources.extensions = ".";
     };
@@ -73,7 +74,7 @@ in
     toolchain = {
       src = withRuntimeDeps {
         src = call (import ./toolchain.nix);
-        pnpmDepsHash = "sha256-HL47aV8RNBergJ93FLCxo2Yu4MOIiElbJm22B31RFoo=";
+        pnpmDepsHash = "sha256-v7bkBl/s0vyXYQacCt/bHdV9Gh1/1r+C6D09KRiyMsQ=";
       };
       resources.extensions = ".";
     };
@@ -81,7 +82,7 @@ in
     processes = {
       src = withRuntimeDeps {
         src = call (import ./processes.nix);
-        pnpmDepsHash = "sha256-kksuQ/MQSNtZQta0UntQD38LuNXFz6dAR5HHIHplJ80=";
+        pnpmDepsHash = "sha256-3i/0RgLh6EtiB9RSYr+OnDpv4mCx1A9/J9rKM5qDXS8=";
       };
       resources.extensions = ".";
     };
