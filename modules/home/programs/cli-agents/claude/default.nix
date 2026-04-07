@@ -24,6 +24,10 @@ in {
       "ccr" = "bunx @anthropic-ai/claude-code --resume";
     };
 
+    home.sessionVariables = {
+      CLAUDE_CODE_AUTO_COMPACT_WINDOW = "400000";
+    };
+
     home.file = {
       ".claude/CLAUDE.md" = {
         source = ../shared/AGENTS.md;
