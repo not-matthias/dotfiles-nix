@@ -1,4 +1,10 @@
 {
+  "retry": {
+    "enabled": true,
+    "maxRetries": 5,
+    "baseDelayMs": 5000,
+    "maxDelayMs": 60000
+  },
   "defaultProvider": "claude-bridge",
   "defaultModel": "claude-bridge/claude-sonnet-4-6",
   "defaultThinkingLevel": "medium",
