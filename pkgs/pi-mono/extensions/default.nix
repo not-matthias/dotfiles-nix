@@ -145,6 +145,47 @@ in
       resources.extensions = ".";
     };
 
+    "pi-token-usage" = {
+      src = withRuntimeDeps {
+        src = pkgs.runCommand "pi-token-usage-src" {} ''
+          mkdir -p $out
+          cd $out
+          tar xzf ${pkgs.fetchurl (import ./pi-token-usage.nix)} --strip-components=1
+          ${pkgs.nodejs_22}/bin/node -e "
+            const fs = require('fs');
+            const path = '$out/package.json';
+            const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+            delete pkg.peerDependencies;
+            delete pkg.devDependencies;
+            fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
+          "
+          cp ${./pi-token-usage-package-lock.json} $out/package-lock.json
+        '';
+        npmDepsHash = "sha256-+ViQ5Qc2QfHd30GVKfxnxFePK98HvluGk9BrUq+08Lc=";
+      };
+      resources.extensions = ".";
+    };
+
+    "pi-better-messages-cache" = {
+      src = withRuntimeDeps {
+        src = pkgs.runCommand "pi-better-messages-cache-src" {} ''
+          mkdir -p $out
+          cp -R ${call (import ./pi-better-messages-cache.nix)}/. $out/
+          chmod -R u+w $out
+          ${pkgs.nodejs_22}/bin/node -e "
+            const fs = require('fs');
+            const path = '$out/package.json';
+            const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+            delete pkg.peerDependencies;
+            delete pkg.devDependencies;
+            fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
+          "
+        '';
+        npmDepsHash = "sha256-zoDsqXYAWkXcrvlh5G+y5FO2GvJyQRGzpPnb2doPZv8=";
+      };
+      resources.extensions = ".";
+    };
+
     # Custom local extensions (no fetching needed)
     tab-queue = {
       src = ./custom/tab-queue;
