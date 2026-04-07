@@ -1,6 +1,6 @@
 {
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.3-codex",
+  "defaultProvider": "claude-bridge",
+  "defaultModel": "claude-bridge/claude-sonnet-4-6",
   "defaultThinkingLevel": "medium",
   "hideThinkingBlock": "true",
   "quietStartup": false,
@@ -19,13 +19,7 @@
     "claude-bridge/claude-sonnet-4-6"
   ],
   "keybindings": {
-    "tui.select.up": [
-      "up",
-      "k"
-    ],
-    "tui.select.down": [
-      "down",
-      "j"
-    ]
+    "tui.select.up": ["up", "k"],
+    "tui.select.down": ["down", "j"]
   }
 }
