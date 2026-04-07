@@ -64,7 +64,7 @@
         provider = "claude";
       };
       ai-commit-all.enable = true;
-      # handy.enable = true;
+      handy.enable = true;
       rust.enable = true;
       low-battery-alert.enable = true;
       niri-organize.enable = true;
