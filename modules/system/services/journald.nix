@@ -14,11 +14,11 @@
     ProcessSizeMax=0
   '';
 
-  # Systemd memory limits to prevent excessive memory usage
+  # NOTE: Avoid setting DefaultMemoryMax here — it applies to all systemd
+  # services/scopes and kills Electron apps (Chrome, Slack) during memory pressure.
   systemd.settings = {
     Manager = {
       DefaultMemoryAccounting = "yes";
-      DefaultMemoryMax = "1G";
       DefaultTasksMax = "4096";
       LogLevel = "notice";
     };
