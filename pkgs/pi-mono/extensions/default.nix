@@ -102,17 +102,17 @@ in
     #   extensionsRecursive = true;
     # };
 
-    "pi-memory" = {
-      src = withRuntimeDeps {
-        src = pkgs.runCommand "pi-memory-extension-src" {} ''
-          mkdir -p $out
-          cp -R ${call (import ./pi-memory.nix)}/extensions/pi-memory/. $out/
-        '';
-        npmDepsHash = "sha256-EZj2c5kGW3rjZEAhijaOZiILqKhe0hoYJSH+Knrw2ao=";
-      };
-      resources.extensions = ".";
-      resources.skills = "skills";
-    };
+    # "pi-memory" = {
+    #   src = withRuntimeDeps {
+    #     src = pkgs.runCommand "pi-memory-extension-src" {} ''
+    #       mkdir -p $out
+    #       cp -R ${call (import ./pi-memory.nix)}/extensions/pi-memory/. $out/
+    #     '';
+    #     npmDepsHash = "sha256-EZj2c5kGW3rjZEAhijaOZiILqKhe0hoYJSH+Knrw2ao=";
+    #   };
+    #   resources.extensions = ".";
+    #   resources.skills = "skills";
+    # };
 
     "pi-subdir-context" = {
       src = call (import ./pi-subdir-context.nix);
