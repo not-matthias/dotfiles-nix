@@ -71,29 +71,29 @@ in
       resources.extensions = ".";
     };
 
-    toolchain = {
-      src = withRuntimeDeps {
-        src = call (import ./toolchain.nix);
-        pnpmDepsHash = "sha256-v7bkBl/s0vyXYQacCt/bHdV9Gh1/1r+C6D09KRiyMsQ=";
-      };
-      resources.extensions = ".";
-    };
+    # toolchain = {
+    #   src = withRuntimeDeps {
+    #     src = call (import ./toolchain.nix);
+    #     pnpmDepsHash = "sha256-v7bkBl/s0vyXYQacCt/bHdV9Gh1/1r+C6D09KRiyMsQ=";
+    #   };
+    #   resources.extensions = ".";
+    # };
 
-    processes = {
-      src = withRuntimeDeps {
-        src = call (import ./processes.nix);
-        pnpmDepsHash = "sha256-3i/0RgLh6EtiB9RSYr+OnDpv4mCx1A9/J9rKM5qDXS8=";
-      };
-      resources.extensions = ".";
-    };
+    # processes = {
+    #   src = withRuntimeDeps {
+    #     src = call (import ./processes.nix);
+    #     pnpmDepsHash = "sha256-3i/0RgLh6EtiB9RSYr+OnDpv4mCx1A9/J9rKM5qDXS8=";
+    #   };
+    #   resources.extensions = ".";
+    # };
 
-    "pi-ptc" = {
-      src = withRuntimeDeps {
-        src = call (import ./pi-ptc.nix);
-        npmDepsHash = "sha256-5qnicFVwaHGgM+yVTrRtwwMC2RF7huX66o8+XFWsc64=";
-      };
-      resources.extensions = ".";
-    };
+    # "pi-ptc" = {
+    #   src = withRuntimeDeps {
+    #     src = call (import ./pi-ptc.nix);
+    #     npmDepsHash = "sha256-5qnicFVwaHGgM+yVTrRtwwMC2RF7huX66o8+XFWsc64=";
+    #   };
+    #   resources.extensions = ".";
+    # };
 
     # Currently not compatible with hashline-edit
     # "pi-tool-display" = {
@@ -114,23 +114,52 @@ in
     #   resources.skills = "skills";
     # };
 
+    "context-guard" = {
+      src = pkgs.runCommand "pi-context-guard-src" {} ''
+        mkdir -p $out
+        cp -R ${call (import ./context-guard.nix)}/extensions/context-guard/. $out/
+      '';
+      resources.extensions = ".";
+    };
+
+    "pi-fff" = {
+      src = withRuntimeDeps {
+        src = pkgs.runCommand "pi-fff-with-lock" {} ''
+          mkdir -p $out
+          cp -R ${call (import ./pi-fff.nix)}/. $out/
+          chmod -R u+w $out
+          ${pkgs.nodejs_22}/bin/node -e "
+            const fs = require('fs');
+            const path = '$out/package.json';
+            const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+            delete pkg.peerDependencies;
+            delete pkg.devDependencies;
+            fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
+          "
+          cp ${./pi-fff-package-lock.json} $out/package-lock.json
+        '';
+        npmDepsHash = "sha256-rqsgJKC2QuIJ3uMNuQRL6P6pi+afzykiNxZMfzCbkXc=";
+      };
+      resources.extensions = ".";
+    };
+
     "pi-subdir-context" = {
       src = call (import ./pi-subdir-context.nix);
       resources.extensions = ".";
     };
 
-    "pi-curated-themes" = {
-      src = call (import ./pi-curated-themes.nix);
-      resources.themes = "themes";
-    };
+    # "pi-curated-themes" = {
+    #   src = call (import ./pi-curated-themes.nix);
+    #   resources.themes = "themes";
+    # };
 
-    "pi-diff-review" = {
-      src = withRuntimeDeps {
-        src = call (import ./pi-diff-review.nix);
-        npmDepsHash = "sha256-4BeJ4Tjjpk30xBs/GZ4J3+w3WRHNTAfRk75VUf8Ee3U=";
-      };
-      resources.extensions = ".";
-    };
+    # "pi-diff-review" = {
+    #   src = withRuntimeDeps {
+    #     src = call (import ./pi-diff-review.nix);
+    #     npmDepsHash = "sha256-4BeJ4Tjjpk30xBs/GZ4J3+w3WRHNTAfRk75VUf8Ee3U=";
+    #   };
+    #   resources.extensions = ".";
+    # };
 
     "pi-verbosity-control" = {
       src = call (import ./pi-verbosity-control.nix);
@@ -166,25 +195,25 @@ in
       resources.extensions = ".";
     };
 
-    "pi-better-messages-cache" = {
-      src = withRuntimeDeps {
-        src = pkgs.runCommand "pi-better-messages-cache-src" {} ''
-          mkdir -p $out
-          cp -R ${call (import ./pi-better-messages-cache.nix)}/. $out/
-          chmod -R u+w $out
-          ${pkgs.nodejs_22}/bin/node -e "
-            const fs = require('fs');
-            const path = '$out/package.json';
-            const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
-            delete pkg.peerDependencies;
-            delete pkg.devDependencies;
-            fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
-          "
-        '';
-        npmDepsHash = "sha256-zoDsqXYAWkXcrvlh5G+y5FO2GvJyQRGzpPnb2doPZv8=";
-      };
-      resources.extensions = ".";
-    };
+    # "pi-better-messages-cache" = {
+    #   src = withRuntimeDeps {
+    #     src = pkgs.runCommand "pi-better-messages-cache-src" {} ''
+    #       mkdir -p $out
+    #       cp -R ${call (import ./pi-better-messages-cache.nix)}/. $out/
+    #       chmod -R u+w $out
+    #       ${pkgs.nodejs_22}/bin/node -e "
+    #         const fs = require('fs');
+    #         const path = '$out/package.json';
+    #         const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+    #         delete pkg.peerDependencies;
+    #         delete pkg.devDependencies;
+    #         fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
+    #       "
+    #     '';
+    #     npmDepsHash = "sha256-zoDsqXYAWkXcrvlh5G+y5FO2GvJyQRGzpPnb2doPZv8=";
+    #   };
+    #   resources.extensions = ".";
+    # };
 
     # Custom local extensions (no fetching needed)
     tab-queue = {
@@ -199,6 +228,11 @@ in
 
     theme = {
       src = ./custom/theme;
+      resources.extensions = ".";
+    };
+
+    resume-context-warning = {
+      src = ./custom/resume-context-warning;
       resources.extensions = ".";
     };
   }
