@@ -1,8 +1,7 @@
 {fetchFromGitHub}:
-# Pin to v0.3.3 until https://github.com/RimuruW/pi-hashline-edit/issues/7 is fixed
 fetchFromGitHub {
   owner = "RimuruW";
   repo = "pi-hashline-edit";
-  rev = "45102ecd24532f2637b962a4ca67fbee2ad12d58";
-  hash = "sha256-jQL9XUuZagP1SSugCtzWoHBD6XxIzb8IExDtSbGWMbM=";
+  rev = "352ad470dbe8ce0d673345133f95867a1f9098cd";
+  hash = "sha256-intAHJCuUk/0NCzHB/Z675BiT8Tp8Gc6SuCYYTC+Zgk=";
 }
