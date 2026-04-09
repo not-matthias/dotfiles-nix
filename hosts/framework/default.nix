@@ -36,6 +36,8 @@
       # discord
       feishin
       gh
+      linear-cli
+      pi-desktop
 
       protonmail-bridge-gui
       thunderbird

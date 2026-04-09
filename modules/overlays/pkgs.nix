@@ -60,6 +60,12 @@
     (_self: super: {
       pi-session-cli = super.callPackage ../../pkgs/pi-session-manager.nix {};
     })
+    (_self: super: {
+      linear-cli = super.callPackage ../../pkgs/linear-cli.nix {};
+    })
+    (_self: super: {
+      pi-desktop = super.callPackage ../../pkgs/pi-desktop.nix {};
+    })
     (import ../../pkgs/ida-pro)
   ];
 }
