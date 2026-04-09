@@ -17,8 +17,8 @@
   "doubleEscapeAction": "tree",
   "theme": "stylix-latte-red",
   "enabledModels": [
-    "openai-codex/gpt-5.3-codex:high",
-    "openai-codex/gpt-5.4:high",
+    "openai-codex/gpt-5.3-codex:medium",
+    "openai-codex/gpt-5.4:medium",
     "openrouter/qwen/qwen3.6-plus:free",
     "claude-bridge/claude-opus-4-6",
     "claude-bridge/claude-haiku-4-5",
