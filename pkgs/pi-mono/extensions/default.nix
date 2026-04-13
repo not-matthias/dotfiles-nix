@@ -143,6 +143,14 @@ in
       resources.extensions = ".";
     };
 
+    "pi-mouse" = {
+      src = pkgs.runCommand "pi-mouse-src" {} ''
+        mkdir -p $out
+        cp -R ${call (import ./pi-mouse.nix)}/packages/pi-mouse/. $out/
+      '';
+      resources.extensions = "extensions";
+    };
+
     "pi-subdir-context" = {
       src = call (import ./pi-subdir-context.nix);
       resources.extensions = ".";
@@ -169,7 +177,7 @@ in
     "pi-claude-bridge" = {
       src = withRuntimeDeps {
         src = pkgs.callPackage ./pi-claude-bridge.nix {};
-        npmDepsHash = "sha256-wdbGzV9rVpvKrD81qdEl0OpUicYSILnMfR/Rcjvobqo=";
+        npmDepsHash = "sha256-GWZHv6dXv+mfxLQTQDkdbGduvukgc8UtPQjwmAfSn0c=";
       };
       resources.extensions = ".";
     };
@@ -233,6 +241,11 @@ in
 
     resume-context-warning = {
       src = ./custom/resume-context-warning;
+      resources.extensions = ".";
+    };
+
+    notify = {
+      src = ./custom/notify;
       resources.extensions = ".";
     };
   }
