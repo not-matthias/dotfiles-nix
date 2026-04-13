@@ -42,11 +42,6 @@ in {
     entry = "context";
   };
 
-  agent-stuff-notify = mkWrappedExtension {
-    name = "agent-stuff-notify";
-    entry = "notify";
-  };
-
   agent-stuff-session-breakdown = mkWrappedExtension {
     name = "agent-stuff-session-breakdown";
     entry = "session-breakdown";

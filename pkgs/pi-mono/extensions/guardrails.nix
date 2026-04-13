@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "aliou";
   repo = "pi-guardrails";
-  rev = "828c01996ab115c842f83615869100f9efa8c26b";
-  hash = "sha256-7LqTAw+n+5lznYnVgONPLClkyc4Gn/o8UUl2hLCTexY=";
+  rev = "e236a2a399286c5e37eb90feeee8b00ce41e80a0";
+  hash = "sha256-564PHCKx8aqDyYavrJK7kZQNJP8Zn6y2ylwIR7N9+EI=";
 }

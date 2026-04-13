@@ -5,15 +5,15 @@
 }:
 buildNpmPackage rec {
   pname = "pi-diff";
-  version = "0.1.5";
+  version = "0.1.6";
 
   nodejs = nodejs_22;
 
   src = fetchFromGitHub {
     owner = "heyhuynhgiabuu";
     repo = "pi-diff";
-    rev = "055ed8a423515ecbd506b486962835fa13f9fb7c";
-    hash = "sha256-m7+VDveMbPZeeT9D2EJ/jU1Kld2lDuL7yzWE5iTBOHE=";
+    rev = "fbb209e1bc27054b3e21a76fa3af24f5570d7845";
+    hash = "sha256-LDqMKl5ErwFOBVd+Q7xPgaU4C0oXVL+l/XypQXnknu4=";
   };
 
   npmDepsHash = "sha256-JuonDFNrq3bWJZEXJAXOM1VEW+5c1/W6KQC5O8adn3o=";
