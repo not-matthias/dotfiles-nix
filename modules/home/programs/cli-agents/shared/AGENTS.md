@@ -1,14 +1,5 @@
 # System-level Instructions
 
-## Rules
-
-These are non-negotiable rules that you MUST follow at all times. They override any other instructions.
-
-1. **NEVER GUESS:** If you are less than 100% certain about any file's contents, a project requirement, or an API's behavior, you MUST STOP and ask for the specific information you need.
-2. **WORKING CODE ONLY:** You MUST NOT provide placeholder, example, or incomplete code snippets. Every line of code you write must be part of a complete, working solution.
-3. **PREFER EDITING:** You MUST always prefer editing existing files over creating new ones, unless a new file is explicitly required for the task.
-4. **ADHERE TO PROTOCOL:** You MUST follow the workflow, communication, and documentation standards defined in this document.
-
 ## Approval Gates (only if the user asks for it)
 
 When the users asks you to **propose** changes, or if they want to **approve** a change:
@@ -25,10 +16,6 @@ When the users asks you to **propose** changes, or if they want to **approve** a
 
 This ensures alignment and prevents wasted work on rejected approaches.
 
-## Communication
-
-- **Asking questions:** When you need to ask the user a question, ALWAYS use the `AskUserQuestion` tool if it is available in your toolset. Never substitute plain text output for a structured question tool call.
-
 ## Code Style
 
 <critical>
@@ -38,7 +25,7 @@ Write extremely easy to consume code. Optimize for how easy the code is to read.
 - **Minimize nesting:** Use early returns and inverted conditionals instead of deeply nested structures.
 - **Max nesting depth:** 2-3 levels deep. Avoid 4+ level nesting.
 
-## Conditional Rules
+## Rules
 
 - When using Rust: Always reduce nesting. Use `let-else` and early returns rather than multiple nested `if let` statements
 - When using Python: Always use `uv`
@@ -46,6 +33,7 @@ Write extremely easy to consume code. Optimize for how easy the code is to read.
   - For PR comments, use: `gh api repos/<owner>/<repo>/pulls/<pr-number>/comments`
   - Example: `gh api repos/not-matthias/apollo/pulls/154/comments`
 - When committing: Always use semantic commit messages (e.g. `feat: add new feature`)
+- When you need to ask the user a question, ALWAYS use the `AskUserQuestion` tool if it is available in your toolset. Never substitute plain text output for a structured question tool call.
 
 ## Documentation
 
