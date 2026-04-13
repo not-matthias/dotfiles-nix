@@ -14,9 +14,9 @@ import {
 
 const PREFS_TYPE = `${EXTENSION_ID}:prefs`;
 
-const PREFILL_CHOICE = "Prefill /compact (recommended)";
+const PREFILL_CHOICE = "/compact";
+const CLEAR_CHOICE = "/clear";
 const CONTINUE_CHOICE = "Continue as-is";
-const SUPPRESS_CHOICE = "Don't ask again for this session";
 
 function parseTimestamp(timestamp: string): number | null {
   const value = Date.parse(timestamp);
@@ -159,10 +159,15 @@ function prefillCompact(ctx: ExtensionContext): void {
   ctx.ui.notify("Prefilled /compact. Press Enter to compact before continuing.", "info");
 }
 
+function prefillClear(ctx: ExtensionContext): void {
+  ctx.ui.setEditorText("/clear");
+  ctx.ui.notify("Prefilled /clear. Press Enter to clear the conversation.", "info");
+}
+
 async function chooseAction(
   ctx: ExtensionContext,
   snapshot: WarningSnapshot,
-): Promise<"prefill" | "continue" | "suppress"> {
+): Promise<"prefill" | "clear" | "continue"> {
   const intro =
     snapshot.reason === "resume"
       ? "This resumed session is likely expensive to continue."
@@ -175,16 +180,16 @@ async function chooseAction(
 
   const choice = await ctx.ui.select("Prompt cache is likely cold. What do you want to do?", [
     PREFILL_CHOICE,
+    CLEAR_CHOICE,
     CONTINUE_CHOICE,
-    SUPPRESS_CHOICE,
   ]);
 
   if (choice === PREFILL_CHOICE) {
     return "prefill";
   }
 
-  if (choice === SUPPRESS_CHOICE) {
-    return "suppress";
+  if (choice === CLEAR_CHOICE) {
+    return "clear";
   }
 
   return "continue";
@@ -224,18 +229,19 @@ const resumeContextWarning: ExtensionFactory = (pi) => {
 
     const action = await chooseAction(ctx, snapshot);
     const nextPrefs: SessionPrefs = {
-      suppressed: action === "suppress" ? true : prefs.suppressed,
+      suppressed: prefs.suppressed,
       lastAcknowledgedWindowKey: getIdleWindowKey(snapshot),
     };
 
     saveSessionPrefs(pi, nextPrefs);
 
-    if (action === "continue" || action === "suppress") {
-      if (action === "suppress") {
-        ctx.ui.notify("Disabled resume-context warnings for this session.", "info");
-      }
-
+    if (action === "continue") {
       return "continue";
+    }
+
+    if (action === "clear") {
+      prefillClear(ctx);
+      return "handled";
     }
 
     setPendingPrompt(ctx, pendingPrompt);
