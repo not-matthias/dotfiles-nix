@@ -6,7 +6,7 @@
         {
           key = "Return";
           mods = "Shift";
-          chars = "\n";
+          chars = "\\u001b[200~\n\\u001b[201~";
         }
         {
           key = "Back";
