@@ -26,6 +26,7 @@ in {
 
     home.sessionVariables = {
       CLAUDE_CODE_AUTO_COMPACT_WINDOW = "400000";
+      CLAUDE_CODE_EFFORT_LEVEL = "medium";
     };
 
     home.file = {
