@@ -57,7 +57,7 @@ in
     subagents = {
       src = withRuntimeDeps {
         src = call (import ./subagents.nix);
-        npmDepsHash = "sha256-RkAlOtCfdARVUDr/NUtf+puNt5YQNQJoqtPvYt9Y9VQ=";
+        npmDepsHash = "sha256-kscIEl0EdfOMdPo9dTtxN+WJs7EMm6b17aDHKIPImGo=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
@@ -177,7 +177,7 @@ in
     "pi-claude-bridge" = {
       src = withRuntimeDeps {
         src = pkgs.callPackage ./pi-claude-bridge.nix {};
-        npmDepsHash = "sha256-GWZHv6dXv+mfxLQTQDkdbGduvukgc8UtPQjwmAfSn0c=";
+        npmDepsHash = "sha256-D+knbmZKdnA0vP4SpS3FTgd6MZeTeLc7qruOF9eAYtw=";
       };
       resources.extensions = ".";
     };

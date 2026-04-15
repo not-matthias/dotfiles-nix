@@ -1,7 +1,7 @@
 {fetchFromGitHub}:
 fetchFromGitHub {
-  owner = "tintinweb";
+  owner = "nicobailon";
   repo = "pi-subagents";
-  rev = "94f7f78f61a7df2c241566845240e91881a7b855";
-  hash = "sha256-SxYuOX/bXy0l6+Lml85ixJyeGEzmGIgGl4lsBVHI4RU=";
+  rev = "cc20a6405e0740f06c7d6102e25521742013c63a";
+  hash = "sha256-COI/T9jEXTxpUvy8HsPeCBIluZSjT6skmFFPWLxvd00=";
 }

@@ -2,8 +2,8 @@
   src = pkgs.fetchFromGitHub {
     owner = "mitsuhiko";
     repo = "agent-stuff";
-    rev = "80e1e96fa563ffc0c9d60422eac6dc9e67440385";
-    hash = "sha256-JKMqt5ionfF/aBFTSQe9BD49wAErNtEnf3Mnekk3nzk=";
+    rev = "2b70e8d53647c1e0277bd54dbbb2519cb5bea92b";
+    hash = "sha256-1bsuBvCWNsmV0r4+fU66oHWFu9MXKchuH/GRMnb7QxQ=";
   };
 
   mkWrappedExtension = {
@@ -13,7 +13,7 @@
   }: {
     src = pkgs.runCommand "${name}-extension" {} ''
       mkdir -p $out
-      cp ${src}/pi-extensions/${entry}.ts $out/index.ts
+      cp ${src}/extensions/${entry}.ts $out/index.ts
       chmod +w $out/index.ts
       ${prePackageJson}
       cat >$out/package.json <<'EOF'
@@ -32,11 +32,6 @@ in {
   };
 
   # Separate packages so pi discovers each extension as its own path.
-  agent-stuff-answer = mkWrappedExtension {
-    name = "agent-stuff-answer";
-    entry = "answer";
-  };
-
   agent-stuff-context = mkWrappedExtension {
     name = "agent-stuff-context";
     entry = "context";
@@ -51,7 +46,7 @@ in {
     src = pkgs.callPackage ./with-runtime-deps.nix {
       src = pkgs.runCommand "agent-stuff-multi-edit-src" {} ''
         mkdir -p $out
-        cp ${src}/pi-extensions/multi-edit.ts $out/index.ts
+        cp ${src}/extensions/multi-edit.ts $out/index.ts
         chmod +w $out/index.ts
         ${pkgs.nodejs_22}/bin/node -e "
           const fs = require('fs');

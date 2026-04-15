@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "emanuelcasco";
   repo = "pi-mono-extensions";
-  rev = "7cac5b1495c3c2637a7cd8f37d55d582382ea4b4";
-  hash = "sha256-eB94BaBhiUqz9ouZq0Yorg7QX5CKIok0SSMKOhBk2pQ=";
+  rev = "e27e6d610a047eb593c878abe198182e19fea9cc";
+  hash = "sha256-bRxgKFT9ko9vrBvmTzlHEtTOYmo0Oy5MmP+h4OrIDdY=";
 }

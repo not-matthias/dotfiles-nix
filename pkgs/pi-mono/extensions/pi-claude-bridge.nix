@@ -6,8 +6,8 @@
   src = fetchFromGitHub {
     owner = "elidickinson";
     repo = "pi-claude-bridge";
-    rev = "5a671a28bda55f4ede87b105236ba239f9354fde";
-    hash = "sha256-BKrXEaB4fpd3q3rDyWDTUst9wJqYXO/5NZ2g+Ox1Yus=";
+    rev = "05424952c9b2afeb1bcd07ce5414fa1d996568a2";
+    hash = "sha256-q5i47U79Ia2z5V6ihpWXlgYLtpCv+lY5OuntaNZ+GoE=";
   };
 in
   # Patch package-lock.json to add missing resolved/integrity for zod v4

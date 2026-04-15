@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "ShpetimA";
   repo = "pi-fff";
-  rev = "a25b49a54fea9a017bb616dceeb6b6d156add4f1";
-  hash = "sha256-U1KxeRS7UxWVySM3ZTEz6PVEqSQQQksm4tyEbm3c59M=";
+  rev = "177e819c192de3b04a72dbb89fc0c6317d822f2c";
+  hash = "sha256-3Y/TN032eAR36AkVoRyU71hYNk3uxmROvqyW9RcXTRA=";
 }
