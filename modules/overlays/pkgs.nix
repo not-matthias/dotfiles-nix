@@ -63,9 +63,6 @@
     (_self: super: {
       linear-cli = super.callPackage ../../pkgs/linear-cli.nix {};
     })
-    (_self: super: {
-      pi-desktop = super.callPackage ../../pkgs/pi-desktop.nix {};
-    })
     (import ../../pkgs/ida-pro)
   ];
 }
