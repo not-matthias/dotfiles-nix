@@ -122,6 +122,11 @@ in
       resources.extensions = ".";
     };
 
+    "pi-pane" = {
+      src = call (import ./pi-pane.nix);
+      resources.extensions = ".";
+    };
+
     "pi-fff" = {
       src = withRuntimeDeps {
         src = pkgs.runCommand "pi-fff-with-lock" {} ''
@@ -248,5 +253,10 @@ in
       src = ./custom/notify;
       resources.extensions = ".";
     };
+
+    # cache-countdown = {
+    #   src = ./custom/cache-countdown;
+    #   resources.extensions = ".";
+    # };
   }
   // agentStuff
