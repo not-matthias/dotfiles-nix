@@ -1,7 +1,7 @@
 ---
 name: code-reviewer
 description: "Use for reviewing large changesets, full PRs, or when review output would be too verbose for the main context. Produces severity-ranked findings. Use proactively when the user asks for a code review, PR review, or quality check."
-model: sonnet
+model: gpt5.4:high
 tools: Read, Grep, Glob
 skills: code-quality, testing
 ---

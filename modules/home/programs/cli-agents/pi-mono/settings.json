@@ -5,21 +5,22 @@
     "baseDelayMs": 5000,
     "maxDelayMs": 60000
   },
-  "defaultProvider": "claude-bridge",
-  "defaultModel": "claude-bridge/claude-sonnet-4-6",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "openai-codex/gpt-5.4:xhigh",
   "defaultThinkingLevel": "medium",
-  "hideThinkingBlock": "true",
+  "hideThinkingBlock": true,
   "quietStartup": false,
-  "collapseChangelog": "false",
-  "steeringMode": "one-at-a-time",
+  "collapseChangelog": true,
+  "steeringMode": "all",
   "followUpMode": "one-at-a-time",
   "showHardwareCursor": false,
   "doubleEscapeAction": "tree",
   "theme": "stylix-latte-red",
   "enabledModels": [
-    "openai-codex/gpt-5.3-codex:medium",
-    "openai-codex/gpt-5.4:medium",
-    "openrouter/qwen/qwen3.6-plus:free",
+    "openai-codex/gpt-5.4:xhigh",
+    "openai-codex/gpt-5.3-codex:xhigh",
+    "openai-codex/gpt-5.4-mini:xhigh",
+    "openai-codex/gpt-5.3-codex-spark:xhigh",
     "claude-bridge/claude-opus-4-6",
     "claude-bridge/claude-haiku-4-5",
     "claude-bridge/claude-sonnet-4-6"
@@ -27,5 +28,6 @@
   "keybindings": {
     "tui.select.up": ["up", "k"],
     "tui.select.down": ["down", "j"]
-  }
+  },
+  "enableInstallTelemetry": false
 }

@@ -1,7 +1,7 @@
 ---
 name: diff-reviewer
 description: "Thorough code review of a git diff or branch. Produces a high-level summary, file-by-file hunk analysis with line ranges, and abstraction-fit evaluation. Use when reviewing a diff, branch, or PR for bugs, hackiness, unnecessary code, over/under-abstraction, and shared mutable state."
-model: opus
+model: gpt5.4:high
 tools: Read, Grep, Glob, Bash
 skills: code-quality
 ---

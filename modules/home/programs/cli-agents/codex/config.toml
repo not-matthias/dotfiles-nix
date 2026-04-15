@@ -5,19 +5,3 @@ check_for_update_on_startup = false
 
 [sandbox_workspace_write]
 network_access = true
-
-[features]
-skills = true
-
-[tui]
-show_tooltips = false
-
-[notice]
-hide_full_access_warning = true
-hide_gpt5_1_migration_prompt = true
-"hide_gpt-5.1-codex-max_migration_prompt" = true
-"hide_gpt-5.3-codex_migration_prompt" = true
-hide_rate_limit_model_nudge = true
-
-[projects."/home/not-matthias"]
-trust_level = "trusted"

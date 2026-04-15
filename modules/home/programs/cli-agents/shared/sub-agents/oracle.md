@@ -1,7 +1,7 @@
 ---
 name: oracle
 description: "Expert AI advisor for high-quality technical guidance, code reviews, architectural advice, and strategic planning. Use when you need a smarter, more capable model for complex decisions, architecture review, implementation planning, or deep technical questions. Zero-shot — no follow-ups possible."
-model: opus
+model: gpt-5.4:xhigh
 tools: Read, Grep, Glob, Bash, WebFetch, WebSearch
 ---
 

@@ -123,7 +123,7 @@ in {
           source = ../shared/skills;
           recursive = false;
         };
-        ".pi/agent/agents/shared" = {
+        ".pi/agent/agents" = {
           source = ../shared/sub-agents;
           recursive = false;
         };
