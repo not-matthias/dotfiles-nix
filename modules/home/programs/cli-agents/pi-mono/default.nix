@@ -6,7 +6,6 @@
 }:
 with lib; let
   cfg = config.programs.cli-agents.pi-mono;
-  superpowers = import ../shared/superpowers.nix {inherit (pkgs) fetchFromGitHub;};
 
   extensions = import ../../../../../pkgs/pi-mono/extensions {inherit pkgs;};
   packages = import ../../../../../pkgs/pi-mono/packages {inherit pkgs;};
@@ -111,10 +110,6 @@ in {
         ".pi/agent/themes/stylix-mocha-red.json" = {
           source = ./themes/stylix-mocha-red.json;
         };
-        ".pi/agent/prompts/shared" = {
-          source = ../shared/commands;
-          recursive = false;
-        };
         ".pi/agent/skills/shared" = {
           source = ../shared/skills;
           recursive = false;
@@ -122,15 +117,6 @@ in {
         ".pi/agent/agents" = {
           source = ../shared/sub-agents;
           recursive = false;
-        };
-        # Superpowers skills and commands
-        ".pi/agent/skills/superpowers" = {
-          source = "${superpowers}/skills";
-          recursive = true;
-        };
-        ".pi/agent/prompts/superpowers" = {
-          source = "${superpowers}/commands";
-          recursive = true;
         };
         # Extension config files
         ".pi/agent/extensions/guardrails.json" = {

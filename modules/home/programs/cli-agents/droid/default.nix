@@ -22,10 +22,6 @@ in {
       ".factory/AGENTS.md" = {
         source = ../shared/AGENTS.md;
       };
-      ".factory/commands" = {
-        source = ../shared/commands;
-        recursive = true;
-      };
       ".factory/skills" = {
         source = ../shared/skills;
         recursive = true;

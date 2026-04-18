@@ -22,10 +22,6 @@ in {
       ".amp/AGENTS.md" = {
         source = ../shared/AGENTS.md;
       };
-      ".amp/commands" = {
-        source = ../shared/commands;
-        recursive = true;
-      };
       ".amp/skills" = {
         source = ../shared/skills;
         recursive = true;

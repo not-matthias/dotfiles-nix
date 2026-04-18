@@ -28,10 +28,6 @@ in {
       ".opencode/AGENTS.md" = {
         source = ../shared/AGENTS.md;
       };
-      ".opencode/commands" = {
-        source = ../shared/commands;
-        recursive = true;
-      };
       ".opencode/skills" = {
         source = ../shared/skills;
         recursive = true;

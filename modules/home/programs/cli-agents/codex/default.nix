@@ -24,10 +24,6 @@ in {
       ".codex/AGENTS.md" = {
         source = ../shared/AGENTS.md;
       };
-      ".codex/commands" = {
-        source = ../shared/commands;
-        recursive = true;
-      };
       ".codex/skills" = {
         source = ../shared/skills;
         recursive = true;
