@@ -24,7 +24,8 @@
     "openai-codex/gpt-5.3-codex:xhigh",
     "openai-codex/gpt-5.4-mini:xhigh",
     "openai-codex/gpt-5.3-codex-spark:xhigh",
-    "claude-bridge/claude-opus-4-6",
+    "claude-bridge/claude-opus-4-6:high",
+    "claude-bridge/claude-opus-4-7:high",
     "claude-bridge/claude-haiku-4-5",
     "claude-bridge/claude-sonnet-4-6"
   ],
