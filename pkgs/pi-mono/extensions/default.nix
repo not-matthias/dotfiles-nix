@@ -48,7 +48,7 @@ in
     subagents = {
       src = withRuntimeDeps {
         src = call (import ./subagents.nix);
-        npmDepsHash = "sha256-kscIEl0EdfOMdPo9dTtxN+WJs7EMm6b17aDHKIPImGo=";
+        npmDepsHash = "sha256-OiTb1tQnwRTiiytjJns1kb4fEcUDeJaWo+gtENR0tc4=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
@@ -57,7 +57,7 @@ in
     guardrails = {
       src = withRuntimeDeps {
         src = call (import ./guardrails.nix);
-        pnpmDepsHash = "sha256-LC6CN/Jktol7Gf4NtOStywJOgXTsuIm1H1hZBeN/RiY=";
+        pnpmDepsHash = "sha256-H7rhxjbROpIm6gAJCAXDP21Q9WZ+EMclECBiOZJofZs=";
       };
       resources.extensions = ".";
     };
