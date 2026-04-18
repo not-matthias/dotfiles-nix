@@ -1,12 +1,12 @@
 {
   config,
   lib,
-  pkgs,
+  unstable,
   ...
 }:
 with lib; let
   cfg = config.programs.cli-agents.claude;
-  superpowers = import ../shared/superpowers.nix {inherit (pkgs) fetchFromGitHub;};
+  superpowers = import ../shared/superpowers.nix {inherit (unstable) fetchFromGitHub;};
 in {
   options.programs.cli-agents.claude = {
     enable = mkEnableOption "Claude Code CLI agent";
@@ -14,14 +14,14 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = [
-      pkgs.claude-code
+      unstable.claude-code
     ];
 
     # Add fish aliases for claude
     programs.fish.shellAbbrs = {
-      "cc" = "bunx @anthropic-ai/claude-code";
-      "ccc" = "bunx @anthropic-ai/claude-code --continue";
-      "ccr" = "bunx @anthropic-ai/claude-code --resume";
+      "cc" = "claude";
+      "ccc" = "claude --continue";
+      "ccr" = "claude --resume";
     };
 
     home.sessionVariables = {
@@ -32,10 +32,6 @@ in {
     home.file = {
       ".claude/CLAUDE.md" = {
         source = ../shared/AGENTS.md;
-      };
-      ".claude/commands" = {
-        source = ../shared/commands;
-        recursive = true;
       };
       ".claude/skills" = {
         source = ../shared/skills;
