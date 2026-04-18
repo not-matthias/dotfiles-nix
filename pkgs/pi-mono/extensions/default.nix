@@ -171,6 +171,14 @@ in
       resources.extensions = ".";
     };
 
+    "pi-codex-fast" = {
+      src = pkgs.runCommand "pi-codex-fast-src" {} ''
+        mkdir -p $out
+        cp ${call (import ./pi-codex-fast.nix)}/extensions/codex-fast.ts $out/index.ts
+      '';
+      resources.extensions = ".";
+    };
+
     "pi-token-usage" = {
       src = withRuntimeDeps {
         src = pkgs.runCommand "pi-token-usage-src" {} ''

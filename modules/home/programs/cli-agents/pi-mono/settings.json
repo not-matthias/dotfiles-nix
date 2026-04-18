@@ -16,6 +16,9 @@
   "showHardwareCursor": false,
   "doubleEscapeAction": "tree",
   "theme": "stylix-latte-red",
+  "pi-codex-fast": {
+    "enabled": true
+  },
   "enabledModels": [
     "openai-codex/gpt-5.4:xhigh",
     "openai-codex/gpt-5.3-codex:xhigh",
