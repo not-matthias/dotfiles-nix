@@ -59,19 +59,15 @@ with lib; let
   settingsFile = pkgs.writeText "pi-settings.json" (builtins.toJSON settings);
   keybindingsFile = pkgs.writeText "pi-keybindings.json" (builtins.toJSON keybindings);
 
-  wrappedPi =
-    if cfg.envFile != null
-    then
-      pkgs.symlinkJoin {
-        name = "pi-coding-agent-wrapped";
-        paths = [pkgs.pi-coding-agent];
-        nativeBuildInputs = [pkgs.makeWrapper];
-        postBuild = ''
-          wrapProgram $out/bin/pi \
-            --run '[ -f "${cfg.envFile}" ] && set -a && . "${cfg.envFile}" && set +a'
-        '';
-      }
-    else pkgs.pi-coding-agent;
+  wrappedPi = pkgs.symlinkJoin {
+    name = "pi-coding-agent-wrapped";
+    paths = [pkgs.pi-coding-agent];
+    nativeBuildInputs = [pkgs.makeWrapper];
+    postBuild = ''
+      wrapProgram $out/bin/pi \
+        --run '${optionalString (cfg.envFile != null) ''[ -f "${cfg.envFile}" ] && set -a && . "${cfg.envFile}" && set +a; ''}if [ -z "''${CLAUDE_CODE_EXECUTABLE:-}" ] && command -v claude >/dev/null 2>&1; then export CLAUDE_CODE_EXECUTABLE="$(command -v claude)"; fi'
+    '';
+  };
 in {
   options.programs.cli-agents.pi-mono = {
     enable = mkEnableOption "Pi-Mono CLI agent";

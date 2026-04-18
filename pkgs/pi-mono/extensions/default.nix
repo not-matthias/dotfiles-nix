@@ -166,7 +166,7 @@ in
     "pi-claude-bridge" = {
       src = withRuntimeDeps {
         src = pkgs.callPackage ./pi-claude-bridge.nix {};
-        npmDepsHash = "sha256-D+knbmZKdnA0vP4SpS3FTgd6MZeTeLc7qruOF9eAYtw=";
+        npmDepsHash = "sha256-oPDGO37dgBi6/SDPp+wtbra1k3e8YJJVPuiq+++MrPs=";
       };
       resources.extensions = ".";
     };
