@@ -30,7 +30,7 @@ in
     #       "
     #       cp ${./hashline-edit-package-lock.json} $out/package-lock.json
     #     '';
-    #     npmDepsHash = "sha256-y1UdDFcMfloiJV/auTRe2+3IfSqYgfYqmK1Dmu50Sxc=";
+    #     npmDepsHash = "sha256-TaClTXPLQwKxWRHl7a79inQmUaMrXQnIA6Efg0xZmGg=";
     #   };
     #   # Whole repo is the extension (src/, package.json at root)
     #   resources.extensions = ".";
@@ -65,7 +65,7 @@ in
     # toolchain = {
     #   src = withRuntimeDeps {
     #     src = call (import ./toolchain.nix);
-    #     pnpmDepsHash = "sha256-v7bkBl/s0vyXYQacCt/bHdV9Gh1/1r+C6D09KRiyMsQ=";
+    #     pnpmDepsHash = "sha256-pug/Ws9rL9wwWZbTYfyDtJZDX70/0XgT7EEcO+1b7s8=";
     #   };
     #   resources.extensions = ".";
     # };
@@ -73,7 +73,7 @@ in
     # processes = {
     #   src = withRuntimeDeps {
     #     src = call (import ./processes.nix);
-    #     pnpmDepsHash = "sha256-3i/0RgLh6EtiB9RSYr+OnDpv4mCx1A9/J9rKM5qDXS8=";
+    #     pnpmDepsHash = "sha256-x1K8cSyVzkFQ1b9qB9xy4EV9z8dZTyC5nqr4pkekajE=";
     #   };
     #   resources.extensions = ".";
     # };
@@ -127,7 +127,7 @@ in
     #       "
     #       cp ${./pi-fff-package-lock.json} $out/package-lock.json
     #     '';
-    #     npmDepsHash = "sha256-rqsgJKC2QuIJ3uMNuQRL6P6pi+afzykiNxZMfzCbkXc=";
+    #     npmDepsHash = "sha256-NAIOKRHXr9YZYQq03wMF7UxZd3Y1HNBBhexEWW/3tcM=";
     #   };
     #   resources.extensions = ".";
     # };

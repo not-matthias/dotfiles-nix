@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "aliou";
   repo = "pi-toolchain";
-  rev = "67d33ce87005fba22d65eb1869dac97e9aef8167";
-  hash = "sha256-gBwlcxlNL4J8XajZGK1mU7ngNXoxcSHKdlT8720QCyg=";
+  rev = "77b83751445aac446ba56c30eaba2988ff281522";
+  hash = "sha256-r1asNU7QHBmiRjroXfNcDUYBk3REjy2fTIqllM3DBzc=";
 }

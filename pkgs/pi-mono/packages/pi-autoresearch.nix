@@ -10,8 +10,8 @@ stdenvNoCC.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "davebcn87";
     repo = "pi-autoresearch";
-    rev = "ad2eed37743fcd51a13ef8945e8ee05a649c59ba";
-    hash = "sha256-4YAUMIw9VP5nw/23ozNIWpRvsQk3RMwGNlLEr6yPeFo=";
+    rev = "56e9f2ec6f0dc6f9997126e4f1d8a4223de2a534";
+    hash = "sha256-V1o8rBJjQezHOz0zuHYfp/hctpmPHiICyMtQ+liISVI=";
   };
 
   dontBuild = true;
