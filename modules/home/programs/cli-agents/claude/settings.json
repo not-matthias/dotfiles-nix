@@ -52,9 +52,16 @@
   "cleanupPeriodDays": 99999,
   "skipDangerousModePermissionPrompt": true,
   "enabledPlugins": {
+    "codex@openai-codex": true,
     "codspeed-internal@codspeed-internal-marketplace": true
   },
   "extraKnownMarketplaces": {
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      }
+    },
     "codspeed-internal-marketplace": {
       "source": {
         "source": "github",
