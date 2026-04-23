@@ -8,7 +8,7 @@
       compression = true;
       addKeysToAgent = "yes";
       controlMaster = "auto";
-      controlPath = "~/.ssh/sockets/%r@%h:%p";
+      controlPath = "~/.ssh/sockets/%C";
       controlPersist = "10m";
       hashKnownHosts = true;
     };
