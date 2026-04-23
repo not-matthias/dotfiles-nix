@@ -47,5 +47,6 @@
   ./spicetify.nix
   ./ssh.nix
   ./ultra-power-saver
+  ./vscode
   ./package-security.nix
 ]
