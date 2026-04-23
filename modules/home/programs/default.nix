@@ -44,6 +44,7 @@
   ./webapps.nix
   ./obsidian.nix
   ./solidtime-desktop.nix
+  ./spicetify.nix
   ./ssh.nix
   ./ultra-power-saver
   ./package-security.nix
