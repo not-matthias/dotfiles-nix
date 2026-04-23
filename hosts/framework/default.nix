@@ -8,6 +8,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ./work.nix
   ];
   home-manager.users.${user} = {...}: {
     home.stateVersion = "22.05";
@@ -48,9 +49,6 @@
       anki
       calibre
 
-      # Work
-      slack
-      awscli2
       imhex
       unstable.obsidian
 
