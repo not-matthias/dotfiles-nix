@@ -6,7 +6,6 @@
 }:
 with lib; let
   cfg = config.programs.cli-agents.claude;
-  superpowers = import ../shared/superpowers.nix {inherit (unstable) fetchFromGitHub;};
 in {
   options.programs.cli-agents.claude = {
     enable = mkEnableOption "Claude Code CLI agent";
@@ -43,16 +42,6 @@ in {
       };
       ".claude/settings.json" = {
         source = ./settings.json;
-      };
-
-      # Superpowers skills and commands
-      ".claude/skills/superpowers" = {
-        source = "${superpowers}/skills";
-        recursive = true;
-      };
-      ".claude/commands/superpowers" = {
-        source = "${superpowers}/commands";
-        recursive = true;
       };
     };
   };
