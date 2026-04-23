@@ -6,8 +6,8 @@
     "maxDelayMs": 60000
   },
   "defaultProvider": "openai-codex",
-  "defaultModel": "openai-codex/gpt-5.4:xhigh",
-  "defaultThinkingLevel": "medium",
+  "defaultModel": "openai-codex/gpt-5.5:high",
+  "defaultThinkingLevel": "high",
   "hideThinkingBlock": true,
   "quietStartup": false,
   "collapseChangelog": true,
@@ -17,9 +17,13 @@
   "doubleEscapeAction": "tree",
   "theme": "stylix-latte-red",
   "pi-codex-fast": {
-    "enabled": true
+    "enabled": false
+  },
+  "pi-codex-conversion": {
+    "enabled": false
   },
   "enabledModels": [
+    "openai-codex/gpt-5.5:high",
     "openai-codex/gpt-5.4:xhigh",
     "openai-codex/gpt-5.3-codex:xhigh",
     "openai-codex/gpt-5.4-mini:xhigh",
