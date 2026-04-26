@@ -29,7 +29,6 @@ in {
         alacritty.enable = true;
       };
       services = {
-        system76-scheduler-niri.enable = true;
         swayidle.enable = true;
         swww.enable = true;
         dunst.enable = true;

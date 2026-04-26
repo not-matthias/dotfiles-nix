@@ -11,9 +11,6 @@
     {command = ["systemctl" "--user" "import-environment" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"];}
     {command = ["dbus-update-activation-environment" "--all"];}
 
-    # Start xdg-desktop-portal-gnome for screencasting support
-    {command = ["${pkgs.xdg-desktop-portal-gnome}/libexec/xdg-desktop-portal-gnome"];}
-
     # Launch apps via 'uwsm app' to integrate with systemd session management
     {command = ["uwsm app -- swww img ~/.config/niri/wallpaper.png"];}
     {command = ["uwsm" "app" "--" "waybar"];}
