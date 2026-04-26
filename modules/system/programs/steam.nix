@@ -10,23 +10,19 @@ in {
     # This has to be set by the user:
     # programs.steam.enable = true;
 
-    # TODO: Set for the user:
-    # programs.lutris = {
-    #   enable = true;
-    #   package = unstable.lutris;
-    #   protonPackages = with pkgs; [proton-ge-bin];
-    #   winePackages = with pkgs; [
-    #     wineWow64Packages.stable
-    #     wineWowPackages.stagingFull
-    #   ];
-    #   extraPackages = with pkgs; [
-    #     mangohud
-    #     winetricks
-    #     gamescope
-    #     gamemode
-    #     umu-launcher
-    #   ];
-    # };
+    programs.steam = {
+      gamescopeSession.enable = true;
+      protontricks.enable = true;
+      extraCompatPackages = with pkgs; [proton-ge-bin];
+      extraPackages = with pkgs; [
+        gamemode
+        gamescope
+        mangohud
+        umu-launcher
+      ];
+      localNetworkGameTransfers.openFirewall = true;
+      remotePlay.openFirewall = true;
+    };
 
     programs.gamemode = {
       enable = true;
@@ -50,7 +46,11 @@ in {
 
     environment.systemPackages = with pkgs; [
       protonup-qt
+      protontricks
+      lutris
       gamemode
+      mangohud
+      umu-launcher
 
       wineWowPackages.stable
       wineWowPackages.waylandFull
@@ -61,6 +61,8 @@ in {
       vulkan-loader
       vulkan-validation-layers
     ];
+
+    hardware.steam-hardware.enable = true;
 
     # Additional environment variables for gamescope
     environment.sessionVariables = {
