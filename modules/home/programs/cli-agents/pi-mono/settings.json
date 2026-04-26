@@ -6,8 +6,8 @@
     "maxDelayMs": 60000
   },
   "defaultProvider": "openai-codex",
-  "defaultModel": "openai-codex/gpt-5.5:high",
-  "defaultThinkingLevel": "high",
+  "defaultModel": "openai-codex/gpt-5.5:xhigh",
+  "defaultThinkingLevel": "xhigh",
   "hideThinkingBlock": true,
   "quietStartup": false,
   "collapseChangelog": true,
@@ -23,7 +23,7 @@
     "enabled": false
   },
   "enabledModels": [
-    "openai-codex/gpt-5.5:high",
+    "openai-codex/gpt-5.5:xhigh",
     "openai-codex/gpt-5.3-codex:xhigh",
     "openai-codex/gpt-5.3-codex-spark:xhigh",
     "claude-bridge/claude-opus-4-6:high",

@@ -1,7 +1,7 @@
 ---
 name: researcher
 description: "Use for deep research tasks that require extensive web searches, GitHub code searches, or codebase exploration. Runs in isolated context to protect the main conversation from verbose intermediate results. Use when the user asks to research, investigate, explore, or find information about a topic."
-model: openai-codex/gpt-5.5:high
+model: openai-codex/gpt-5.5:xhigh
 tools: Read, Grep, Glob, Bash, WebFetch, WebSearch
 skills: technical-researcher, github-code-search
 ---
