@@ -98,6 +98,9 @@ in {
         ".pi/agent/keybindings.json" = {
           source = keybindingsFile;
         };
+        ".pi/agent/claude-bridge.json" = {
+          source = ./claude-bridge.json;
+        };
         ".pi/agent/verbosity.json" = {
           source = ./verbosity.json;
         };
