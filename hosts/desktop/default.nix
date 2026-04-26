@@ -170,12 +170,8 @@
   age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
 
   # TODO: Change to hardware.virtualization
-  virtualisation = {
-    docker = {
-      enable = true;
-      enableNvidia = true;
-    };
-  };
+  virtualisation.docker.enable = true;
+  hardware.nvidia-container-toolkit.enable = true;
 
   boot = {
     loader = {
