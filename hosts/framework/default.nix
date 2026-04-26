@@ -14,13 +14,11 @@
   home-manager.users.${user} = {...}: {
     home.stateVersion = "22.05";
     home.packages = with pkgs; [
-      unstable.zed-editor
-      unstable.vscode
+      uv
       bun
       nodejs
       google-chrome
       notepad-next
-      # msty
       # mission-center
       # jujutsu
       # planify
@@ -49,7 +47,6 @@
       file-roller
       anki
       calibre
-
       imhex
       unstable.obsidian
 
@@ -59,6 +56,7 @@
       nixd
     ];
     programs = {
+      vscode.enable = true;
       ai-commit = {
         enable = true;
         provider = "claude";
