@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "default-anton";
   repo = "pi-subdir-context";
-  rev = "1930f8459a7f40a82bba0cfa09d2d149c06da9eb";
-  hash = "sha256-0X5yMO3pJYwq2qLgHbXZ0l4wj14rooMfAJ9ltZXlEOg=";
+  rev = "98dd1591bf8ed3893302baeffa91bc8630c99757";
+  hash = "sha256-6+PwRMlBky40bzlEaqGUnaKKCDb9AY1dIT2F0/adwAc=";
 }

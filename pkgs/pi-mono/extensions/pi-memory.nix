@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "espennilsen";
   repo = "pi";
-  rev = "1af7cc54b33616757d783a28ccba762e3849d9ee";
-  hash = "sha256-df74m8BwhtOsqUqF3kdJBS38G7Cm4bjumk/qu5uYBCs=";
+  rev = "0fcde5634de5e49d07ea3f0276a35e9e753f41b4";
+  hash = "sha256-+YfGJ2m7eyJXGXFabARK0Oln+tO9BBtNDLnkXuWFyqs=";
 }

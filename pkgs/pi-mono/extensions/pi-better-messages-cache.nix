@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "mcowger";
   repo = "pi-better-messages-cache";
-  rev = "5508d58a75acad963e4de3f92148e299c2afdabc";
-  hash = "sha256-HuqrHu5UbGUkMFvVd2Ijg9xxhvvsoMoLxbCLOTiDhd8=";
+  rev = "7dffbe6b884ce732ed0b0b58d7ca053577688c14";
+  hash = "sha256-efFUZaR5/yOiT/LZczEdJCP15DM3hbj4wuKkw/yzyoc=";
 }

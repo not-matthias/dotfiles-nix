@@ -14,6 +14,15 @@ in
       resources.extensions = ".";
     };
 
+    mermaid = {
+      src = withRuntimeDeps {
+        src = call (import ./mermaid.nix);
+        npmDepsHash = "sha256-rHFkSF+v9MeXXfq8x7Vl9al7EmLgGrC1AMH+WVyxviA=";
+      };
+      # Root-level index.ts + package.json
+      resources.extensions = ".";
+    };
+
     # hashline-edit = {
     #   src = withRuntimeDeps {
     #     src = pkgs.runCommand "pi-hashline-edit-with-lock" {} ''
@@ -30,7 +39,7 @@ in
     #       "
     #       cp ${./hashline-edit-package-lock.json} $out/package-lock.json
     #     '';
-    #     npmDepsHash = "sha256-TaClTXPLQwKxWRHl7a79inQmUaMrXQnIA6Efg0xZmGg=";
+    #     npmDepsHash = "sha256-XYZOgMNRTpTWkrWwF6xWCJEBv1Aq+O2n/A6R7rn59rc=";
     #   };
     #   # Whole repo is the extension (src/, package.json at root)
     #   resources.extensions = ".";
@@ -48,7 +57,7 @@ in
     subagents = {
       src = withRuntimeDeps {
         src = call (import ./subagents.nix);
-        npmDepsHash = "sha256-OiTb1tQnwRTiiytjJns1kb4fEcUDeJaWo+gtENR0tc4=";
+        npmDepsHash = "sha256-aJOUdCIHBDt5gz+CcbqD1fj4nhzYVtu1v1pzEFxVbbU=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
@@ -73,7 +82,7 @@ in
     # processes = {
     #   src = withRuntimeDeps {
     #     src = call (import ./processes.nix);
-    #     pnpmDepsHash = "sha256-x1K8cSyVzkFQ1b9qB9xy4EV9z8dZTyC5nqr4pkekajE=";
+    #     pnpmDepsHash = "sha256-oX8+q3eeCVLAYMztIzsrlvK1LAp8ifMF+jnfc94RhCs=";
     #   };
     #   resources.extensions = ".";
     # };
@@ -92,7 +101,7 @@ in
     #       mkdir -p $out
     #       cp -R ${call (import ./pi-memory.nix)}/extensions/pi-memory/. $out/
     #     '';
-    #     npmDepsHash = "sha256-EZj2c5kGW3rjZEAhijaOZiILqKhe0hoYJSH+Knrw2ao=";
+    #     npmDepsHash = "sha256-MoFbg8vpEmwAx1o9vzqut2VNEts22pqaOpsLYE/MnZ8=";
     #   };
     #   resources.extensions = ".";
     #   resources.skills = "skills";
@@ -179,6 +188,14 @@ in
       resources.extensions = ".";
     };
 
+    # "pi-codex-conversion" = {
+    #   src = withRuntimeDeps {
+    #     src = call (import ./pi-codex-conversion.nix);
+    #     npmDepsHash = "sha256-WCi63YquqI2kiEup6F11iGfUWSRovrc6JVYHG001ql4=";
+    #   };
+    #   resources.extensions = ".";
+    # };
+
     "pi-token-usage" = {
       src = withRuntimeDeps {
         src = pkgs.runCommand "pi-token-usage-src" {} ''
@@ -215,7 +232,7 @@ in
     #         fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
     #       "
     #     '';
-    #     npmDepsHash = "sha256-zoDsqXYAWkXcrvlh5G+y5FO2GvJyQRGzpPnb2doPZv8=";
+    #     npmDepsHash = "sha256-BSm67qBoeendegdcpQeQMJs7kNlc9MISbkQBJfq2Low=";
     #   };
     #   resources.extensions = ".";
     # };
