@@ -1,0 +1,103 @@
+{
+  "auto_update": false,
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+  "redact_private_values": true,
+
+  "theme": {
+    "mode": "light",
+    "light": "Fleet Light",
+    "dark": "Fleet Dark"
+  },
+  "icon_theme": {
+    "mode": "light",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)"
+  },
+  "buffer_font_family": ".ZedMono",
+  "ui_font_family": "Zed Plex Sans",
+  "base_keymap": "JetBrains",
+  "vim_mode": false,
+
+  "preferred_line_length": 120,
+  "soft_wrap": "editor_width",
+  "show_whitespaces": "all",
+  "hard_tabs": false,
+  "relative_line_numbers": "enabled",
+  "show_edit_predictions": true,
+  "formatter": "auto",
+  "format_on_save": "off",
+  "load_direnv": "shell_hook",
+
+  "edit_predictions": {
+    "provider": "zed",
+    "disabled_globs": [],
+    "mode": "eager",
+    "copilot": {
+      "proxy": null,
+      "proxy_no_verify": null
+    },
+    "enabled_in_text_threads": false
+  },
+
+  "collaboration_panel": {
+    "button": false
+  },
+  "notification_panel": {
+    "button": false
+  },
+  "project_panel": {
+    "git_status": true,
+    "folder_icons": true,
+    "file_icons": true
+  },
+  "outline_panel": {
+    "dock": "right"
+  },
+  "terminal": {
+    "dock": "bottom"
+  },
+  "git_panel": {
+    "tree_view": true
+  },
+
+  "languages": {
+    "Markdown": {
+      "show_edit_predictions": true
+    },
+    "Typst": {
+      "show_edit_predictions": true
+    }
+  },
+
+  "agent": {
+    "dock": "bottom",
+    "tool_permissions": {
+      "default": "allow"
+    },
+    "default_profile": "write",
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gemini-3-pro-preview"
+    },
+    "model_parameters": []
+  },
+  "agent_servers": {
+    "pi-acp": {
+      "type": "registry"
+    },
+    "codex-acp": {
+      "type": "registry"
+    },
+    "claude-acp": {
+      "type": "registry",
+      "favorite_config_option_values": {
+        "model": [
+          "opus"
+        ]
+      }
+    }
+  }
+}

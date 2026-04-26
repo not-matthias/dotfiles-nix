@@ -48,5 +48,6 @@
   ./ssh.nix
   ./ultra-power-saver
   ./vscode
+  ./zed-editor
   ./package-security.nix
 ]
