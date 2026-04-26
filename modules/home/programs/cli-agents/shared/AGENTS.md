@@ -48,6 +48,7 @@ Write extremely easy to consume code. Optimize for how easy the code is to read.
 - **Python:** ALWAYS use uv for all Python package and environment operations.
 - **Navigation:** When the user references a project or directory by name (e.g. "save this to dotfiles", "open apollo", "check the logs in my-service"), use zoxide (`z <name>`) to resolve the full path. Zoxide tracks frecency so partial names usually resolve correctly. Use it any time you need to locate a directory — navigating, saving files, reading from it, etc.
 - **NixOS:** When a program isn't installed use `nix-shell` or `nix run`
+- Use `trash-put` instead of `rm` to avoid accidental data loss.
 
 ## Testing
 
