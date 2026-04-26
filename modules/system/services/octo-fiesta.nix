@@ -13,7 +13,7 @@ in {
 
     version = lib.mkOption {
       type = lib.types.str;
-      default = "v0.7";
+      default = "v0.8";
       description = "Docker image tag";
     };
   };
@@ -29,15 +29,18 @@ in {
     virtualisation.oci-containers.containers.octo-fiesta = {
       image = "ghcr.io/v1ck3s/octo-fiesta:${cfg.version}";
       ports = ["${toString port}:8080"];
-      volumes = ["${navidromeCfg.musicFolder}:/app/downloads"];
+      volumes = ["${navidromeCfg.musicFolder}/octo-fiesta:/app/downloads"];
       environment = {
-        SUBSONIC_URL = "http://host.docker.internal:${toString navidromeCfg.settings.Port}";
-        MUSIC_SERVICE = "SquidWTF";
-        STORAGE_MODE = "Permanent";
-        SQUIDWTF_SOURCE = "Qobuz";
-        SQUIDWTF_QUALITY = "27";
-        ENABLE_EXTERNAL_PLAYLISTS = "true";
-        FOLDER_TEMPLATE = "{artist}/{album}/{track} - {title}";
+        Library__DownloadPath = "/app/downloads";
+
+        Subsonic__Url = "http://host.docker.internal:${toString navidromeCfg.settings.Port}";
+        Subsonic__MusicService = "SquidWTF";
+        Subsonic__StorageMode = "Permanent";
+        Subsonic__EnableExternalPlaylists = "true";
+        Subsonic__FolderTemplate = "{artist}/{album}/{track} - {title}";
+
+        SquidWTF__Source = "Tidal";
+        SquidWTF__Quality = "HI_RES_LOSSLESS";
       };
       extraOptions = ["--add-host=host.docker.internal:host-gateway"];
     };
