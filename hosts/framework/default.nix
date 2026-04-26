@@ -218,6 +218,7 @@
         LogLevel = "info";
       };
     };
+    octo-fiesta.enable = true;
     audiomuse.enable = true;
     # soulsync.enable = true;
     yubikey.enable = true;

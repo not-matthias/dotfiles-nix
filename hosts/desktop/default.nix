@@ -105,6 +105,7 @@
       requiredMount = "mnt-data-personal.mount";
       scrobblerUrl = "http://localhost:42010/apis/listenbrainz/1/";
     };
+    octo-fiesta.enable = true;
     slskd = {
       enable = false;
       settings = {
