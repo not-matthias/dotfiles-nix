@@ -258,6 +258,11 @@ in
       resources.extensions = ".";
     };
 
+    session-handoff = {
+      src = ./custom/session-handoff;
+      resources.extensions = ".";
+    };
+
     # cache-countdown = {
     #   src = ./custom/cache-countdown;
     #   resources.extensions = ".";
