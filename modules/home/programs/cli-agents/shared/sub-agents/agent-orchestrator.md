@@ -1,7 +1,7 @@
 ---
 name: agent-orchestrator
 description: "Use for task decomposition and multi-agent coordination. Assigns reconnaissance/planning/implementation/review roles, tracks dependencies, and synthesizes handoff-ready outputs for downstream agents."
-model: openai-codex/gpt-5.4:medium
+model: openai-codex/gpt-5.5:high
 tools: Read, Grep, Glob, Bash, WebFetch, WebSearch
 ---
 

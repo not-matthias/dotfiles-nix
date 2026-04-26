@@ -17,16 +17,14 @@
   "doubleEscapeAction": "tree",
   "theme": "stylix-latte-red",
   "pi-codex-fast": {
-    "enabled": false
+    "enabled": true
   },
   "pi-codex-conversion": {
     "enabled": false
   },
   "enabledModels": [
     "openai-codex/gpt-5.5:high",
-    "openai-codex/gpt-5.4:xhigh",
     "openai-codex/gpt-5.3-codex:xhigh",
-    "openai-codex/gpt-5.4-mini:xhigh",
     "openai-codex/gpt-5.3-codex-spark:xhigh",
     "claude-bridge/claude-opus-4-6:high",
     "claude-bridge/claude-opus-4-7:high",
