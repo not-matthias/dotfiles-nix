@@ -8,6 +8,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ./scheduler.nix
     ./work.nix
   ];
   home-manager.users.${user} = {...}: {
@@ -200,10 +201,6 @@
         repository = "s3:s3.eu-central-003.backblazeb2.com/framework-cf912bac41384519";
         schedule = "daily";
       };
-    };
-    scx = {
-      enable = true;
-      scheduler = "scx_bpfland";
     };
     opensnitch.enable = false;
     safeeyes.enable = true;
