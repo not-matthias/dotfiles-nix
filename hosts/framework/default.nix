@@ -24,7 +24,7 @@
       # planify
       unstable.todoist # Requires v0.23+
       unstable.beeper
-      flakes.devenv.packages.${pkgs.system}.devenv
+      flakes.devenv.packages.${pkgs.stdenv.hostPlatform.system}.devenv
       jetbrains.idea
 
       binary-ninja

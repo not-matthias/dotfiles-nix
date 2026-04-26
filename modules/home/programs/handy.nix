@@ -13,7 +13,7 @@
   config = lib.mkIf config.programs.handy.enable (
     {
       home.packages = [
-        flakes.handy.packages.${pkgs.system}.handy
+        flakes.handy.packages.${pkgs.stdenv.hostPlatform.system}.handy
         pkgs.wtype # Required for text input on Wayland
       ];
     }

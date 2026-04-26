@@ -71,7 +71,7 @@
       vim
       wget
       usbutils
-      flakes.agenix.packages.${system}.default
+      flakes.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 
     # Remove perl, rsync and strace

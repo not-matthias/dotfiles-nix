@@ -24,7 +24,7 @@
       # planify
       todoist
       unstable.beeper
-      flakes.devenv.packages.${pkgs.system}.devenv
+      flakes.devenv.packages.${pkgs.stdenv.hostPlatform.system}.devenv
 
       unstable.jetbrains.rust-rover
       unstable.jetbrains.clion

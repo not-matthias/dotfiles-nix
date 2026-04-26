@@ -10,7 +10,7 @@
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = flakes.waystt.packages.${pkgs.system}.default;
+      default = flakes.waystt.packages.${pkgs.stdenv.hostPlatform.system}.default;
       description = "The waystt package to use";
     };
 

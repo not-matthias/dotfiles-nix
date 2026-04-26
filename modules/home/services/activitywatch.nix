@@ -44,7 +44,7 @@ in {
         PartOf = ["graphical-session.target"];
       };
       Service = {
-        ExecStart = lib.getExe flakes.aw-hyprland.packages.${unstable.system}.aw-watcher-window-hyprland;
+        ExecStart = lib.getExe flakes.aw-hyprland.packages.${unstable.stdenv.hostPlatform.system}.aw-watcher-window-hyprland;
         Restart = "on-failure";
         RestartSec = "5s";
       };

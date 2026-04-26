@@ -14,7 +14,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [
-      quickshell.packages.${pkgs.system}.default
+      quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 
     # Ensure Qt and Wayland support
