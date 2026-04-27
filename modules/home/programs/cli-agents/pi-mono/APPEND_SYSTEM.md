@@ -91,6 +91,7 @@ For example, if the user asks you how to approach something, you should do your 
 
 # Parallelism
 
+- Use subagents aggressively whenever work splits into independent tracks.
 - Use subagents by default for independent workstreams:
   - multiple failing tests
   - multiple PR comments
