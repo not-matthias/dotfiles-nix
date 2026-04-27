@@ -35,7 +35,7 @@ in {
 
     virtualisation.arion.projects.sure.settings.services = {
       web.service = {
-        image = "ghcr.io/we-promise/sure:0.6.8";
+        image = "ghcr.io/we-promise/sure:0.6.9";
         restart = "unless-stopped";
         volumes = [
           "/var/lib/sure/app:/rails/storage:rw"
