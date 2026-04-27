@@ -243,6 +243,11 @@ in
     #   resources.extensions = ".";
     # };
 
+    escape-steer = {
+      src = ./custom/escape-steer;
+      resources.extensions = ".";
+    };
+
     effort = {
       src = ./custom/effort;
       resources.extensions = ".";
