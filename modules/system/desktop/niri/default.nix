@@ -71,6 +71,8 @@ in {
         alsa-utils # Volume control (provides amixer)
         brightnessctl # Brightness control
         playerctl # Media control
+        # xdg-desktop-portal-gnome delegates FileChooser calls to Nautilus.
+        nautilus
         nemo-with-extensions # File manager (Alt+E)
         xwayland-satellite # XWayland integration
       ];
@@ -98,9 +100,11 @@ in {
           xdg-desktop-portal-gnome
         ];
         config = {
-          common.default = "*";
+          common.default = ["gtk" "gnome"];
           niri = {
             default = ["gnome" "gtk"];
+            "org.freedesktop.impl.portal.FileChooser" = ["gtk"];
+            "org.freedesktop.impl.portal.Print" = ["gtk"];
             "org.freedesktop.impl.portal.Screenshot" = ["gnome"];
           };
         };
