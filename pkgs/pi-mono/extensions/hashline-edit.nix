@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "RimuruW";
   repo = "pi-hashline-edit";
-  rev = "259fcbfb1d78dddfea633e85dd51742df9351502";
-  hash = "sha256-ylpq7+rXDk2+c0Lvd73D1rkJ6onHo+1QiCiEbFA8MKY=";
+  rev = "82c5873a48a26336980c76b4472ea4e1d98b8aca";
+  hash = "sha256-ooLE5Q28cB4F/GDNCt+IqFNFTwFXVeb06wzqEoj748w=";
 }

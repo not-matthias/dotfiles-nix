@@ -48,7 +48,7 @@ in
     tasks = {
       src = withRuntimeDeps {
         src = call (import ./tasks.nix);
-        npmDepsHash = "sha256-ng0q5Ml2hWPBV7cAnbqCRPukWCCC7WeANcEvyTYPO9c=";
+        npmDepsHash = "sha256-BU8Xni+K/+nk2FmK8FkWCg4iGG5PWR9FFLkckfd356c=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
@@ -191,7 +191,7 @@ in
     # "pi-codex-conversion" = {
     #   src = withRuntimeDeps {
     #     src = call (import ./pi-codex-conversion.nix);
-    #     npmDepsHash = "sha256-WCi63YquqI2kiEup6F11iGfUWSRovrc6JVYHG001ql4=";
+    #     npmDepsHash = "sha256-pZEujjYmjfW8dEp6AQIvKJcMJGWdqHkLONFVWXc9/po=";
     #   };
     #   resources.extensions = ".";
     # };
@@ -212,7 +212,7 @@ in
           "
           cp ${./pi-token-usage-package-lock.json} $out/package-lock.json
         '';
-        npmDepsHash = "sha256-+ViQ5Qc2QfHd30GVKfxnxFePK98HvluGk9BrUq+08Lc=";
+        npmDepsHash = "sha256-ik73E3J97G+r6fN529P9+G5Mw9gsZTsdGH74KeYJqhw=";
       };
       resources.extensions = ".";
     };

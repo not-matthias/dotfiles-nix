@@ -5,13 +5,13 @@
 }:
 stdenvNoCC.mkDerivation rec {
   pname = "pi-autoresearch";
-  version = "1.0.0";
+  version = "1.2.0";
 
   src = fetchFromGitHub {
     owner = "davebcn87";
     repo = "pi-autoresearch";
-    rev = "56e9f2ec6f0dc6f9997126e4f1d8a4223de2a534";
-    hash = "sha256-V1o8rBJjQezHOz0zuHYfp/hctpmPHiICyMtQ+liISVI=";
+    rev = "37a611f460f07be353c86dc4596542c03946a2a7";
+    hash = "sha256-1KeUUN6odbKv/Z/S6rUQa9k1vcIJYVOeTvRpX8dDAoY=";
   };
 
   dontBuild = true;

@@ -5,18 +5,18 @@
 }:
 buildNpmPackage rec {
   pname = "pi-pretty";
-  version = "0.1.8";
+  version = "0.4.2";
 
   nodejs = nodejs_22;
 
   src = fetchFromGitHub {
     owner = "heyhuynhgiabuu";
     repo = "pi-pretty";
-    rev = "e91a6a68b6734e35e64319d5689e4152a26fdd1f";
-    hash = "sha256-0yV8c+X8x8PbpqNJaZwu2ABVGarXR5234jRUHjUn++A=";
+    rev = "7f446128c17fb59f46463d55008e504c84712f0b";
+    hash = "sha256-EnCsL/0U0h0zJJtXFcQr91GPxl0K7rl4l477wJCg8PE=";
   };
 
-  npmDepsHash = "sha256-NwKsfX1ntb3IXBgDqe1zQOfU4Vh6YUlvaU6C7D1X01g=";
+  npmDepsHash = "sha256-ppdECsYTLu5bxN+kJltjD+ukS5hAjmeKhDKEAH8bmoU=";
 
   postPatch = ''
     ${nodejs_22}/bin/node -e "

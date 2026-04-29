@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "IgorWarzocha";
   repo = "pi-codex-conversion";
-  rev = "0661344eb65c6497606ecce9e4bd813c2898b804";
-  hash = "sha256-K90yqvQph++9r8xp0NFAbl3+L/WirUIPIIJaUMI9Zew=";
+  rev = "2c5cbcfcca8ba66c34c4f15ea3e5503b2580b55f";
+  hash = "sha256-vyKiDVf/vjPXNq7C+O/e8w8JsFuTv+rcjNBjYsrPwFA=";
 }

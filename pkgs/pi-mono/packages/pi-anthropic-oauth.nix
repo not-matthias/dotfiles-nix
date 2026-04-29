@@ -5,18 +5,18 @@
 }:
 buildNpmPackage rec {
   pname = "pi-anthropic-oauth";
-  version = "0.1.5";
+  version = "0.1.11";
 
   nodejs = nodejs_22;
 
   src = fetchFromGitHub {
     owner = "leohenon";
     repo = "pi-anthropic-oauth";
-    rev = "1f8bb8bdabdf00b4b8d936d27e217d4ad74308e3";
-    hash = "sha256-XJe3GVykKnVc8dWAYe29CdQEdyejcgiLSTts2hcbjzo=";
+    rev = "a85010c51e0185a9f565460fa370e8b96b97597b";
+    hash = "sha256-pn5zd6pySMpJbsVz4NyujZ+25zd0GFblYY/ujNTDSh8=";
   };
 
-  npmDepsHash = "sha256-zXm3p/YOo8pEF7e80Ne67o8yCgzP/t6Vart6w5nWyKM=";
+  npmDepsHash = "sha256-Cv9mAdaAYWAIOH6W5LkIL3QrWr8PggIuuU3DfNoMqWk=";
 
   postPatch = ''
     cp ${./pi-anthropic-oauth-package-lock.json} package-lock.json
