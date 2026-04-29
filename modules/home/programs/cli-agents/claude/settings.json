@@ -33,6 +33,7 @@
   },
   "model": "opus[1m]",
   "theme": "light",
+  "tui": "fullscreen",
   "hooks": {
     "Stop": [
       {
