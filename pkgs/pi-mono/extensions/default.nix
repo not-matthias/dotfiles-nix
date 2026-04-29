@@ -217,6 +217,17 @@ in
       resources.extensions = ".";
     };
 
+    "pi-vcc" = {
+      src = pkgs.runCommand "pi-vcc-src" {} ''
+        mkdir -p $out
+        cp -R ${call (import ./pi-vcc.nix)}/. $out/
+        chmod -R u+w $out
+        substituteInPlace $out/src/tools/recall.ts \
+          --replace-fail '"@sinclair/typebox"' '"typebox"'
+      '';
+      resources.extensions = ".";
+    };
+
     # "pi-better-messages-cache" = {
     #   src = withRuntimeDeps {
     #     src = pkgs.runCommand "pi-better-messages-cache-src" {} ''
@@ -260,6 +271,11 @@ in
 
     notify = {
       src = ./custom/notify;
+      resources.extensions = ".";
+    };
+
+    dump-system-prompt = {
+      src = ./custom/dump-system-prompt;
       resources.extensions = ".";
     };
 
