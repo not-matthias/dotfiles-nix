@@ -86,14 +86,9 @@ in {
       };
     };
 
-    # Switch sysctl profile on AC plug/unplug
-    services.udev.extraRules = ''
-      SUBSYSTEM=="power_supply", ATTR{type}=="Mains", RUN+="${powerSysctlScript}"
-    '';
-
     services = {
       power-profiles-daemon.enable = false;
-      thermald.enable = true;
+      thermald.enable = false;
       # Disable TLP — nixos-hardware's framework module enables it, but it conflicts
       # with auto-cpufreq and overrides our governor/EPP/sysctl settings on battery.
       tlp.enable = lib.mkForce false;
