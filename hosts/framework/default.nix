@@ -117,7 +117,7 @@
         ];
       };
       solidtime-desktop.enable = true;
-      ultra-power-saver.enable = true;
+      ultra-power-saver.enable = false;
     };
 
     services = {
@@ -296,6 +296,36 @@
               }
             ];
           };
+        };
+        ultra = {
+          fanSpeedUpdateFrequency = 2;
+          movingAverageInterval = 5;
+          speedCurve = [
+            {
+              temp = 0;
+              speed = 15;
+            }
+            {
+              temp = 45;
+              speed = 15;
+            }
+            {
+              temp = 55;
+              speed = 75;
+            }
+            {
+              temp = 65;
+              speed = 90;
+            }
+            {
+              temp = 75;
+              speed = 90;
+            }
+            {
+              temp = 80;
+              speed = 100;
+            }
+          ];
         };
       };
     };
