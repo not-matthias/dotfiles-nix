@@ -56,8 +56,28 @@ in
 
     subagents = {
       src = withRuntimeDeps {
-        src = call (import ./subagents.nix);
-        npmDepsHash = "sha256-aJOUdCIHBDt5gz+CcbqD1fj4nhzYVtu1v1pzEFxVbbU=";
+        src = pkgs.runCommand "pi-subagents-safe-defaults" {} ''
+          mkdir -p $out
+          cp -R ${call (import ./subagents.nix)}/. $out/
+          chmod -R u+w $out
+          ${pkgs.nodejs_22}/bin/node -e '
+            const fs = require("fs");
+            const scopeFile = process.env.out + "/agent-scope.ts";
+            const scopeSource = fs.readFileSync(scopeFile, "utf8");
+            const scoped = scopeSource.replace("return \"both\";", "return \"user\";");
+            if (scopeSource === scoped) throw new Error("Failed to patch default subagent scope");
+            fs.writeFileSync(scopeFile, scoped);
+
+            const typesFile = process.env.out + "/types.ts";
+            const typesSource = fs.readFileSync(typesFile, "utf8");
+            const tempPattern = /export const TEMP_ROOT_DIR = path\.join\(os\.tmpdir\(\), `pi-subagents-[^`]+`\);/;
+            const tempNew = "export const TEMP_ROOT_DIR = path.join(os.homedir(), \".cache\", \"pi-subagents\", resolveTempScopeId());";
+            const patchedTypes = typesSource.replace(tempPattern, tempNew);
+            if (typesSource === patchedTypes) throw new Error("Failed to patch subagent temp directory");
+            fs.writeFileSync(typesFile, patchedTypes);
+          '
+        '';
+        npmDepsHash = "sha256-zylxs17WVNYRf3JsFUvibA1ix5JqP5iOLOkns8f0Lis=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
@@ -65,7 +85,26 @@ in
 
     guardrails = {
       src = withRuntimeDeps {
-        src = call (import ./guardrails.nix);
+        src = pkgs.runCommand "pi-guardrails-strict-permission-gate" {} ''
+          mkdir -p $out
+          cp -R ${call (import ./guardrails.nix)}/. $out/
+          chmod -R u+w $out
+          ${pkgs.nodejs_22}/bin/node -e '
+            const fs = require("fs");
+            const file = process.env.out + "/src/hooks/permission-gate/index.ts";
+            const lines = fs.readFileSync(file, "utf8").split("\n");
+            const start = lines.findIndex((line, index) =>
+              line.trim() === "if (" &&
+              lines[index + 1]?.trim() === "useBuiltinMatchers &&" &&
+              lines[index + 2]?.trim() === "parsedSuccessfully &&" &&
+              lines[index + 3]?.trim() === "!src.regex &&" &&
+              lines[index + 4]?.trim() === "BUILTIN_KEYWORD_PATTERNS.has(src.pattern)"
+            );
+            if (start === -1) throw new Error("Failed to patch guardrails permission gate");
+            lines.splice(start, 9);
+            fs.writeFileSync(file, lines.join("\n"));
+          '
+        '';
         pnpmDepsHash = "sha256-H7rhxjbROpIm6gAJCAXDP21Q9WZ+EMclECBiOZJofZs=";
       };
       resources.extensions = ".";
@@ -150,7 +189,35 @@ in
     # };
 
     "pi-subdir-context" = {
-      src = call (import ./pi-subdir-context.nix);
+      src = pkgs.runCommand "pi-subdir-context-safe-src" {} ''
+        mkdir -p $out
+        cp -R ${call (import ./pi-subdir-context.nix)}/. $out/
+        chmod -R u+w $out
+        ${pkgs.nodejs_22}/bin/node -e '
+          const fs = require("fs");
+          const file = process.env.out + "/src/index.ts";
+          const source = fs.readFileSync(file, "utf8");
+          const start = source.indexOf("\tfunction getAgentsFileFromDir");
+          const end = source.indexOf("\n\tfunction resetSession", start);
+          if (start === -1 || end === -1) throw new Error("Failed to patch pi-subdir-context symlink handling");
+          const replacement = [
+            "\tfunction getAgentsFileFromDir(dir: string) {",
+            "\t\tconst realDir = resolvePath(dir, process.cwd());",
+            "",
+            "\t\tfor (const filename of AGENTS_FILENAMES) {",
+            "\t\t\tconst candidate = path.join(dir, filename);",
+            "\t\t\tif (!fs.existsSync(candidate)) continue;",
+            "",
+            "\t\t\tconst realCandidate = resolvePath(candidate, dir);",
+            "\t\t\tif (isInsideRoot(realDir, realCandidate)) return realCandidate;",
+            "\t\t}",
+            "",
+            "\t\treturn \"\";",
+            "\t}",
+          ].join("\n");
+          fs.writeFileSync(file, source.slice(0, start) + replacement + source.slice(end));
+        '
+      '';
       resources.extensions = ".";
     };
 

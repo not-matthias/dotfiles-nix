@@ -9,7 +9,9 @@ import {
 	serializeConversation,
 } from "@mariozechner/pi-coding-agent";
 import { Container, Markdown, Spacer, Text } from "@mariozechner/pi-tui";
-import { existsSync } from "node:fs";
+import { existsSync, realpathSync } from "node:fs";
+import { homedir } from "node:os";
+import path from "node:path";
 import { Type } from "typebox";
 
 const QUERY_SYSTEM_PROMPT = `You are a session context assistant. Given the conversation history from a pi coding session and a question, provide a concise answer based on the session contents.
@@ -25,6 +27,27 @@ const errorResult = (text: string) => ({
 	content: [{ type: "text" as const, text }],
 	details: { error: true },
 });
+
+function isInsideRoot(rootDir: string, targetPath: string) {
+	const relative = path.relative(rootDir, targetPath);
+	return relative === "" || (!relative.startsWith("..") && !path.isAbsolute(relative));
+}
+
+type ResolvedSessionPath = { path: string } | { error: string };
+
+function resolveAllowedSessionPath(sessionPath: string): ResolvedSessionPath {
+	try {
+		const sessionRoot = realpathSync(path.join(homedir(), ".pi", "agent", "sessions"));
+		const resolvedSessionPath = realpathSync(sessionPath);
+		if (!isInsideRoot(sessionRoot, resolvedSessionPath)) {
+			return { error: `Session path must be inside ${sessionRoot}: ${sessionPath}` };
+		}
+
+		return { path: resolvedSessionPath };
+	} catch (error) {
+		return { error: `Error resolving session path: ${error}` };
+	}
+}
 
 export default function (pi: ExtensionAPI) {
 	pi.registerTool({
@@ -76,9 +99,12 @@ export default function (pi: ExtensionAPI) {
 				details: { status: "loading", question },
 			});
 
+			const resolvedSession = resolveAllowedSessionPath(sessionPath);
+			if ("error" in resolvedSession) return errorResult(resolvedSession.error);
+
 			let sessionManager: SessionManager;
 			try {
-				sessionManager = SessionManager.open(sessionPath);
+				sessionManager = SessionManager.open(resolvedSession.path);
 			} catch (error) {
 				return errorResult(`Error loading session: ${error}`);
 			}
