@@ -22,7 +22,6 @@
     # Import custom modules
     dndModule = import ./modules/dnd.nix {inherit pkgs;};
     weatherModule = import ./modules/weather.nix {inherit pkgs;};
-    powerProfileModule = import ./modules/power-profile.nix {inherit pkgs;};
     temperatureModule = import ./modules/temperature.nix {inherit pkgs;};
     niriWindowIndexModule = import ./modules/niri-window-index.nix {inherit pkgs;};
     aiUsageModule = import ./modules/ai-usage.nix {inherit pkgs;};
@@ -31,7 +30,6 @@
     customModules =
       dndModule.config
       // weatherModule.config
-      // powerProfileModule.config
       // temperatureModule.config
       // niriWindowIndexModule.config
       // aiUsageModule.config;
@@ -101,7 +99,6 @@
           modules = [
             "idle_inhibitor"
             "custom/dnd"
-            "custom/power_profile"
           ];
         };
 
