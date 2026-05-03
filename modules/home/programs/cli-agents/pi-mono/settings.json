@@ -33,7 +33,8 @@
   ],
   "keybindings": {
     "tui.select.up": ["up", "k"],
-    "tui.select.down": ["down", "j"]
+    "tui.select.down": ["down", "j"],
+    "tui.input.tab": []
   },
   "enableInstallTelemetry": false
 }
