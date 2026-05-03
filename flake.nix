@@ -91,6 +91,11 @@
       url = "github:AdnanHodzic/auto-cpufreq";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    hera = {
+      url = "git+https://github.com/heraeyes/platform?ref=feat/nixos-module";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {

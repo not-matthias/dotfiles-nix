@@ -10,6 +10,7 @@
   ./earlyoom.nix
   # ./firefly-iii.nix
   ./gitea.nix
+  ./hera.nix
   ./homepage.nix
   ./jellyfin.nix
   ./journald.nix
