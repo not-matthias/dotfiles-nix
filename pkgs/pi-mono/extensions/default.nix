@@ -62,13 +62,13 @@ in
           chmod -R u+w $out
           ${pkgs.nodejs_22}/bin/node -e '
             const fs = require("fs");
-            const scopeFile = process.env.out + "/agent-scope.ts";
+            const scopeFile = process.env.out + "/src/agents/agent-scope.ts";
             const scopeSource = fs.readFileSync(scopeFile, "utf8");
             const scoped = scopeSource.replace("return \"both\";", "return \"user\";");
             if (scopeSource === scoped) throw new Error("Failed to patch default subagent scope");
             fs.writeFileSync(scopeFile, scoped);
 
-            const typesFile = process.env.out + "/types.ts";
+            const typesFile = process.env.out + "/src/shared/types.ts";
             const typesSource = fs.readFileSync(typesFile, "utf8");
             const tempPattern = /export const TEMP_ROOT_DIR = path\.join\(os\.tmpdir\(\), `pi-subagents-[^`]+`\);/;
             const tempNew = "export const TEMP_ROOT_DIR = path.join(os.homedir(), \".cache\", \"pi-subagents\", resolveTempScopeId());";
@@ -77,7 +77,7 @@ in
             fs.writeFileSync(typesFile, patchedTypes);
           '
         '';
-        npmDepsHash = "sha256-zylxs17WVNYRf3JsFUvibA1ix5JqP5iOLOkns8f0Lis=";
+        npmDepsHash = "sha256-NQnirXqkAn13gYkVFN/Na/Qjd42HicoGIq8LaOlqUvg=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
@@ -242,7 +242,7 @@ in
     "pi-claude-bridge" = {
       src = withRuntimeDeps {
         src = pkgs.callPackage ./pi-claude-bridge.nix {};
-        npmDepsHash = "sha256-oPDGO37dgBi6/SDPp+wtbra1k3e8YJJVPuiq+++MrPs=";
+        npmDepsHash = "sha256-04jaJojohusdmzftdjqsvJpOYeBodOax8OZvftOanQE=";
       };
       resources.extensions = ".";
     };
@@ -316,10 +316,10 @@ in
     # };
 
     # Custom local extensions (no fetching needed)
-    # tab-queue = {
-    #   src = ./custom/tab-queue;
-    #   resources.extensions = ".";
-    # };
+    tab-queue = {
+      src = ./custom/tab-queue;
+      resources.extensions = ".";
+    };
 
     escape-steer = {
       src = ./custom/escape-steer;

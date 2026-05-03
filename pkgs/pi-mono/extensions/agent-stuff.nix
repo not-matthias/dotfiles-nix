@@ -2,8 +2,8 @@
   src = pkgs.fetchFromGitHub {
     owner = "mitsuhiko";
     repo = "agent-stuff";
-    rev = "521cafdb9ed3923e8ace90c5af9d2c7d92c10f86";
-    hash = "sha256-3p2+ABTp0hU0caGqx3sr3nfHJ+AYpRnhoOOEgOGRhqU=";
+    rev = "b861028c706edf3e3f983cde09dd8cc8549ec948";
+    hash = "sha256-jsAYm7CgXw6+ZeB/0ZCzsKUu/zNk8FLqU/TR2ZTjEtw=";
   };
 
   mkWrappedExtension = {
@@ -32,11 +32,6 @@ in {
   };
 
   # Separate packages so pi discovers each extension as its own path.
-  agent-stuff-context = mkWrappedExtension {
-    name = "agent-stuff-context";
-    entry = "context";
-  };
-
   agent-stuff-session-breakdown = mkWrappedExtension {
     name = "agent-stuff-session-breakdown";
     entry = "session-breakdown";

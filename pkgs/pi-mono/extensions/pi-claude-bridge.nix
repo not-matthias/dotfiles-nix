@@ -6,8 +6,8 @@
   src = fetchFromGitHub {
     owner = "elidickinson";
     repo = "pi-claude-bridge";
-    rev = "2e27d9648c5822c790f48158d28695912cce7930";
-    hash = "sha256-6He/Le6PtjKQr+OLAHlDcH25VxgnCNWOJbVAd6YZbYI=";
+    rev = "cd6bf663ebd009aa6d7db42db372ceadf219a086";
+    hash = "sha256-VqxfjDV5vSOMDaVEUzFsIwCdiVAE0VAtSvBYMjk3YUc=";
   };
 in
   # Patch package-lock.json to add missing resolved/integrity for zod v4
@@ -28,7 +28,7 @@ in
         zod['integrity'] = 'sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=='
         lock.write_text(json.dumps(data, indent=2))
 
-    index = out / 'index.ts'
+    index = out / 'src/index.ts'
     source = index.read_text()
     source = source.replace(
         'const DIAG_LOG_PATH = join(homedir(), ".pi", "agent", "claude-bridge-diag.log");\n',
@@ -40,8 +40,8 @@ in
         1,
     )
     source = source.replace(
-        '\t\t\t...(effort ? { effort } : {}),\n',
-        '\t\t\t...(effort ? { effort } : {}),\n\t\t\t...(CLAUDE_CODE_EXECUTABLE ? { pathToClaudeCodeExecutable: CLAUDE_CODE_EXECUTABLE } : {}),\n',
+        '\t\t\textraArgs,\n',
+        '\t\t\textraArgs,\n\t\t\t...(CLAUDE_CODE_EXECUTABLE ? { pathToClaudeCodeExecutable: CLAUDE_CODE_EXECUTABLE } : {}),\n',
         1,
     )
     index.write_text(source)

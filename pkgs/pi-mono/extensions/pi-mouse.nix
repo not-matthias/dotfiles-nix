@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "alasano";
   repo = "house-of-pi";
-  rev = "4ee6b05b010a1e8572c4324d69e930e26299278b";
-  hash = "sha256-omGdUrtDZbpuVwGU4vBJbEaZE7g7MWlYRArcWG3xCFo=";
+  rev = "7e188a77185da9b19d6e3ac521d527b416bcc2fe";
+  hash = "sha256-kGFo+zL7+OlHQkWm4j7xXEUOzWVt8+USht5zGB3IiiY=";
 }
