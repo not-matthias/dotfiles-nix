@@ -56,6 +56,7 @@
       nixd
     ];
     programs = {
+      ghostty.enable = true;
       vscode.enable = true;
       ai-commit = {
         enable = true;
