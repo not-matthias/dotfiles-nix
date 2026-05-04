@@ -214,6 +214,7 @@
       };
     };
     octo-fiesta.enable = true;
+    rustdesk-client.enable = true;
     audiomuse.enable = true;
     # soulsync.enable = true;
     yubikey.enable = true;

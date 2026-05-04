@@ -40,6 +40,7 @@
   ./postgresql-backup.nix
   ./redlib.nix
   ./restic.nix
+  ./rustdesk.nix
   ./rss.nix
   ./scrutiny.nix
   ./security.nix
