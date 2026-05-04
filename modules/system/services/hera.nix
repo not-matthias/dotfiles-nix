@@ -5,7 +5,7 @@
   flakes,
   ...
 }: let
-  cfg = config.services.hera;
+  cfg = config.services.hera-app;
 
   # Hardcoded RPC secret (TODO: migrate to agenix). Lands in /nix/store.
   garageEnvFile = pkgs.writeText "hera-garage.env" ''
@@ -17,7 +17,7 @@
 in {
   imports = [flakes.hera.nixosModules.default];
 
-  options.services.hera = {
+  options.services.hera-app = {
     enable = lib.mkEnableOption "Hera platform (scraper + website + Garage S3 + Postgres)";
 
     publicEndpoint = lib.mkOption {
@@ -31,7 +31,7 @@ in {
     services.hera = {
       enable = true;
       logLevel = "info";
-      website.listenAddr = "127.0.0.1:4829";
+      website.listenAddr = "0.0.0.0:4829";
       s3 = {
         publicEndpoint = cfg.publicEndpoint;
         credentialsFile = s3CredentialsFile;

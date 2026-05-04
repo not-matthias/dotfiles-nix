@@ -51,7 +51,9 @@
 
   # Only enable the services here, the settings are configured in the 'services/' folder.
   services = {
-    hera.enable = true;
+    hera-app = {
+      enable = true;
+    };
     authelia.enable = true;
     caddy.enable = true;
     restic = {

@@ -825,11 +825,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777504525,
-        "narHash": "sha256-aUp0uOX2HPG2WViZ5e3YgYwSkAKtt/kQGu/xmstZi04=",
+        "lastModified": 1777828548,
+        "narHash": "sha256-uL9KPvMnDAbsItk3w6JjV8MXXl8XJL918/ZtDdeN8Fs=",
         "ref": "feat/nixos-module",
-        "rev": "4b9e747c63e757fee5a062992a96ce60c87eb496",
-        "revCount": 83,
+        "rev": "5796c795fd03e23c4fd5c6a081a3715fa0c8ac50",
+        "revCount": 84,
         "type": "git",
         "url": "https://github.com/heraeyes/platform"
       },
