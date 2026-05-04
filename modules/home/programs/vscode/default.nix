@@ -6,9 +6,9 @@
     mutableExtensionsDir = true;
     profiles.default = {
       enableUpdateCheck = false;
-      # userSettings = builtins.fromJSON (builtins.readFile ./settings.json);
-      # keybindings = builtins.fromJSON (builtins.readFile ./keybindings.json);
-      # userMcp = builtins.fromJSON (builtins.readFile ./mcp.json);
+      userSettings = builtins.fromJSON (builtins.readFile ./settings.json);
+      keybindings = builtins.fromJSON (builtins.readFile ./keybindings.json);
+      userMcp = builtins.fromJSON (builtins.readFile ./mcp.json);
     };
   };
 }
