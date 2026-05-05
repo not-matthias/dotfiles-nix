@@ -295,6 +295,14 @@ in
       resources.extensions = ".";
     };
 
+    "rtk-rewrite" = {
+      src = pkgs.runCommand "pi-rtk-rewrite-src" {} ''
+        mkdir -p $out
+        cp -R ${call (import ./rtk-rewrite.nix)}/packages/rtk-rewrite/. $out/
+      '';
+      resources.extensions = ".";
+    };
+
     # "pi-better-messages-cache" = {
     #   src = withRuntimeDeps {
     #     src = pkgs.runCommand "pi-better-messages-cache-src" {} ''
