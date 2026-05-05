@@ -48,7 +48,7 @@ in
     tasks = {
       src = withRuntimeDeps {
         src = call (import ./tasks.nix);
-        npmDepsHash = "sha256-BU8Xni+K/+nk2FmK8FkWCg4iGG5PWR9FFLkckfd356c=";
+        npmDepsHash = "sha256-F8JFX/wE7+Nn7j5oS1sDB2SicrNY+DJMRdN+fFLH5aU=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
@@ -242,7 +242,7 @@ in
     "pi-claude-bridge" = {
       src = withRuntimeDeps {
         src = pkgs.callPackage ./pi-claude-bridge.nix {};
-        npmDepsHash = "sha256-04jaJojohusdmzftdjqsvJpOYeBodOax8OZvftOanQE=";
+        npmDepsHash = "sha256-lITn+l+Of5SQK1+ycNK9fES0bKCvJoKAq/6Nf8tgMY0=";
       };
       resources.extensions = ".";
     };
@@ -316,11 +316,6 @@ in
     # };
 
     # Custom local extensions (no fetching needed)
-    tab-queue = {
-      src = ./custom/tab-queue;
-      resources.extensions = ".";
-    };
-
     escape-steer = {
       src = ./custom/escape-steer;
       resources.extensions = ".";
