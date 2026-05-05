@@ -15,6 +15,10 @@
   };
   zramSwap.enable = true;
 
+  # Logs hardware errors (MCEs, ECC, PCIe AER) so silent reboots from
+  # uncorrectable errors leave a trail in `ras-mc-ctl --errors`.
+  hardware.rasdaemon.enable = true;
+
   users = {
     # TODO: Enable this in the future
     # mutableUsers = false;
