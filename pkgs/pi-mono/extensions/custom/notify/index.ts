@@ -74,6 +74,8 @@ const formatNotification = (text: string | null): { title: string; body: string 
 };
 
 export default function (pi: ExtensionAPI) {
+	if (process.env.PI_SUBAGENT_CHILD === "1") return;
+
 	pi.on("agent_end", async (event) => {
 		const lastText = extractLastAssistantText(event.messages ?? []);
 		const { title, body } = formatNotification(lastText);
