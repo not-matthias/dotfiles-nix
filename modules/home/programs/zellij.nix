@@ -28,6 +28,10 @@
     pane_frames false
 
     keybinds {
+      // Free Ctrl+O so it passes through to Claude/pi/other agents
+      // (default zellij binding is SwitchToMode "Session")
+      unbind "Ctrl o"
+
       normal {
         bind "Ctrl b" { SwitchToMode "Tmux"; }
         bind "Ctrl f" {
