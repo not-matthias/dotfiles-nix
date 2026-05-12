@@ -20,10 +20,17 @@ in {
         wayland = true;
         # theme = spicePkgs.themes.catppuccin;
         # colorScheme = "mocha";
+        experimentalFeatures = true;
         enabledExtensions = with spicePkgs.extensions; [
           adblockify
           hidePodcasts
           shuffle
+          songStats
+          betterGenres
+          catJamSynced
+          privateSession
+          sideHide
+          sessionStats
         ];
       };
     }
