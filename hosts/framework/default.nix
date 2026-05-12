@@ -11,6 +11,8 @@
     ./scheduler.nix
     ./work.nix
   ];
+
+  time.timeZone = lib.mkForce "America/Los_Angeles";
   home-manager.users.${user} = {...}: {
     home.stateVersion = "22.05";
     home.packages = with pkgs; [
@@ -73,7 +75,6 @@
         agent-browser.enable = true;
         claude.enable = true;
         codex.enable = true;
-        amp.enable = true;
         pi-mono = {
           enable = true;
           envFile = "/run/agenix/pi-mono-env";
