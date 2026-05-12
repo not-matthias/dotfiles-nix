@@ -339,11 +339,6 @@ in
       resources.extensions = ".";
     };
 
-    notify = {
-      src = ./custom/notify;
-      resources.extensions = ".";
-    };
-
     dump-system-prompt = {
       src = ./custom/dump-system-prompt;
       resources.extensions = ".";

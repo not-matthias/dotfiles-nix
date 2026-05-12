@@ -34,19 +34,6 @@
   "model": "opus[1m]",
   "theme": "light",
   "tui": "fullscreen",
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "notify-send 'Claude Code' 'Task completed' || true"
-          }
-        ]
-      }
-    ]
-  },
   "feedbackSurveyState": {
     "lastShownTime": 1754514815917
   },
