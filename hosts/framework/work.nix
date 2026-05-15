@@ -22,4 +22,6 @@
     # this makes system auth etc. work properly
     polkitPolicyOwners = [user];
   };
+
+  environment.enableDebugInfo = true;
 }
