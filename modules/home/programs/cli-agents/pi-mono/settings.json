@@ -34,7 +34,7 @@
   "keybindings": {
     "tui.select.up": ["up", "k"],
     "tui.select.down": ["down", "j"],
-    "tui.input.tab": [],
+    "tui.input.tab": ["left", "right"],
     "app.message.followUp": ["tab", "alt+enter"],
     "app.message.dequeue": ["ctrl+alt+u", "alt+up"]
   },
