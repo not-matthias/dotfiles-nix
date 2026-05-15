@@ -5,16 +5,16 @@
 }:
 buildNpmPackage rec {
   pname = "pi-web-providers";
-  version = "2.5.0";
+  version = "3.0.0";
 
   nodejs = nodejs_22;
 
   src = fetchzip {
     url = "https://registry.npmjs.org/${pname}/-/${pname}-${version}.tgz";
-    hash = "sha256-klFvqD+fYcGyDVquKECPZofRQOeA92pXQ19G0RBdddY=";
+    hash = "sha256-hHO50KvRH34cimmCLizlMzAL3JX0TiEvhpxYGlKLVvk=";
   };
 
-  npmDepsHash = "sha256-bei5oEosCG56dF4JopBS37vygPGNm8ekuW/8J8jKJ/A=";
+  npmDepsHash = "sha256-N/uvIU4OhoTIFADUS4851MnYq7F5AxObirmqdiP12qw=";
 
   postPatch = ''
     cp ${./pi-web-providers-package-lock.json} package-lock.json
