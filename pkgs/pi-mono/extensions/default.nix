@@ -60,6 +60,7 @@ in
           mkdir -p $out
           cp -R ${call (import ./subagents.nix)}/. $out/
           chmod -R u+w $out
+          cp ${./subagents-package-lock.json} $out/package-lock.json
           ${pkgs.nodejs_22}/bin/node -e '
             const fs = require("fs");
             const scopeFile = process.env.out + "/src/agents/agent-scope.ts";
@@ -77,7 +78,7 @@ in
             fs.writeFileSync(typesFile, patchedTypes);
           '
         '';
-        npmDepsHash = "sha256-NQnirXqkAn13gYkVFN/Na/Qjd42HicoGIq8LaOlqUvg=";
+        npmDepsHash = "sha256-ZJWyq53AsWgFiHJSEjK9QTs/xC67ZFHRSv34GbiSNRg=";
       };
       # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
@@ -91,21 +92,21 @@ in
           chmod -R u+w $out
           ${pkgs.nodejs_22}/bin/node -e '
             const fs = require("fs");
-            const file = process.env.out + "/src/hooks/permission-gate/index.ts";
+            const file = process.env.out + "/src/core/commands/dangerous.ts";
             const lines = fs.readFileSync(file, "utf8").split("\n");
             const start = lines.findIndex((line, index) =>
               line.trim() === "if (" &&
               lines[index + 1]?.trim() === "useBuiltinMatchers &&" &&
               lines[index + 2]?.trim() === "parsedSuccessfully &&" &&
-              lines[index + 3]?.trim() === "!src.regex &&" &&
-              lines[index + 4]?.trim() === "BUILTIN_KEYWORD_PATTERNS.has(src.pattern)"
+              lines[index + 3]?.trim() === "!source.regex &&" &&
+              lines[index + 4]?.trim() === "BUILTIN_KEYWORD_PATTERNS.has(source.pattern)"
             );
             if (start === -1) throw new Error("Failed to patch guardrails permission gate");
-            lines.splice(start, 9);
+            lines.splice(start, 8);
             fs.writeFileSync(file, lines.join("\n"));
           '
         '';
-        pnpmDepsHash = "sha256-H7rhxjbROpIm6gAJCAXDP21Q9WZ+EMclECBiOZJofZs=";
+        pnpmDepsHash = "sha256-9RQhCB6lInvI6VJ8+eEy8nbbatenkg9QDTXvFTXVSPI=";
       };
       resources.extensions = ".";
     };
@@ -279,7 +280,7 @@ in
           "
           cp ${./pi-token-usage-package-lock.json} $out/package-lock.json
         '';
-        npmDepsHash = "sha256-ik73E3J97G+r6fN529P9+G5Mw9gsZTsdGH74KeYJqhw=";
+        npmDepsHash = "sha256-km3S3cI/bsSHSgUIrQIipYlvNPFKQrxINDLqQ3V/j7A=";
       };
       resources.extensions = ".";
     };
