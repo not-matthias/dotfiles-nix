@@ -16,16 +16,8 @@
     export AI_USAGE_RETRY_LIMIT="5"
     exec ${pkgs.bash}/bin/bash ${./scripts/codex-usage.sh}
   '';
-
-  ampScript = pkgs.writeShellScriptBin "waybar-amp-usage" ''
-    export PATH="${runtimePath}:/etc/profiles/per-user/$USER/bin:$PATH"
-    export AI_USAGE_COMMON="${commonLib}"
-    export AI_USAGE_RETRY_LIMIT="3"
-    export AMP_BIN="amp"
-    exec ${pkgs.bash}/bin/bash ${./scripts/amp-usage.sh}
-  '';
 in {
-  inherit claudeScript codexScript ampScript;
+  inherit claudeScript codexScript;
 
   config = {
     "custom/claude-usage" = {
@@ -43,15 +35,6 @@ in {
       exec = "${codexScript}/bin/waybar-codex-usage";
       on-click = "${codexScript}/bin/waybar-codex-usage --force-refresh";
       on-click-right = "${codexScript}/bin/waybar-codex-usage --restart";
-      interval = 300;
-    };
-
-    "custom/amp-usage" = {
-      return-type = "json";
-      format = "{}";
-      exec = "${ampScript}/bin/waybar-amp-usage";
-      on-click = "${ampScript}/bin/waybar-amp-usage --force-refresh";
-      on-click-right = "${ampScript}/bin/waybar-amp-usage --restart";
       interval = 300;
     };
   };

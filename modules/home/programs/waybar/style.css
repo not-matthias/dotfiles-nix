@@ -48,7 +48,6 @@ window#waybar {
 
 #custom-claude-usage,
 #custom-codex-usage,
-#custom-amp-usage,
 #custom-niri-window-index,
 #workspaces,
 .group-ai-usage,
@@ -106,7 +105,6 @@ window#waybar {
 #custom-temperature:hover,
 #custom-claude-usage:hover,
 #custom-codex-usage:hover,
-#custom-amp-usage:hover,
 #custom-niri-window-index:hover,
 #tray:hover {
     background: rgba(255, 255, 255, 0.1);
