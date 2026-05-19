@@ -93,7 +93,7 @@
     };
 
     hera = {
-      url = "git+https://github.com/heraeyes/platform?ref=feat/nixos-module";
+      url = "git+https://github.com/heraeyes/platform?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
