@@ -227,6 +227,14 @@ in {
                 siteMonitor = "https://wakapi.${domain}";
               };
             })
+            (includeService "vikunja-app" {
+              Vikunja = {
+                description = "Vikunja - Task Manager";
+                icon = "vikunja";
+                href = "https://vikunja.${domain}";
+                siteMonitor = "https://vikunja.${domain}";
+              };
+            })
             (includeService "librechat" {
               LibreChat = {
                 description = "LibreChat";

@@ -54,6 +54,7 @@
   ./traggo.nix
   ./twenty.nix
   ./vaultwarden.nix
+  ./vikunja.nix
   ./vpn.nix
   ./wakapi.nix
   ./watchyourlan.nix

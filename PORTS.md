@@ -1,4 +1,5 @@
 8083 = calibre-web
+3456 = vikunja
 11439 = wordpress
 11438 = vaultwarden
 11437 = librechat

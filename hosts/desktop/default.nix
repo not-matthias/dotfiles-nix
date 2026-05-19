@@ -134,6 +134,7 @@
     sure.enable = true;
     solidtime.enable = true;
     wakapi.enable = true;
+    vikunja-app.enable = true;
     # tandoor-recipes.enable = true;
     jellyfin.enable = true;
     # soulsync.enable = true;
