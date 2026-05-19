@@ -27,6 +27,12 @@
     else status: "${pkgs.wlopm}/bin/wlopm --${status} '*'";
   lockCmd = "${pkgs.swaylock}/bin/swaylock --daemonize";
 in {
+  options.services.swayidle.suspendCommand = lib.mkOption {
+    type = lib.types.str;
+    default = "${pkgs.systemd}/bin/systemctl suspend-then-hibernate";
+    description = "Command to run when the suspend idle timeout fires.";
+  };
+
   config = lib.mkIf cfg.enable {
     # Media-aware idle inhibition service using systemd-inhibit
     systemd.user.services.idle-inhibit = {
@@ -136,7 +142,7 @@ in {
         }
         {
           timeout = suspendTimeout;
-          command = "${pkgs.systemd}/bin/systemctl suspend";
+          command = cfg.suspendCommand;
         }
       ];
       events = [

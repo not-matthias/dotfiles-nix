@@ -12,7 +12,6 @@
     ./work.nix
   ];
 
-  time.timeZone = lib.mkForce "America/Los_Angeles";
   home-manager.users.${user} = {...}: {
     home.stateVersion = "22.05";
     home.packages = with pkgs; [
@@ -44,6 +43,7 @@
       thunderbird
 
       vlc
+      wdisplays
       evince
       kdePackages.gwenview
       file-roller
@@ -372,6 +372,9 @@
       };
     };
 
+    # Hibernate to swap on resume. Swap LUKS is unlocked in initrd below.
+    resumeDevice = "/dev/disk/by-uuid/8feea14d-3406-4e2f-9608-f36ad9082e4b";
+
     initrd = {
       # Setup keyfile
       secrets."/crypto_keyfile.bin" = null;
@@ -380,5 +383,21 @@
       luks.devices."luks-482bfe5c-c987-4a97-9c07-b8cd312cabb5".device = "/dev/disk/by-uuid/482bfe5c-c987-4a97-9c07-b8cd312cabb5";
       luks.devices."luks-482bfe5c-c987-4a97-9c07-b8cd312cabb5".keyFile = "/crypto_keyfile.bin";
     };
+  };
+
+  # s2idle drains the battery on this Framework, so fall through to
+  # hibernation after 30 minutes of suspend.
+  systemd.sleep.extraConfig = lib.mkForce ''
+    AllowSuspend=yes
+    AllowHibernation=yes
+    AllowSuspendThenHibernate=yes
+    AllowHybridSleep=yes
+    HibernateDelaySec=30min
+  '';
+
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend-then-hibernate";
+    HandleLidSwitchDocked = "ignore";
+    HandlePowerKey = "suspend-then-hibernate";
   };
 }
