@@ -62,6 +62,12 @@ in {
           outputs = {
             "DP-3" = {
               variable-refresh-rate = false;
+              # Positioned to the left of the laptop monitor (eDP-1 at 0,0).
+              # DP-3 logical size is 2560x1440 (scale 1), so x = -2560.
+              position = {
+                x = -2560;
+                y = 0;
+              };
             };
             "DP-1" = {
               variable-refresh-rate = true;
@@ -113,7 +119,7 @@ in {
 
           # Named workspaces to prevent auto-deletion when empty
           workspaces = let
-            main-monitor = "DP-2";
+            main-monitor = cfg.mainMonitor;
           in {
             "1" = {
               name = "web";

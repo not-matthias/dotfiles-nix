@@ -13,6 +13,11 @@ in {
 
   options.desktop.niri = {
     enable = mkEnableOption "Enable Niri scrollable-tiling Wayland compositor";
+    mainMonitor = mkOption {
+      type = types.str;
+      default = "DP-3";
+      description = "Primary monitor output name (e.g. DP-3). Used by niri workspace rules and niri-organize.";
+    };
     package = mkOption {
       type = types.package;
       default = flakes.niri.packages.${pkgs.system}.niri-unstable;
