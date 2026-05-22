@@ -75,6 +75,7 @@
         agent-browser.enable = true;
         claude.enable = true;
         codex.enable = true;
+        amp.enable = true;
         pi-mono = {
           enable = true;
           envFile = "/run/agenix/pi-mono-env";
