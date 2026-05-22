@@ -147,13 +147,13 @@ in
     #   resources.skills = "skills";
     # };
 
-    "context-guard" = {
-      src = pkgs.runCommand "pi-context-guard-src" {} ''
-        mkdir -p $out
-        cp -R ${call (import ./context-guard.nix)}/extensions/context-guard/. $out/
-      '';
-      resources.extensions = ".";
-    };
+    # "context-guard" = {
+    #   src = pkgs.runCommand "pi-context-guard-src" {} ''
+    #     mkdir -p $out
+    #     cp -R ${call (import ./context-guard.nix)}/extensions/context-guard/. $out/
+    #   '';
+    #   resources.extensions = ".";
+    # };
 
     "pi-pane" = {
       src = call (import ./pi-pane.nix);
