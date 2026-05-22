@@ -34,7 +34,7 @@
   "model": "opus[1m]",
   "theme": "light",
   "tui": "fullscreen",
-  "verbose": true,
+  "viewMode": "verbose",
   "feedbackSurveyState": {
     "lastShownTime": 1754514815917
   },
