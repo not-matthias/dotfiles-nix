@@ -109,15 +109,6 @@
       #   enableAudioFeedback = true;
       # };
 
-      obs-studio = {
-        enable = true;
-        plugins = with pkgs.obs-studio-plugins; [
-          obs-vaapi
-          obs-vkcapture
-          obs-gstreamer
-          obs-pipewire-audio-capture
-        ];
-      };
       solidtime-desktop.enable = true;
       ultra-power-saver.enable = false;
     };
@@ -163,6 +154,7 @@
     fcitx5.enable = true;
     nix-ld.enable = true;
     nix-ld.libraries = [pkgs.libevdev];
+    obs.enable = true;
     nix-index.enable = true;
     oneleet = {
       enable = true;
