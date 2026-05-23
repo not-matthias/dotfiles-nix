@@ -18,12 +18,9 @@ This ensures alignment and prevents wasted work on rejected approaches.
 
 ## Code Style
 
-<critical>
-Write extremely easy to consume code. Optimize for how easy the code is to read. Make the code skimmable. Avoid cleverness. Use early returns. This is the single most important code style rule.
-</critical>
-
 - **Minimize nesting:** Use early returns and inverted conditionals instead of deeply nested structures.
 - **Max nesting depth:** 2-3 levels deep. Avoid 4+ level nesting.
+- **Fail loudly:** Make it obvious when something goes wrong. Don't silently ignore errors or edge cases.
 
 ## Rules
 
@@ -37,8 +34,8 @@ Write extremely easy to consume code. Optimize for how easy the code is to read.
 
 ## Documentation
 
-- Put all the temporary files and documentation you create into the `.agents` folder (e.g. `.agents/SCRATCHPAD.md`, `.agents/docs/2025-09-13-add-button.md`, ...).
 - Prefix all documentation entries with the current date in YYYY-MM-DD format and put them into the `.agents/docs` directory.
+- Put all the temporary files and documentation you create into the `.agents` folder (e.g. `.agents/docs/2025-09-13-add-button.md`, ...).
 - Store any intermediate scripts (shell scripts, Python scripts, etc.) in the `.agents/scripts/` folder.
 
 ## Available CLI Tools

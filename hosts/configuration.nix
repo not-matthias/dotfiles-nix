@@ -45,6 +45,8 @@
     command-not-found.enable = false;
   };
   security.sudo.wheelNeedsPassword = true;
+  # Disable loading kernel modules after boot (only modules loaded during boot are available).
+  security.lockKernelModules = true;
 
   time.timeZone = "Europe/Vienna";
   i18n = {
