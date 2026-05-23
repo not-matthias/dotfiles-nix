@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "sting8k";
   repo = "pi-vcc";
-  rev = "9a710489973a0dca92810c1de672159f56fc8c9e";
-  hash = "sha256-Z3MOdSsYtYl3DD8FUaL4yBmyJnciOk/1UCvbqj4BsgA=";
+  rev = "b4c9099c78863769bec8f6f3ee3861c1e094db9e";
+  hash = "sha256-V4jSTDakyN3Cm92Oj7OVWnRooK9mV4GKBH7YeYL7cTQ=";
 }

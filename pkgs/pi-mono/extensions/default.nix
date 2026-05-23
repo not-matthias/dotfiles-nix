@@ -5,21 +5,24 @@
 {pkgs}: let
   call = f: f {inherit (pkgs) fetchFromGitHub;};
   withRuntimeDeps = args: pkgs.callPackage ./with-runtime-deps.nix args;
+  compileExtension = args: pkgs.callPackage ./compile-extension.nix args;
   agentStuff = import ./agent-stuff.nix {inherit pkgs;};
 in
   {
     askuserquestion = {
-      src = call (import ./askuserquestion.nix);
-      # Whole repo is the extension (src/, package.json at root)
+      src = compileExtension {
+        src = call (import ./askuserquestion.nix);
+      };
       resources.extensions = ".";
     };
 
     mermaid = {
-      src = withRuntimeDeps {
-        src = call (import ./mermaid.nix);
-        npmDepsHash = "sha256-rHFkSF+v9MeXXfq8x7Vl9al7EmLgGrC1AMH+WVyxviA=";
+      src = compileExtension {
+        src = withRuntimeDeps {
+          src = call (import ./mermaid.nix);
+          npmDepsHash = "sha256-rHFkSF+v9MeXXfq8x7Vl9al7EmLgGrC1AMH+WVyxviA=";
+        };
       };
-      # Root-level index.ts + package.json
       resources.extensions = ".";
     };
 
@@ -46,67 +49,71 @@ in
     # };
 
     tasks = {
-      src = withRuntimeDeps {
-        src = call (import ./tasks.nix);
-        npmDepsHash = "sha256-F8JFX/wE7+Nn7j5oS1sDB2SicrNY+DJMRdN+fFLH5aU=";
+      src = compileExtension {
+        src = withRuntimeDeps {
+          src = call (import ./tasks.nix);
+          npmDepsHash = "sha256-F8JFX/wE7+Nn7j5oS1sDB2SicrNY+DJMRdN+fFLH5aU=";
+        };
       };
-      # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
     };
 
     subagents = {
-      src = withRuntimeDeps {
-        src = pkgs.runCommand "pi-subagents-safe-defaults" {} ''
-          mkdir -p $out
-          cp -R ${call (import ./subagents.nix)}/. $out/
-          chmod -R u+w $out
-          cp ${./subagents-package-lock.json} $out/package-lock.json
-          ${pkgs.nodejs_22}/bin/node -e '
-            const fs = require("fs");
-            const scopeFile = process.env.out + "/src/agents/agent-scope.ts";
-            const scopeSource = fs.readFileSync(scopeFile, "utf8");
-            const scoped = scopeSource.replace("return \"both\";", "return \"user\";");
-            if (scopeSource === scoped) throw new Error("Failed to patch default subagent scope");
-            fs.writeFileSync(scopeFile, scoped);
+      src = compileExtension {
+        src = withRuntimeDeps {
+          src = pkgs.runCommand "pi-subagents-safe-defaults" {} ''
+            mkdir -p $out
+            cp -R ${call (import ./subagents.nix)}/. $out/
+            chmod -R u+w $out
+            cp ${./subagents-package-lock.json} $out/package-lock.json
+            ${pkgs.nodejs_22}/bin/node -e '
+              const fs = require("fs");
+              const scopeFile = process.env.out + "/src/agents/agent-scope.ts";
+              const scopeSource = fs.readFileSync(scopeFile, "utf8");
+              const scoped = scopeSource.replace("return \"both\";", "return \"user\";");
+              if (scopeSource === scoped) throw new Error("Failed to patch default subagent scope");
+              fs.writeFileSync(scopeFile, scoped);
 
-            const typesFile = process.env.out + "/src/shared/types.ts";
-            const typesSource = fs.readFileSync(typesFile, "utf8");
-            const tempPattern = /export const TEMP_ROOT_DIR = path\.join\(os\.tmpdir\(\), `pi-subagents-[^`]+`\);/;
-            const tempNew = "export const TEMP_ROOT_DIR = path.join(os.homedir(), \".cache\", \"pi-subagents\", resolveTempScopeId());";
-            const patchedTypes = typesSource.replace(tempPattern, tempNew);
-            if (typesSource === patchedTypes) throw new Error("Failed to patch subagent temp directory");
-            fs.writeFileSync(typesFile, patchedTypes);
-          '
-        '';
-        npmDepsHash = "sha256-ZJWyq53AsWgFiHJSEjK9QTs/xC67ZFHRSv34GbiSNRg=";
+              const typesFile = process.env.out + "/src/shared/types.ts";
+              const typesSource = fs.readFileSync(typesFile, "utf8");
+              const tempPattern = /export const TEMP_ROOT_DIR = path\.join\(os\.tmpdir\(\), `pi-subagents-[^`]+`\);/;
+              const tempNew = "export const TEMP_ROOT_DIR = path.join(os.homedir(), \".cache\", \"pi-subagents\", resolveTempScopeId());";
+              const patchedTypes = typesSource.replace(tempPattern, tempNew);
+              if (typesSource === patchedTypes) throw new Error("Failed to patch subagent temp directory");
+              fs.writeFileSync(typesFile, patchedTypes);
+            '
+          '';
+          npmDepsHash = "sha256-3it73ICnpSlO7UYBrsKjzyBratMTzJzrMLKKmXAbA7Y=";
+        };
       };
-      # Whole repo is the extension (src/, package.json at root)
       resources.extensions = ".";
     };
 
     guardrails = {
-      src = withRuntimeDeps {
-        src = pkgs.runCommand "pi-guardrails-strict-permission-gate" {} ''
-          mkdir -p $out
-          cp -R ${call (import ./guardrails.nix)}/. $out/
-          chmod -R u+w $out
-          ${pkgs.nodejs_22}/bin/node -e '
-            const fs = require("fs");
-            const file = process.env.out + "/src/core/commands/dangerous.ts";
-            const lines = fs.readFileSync(file, "utf8").split("\n");
-            const start = lines.findIndex((line, index) =>
-              line.trim() === "if (" &&
-              lines[index + 1]?.trim() === "useBuiltinMatchers &&" &&
-              lines[index + 2]?.trim() === "parsedSuccessfully &&" &&
-              lines[index + 3]?.trim() === "!source.regex &&" &&
-              lines[index + 4]?.trim() === "BUILTIN_KEYWORD_PATTERNS.has(source.pattern)"
-            );
-            if (start === -1) throw new Error("Failed to patch guardrails permission gate");
-            lines.splice(start, 8);
-            fs.writeFileSync(file, lines.join("\n"));
-          '
-        '';
-        pnpmDepsHash = "sha256-9RQhCB6lInvI6VJ8+eEy8nbbatenkg9QDTXvFTXVSPI=";
+      src = compileExtension {
+        src = withRuntimeDeps {
+          src = pkgs.runCommand "pi-guardrails-strict-permission-gate" {} ''
+            mkdir -p $out
+            cp -R ${call (import ./guardrails.nix)}/. $out/
+            chmod -R u+w $out
+            ${pkgs.nodejs_22}/bin/node -e '
+              const fs = require("fs");
+              const file = process.env.out + "/src/core/commands/dangerous.ts";
+              const lines = fs.readFileSync(file, "utf8").split("\n");
+              const start = lines.findIndex((line, index) =>
+                line.trim() === "if (" &&
+                lines[index + 1]?.trim() === "useBuiltinMatchers &&" &&
+                lines[index + 2]?.trim() === "parsedSuccessfully &&" &&
+                lines[index + 3]?.trim() === "!source.regex &&" &&
+                lines[index + 4]?.trim() === "BUILTIN_KEYWORD_PATTERNS.has(source.pattern)"
+              );
+              if (start === -1) throw new Error("Failed to patch guardrails permission gate");
+              lines.splice(start, 8);
+              fs.writeFileSync(file, lines.join("\n"));
+            '
+          '';
+          pnpmDepsHash = "sha256-I9ENJzV6RDLBFoiYleMaH1eCbsqwsfp61/zE0doFW44=";
+        };
       };
       resources.extensions = ".";
     };
@@ -156,7 +163,9 @@ in
     # };
 
     "pi-pane" = {
-      src = call (import ./pi-pane.nix);
+      src = compileExtension {
+        src = call (import ./pi-pane.nix);
+      };
       resources.extensions = ".";
     };
 
@@ -190,35 +199,37 @@ in
     # };
 
     "pi-subdir-context" = {
-      src = pkgs.runCommand "pi-subdir-context-safe-src" {} ''
-        mkdir -p $out
-        cp -R ${call (import ./pi-subdir-context.nix)}/. $out/
-        chmod -R u+w $out
-        ${pkgs.nodejs_22}/bin/node -e '
-          const fs = require("fs");
-          const file = process.env.out + "/src/index.ts";
-          const source = fs.readFileSync(file, "utf8");
-          const start = source.indexOf("\tfunction getAgentsFileFromDir");
-          const end = source.indexOf("\n\tfunction resetSession", start);
-          if (start === -1 || end === -1) throw new Error("Failed to patch pi-subdir-context symlink handling");
-          const replacement = [
-            "\tfunction getAgentsFileFromDir(dir: string) {",
-            "\t\tconst realDir = resolvePath(dir, process.cwd());",
-            "",
-            "\t\tfor (const filename of AGENTS_FILENAMES) {",
-            "\t\t\tconst candidate = path.join(dir, filename);",
-            "\t\t\tif (!fs.existsSync(candidate)) continue;",
-            "",
-            "\t\t\tconst realCandidate = resolvePath(candidate, dir);",
-            "\t\t\tif (isInsideRoot(realDir, realCandidate)) return realCandidate;",
-            "\t\t}",
-            "",
-            "\t\treturn \"\";",
-            "\t}",
-          ].join("\n");
-          fs.writeFileSync(file, source.slice(0, start) + replacement + source.slice(end));
-        '
-      '';
+      src = compileExtension {
+        src = pkgs.runCommand "pi-subdir-context-safe-src" {} ''
+          mkdir -p $out
+          cp -R ${call (import ./pi-subdir-context.nix)}/. $out/
+          chmod -R u+w $out
+          ${pkgs.nodejs_22}/bin/node -e '
+            const fs = require("fs");
+            const file = process.env.out + "/src/index.ts";
+            const source = fs.readFileSync(file, "utf8");
+            const start = source.indexOf("\tfunction getAgentsFileFromDir");
+            const end = source.indexOf("\n\tfunction resetSession", start);
+            if (start === -1 || end === -1) throw new Error("Failed to patch pi-subdir-context symlink handling");
+            const replacement = [
+              "\tfunction getAgentsFileFromDir(dir: string) {",
+              "\t\tconst realDir = resolvePath(dir, process.cwd());",
+              "",
+              "\t\tfor (const filename of AGENTS_FILENAMES) {",
+              "\t\t\tconst candidate = path.join(dir, filename);",
+              "\t\t\tif (!fs.existsSync(candidate)) continue;",
+              "",
+              "\t\t\tconst realCandidate = resolvePath(candidate, dir);",
+              "\t\t\tif (isInsideRoot(realDir, realCandidate)) return realCandidate;",
+              "\t\t}",
+              "",
+              "\t\treturn \"\";",
+              "\t}",
+            ].join("\n");
+            fs.writeFileSync(file, source.slice(0, start) + replacement + source.slice(end));
+          '
+        '';
+      };
       resources.extensions = ".";
     };
 
@@ -236,23 +247,32 @@ in
     # };
 
     "pi-verbosity-control" = {
-      src = call (import ./pi-verbosity-control.nix);
+      src = compileExtension {
+        src = call (import ./pi-verbosity-control.nix);
+      };
       resources.extensions = ".";
     };
 
     "pi-claude-bridge" = {
-      src = withRuntimeDeps {
-        src = pkgs.callPackage ./pi-claude-bridge.nix {};
-        npmDepsHash = "sha256-lITn+l+Of5SQK1+ycNK9fES0bKCvJoKAq/6Nf8tgMY0=";
+      src = compileExtension {
+        src = withRuntimeDeps {
+          src = pkgs.callPackage ./pi-claude-bridge.nix {};
+          npmDepsHash = "sha256-lITn+l+Of5SQK1+ycNK9fES0bKCvJoKAq/6Nf8tgMY0=";
+        };
       };
       resources.extensions = ".";
     };
 
     "pi-codex-fast" = {
-      src = pkgs.runCommand "pi-codex-fast-src" {} ''
-        mkdir -p $out
-        cp ${call (import ./pi-codex-fast.nix)}/extensions/codex-fast.ts $out/index.ts
-      '';
+      src = compileExtension {
+        src = pkgs.runCommand "pi-codex-fast-src" {} ''
+          mkdir -p $out
+          cp ${call (import ./pi-codex-fast.nix)}/extensions/codex-fast.ts $out/index.ts
+          cat >$out/package.json <<'EOF'
+          {"name":"pi-codex-fast","private":true,"type":"module"}
+          EOF
+        '';
+      };
       resources.extensions = ".";
     };
 
@@ -286,21 +306,19 @@ in
     };
 
     "pi-vcc" = {
-      src = pkgs.runCommand "pi-vcc-src" {} ''
-        mkdir -p $out
-        cp -R ${call (import ./pi-vcc.nix)}/. $out/
-        chmod -R u+w $out
-        substituteInPlace $out/src/tools/recall.ts \
-          --replace-fail '"@sinclair/typebox"' '"typebox"'
-      '';
+      src = compileExtension {
+        src = call (import ./pi-vcc.nix);
+      };
       resources.extensions = ".";
     };
 
     "rtk-rewrite" = {
-      src = pkgs.runCommand "pi-rtk-rewrite-src" {} ''
-        mkdir -p $out
-        cp -R ${call (import ./rtk-rewrite.nix)}/packages/rtk-rewrite/. $out/
-      '';
+      src = compileExtension {
+        src = pkgs.runCommand "pi-rtk-rewrite-src" {} ''
+          mkdir -p $out
+          cp -R ${call (import ./rtk-rewrite.nix)}/packages/rtk-rewrite/. $out/
+        '';
+      };
       resources.extensions = ".";
     };
 
@@ -326,27 +344,27 @@ in
 
     # Custom local extensions (no fetching needed)
     escape-steer = {
-      src = ./custom/escape-steer;
+      src = compileExtension {src = ./custom/escape-steer;};
       resources.extensions = ".";
     };
 
     effort = {
-      src = ./custom/effort;
+      src = compileExtension {src = ./custom/effort;};
       resources.extensions = ".";
     };
 
     theme = {
-      src = ./custom/theme;
+      src = compileExtension {src = ./custom/theme;};
       resources.extensions = ".";
     };
 
     dump-system-prompt = {
-      src = ./custom/dump-system-prompt;
+      src = compileExtension {src = ./custom/dump-system-prompt;};
       resources.extensions = ".";
     };
 
     session-handoff = {
-      src = ./custom/session-handoff;
+      src = compileExtension {src = ./custom/session-handoff;};
       resources.extensions = ".";
     };
 

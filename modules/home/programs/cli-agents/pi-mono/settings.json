@@ -5,8 +5,8 @@
     "baseDelayMs": 5000,
     "maxDelayMs": 60000
   },
-  "defaultProvider": "openai-codex",
-  "defaultModel": "openai-codex/gpt-5.5:xhigh",
+  "defaultProvider": "claude-bridge",
+  "defaultModel": "claude-bridge/claude-opus-4-7:high",
   "defaultThinkingLevel": "xhigh",
   "hideThinkingBlock": true,
   "quietStartup": false,

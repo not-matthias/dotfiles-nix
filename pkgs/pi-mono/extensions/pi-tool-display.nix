@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "MasuRii";
   repo = "pi-tool-display";
-  rev = "f35511ab350b739a67608358b658222e8e171055";
-  hash = "sha256-bPrkdI/uTefqwvwF2psQ0TmIS0/kZgdkapqTQHc0XYY=";
+  rev = "7d049f13b91a1c6b1892f6d746a49164218e0f23";
+  hash = "sha256-wCm2uAv6QRsr2SanDsuGIfaj0yY/KnEqP9r5Sz//Qfs=";
 }

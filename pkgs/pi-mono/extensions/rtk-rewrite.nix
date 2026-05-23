@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "baggiiiie";
   repo = "pi-stuff";
-  rev = "7ede521226d332ba87bffc7b0a8b0ea804b81827";
-  hash = "sha256-u/FaJi0c7PxN6XKH29oGolk524WuNx4nzW+YRqaZ3P4=";
+  rev = "04733f215381784e961ff6e7e1781ebe4032fc10";
+  hash = "sha256-GJ3B3zVngAUwF49eW3jWEa6tq7y5ciaEmktUH2JQi3w=";
 }

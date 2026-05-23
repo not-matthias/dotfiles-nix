@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "badlogic";
   repo = "pi-diff-review";
-  rev = "1584211692c49780ecd0f490a82762b0823fd475";
-  hash = "sha256-pt5/cSqPtUody8AcDQpz5ua0QOxpdPveZ537j0mamc0=";
+  rev = "57622138f5b02896a230b4fbfe702d24c6a515bb";
+  hash = "sha256-rwmYlz8IjGO7JNQyeMKI261x1y1s7JXTBI7KLA4lGtg=";
 }

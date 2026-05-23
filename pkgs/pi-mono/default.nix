@@ -2,50 +2,62 @@
   lib,
   buildNpmPackage,
   fetchzip,
+  fetchNpmDeps,
+  runCommand,
   nodejs_22,
   makeWrapper,
-}:
-buildNpmPackage rec {
-  pname = "pi-coding-agent";
-  version = "0.74.0";
-
-  nodejs = nodejs_22;
-
-  src = fetchzip {
-    url = "https://registry.npmjs.org/@earendil-works/pi-coding-agent/-/pi-coding-agent-${version}.tgz";
-    hash = "sha256-I6urHVoMvZzz3I4y067gYGacIPPgYnZ/uDgw1o0A5Ks=";
+}: let
+  rawSrc = fetchzip {
+    url = "https://registry.npmjs.org/@earendil-works/pi-coding-agent/-/pi-coding-agent-0.75.5.tgz";
+    hash = "sha256-oZIzs+txiowbC1wkb3u8yIsXj/RU8snrlsWX8q2zq84=";
   };
-
-  npmDepsHash = "sha256-TPV9jmPDBeL/t5a7ycJ+WUgpyljxhu0k3nMqYj469kI=";
-
-  postPatch = ''
-    cp ${./package-lock.json} package-lock.json
-    # Remove devDependencies so npm doesn't try to fetch them
-    ${nodejs}/bin/node -e "
-      const pkg = JSON.parse(require('fs').readFileSync('package.json', 'utf8'));
-      delete pkg.devDependencies;
-      require('fs').writeFileSync('package.json', JSON.stringify(pkg, null, 2));
-    "
+  patchedSrc = runCommand "pi-coding-agent-src" {} ''
+    cp -r ${rawSrc} $out
+    chmod -R +w $out
+    cp ${./package-lock.json} $out/package-lock.json
+    rm -f $out/npm-shrinkwrap.json
   '';
+in
+  buildNpmPackage rec {
+    pname = "pi-coding-agent";
+    version = "0.75.5";
 
-  dontNpmBuild = true;
-  npmInstallFlags = ["--omit=dev"];
+    nodejs = nodejs_22;
 
-  nativeBuildInputs = [makeWrapper];
+    src = patchedSrc;
 
-  postInstall = ''
-    wrapProgram $out/bin/pi \
-      --set PI_SKIP_VERSION_CHECK 1 \
-      --run 'export NPM_CONFIG_PREFIX="''${NPM_CONFIG_PREFIX:-$HOME/.npm-global}"' \
-      --run 'export PATH="''${NPM_CONFIG_PREFIX:-$HOME/.npm-global}/bin:$PATH"'
-  '';
+    npmDeps = fetchNpmDeps {
+      inherit src;
+      name = "${pname}-${version}-npm-deps";
+      hash = "sha256-+pgQBAsylGdY1IAXbqdCmxTrTyWCk6q9KoMN70yI6FU=";
+    };
 
-  meta = {
-    description = "Minimal terminal coding harness - extensible with TypeScript extensions, skills, and prompt templates";
-    homepage = "https://github.com/badlogic/pi-mono";
-    downloadPage = "https://www.npmjs.com/package/@mariozechner/pi-coding-agent";
-    license = lib.licenses.mit;
-    platforms = lib.platforms.linux;
-    mainProgram = "pi";
-  };
-}
+    postPatch = ''
+      ${nodejs}/bin/node -e "
+        const pkg = JSON.parse(require('fs').readFileSync('package.json', 'utf8'));
+        delete pkg.devDependencies;
+        require('fs').writeFileSync('package.json', JSON.stringify(pkg, null, 2));
+      "
+    '';
+
+    dontNpmBuild = true;
+    npmInstallFlags = ["--omit=dev"];
+
+    nativeBuildInputs = [makeWrapper];
+
+    postInstall = ''
+      wrapProgram $out/bin/pi \
+        --set PI_SKIP_VERSION_CHECK 1 \
+        --run 'export NPM_CONFIG_PREFIX="''${NPM_CONFIG_PREFIX:-$HOME/.npm-global}"' \
+        --run 'export PATH="''${NPM_CONFIG_PREFIX:-$HOME/.npm-global}/bin:$PATH"'
+    '';
+
+    meta = {
+      description = "Minimal terminal coding harness - extensible with TypeScript extensions, skills, and prompt templates";
+      homepage = "https://github.com/badlogic/pi-mono";
+      downloadPage = "https://www.npmjs.com/package/@mariozechner/pi-coding-agent";
+      license = lib.licenses.mit;
+      platforms = lib.platforms.linux;
+      mainProgram = "pi";
+    };
+  }
