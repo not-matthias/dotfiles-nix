@@ -26,27 +26,32 @@ in
       resources.extensions = ".";
     };
 
-    # hashline-edit = {
-    #   src = withRuntimeDeps {
-    #     src = pkgs.runCommand "pi-hashline-edit-with-lock" {} ''
-    #       mkdir -p $out
-    #       cp -R ${call (import ./hashline-edit.nix)}/. $out/
-    #       chmod -R u+w $out
-    #       ${pkgs.nodejs_22}/bin/node -e "
-    #         const fs = require('fs');
-    #         const path = '$out/package.json';
-    #         const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
-    #         delete pkg.peerDependencies;
-    #         delete pkg.devDependencies;
-    #         fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
-    #       "
-    #       cp ${./hashline-edit-package-lock.json} $out/package-lock.json
-    #     '';
-    #     npmDepsHash = "sha256-XYZOgMNRTpTWkrWwF6xWCJEBv1Aq+O2n/A6R7rn59rc=";
-    #   };
-    #   # Whole repo is the extension (src/, package.json at root)
-    #   resources.extensions = ".";
-    # };
+    # Vendored fork of RimuruW/pi-hashline-edit (MIT), living in ./custom/hashline-edit.
+    # Strip peer/dev deps for the nix build (kept in source for local `npm test`) and
+    # use the curated runtime-only lockfile so we only fetch diff/file-type/xxhashjs.
+    hashline-edit = {
+      src = compileExtension {
+        src = withRuntimeDeps {
+          src = pkgs.runCommand "pi-hashline-edit-with-lock" {} ''
+            mkdir -p $out
+            cp -R ${./custom/hashline-edit}/. $out/
+            chmod -R u+w $out
+            ${pkgs.nodejs_22}/bin/node -e "
+              const fs = require('fs');
+              const path = '$out/package.json';
+              const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+              delete pkg.peerDependencies;
+              delete pkg.devDependencies;
+              fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
+            "
+            cp ${./hashline-edit-package-lock.json} $out/package-lock.json
+          '';
+          npmDepsHash = "sha256-XYZOgMNRTpTWkrWwF6xWCJEBv1Aq+O2n/A6R7rn59rc=";
+        };
+      };
+      # Whole repo is the extension (src/, package.json at root)
+      resources.extensions = ".";
+    };
 
     tasks = {
       src = compileExtension {

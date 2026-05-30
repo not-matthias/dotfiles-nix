@@ -1,0 +1,52 @@
+{
+  "name": "pi-hashline-edit",
+  "version": "0.6.1",
+  "description": "Hashline read/edit tool override for pi-coding-agent",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RimuruW/pi-hashline-edit.git"
+  },
+  "author": "RimuruW",
+  "keywords": [
+    "pi-package",
+    "pi",
+    "coding-agent",
+    "extension",
+    "hashline"
+  ],
+  "license": "MIT",
+  "files": [
+    "index.ts",
+    "src",
+    "prompts",
+    "README.md",
+    "LICENSE"
+  ],
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "dependencies": {
+    "diff": "^8.0.2",
+    "file-type": "^21.3.0",
+    "xxhashjs": "^0.2.2"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-ai": ">=0.74.0",
+    "@earendil-works/pi-coding-agent": ">=0.74.0",
+    "@earendil-works/pi-tui": "*",
+    "@sinclair/typebox": "*"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "^0.74.0",
+    "@types/node": "^22.0.0",
+    "@types/xxhashjs": "^0.2.4",
+    "ajv": "^8.20.0",
+    "vitest": "^3.0.0"
+  }
+}
