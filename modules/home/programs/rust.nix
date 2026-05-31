@@ -70,6 +70,7 @@ in {
         b = "build";
         c = "check";
         t = "nextest run";
+        tr = "nextest run --release";
         r = "run";
         rr = "run --release";
         br = "build --release";
