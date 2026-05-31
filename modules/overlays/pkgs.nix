@@ -58,6 +58,9 @@
       droid = super.callPackage ../../pkgs/droid.nix {};
     })
     (_self: super: {
+      amp-cli = super.callPackage ../../pkgs/amp-cli.nix {};
+    })
+    (_self: super: {
       pi-session-cli = super.callPackage ../../pkgs/pi-session-manager.nix {};
     })
     (_self: super: {
