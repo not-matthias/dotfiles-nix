@@ -10,3 +10,4 @@ Interview me relentlessly about every aspect of this plan until we reach a share
 If a question can be answered by exploring the codebase, explore the codebase instead.
 
 Always use the AskUserQuestion tool.
+Always include your recommendation if you have one

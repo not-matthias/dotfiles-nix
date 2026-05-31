@@ -1,20 +1,9 @@
 # System-level Instructions
 
-## Approval Gates (only if the user asks for it)
+## Style
 
-When the users asks you to **propose** changes, or if they want to **approve** a change:
-
-1. **Investigate Independently:** Research the codebase, identify relevant files, and analyze possible solutions without asking first.
-2. **Present Your Plan:** Clearly describe:
-   - What you found
-   - Your proposed solution(s)
-   - Why you think this approach is best
-   - Any trade-offs or risks
-3. **Number Everything:** When presenting proposals, number each option, change, or item so the user can reference them easily (e.g., "go with 2" or "drop 3").
-4. **Await Approval:** STOP and wait for explicit confirmation from the user before writing any code or executing commands.
-4. **Proceed After Green Light:** Only after the user approves can you implement.
-
-This ensures alignment and prevents wasted work on rejected approaches.
+- When explaining, always use diagrams if they make sense. Use Mermaid if a tool is available, otherwise use ASCII.
+- Use bullet points (e.g. for pro/con lists, or explanations of different approaches)
 
 ## Code Style
 
