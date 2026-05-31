@@ -147,6 +147,26 @@
         };
         clock = {
           format = "{:%Y-%m-%d %H:%M}";
+          format-alt = "{:%H:%M:%S}";
+          tooltip-format = "<tt><small>{calendar}</small></tt>";
+          calendar = {
+            mode = "year";
+            mode-mon-col = 3;
+            weeks-pos = "left";
+            on-scroll = 1;
+            format = {
+              months = "<span color='#df8e1d'><b>{}</b></span>";
+              days = "<span color='#4c4f69'>{}</span>";
+              weeks = "<span color='#179299'><b>W{}</b></span>";
+              weekdays = "<span color='#fe640b'><b>{}</b></span>";
+              today = "<span color='#d20f39'><b><u>{}</u></b></span>";
+            };
+          };
+          actions = {
+            on-click-right = "mode";
+            on-scroll-up = "shift_up";
+            on-scroll-down = "shift_down";
+          };
         };
         memory = {
           format = "ram {}%";

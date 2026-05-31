@@ -24,8 +24,11 @@ in {
       return-type = "json";
       format = "{}";
       exec = "${claudeScript}/bin/waybar-claude-usage";
-      on-click = "${claudeScript}/bin/waybar-claude-usage --force-refresh";
-      on-click-right = "${claudeScript}/bin/waybar-claude-usage --restart";
+      # pkill -RTMIN+8 makes waybar re-run exec immediately so the bar repaints
+      # instead of waiting for the next interval after a manual refresh.
+      on-click = "${claudeScript}/bin/waybar-claude-usage --force-refresh && ${pkgs.procps}/bin/pkill -RTMIN+8 waybar";
+      on-click-right = "${claudeScript}/bin/waybar-claude-usage --restart && ${pkgs.procps}/bin/pkill -RTMIN+8 waybar";
+      signal = 8;
       interval = 300; # /api/oauth/usage aggressively 429s — see github.com/anthropics/claude-code/issues/30930
     };
 
@@ -33,8 +36,9 @@ in {
       return-type = "json";
       format = "{}";
       exec = "${codexScript}/bin/waybar-codex-usage";
-      on-click = "${codexScript}/bin/waybar-codex-usage --force-refresh";
-      on-click-right = "${codexScript}/bin/waybar-codex-usage --restart";
+      on-click = "${codexScript}/bin/waybar-codex-usage --force-refresh && ${pkgs.procps}/bin/pkill -RTMIN+10 waybar";
+      on-click-right = "${codexScript}/bin/waybar-codex-usage --restart && ${pkgs.procps}/bin/pkill -RTMIN+10 waybar";
+      signal = 10;
       interval = 300;
     };
   };
