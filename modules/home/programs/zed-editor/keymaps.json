@@ -30,5 +30,12 @@
     "bindings": {
       "ctrl-j": "workspace::ToggleBottomDock"
     }
+  },
+  {
+    "context": "Pane",
+    "bindings": {
+      "ctrl-shift-tab": "pane::ActivatePrevItem",
+      "ctrl-tab": "pane::ActivateNextItem"
+    }
   }
 ]
