@@ -3,7 +3,7 @@
 # to /etc/nixos/configuration.nix instead.
 {
   modulesPath,
-  unstable,
+  pkgs,
   lib,
   config,
   nixos-hardware,
@@ -14,7 +14,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.kernelPackages = unstable.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages;
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "thunderbolt"];
 
   # Fixes AMD gpu crashes/timeouts which seems to be a known issue

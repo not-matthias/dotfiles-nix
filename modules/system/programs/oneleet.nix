@@ -127,6 +127,16 @@ in {
     systemd.user.services.oneleet = mkIf cfg.service.enable {
       description = "OneLeet Agent Service";
       after = ["graphical-session.target"];
+
+      # The agent shells out to these to detect LUKS/disk encryption.
+      # systemd user services get a near-empty PATH, so without this the
+      # encryption check silently fails when launched by the timer.
+      path = with pkgs; [
+        util-linux # lsblk, findmnt
+        cryptsetup # cryptsetup status
+        coreutils
+      ];
+
       serviceConfig = {
         Type = "oneshot";
         ExecStart = "${cfg.package}/bin/oneleet-agent";
