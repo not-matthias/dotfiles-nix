@@ -14,12 +14,30 @@
       };
       init.defaultBranch = "main";
       pull.rebase = true;
-      rebase.updateRefs = true;
-      rebase.autoSquash = true;
-      push.autoSetupRemote = true;
-      absorb.autoStageIfNothingStaged = true;
-      absorb.oneFixupPerCommit = true;
-      absorb.maxStack = 50;
+      rerere = {
+        enabled = true;
+        autoUpdate = true;
+      };
+      rebase = {
+        updateRefs = true;
+        autoSquash = true;
+        autoStash = true;
+      };
+      merge = {
+        # zdiff3 adds original text markers and removes matching lines from conflict regions
+        # https://git-scm.com/docs/git-config#Documentation/git-config.txt-mergeconflictStyle
+        conflictStyle = "zdiff3";
+        autoStash = true;
+      };
+      push = {
+        autoSetupRemote = true;
+        default = "simple";
+      };
+      absorb = {
+        autoStageIfNothingStaged = true;
+        oneFixupPerCommit = true;
+        maxStack = 50;
+      };
       credential."https://github.com" = {
         helper = "!${pkgs.gh}/bin/gh auth git-credential";
       };
