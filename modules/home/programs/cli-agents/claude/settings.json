@@ -7,28 +7,11 @@
     "DISABLE_ERROR_REPORTING": "1",
     "DISABLE_FEEDBACK_COMMAND": "1",
     "DISABLE_BUG_COMMAND": "1",
-    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
-    "DISABLE_AUTOUPDATER": "1"
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
   },
   "includeCoAuthoredBy": false,
   "permissions": {
     "defaultMode": "bypassPermissions",
-    "allow": [
-      "Bash",
-      "Read",
-      "Edit",
-      "Write",
-      "WebFetch",
-      "Grep",
-      "Glob",
-      "LS",
-      "MultiEdit",
-      "NotebookRead",
-      "NotebookEdit",
-      "TodoRead",
-      "TodoWrite",
-      "WebSearch"
-    ],
     "deny": ["Read(./.env)", "Read(./.env.*)"]
   },
   "model": "opus[1m]",
@@ -41,16 +24,9 @@
   "cleanupPeriodDays": 99999,
   "skipDangerousModePermissionPrompt": true,
   "enabledPlugins": {
-    "codex@openai-codex": true,
     "codspeed-internal@codspeed-internal-marketplace": true
   },
   "extraKnownMarketplaces": {
-    "openai-codex": {
-      "source": {
-        "source": "github",
-        "repo": "openai/codex-plugin-cc"
-      }
-    },
     "codspeed-internal-marketplace": {
       "source": {
         "source": "github",
