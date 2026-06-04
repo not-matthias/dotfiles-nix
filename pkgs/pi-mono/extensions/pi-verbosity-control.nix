@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "ferologics";
   repo = "pi-verbosity-control";
-  rev = "0035eb0e44ea518a80d7e2bd229d6afff6c68f2d";
-  hash = "sha256-b/TP1h4682tJZKFnsQ7kPPVbPnVzlALpGTyy77vkfww=";
+  rev = "5b4573bc25f1676f8788cdefcf5c0526c148f347";
+  hash = "sha256-dOIqJCYY9gYsRC8SQcro+ctqyGkUW22QdUNF1c5GXyk=";
 }

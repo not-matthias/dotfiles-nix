@@ -19,7 +19,7 @@ import { throwIfAborted } from "./runtime";
 import { getFileSnapshot } from "./snapshot";
 
 const READ_DESC = readFileSync(
-  new URL("../prompts/read.md", import.meta.url),
+  new URL("./prompts/read.md", import.meta.url),
   "utf-8",
 )
   .replaceAll("{{DEFAULT_MAX_LINES}}", String(DEFAULT_MAX_LINES))
@@ -27,12 +27,12 @@ const READ_DESC = readFileSync(
   .trim();
 
 const READ_PROMPT_SNIPPET = readFileSync(
-  new URL("../prompts/read-snippet.md", import.meta.url),
+  new URL("./prompts/read-snippet.md", import.meta.url),
   "utf-8",
 ).trim();
 
 const READ_PROMPT_GUIDELINES = readFileSync(
-  new URL("../prompts/read-guidelines.md", import.meta.url),
+  new URL("./prompts/read-guidelines.md", import.meta.url),
   "utf-8",
 )
   .split("\n")

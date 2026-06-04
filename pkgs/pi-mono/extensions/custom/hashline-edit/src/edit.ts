@@ -157,12 +157,12 @@ type HashlineEditToolDetails = {
 };
 
 const EDIT_DESC = readFileSync(
-  new URL("../prompts/edit.md", import.meta.url),
+  new URL("./prompts/edit.md", import.meta.url),
   "utf-8",
 ).trim();
 
 const EDIT_PROMPT_SNIPPET = readFileSync(
-  new URL("../prompts/edit-snippet.md", import.meta.url),
+  new URL("./prompts/edit-snippet.md", import.meta.url),
   "utf-8",
 ).trim();
 

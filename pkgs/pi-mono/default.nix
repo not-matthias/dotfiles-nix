@@ -8,8 +8,8 @@
   makeWrapper,
 }: let
   rawSrc = fetchzip {
-    url = "https://registry.npmjs.org/@earendil-works/pi-coding-agent/-/pi-coding-agent-0.75.5.tgz";
-    hash = "sha256-oZIzs+txiowbC1wkb3u8yIsXj/RU8snrlsWX8q2zq84=";
+    url = "https://registry.npmjs.org/@earendil-works/pi-coding-agent/-/pi-coding-agent-0.78.0.tgz";
+    hash = "sha256-kuLAJ/ekAxV/IWmdybMb9P/I9tLrfXGh1Q01g7CpvDg=";
   };
   patchedSrc = runCommand "pi-coding-agent-src" {} ''
     cp -r ${rawSrc} $out
@@ -20,7 +20,7 @@
 in
   buildNpmPackage rec {
     pname = "pi-coding-agent";
-    version = "0.75.5";
+    version = "0.78.0";
 
     nodejs = nodejs_22;
 
@@ -29,7 +29,7 @@ in
     npmDeps = fetchNpmDeps {
       inherit src;
       name = "${pname}-${version}-npm-deps";
-      hash = "sha256-+pgQBAsylGdY1IAXbqdCmxTrTyWCk6q9KoMN70yI6FU=";
+      hash = "sha256-MrZQYkX5TDtYngGMh2yJ6LV9JEMzCFFGXKRdsSnjzwI=";
     };
 
     postPatch = ''

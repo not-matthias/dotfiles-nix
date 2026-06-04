@@ -56,8 +56,21 @@ in
     tasks = {
       src = compileExtension {
         src = withRuntimeDeps {
-          src = call (import ./tasks.nix);
-          npmDepsHash = "sha256-F8JFX/wE7+Nn7j5oS1sDB2SicrNY+DJMRdN+fFLH5aU=";
+          src = pkgs.runCommand "pi-tasks-with-lock" {} ''
+            mkdir -p $out
+            cp -R ${call (import ./tasks.nix)}/. $out/
+            chmod -R u+w $out
+            ${pkgs.nodejs_22}/bin/node -e "
+              const fs = require('fs');
+              const path = '$out/package.json';
+              const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+              delete pkg.peerDependencies;
+              delete pkg.devDependencies;
+              fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
+            "
+            cp ${./tasks-package-lock.json} $out/package-lock.json
+          '';
+          npmDepsHash = "sha256-u/TUCES4Bc1DifwlCVA/sJvUcAC8xJ4sD8zSrCMeQmU=";
         };
       };
       resources.extensions = ".";
@@ -71,6 +84,17 @@ in
             cp -R ${call (import ./subagents.nix)}/. $out/
             chmod -R u+w $out
             cp ${./subagents-package-lock.json} $out/package-lock.json
+            ${pkgs.nodejs_22}/bin/node -e "
+              const fs = require('fs');
+              const path = process.env.out + '/package.json';
+              const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+              delete pkg.peerDependencies;
+              delete pkg.devDependencies;
+              for (const k of Object.keys(pkg.dependencies || {})) {
+                if (k.startsWith('@earendil-works/') || k.startsWith('@mariozechner/')) delete pkg.dependencies[k];
+              }
+              fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
+            "
             ${pkgs.nodejs_22}/bin/node -e '
               const fs = require("fs");
               const scopeFile = process.env.out + "/src/agents/agent-scope.ts";
@@ -88,7 +112,7 @@ in
               fs.writeFileSync(typesFile, patchedTypes);
             '
           '';
-          npmDepsHash = "sha256-3it73ICnpSlO7UYBrsKjzyBratMTzJzrMLKKmXAbA7Y=";
+          npmDepsHash = "sha256-Lgd9UnYlkH8wqLygIgRkbXr+J3HtGQ7IpZ+kkJHU3xg=";
         };
       };
       resources.extensions = ".";
@@ -305,7 +329,7 @@ in
           "
           cp ${./pi-token-usage-package-lock.json} $out/package-lock.json
         '';
-        npmDepsHash = "sha256-km3S3cI/bsSHSgUIrQIipYlvNPFKQrxINDLqQ3V/j7A=";
+        npmDepsHash = "sha256-wUGcqe71RCNDuTDqrd11L1o4PGVkFRwwM4sZsWBG9jY=";
       };
       resources.extensions = ".";
     };
@@ -346,6 +370,45 @@ in
     #   };
     #   resources.extensions = ".";
     # };
+
+    "pi-dynamic-workflows" = {
+      src = compileExtension {
+        src = withRuntimeDeps {
+          src = pkgs.runCommand "pi-dynamic-workflows-with-lock" {} ''
+            mkdir -p $out
+            cp -R ${call (import ./pi-dynamic-workflows.nix)}/. $out/
+            chmod -R u+w $out
+            ${pkgs.nodejs_22}/bin/node -e "
+              const fs = require('fs');
+              const path = '$out/package.json';
+              const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+              delete pkg.peerDependencies;
+              delete pkg.devDependencies;
+              fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
+            "
+            cp ${./pi-dynamic-workflows-package-lock.json} $out/package-lock.json
+          '';
+          npmDepsHash = "sha256-rqgao3sFzr2NoWYWGE9ouK+We3GLuuCZjmCW/T2eLCE=";
+        };
+      };
+      resources.extensions = ".";
+    };
+
+    "pi-workflow-kit" = {
+      src = compileExtension {
+        src = call (import ./pi-workflow-kit.nix);
+      };
+      resources.extensions = ".";
+      resources.skills = "skills";
+    };
+
+    "pi-codex-goal" = {
+      src = compileExtension {
+        src = call (import ./pi-codex-goal.nix);
+      };
+      resources.extensions = ".";
+      resources.prompts = "prompts";
+    };
 
     # Custom local extensions (no fetching needed)
     escape-steer = {
