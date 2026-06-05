@@ -67,14 +67,19 @@ Do not normalize user-level config unless the user asks for it.
 
 ### Step 1: Scan current state
 
-From the project root:
+From the project root, scan both the root and all subdirectories:
 
 ```bash
+# Root-level scan
 ls -la CLAUDE.md AGENTS.md .claude .agents 2>/dev/null
 find .claude .agents -maxdepth 2 -mindepth 1 -print 2>/dev/null | sort
+
+# Subdirectory scan — find all CLAUDE.md files anywhere in the repo
+find . -name 'CLAUDE.md' -not -path './.claude/*' -not -path './.agents/*' \
+  -not -path './node_modules/*' -not -path './target/*' 2>/dev/null | sort
 ```
 
-Classify each path:
+Classify each CLAUDE.md path found (root + subdirectories):
 
 - **Only Claude path exists** → migrate it to the generic path, then symlink back
 - **Only generic path exists** → create the Claude compatibility symlink
@@ -194,6 +199,7 @@ Normalized agent config:
   .agents/ ← canonical directory, merged from .claude/
   .claude → .agents (symlink created)
   .agents/tmp/ — skipped as ephemeral
+  N subdirectory CLAUDE.md → AGENTS.md symlinks created
 ```
 
 ## Important Notes
@@ -204,6 +210,7 @@ Normalized agent config:
 - Never overwrite conflicting real files without asking the user
 - Preserve `.claude/settings.json` by moving it to `.agents/settings.json`
 - Keep `.agents/settings.local.json` ignored if local Claude settings are migrated
+- **Always scan subdirectories** — `CLAUDE.md` files can exist at any depth (e.g., `projects/lifter-rs/CLAUDE.md`). Normalize every one found: rename to `AGENTS.md`, then `ln -s AGENTS.md CLAUDE.md`
 - Only handles Claude ↔ generic mapping; other client-specific files like `.cursorrules` and `.gemini/` are out of scope
 
 ## See Also
