@@ -111,6 +111,21 @@ in
               if (typesSource === patchedTypes) throw new Error("Failed to patch subagent temp directory");
               fs.writeFileSync(typesFile, patchedTypes);
             '
+
+            # The esbuild bundle (src/extension/index.js) resolves runtime-loaded
+            # files relative to import.meta.url, which points at the bundle instead
+            # of the original module locations. Provide shims at the bundle-relative
+            # paths that forward to the real files.
+            mkdir -p $out/extension
+            cat > $out/src/extension/subagent-prompt-runtime.ts <<'EOF'
+            export { default } from "../runs/shared/subagent-prompt-runtime.ts";
+            EOF
+            cat > $out/extension/fanout-child.ts <<'EOF'
+            export { default } from "../src/extension/fanout-child.ts";
+            EOF
+            cat > $out/src/extension/subagent-runner.ts <<'EOF'
+            import "../runs/background/subagent-runner.ts";
+            EOF
           '';
           npmDepsHash = "sha256-Lgd9UnYlkH8wqLygIgRkbXr+J3HtGQ7IpZ+kkJHU3xg=";
         };
