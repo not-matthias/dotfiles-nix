@@ -15,7 +15,7 @@
   ];
 
   boot.kernelPackages = pkgs.linuxPackages;
-  boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "thunderbolt"];
+  boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "thunderbolt" "usbhid" "usb_storage" "sd_mod"];
 
   # Fixes AMD gpu crashes/timeouts which seems to be a known issue
   #

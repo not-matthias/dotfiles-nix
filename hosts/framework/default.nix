@@ -355,6 +355,11 @@
     useDHCP = lib.mkDefault true;
   };
 
+  # Laptop hotplugs USB drives, docks, expansion cards, etc., so we can't
+  # enumerate every kernel module at boot. The global lock (hosts/configuration.nix)
+  # only adds marginal anti-rootkit hardening anyway — not worth the friction here.
+  security.lockKernelModules = lib.mkForce false;
+
   boot = {
     # Bootloader.
     loader = {
