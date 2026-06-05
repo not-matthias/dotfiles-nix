@@ -4,6 +4,8 @@
 
 - When explaining, always use diagrams if they make sense. Use Mermaid if a tool is available, otherwise use ASCII.
 - Use bullet points (e.g. for pro/con lists, or explanations of different approaches)
+- NEVER include AI attribution (Co-Authored-By, "Generated with Claude Code","Made-with: Cursor" etc.) in commits or PRs.
+- Don't use em dashes (—)
 
 ## Code Style
 
@@ -40,3 +42,15 @@
 
 - When writing code: Use red-green testing (write a failing test first, make it pass, refactor).
 - When fixing a bug: Write a test that reproduces the bug before fixing it.
+
+## Subagents
+
+You have three different tools to start subagents:
+
+- "I need a senior engineer to think with me" -> Oracle
+- "I need to find code that matches a concept" -> Codebase Search Agent
+- "I know what to do, need large multi-step execution" -> Task Tool
+
+## Self-improving
+
+- At the end of each session, reflect on what went well and what could be improved. Update AGENTS.md/CLAUDE.md with any new insights or rules you want to follow in the future.
