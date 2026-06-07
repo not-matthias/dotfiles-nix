@@ -20,7 +20,7 @@ in {
       database.type = "sqlite";
       settings = {
         service = {
-          enableregistration = false;
+          enableregistration = true;
           timezone = "Europe/Vienna";
         };
       };
