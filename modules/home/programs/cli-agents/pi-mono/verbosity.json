@@ -1,5 +1,5 @@
 {
-    "showIndicator": true,
+  "showIndicator": true,
   "models": {
     "gpt-5.3-codex": "medium",
     "openai-codex/gpt-5.3-codex": "medium",

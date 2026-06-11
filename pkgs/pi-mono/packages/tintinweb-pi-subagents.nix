@@ -5,18 +5,18 @@
   runCommand,
   nodejs_22,
 }: let
-  pname = "pi-web-providers";
-  version = "3.3.0";
+  pname = "tintinweb-pi-subagents";
+  version = "0.10.0";
 
   rawSrc = fetchzip {
-    url = "https://registry.npmjs.org/${pname}/-/${pname}-${version}.tgz";
-    hash = "sha256-rcX/68DRFxol7UmRpy9XgfNJYLm7F2fJ36NfwTYKgvk=";
+    url = "https://registry.npmjs.org/@tintinweb/pi-subagents/-/pi-subagents-${version}.tgz";
+    hash = "sha256-O3JoFzLgO6baVCQsNbBH0tWHKqH8q8gSQq6ysRl2VBA=";
   };
 
   patchedSrc = runCommand "${pname}-src" {} ''
     cp -r ${rawSrc} $out
     chmod -R +w $out
-    cp ${./pi-web-providers-package-lock.json} $out/package-lock.json
+    cp ${./tintinweb-pi-subagents-package-lock.json} $out/package-lock.json
     ${nodejs_22}/bin/node -e "
       const pkg = JSON.parse(require('fs').readFileSync('$out/package.json', 'utf8'));
       delete pkg.devDependencies;
@@ -38,7 +38,7 @@ in
     npmDeps = fetchNpmDeps {
       name = "${pname}-${version}-npm-deps";
       src = patchedSrc;
-      hash = "sha256-p4ehGpbdBpbYkYPwqPtT8W4fQA459FptYMrMlaL0PVM=";
+      hash = "sha256-VFKb4Y58NTGhveN3Dt5w72pICSUnMaKj8r83HrNqtCg=";
     };
 
     dontNpmBuild = true;

@@ -5,8 +5,8 @@
     "baseDelayMs": 5000,
     "maxDelayMs": 60000
   },
-  "defaultProvider": "claude-bridge",
-  "defaultModel": "claude-bridge/claude-opus-4-7:high",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "openai-codex/gpt-5.5:xhigh",
   "defaultThinkingLevel": "xhigh",
   "hideThinkingBlock": true,
   "quietStartup": false,
@@ -23,13 +23,10 @@
     "enabled": false
   },
   "enabledModels": [
-    "openai-codex/gpt-5.5:xhigh",
-    "openai-codex/gpt-5.3-codex:xhigh",
-    "openai-codex/gpt-5.3-codex-spark:xhigh",
-    "claude-bridge/claude-opus-4-6:high",
-    "claude-bridge/claude-opus-4-7:high",
-    "claude-bridge/claude-haiku-4-5",
-    "claude-bridge/claude-sonnet-4-6"
+    "openai-codex/gpt-5.5:high",
+    "opencode-go/deepseek-v4-pro",
+    "opencode-go/deepseek-v4-flash",
+    "opencode-go/kimi-k2.6"
   ],
   "keybindings": {
     "tui.select.up": ["up", "k"],

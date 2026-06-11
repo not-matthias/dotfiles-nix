@@ -9,6 +9,12 @@ with lib; let
 
   extensions = import ../../../../../pkgs/pi-mono/extensions {inherit pkgs;};
   packages = import ../../../../../pkgs/pi-mono/packages {inherit pkgs;};
+  activeExtensions = removeAttrs extensions [
+    "guardrails"
+    "pi-claude-bridge"
+    "subagents"
+  ];
+  activePackages = removeAttrs packages ["pi-autoresearch"];
 
   # Generate home.file entries for a single extension's resources.
   # Each resource type (extensions, skills, themes, prompts) gets symlinked
@@ -37,15 +43,23 @@ with lib; let
     // (optionalAttrs (resources ? prompts) (mkEntry "prompts" resources.prompts));
 
   # Merge all extension file entries
-  extensionFiles = foldlAttrs (acc: name: ext: acc // mkExtensionFiles name ext) {} extensions;
+  extensionFiles =
+    foldlAttrs (
+      acc: name: ext:
+        acc // mkExtensionFiles name ext
+    ) {}
+    activeExtensions;
 
   # Symlink npm packages into ~/.pi/agent/packages/<name> so settings.json
   # can reference them as local paths instead of runtime npm: installs
-  packageFiles = mapAttrs' (name: src:
-    nameValuePair ".pi/agent/packages/${name}" {
-      source = src;
-    })
-  packages;
+  packageFiles =
+    mapAttrs' (
+      name: src:
+        nameValuePair ".pi/agent/packages/${name}" {
+          source = src;
+        }
+    )
+    activePackages;
 
   # Generate settings.json with local package paths instead of npm: prefixes
   settingsBase = builtins.fromJSON (builtins.readFile ./settings.json);
@@ -53,7 +67,7 @@ with lib; let
   settings =
     settingsBase
     // {
-      packages = map (name: "./packages/${name}") (builtins.attrNames packages);
+      packages = map (name: "./packages/${name}") (builtins.attrNames activePackages);
     };
   settingsFile = pkgs.writeText "pi-settings.json" (builtins.toJSON settings);
   keybindingsFile = pkgs.writeText "pi-keybindings.json" (builtins.toJSON keybindings);
@@ -64,7 +78,11 @@ with lib; let
     nativeBuildInputs = [pkgs.makeWrapper];
     postBuild = ''
       wrapProgram $out/bin/pi \
-        --run '${optionalString (cfg.envFile != null) ''[ -f "${cfg.envFile}" ] && set -a && . "${cfg.envFile}" && set +a; ''}if [ -z "''${CLAUDE_CODE_EXECUTABLE:-}" ] && command -v claude >/dev/null 2>&1; then export CLAUDE_CODE_EXECUTABLE="$(command -v claude)"; fi'
+        --run '${
+        optionalString (
+          cfg.envFile != null
+        ) ''[ -f "${cfg.envFile}" ] && set -a && . "${cfg.envFile}" && set +a; ''
+      }if [ -z "''${CLAUDE_CODE_EXECUTABLE:-}" ] && command -v claude >/dev/null 2>&1; then export CLAUDE_CODE_EXECUTABLE="$(command -v claude)"; fi'
     '';
   };
 in {
@@ -78,7 +96,10 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = [wrappedPi pkgs.pi-session-cli];
+    home.packages = [
+      wrappedPi
+      pkgs.pi-session-cli
+    ];
 
     # Exclude per-project Pi state/config from git by default
     programs.git.ignores = mkAfter [".pi"];
@@ -104,9 +125,9 @@ in {
         ".pi/agent/verbosity.json" = {
           source = ./verbosity.json;
         };
-        ".pi/agent/models.json" = {
-          source = ./models.json;
-        };
+        # ".pi/agent/models.json" = {
+        #   source = ./models.json;
+        # };
         ".pi/agent/themes/stylix-latte-red.json" = {
           source = ./themes/stylix-latte-red.json;
         };

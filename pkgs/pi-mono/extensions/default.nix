@@ -19,8 +19,8 @@ in
     mermaid = {
       src = compileExtension {
         src = withRuntimeDeps {
-          src = call (import ./mermaid.nix);
-          npmDepsHash = "sha256-rHFkSF+v9MeXXfq8x7Vl9al7EmLgGrC1AMH+WVyxviA=";
+          src = pkgs.callPackage ./santychuy-mermaid.nix {};
+          npmDepsHash = "sha256-ze2oA9xNEGQAEzKVtn8FzJVEnTVnh5CszhG+ZsCnYTM=";
         };
       };
       resources.extensions = ".";
