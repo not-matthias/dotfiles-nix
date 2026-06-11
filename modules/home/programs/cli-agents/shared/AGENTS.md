@@ -12,6 +12,8 @@
 - **Minimize nesting:** Use early returns and inverted conditionals instead of deeply nested structures.
 - **Max nesting depth:** 2-3 levels deep. Avoid 4+ level nesting.
 - **Fail loudly:** Make it obvious when something goes wrong. Don't silently ignore errors or edge cases.
+- **IMPORTANT**: Comments must not narrate the specific feature, caller, or task that prompted a change — that ties the comment to one use case and it goes stale as soon as other code relies on the same logic. Explain the general mechanism when it is non-obvious; otherwise omit the comment. Match the comment density of the surrounding code.
+  - By default, avoid adding comments.
 
 ## Rules
 
