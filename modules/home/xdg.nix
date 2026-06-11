@@ -48,8 +48,10 @@
       # Documents
       "application/pdf" = "org.gnome.Evince.desktop";
     };
-
     defaultApplications = {
+      # directories
+      "inode/directory" = "nemo.desktop";
+
       # URL scheme handlers
       "x-scheme-handler/http" = "zen-beta.desktop";
       "x-scheme-handler/https" = "zen-beta.desktop";
