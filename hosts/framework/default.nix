@@ -80,6 +80,10 @@
           enable = true;
           envFile = "/run/agenix/pi-mono-env";
         };
+        oh-my-pi = {
+          enable = true;
+          envFile = "/run/agenix/pi-mono-env";
+        };
       };
       btop.enable = true;
       obsidian = {

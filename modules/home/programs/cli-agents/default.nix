@@ -18,6 +18,7 @@ in {
     ./amp/default.nix
     ./droid/default.nix
     ./pi-mono/default.nix
+    ./oh-my-pi/default.nix
   ];
 
   config = lib.mkIf anyCliAgentEnabled {

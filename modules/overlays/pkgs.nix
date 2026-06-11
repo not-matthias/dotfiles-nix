@@ -66,6 +66,9 @@
     (_self: super: {
       linear-cli = super.callPackage ../../pkgs/linear-cli.nix {};
     })
+    (_self: super: {
+      oh-my-pi = super.callPackage ../../pkgs/oh-my-pi.nix {};
+    })
     (import ../../pkgs/ida-pro)
   ];
 }
