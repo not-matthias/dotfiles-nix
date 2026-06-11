@@ -17,7 +17,7 @@ in {
     ];
 
     programs.fish.shellAbbrs = {
-      "cx" = "bunx @openai/codex@latest";
+      "cx" = "bunx @openai/codex@latest --yolo";
     };
 
     home.file = {

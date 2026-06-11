@@ -1,6 +1,6 @@
-model = "gpt-5.3-codex"
-approval_policy = "never"
-sandbox_mode = "workspace-write"
+model = "gpt-5.5"
+approval_policy = "untrusted"
+sandbox_mode = "danger-full-access"
 check_for_update_on_startup = false
 
 [sandbox_workspace_write]
