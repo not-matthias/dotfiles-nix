@@ -9,6 +9,43 @@
   addons,
   ...
 }: let
+  firefoxAppId = "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}";
+
+  commonExtensions = with addons; [
+    bitwarden
+    ublock-origin
+    vimium
+    firefox-translations
+    refined-github
+    leechblock-ng
+    sponsorblock
+    istilldontcareaboutcookies
+    libredirect
+    # control-panel-for-twitter
+    darkreader
+    inkah
+    old-reddit-redirect
+    pwas-for-firefox
+    web-scrobbler
+    # private-grammar-checker-harper
+    aw-watcher-web
+
+    # TODO:
+    # - LinkedIn Feed Blocker
+    # - Livemarks
+    # - Modern for Wikipedia
+    # - Perapera Chinese Popup Dictionary
+  ];
+
+  forcedExtensionSettings = builtins.listToAttrs (map (addon: {
+      name = addon.addonId;
+      value = {
+        installation_mode = "force_installed";
+        install_url = "file://${addon}/share/mozilla/extensions/${firefoxAppId}/${addon.addonId}.xpi";
+      };
+    })
+    commonExtensions);
+
   # disable the annoying floating icon with camera and mic when on a call
   disableWebRtcIndicator = ''
     #webrtcIndicator {
@@ -62,6 +99,7 @@ in {
         Cryptomining = true;
         Fingerprinting = true;
       };
+      ExtensionSettings = forcedExtensionSettings;
       PictureInPicture.Enabled = false;
     };
 
@@ -484,32 +522,6 @@ in {
         // uiSettings
         // zenSettings
         // performanceSettings;
-
-      commonExtensions = with addons; [
-        bitwarden
-        ublock-origin
-        vimium
-        firefox-translations
-        refined-github
-        leechblock-ng
-        sponsorblock
-        istilldontcareaboutcookies
-        libredirect
-        # control-panel-for-twitter
-        darkreader
-        inkah
-        old-reddit-redirect
-        pwas-for-firefox
-        web-scrobbler
-        # private-grammar-checker-harper
-        aw-watcher-web
-
-        # TODO:
-        # - LinkedIn Feed Blocker
-        # - Livemarks
-        # - Modern for Wikipedia
-        # - Perapera Chinese Popup Dictionary
-      ];
 
       commonSearch = {
         default = "brave";
