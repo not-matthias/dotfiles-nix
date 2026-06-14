@@ -6,22 +6,40 @@
 }:
 with lib; let
   cfg = config.programs.oneleet;
+
+  # Tools the agent/daemon shell out to at runtime: xdg-open to launch the
+  # sign-in URL in a browser, plus disk-encryption and user-remediation utils.
+  runtimeDeps = with pkgs; [
+    xdg-utils
+    util-linux
+    cryptsetup
+    coreutils
+    iproute2
+    pciutils
+    procps
+    shadow
+    systemd
+    getent
+  ];
 in {
   options.programs.oneleet = {
     enable = mkEnableOption "OneLeet";
     service = {
-      enable = mkEnableOption "OneLeet systemd service that runs weekly";
+      enable = mkEnableOption "OneLeet daemon system service (oneleet-daemon)";
+    };
+    agent = {
+      enable = mkEnableOption "OneLeet agent user service (oneleet-agent GUI client)";
     };
 
     package = mkOption {
       type = types.package;
       default = pkgs.stdenv.mkDerivation {
         name = "oneleet";
-        version = "2.0.0-beta";
+        version = "2.2.8";
 
         src = pkgs.fetchurl {
-          url = "https://downloads.oneleet.com/agent/linux/Oneleet_2.0.0-beta.18_amd64.deb";
-          sha256 = "sha256-PuYg+NUAM7+PGh0m+m5HuSSweIpy5HdzCdCpoCwkcX8=";
+          url = "https://downloads.oneleet.com/agent/linux/Oneleet_2.2.8_amd64.deb";
+          sha256 = "sha256-daB5mwlBNGx0vTxD4N12WmS/R80seQWt6UKKYy4xyHs=";
         };
 
         nativeBuildInputs = with pkgs; [
@@ -90,6 +108,7 @@ in {
             mv $out/bin/oneleet-agent $out/bin/oneleet-agent-unwrapped
             makeWrapper $out/bin/oneleet-agent-unwrapped $out/bin/oneleet-agent \
               --prefix LD_LIBRARY_PATH : $out/lib:$out/lib64 \
+              --prefix PATH : ${makeBinPath runtimeDeps} \
               --add-flags "--password-store=gnome-libsecret"
             echo "Created wrapper for oneleet-agent with libsecret password store flag"
           fi
@@ -124,31 +143,46 @@ in {
       };
     };
 
-    systemd.user.services.oneleet = mkIf cfg.service.enable {
-      description = "OneLeet Agent Service";
-      after = ["graphical-session.target"];
+    # Directories the daemon expects (config, logs).
+    systemd.tmpfiles.rules = mkIf cfg.service.enable [
+      "d /etc/oneleet 0755 root root -"
+      "d /var/log/oneleet 0755 root root -"
+    ];
 
-      # The agent shells out to these to detect LUKS/disk encryption.
-      # systemd user services get a near-empty PATH, so without this the
-      # encryption check silently fails when launched by the timer.
-      path = with pkgs; [
-        util-linux # lsblk, findmnt
-        cryptsetup # cryptsetup status
-        coreutils
-      ];
+    # Run oneleet-daemon as a root system service so the user-launched agent
+    # can always reach /tmp/oneleet-daemon.sock without re-authenticating.
+    systemd.services.oneleet-daemon = mkIf cfg.service.enable {
+      description = "OneLeet daemon";
+      wantedBy = ["multi-user.target"];
+      after = ["network-online.target"];
+      wants = ["network-online.target"];
+
+      path = runtimeDeps;
 
       serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${cfg.package}/bin/oneleet-agent";
+        ExecStart = "${cfg.package}/opt/Oneleet/oneleet-daemon";
+        Restart = "always";
+        RestartSec = 5;
+        User = "root";
+        # World-readable socket so the user-launched agent can connect.
+        UMask = "0000";
       };
     };
 
-    systemd.user.timers.oneleet = mkIf cfg.service.enable {
-      timerConfig = {
-        OnCalendar = "Mon *-*-* 09:45:00";
-        Persistent = true;
+    # GUI client that connects to the daemon socket. Runs in the user session.
+    systemd.user.services.oneleet-agent = mkIf cfg.agent.enable {
+      description = "OneLeet agent (GUI client)";
+      wantedBy = ["graphical-session.target"];
+      partOf = ["graphical-session.target"];
+      after = ["graphical-session.target" "oneleet-daemon.service"];
+
+      path = runtimeDeps;
+
+      serviceConfig = {
+        ExecStart = "${cfg.package}/bin/oneleet-agent";
+        Restart = "on-failure";
+        RestartSec = 5;
       };
-      wantedBy = ["timers.target"];
     };
   };
 }

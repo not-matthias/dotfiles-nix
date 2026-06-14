@@ -164,6 +164,7 @@
     oneleet = {
       enable = true;
       service.enable = true;
+      agent.enable = true;
     };
     pay-respects.enable = true;
   };
