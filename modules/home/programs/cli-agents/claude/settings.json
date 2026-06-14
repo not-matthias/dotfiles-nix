@@ -24,7 +24,8 @@
   "cleanupPeriodDays": 99999,
   "skipDangerousModePermissionPrompt": true,
   "enabledPlugins": {
-    "codspeed-internal@codspeed-internal-marketplace": true
+    "codspeed-internal@codspeed-internal-marketplace": true,
+    "skill-creator@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "codspeed-internal-marketplace": {
