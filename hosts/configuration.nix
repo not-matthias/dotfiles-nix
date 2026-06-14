@@ -89,6 +89,7 @@
     permittedInsecurePackages = [
       "electron-31.7.7"
       "electron-36.9.5"
+      "electron-39.8.10"
     ];
   };
   nix = {
