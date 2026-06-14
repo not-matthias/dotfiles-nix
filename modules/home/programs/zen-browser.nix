@@ -347,6 +347,9 @@ in {
         "extensions.systemAddon.update.url" = "";
         "extensions.webcompat-reporter.enabled" = false;
         "extensions.webcompat-reporter.newIssueEndpoint" = "";
+
+        # Grant extensions access to private windows on registration
+        "extensions.allowPrivateBrowsingByDefault" = true;
       };
 
       # ================================
