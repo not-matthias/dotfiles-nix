@@ -31,6 +31,8 @@
 - Put all the temporary files and documentation you create into the `.agents` folder (e.g. `.agents/docs/2025-09-13-add-button.md`, ...).
 - Store any intermediate scripts (shell scripts, Python scripts, etc.) in the `.agents/scripts/` folder.
 
+Never reference files in `.agents` within source code (e.g. comments) as they are gitignored and meant to be development artifacts.
+
 ## Available CLI Tools
 
 - **Core:** gh, rg (ripgrep), fd, eza, git, delta
