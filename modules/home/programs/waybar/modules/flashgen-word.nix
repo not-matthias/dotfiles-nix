@@ -10,6 +10,7 @@
       pkgs.sqlite
       pkgs.xdg-utils
       pkgs.util-linux
+      pkgs.libnotify
     ];
     text = ''
             emit() {
@@ -67,6 +68,32 @@
               } 9>"$LOCK_FILE"
             }
 
+            maybe_notify() {
+              local word_id="$1"
+              local title="$2"
+              local body="$3"
+              local last=""
+
+              if [ -r "$NOTIFY_FILE" ]; then
+                read -r last < "$NOTIFY_FILE" || true
+              fi
+
+              if [ "$last" = "$word_id" ]; then
+                return 0
+              fi
+
+              mkdir -p "$STATE_DIR"
+              printf '%s\n' "$word_id" > "$NOTIFY_FILE"
+
+              # No previously recorded word means this is the first render, so
+              # logging in or restarting waybar doesn't fire a notification.
+              if [ -z "$last" ]; then
+                return 0
+              fi
+
+              notify-send -a Flashgen "$title" "$body" || true
+            }
+
             DB_PATH="''${FLASHGEN_DB_PATH:-${cfg.dbPath}}"
             HSK_LEVEL="''${FLASHGEN_HSK_LEVEL:-${toString cfg.hskLevel}}"
             HSK_VERSION="''${FLASHGEN_HSK_VERSION:-${toString cfg.hskVersion}}"
@@ -74,6 +101,7 @@
             STATE_DIR="$STATE_HOME/waybar"
             LOCK_FILE="$STATE_DIR/flashgen-word-of-hour.lock"
             STATE_FILE="$STATE_DIR/flashgen-word-of-hour"
+            NOTIFY_FILE="$STATE_DIR/flashgen-word-of-hour.notified"
             action="''${1:-}"
 
             if [ "$action" = "--open" ]; then
@@ -187,6 +215,13 @@
       $sentence_py
       $sentence_en"
             fi
+
+            notify_body="$pinyin"
+            if [ -n "$definition" ]; then
+              notify_body="$notify_body"$'\n'"$definition"
+            fi
+
+            maybe_notify "$word_id" "$simplified" "$notify_body"
 
             emit "$display_text" "$tooltip" "word"
     '';
