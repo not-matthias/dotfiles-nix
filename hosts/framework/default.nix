@@ -34,7 +34,6 @@
       # unstable.antigravity-fhs
 
       # Install desktop apps rather than websites
-      # discord
       feishin
       gh
       linear-cli
@@ -115,6 +114,13 @@
       # };
 
       solidtime-desktop.enable = true;
+      discord = {
+        enable = true;
+        package = pkgs.discord.override {
+          withVencord = true;
+          withOpenASAR = true;
+        };
+      };
       ultra-power-saver.enable = false;
     };
 
