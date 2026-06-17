@@ -120,12 +120,12 @@ in {
       };
     };
 
-    systemd.sleep.extraConfig = ''
-      AllowSuspend=yes
-      AllowHibernation=no
-      AllowSuspendThenHibernate=no
-      AllowHybridSleep=yes
-    '';
+    systemd.sleep.settings.Sleep = {
+      AllowSuspend = "yes";
+      AllowHibernation = "no";
+      AllowSuspendThenHibernate = "no";
+      AllowHybridSleep = "yes";
+    };
 
     # services.hypridle.enable = true;
     # https://github.com/atimofeev/nixos-config/blob/e331eb04eb292e7f343bf18d57e3f29e3626b43c/home/desktop/hyprland/hyprpaper.nix

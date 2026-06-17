@@ -30,7 +30,7 @@ in {
       };
       services = {
         swayidle.enable = true;
-        swww.enable = true;
+        awww.enable = true;
         dunst.enable = true;
       };
 

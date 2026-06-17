@@ -1,7 +1,11 @@
 # https://github.com/fufexan/dotfiles/blob/main/home/programs/dunst.nix
-{pkgs, ...}: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   services.dunst = {
-    iconTheme = {
+    iconTheme = lib.mkDefault {
       name = "Papirus-Dark";
       package = pkgs.papirus-icon-theme;
     };

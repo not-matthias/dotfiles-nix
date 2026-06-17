@@ -161,7 +161,6 @@
 
   programs = {
     noisetorch.enable = true;
-    steam.enable = true;
     fcitx5.enable = true;
     nix-ld.enable = true;
     nix-ld.libraries = [pkgs.libevdev];
@@ -215,13 +214,11 @@
       settings.Plugins = {
         Enabled = true;
         AutoReload = true;
-        Folder = "/var/lib/navidrome/plugins";
         LogLevel = "info";
       };
     };
     octo-fiesta.enable = true;
     rustdesk-client.enable = true;
-    audiomuse.enable = true;
     # soulsync.enable = true;
     yubikey.enable = true;
     systembus-notify.enable = lib.mkForce true;
@@ -397,13 +394,13 @@
 
   # s2idle drains the battery on this Framework, so fall through to
   # hibernation after 30 minutes of suspend.
-  systemd.sleep.extraConfig = lib.mkForce ''
-    AllowSuspend=yes
-    AllowHibernation=yes
-    AllowSuspendThenHibernate=yes
-    AllowHybridSleep=yes
-    HibernateDelaySec=30min
-  '';
+  systemd.sleep.settings.Sleep = lib.mkForce {
+    AllowSuspend = "yes";
+    AllowHibernation = "yes";
+    AllowSuspendThenHibernate = "yes";
+    AllowHybridSleep = "yes";
+    HibernateDelaySec = "30min";
+  };
 
   services.logind.settings.Login = {
     HandleLidSwitch = "suspend-then-hibernate";

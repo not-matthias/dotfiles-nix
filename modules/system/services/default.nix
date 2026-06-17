@@ -1,7 +1,6 @@
 [
   ./actual.nix
   ./adguard.nix
-  ./audiomuse.nix
   ./audiobookshelf.nix
   ./authelia.nix
   ./caddy.nix
@@ -16,7 +15,6 @@
   ./journald.nix
   ./karakeep.nix
   ./kokoro.nix
-  ./librechat.nix
   ./lobe-chat.nix
   ./logto.nix
   ./maloja.nix

@@ -9,10 +9,10 @@
     Compress=yes
   '';
 
-  systemd.coredump.extraConfig = ''
-    Storage=none
-    ProcessSizeMax=0
-  '';
+  systemd.coredump.settings.Coredump = {
+    Storage = "none";
+    ProcessSizeMax = 0;
+  };
 
   # NOTE: Avoid setting DefaultMemoryMax here — it applies to all systemd
   # services/scopes and kills Electron apps (Chrome, Slack) during memory pressure.

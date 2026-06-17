@@ -28,12 +28,6 @@
       ghidra-cli = super.callPackage ../../pkgs/ghidra-cli.nix {};
     })
     (_self: super: {
-      audiomuse-ai = super.callPackage ../../pkgs/audiomuse-ai.nix {};
-    })
-    (_self: super: {
-      audiomuse-ai-nv-plugin = super.callPackage ../../pkgs/audiomuse-ai-nv-plugin.nix {};
-    })
-    (_self: super: {
       soulsync = super.callPackage ../../pkgs/soulsync.nix {};
     })
     (_self: super: {

@@ -145,24 +145,12 @@ in {
           command = cfg.suspendCommand;
         }
       ];
-      events = [
-        {
-          event = "before-sleep";
-          command = (displayCmd "off") + "; " + lockCmd;
-        }
-        {
-          event = "after-resume";
-          command = displayCmd "on";
-        }
-        {
-          event = "lock";
-          command = (displayCmd "off") + "; " + lockCmd;
-        }
-        {
-          event = "unlock";
-          command = displayCmd "on";
-        }
-      ];
+      events = {
+        "before-sleep" = (displayCmd "off") + "; " + lockCmd;
+        "after-resume" = displayCmd "on";
+        lock = (displayCmd "off") + "; " + lockCmd;
+        unlock = displayCmd "on";
+      };
     };
   };
 }

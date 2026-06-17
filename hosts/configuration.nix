@@ -60,7 +60,7 @@
 
   documentation.man = {
     enable = false;
-    generateCaches = false;
+    cache.enable = false;
     man-db.enable = false;
   };
 

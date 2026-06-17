@@ -5,9 +5,9 @@
   config,
   ...
 }: let
-  cfg = config.services.swww;
+  cfg = config.services.awww;
 in {
-  options.services.swww = {
+  options.services.awww = {
     wallpaper = lib.mkOption {
       type = lib.types.nullOr lib.types.path;
       default = null;
@@ -18,6 +18,6 @@ in {
   config = lib.mkIf (cfg.enable or false && cfg.wallpaper != null) {
     home.file.".wallpaper.png".source = cfg.wallpaper;
 
-    # services.swww.enable is already defined in home-manager
+    # services.awww.enable is already defined in Home Manager
   };
 }
