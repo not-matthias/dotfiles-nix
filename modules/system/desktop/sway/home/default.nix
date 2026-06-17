@@ -13,8 +13,8 @@
           {command = "zen-beta";}
         ];
         keybindings = {
-          "${modifier}+d" = "exec walker";
-          "${modifier}+r" = "exec walker";
+          "${modifier}+d" = "exec vicinae";
+          "${modifier}+r" = "exec vicinae";
         };
         input = {
           "type:keyboard" = {

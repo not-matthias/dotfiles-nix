@@ -11,7 +11,6 @@
   arion,
   agenix,
   stylix,
-  quickshell,
   niri,
   ...
 }: let
@@ -83,7 +82,6 @@
           unstable
           nixos-hardware
           stylix
-          quickshell
           niri
           ;
       };

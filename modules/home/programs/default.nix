@@ -31,9 +31,7 @@
   ./niri-organize.nix
   ./rust.nix
   ./starship.nix
-  ./walker.nix
   ./vicinae.nix
-  ./waystt.nix
   # ./wofi.nix
   ./zellij.nix
   ./zoxide.nix

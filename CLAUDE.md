@@ -191,7 +191,7 @@ cat file.txt | agenix -e file.age
 ## Repository Architecture
 
 ### Flake Structure
-- **Inputs**: NixOS 25.05 stable, nixpkgs-unstable, home-manager, nixvim, agenix, zen-browser, fenix, arion, nixos-hardware, elephant, walker, niri, stylix, quickshell, and others
+- **Inputs**: NixOS 25.05 stable, nixpkgs-unstable, home-manager, nixvim, agenix, zen-browser, fenix, arion, nixos-hardware, niri, stylix, vicinae, and others
 - **User**: "not-matthias" (hardcoded in flake.nix outputs)
 - **Hosts**: Three active configs (desktop, framework, raspi) defined via `nixosBox` factory in `hosts/default.nix`
 

@@ -45,15 +45,6 @@
       url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    aw-hyprland = {
-      url = "github:bobvanderlinden/aw-watcher-window-hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    elephant.url = "github:abenz1267/elephant";
-    walker = {
-      url = "github:abenz1267/walker";
-      inputs.elephant.follows = "elephant";
-    };
     niri.url = "github:sodiboo/niri-flake";
     vicinae.url = "github:vicinaehq/vicinae";
     stylix = {
@@ -64,23 +55,9 @@
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    quickshell = {
-      url = "github:quickshell-mirror/quickshell";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
     nix-webapps.url = "github:TLATER/nix-webapps?ref=tlater/idiomatic-flake";
-    niri-screen-time.url = "github:probeldev/niri-screen-time";
-    system76-scheduler-niri = {
-      url = "github:Kirottu/system76-scheduler-niri";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    waystt = {
-      url = "github:not-matthias/waystt";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # Pinned to 1.7 to prevent constant recompilations of the devenv-tasks package
     # See: https://github.com/cachix/devenv/issues/1865
-    nix-hermes.url = "github:0xrsydn/nix-hermes-agent";
     devenv.url = "github:cachix/devenv/v1.7";
 
     auto-cpufreq = {
@@ -105,7 +82,6 @@
     arion,
     agenix,
     stylix,
-    quickshell,
     niri,
     nix-webapps,
     ...
@@ -115,7 +91,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix stylix quickshell niri nix-webapps;
+        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix stylix niri nix-webapps;
       }
     );
 

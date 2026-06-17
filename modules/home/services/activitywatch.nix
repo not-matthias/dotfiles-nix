@@ -1,7 +1,5 @@
-# Based on this: bobvanderlinden/aw-watcher-window-hyprland
 {
   unstable,
-  flakes,
   config,
   lib,
   ...
@@ -30,27 +28,6 @@ in {
         PartOf = ["graphical-session.target"];
       };
       Install = {WantedBy = ["graphical-session.target"];};
-    };
-
-    systemd.user.services.activitywatch-watcher-window-hyprland = {
-      Unit = {
-        Description = "ActivityWatch watcher 'aw-watcher-window-hyprland'";
-        After = [
-          "graphical-session.target"
-          "activitywatch.service"
-        ];
-        BindsTo = ["activitywatch.target"];
-        Requisite = ["graphical-session.target"];
-        PartOf = ["graphical-session.target"];
-      };
-      Service = {
-        ExecStart = lib.getExe flakes.aw-hyprland.packages.${unstable.stdenv.hostPlatform.system}.aw-watcher-window-hyprland;
-        Restart = "on-failure";
-        RestartSec = "5s";
-      };
-      Install = {
-        WantedBy = ["graphical-session.target"];
-      };
     };
   };
 }

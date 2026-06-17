@@ -15,7 +15,6 @@ in {
     home-manager.users.${user} = {
       imports = [
         flakes.niri.homeModules.niri
-        flakes.system76-scheduler-niri.homeModules.default
         ./keybinds.nix
         ./autostart.nix
         ./env.nix
