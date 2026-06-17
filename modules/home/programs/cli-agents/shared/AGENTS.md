@@ -6,6 +6,20 @@
 - Use bullet points (e.g. for pro/con lists, or explanations of different approaches)
 - NEVER include AI attribution (Co-Authored-By, "Generated with Claude Code","Made-with: Cursor" etc.) in commits or PRs.
 - Don't use em dashes (—)
+- When explaining an API, show only the function signatures, not their bodies. Keep the focus on the surface (names, parameters, return types).
+
+  ```rust
+  // Good — signatures only
+  fn connect(addr: SocketAddr) -> Result<Connection>;
+  fn send(&self, msg: &Message) -> Result<()>;
+  fn close(self) -> Result<()>;
+
+  // Avoid — inlining full implementations when only explaining the surface
+  fn connect(addr: SocketAddr) -> Result<Connection> {
+      let socket = TcpStream::connect(addr)?;
+      // ...20 more lines...
+  }
+  ```
 
 ## Code Style
 
