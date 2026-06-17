@@ -92,7 +92,7 @@
         };
       };
       ghidra = {
-        enable = true;
+        enable = false;
         extensions = [
           "findcrypt"
           "lightkeeper"

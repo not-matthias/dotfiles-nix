@@ -25,7 +25,7 @@ in {
     home.packages = with pkgs; [
       ast-grep
       rizin
-      ghidra-cli
+      # ghidra-cli
       rtk
       unstable.gogcli
       jq
