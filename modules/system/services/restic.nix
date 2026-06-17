@@ -322,6 +322,12 @@
     "*.rpm"
     "*.dmg"
     "*.msi"
+
+    # ==============================================================================
+    # Git Working Trees (re-clonable from remotes)
+    # ==============================================================================
+    "Documents/work/wgit"
+    "Documents/technical/git"
   ];
 
   pruneOpts = [
