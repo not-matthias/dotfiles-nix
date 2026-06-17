@@ -78,10 +78,6 @@
       url = "github:not-matthias/waystt";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    handy = {
-      url = "github:cjpais/Handy";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
     # Pinned to 1.7 to prevent constant recompilations of the devenv-tasks package
     # See: https://github.com/cachix/devenv/issues/1865
     nix-hermes.url = "github:0xrsydn/nix-hermes-agent";

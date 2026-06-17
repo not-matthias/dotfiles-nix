@@ -69,6 +69,9 @@
     (_self: super: {
       oh-my-pi = super.callPackage ../../pkgs/oh-my-pi.nix {};
     })
+    (_self: super: {
+      handy = super.callPackage ../../pkgs/handy.nix {};
+    })
     (import ../../pkgs/ida-pro)
   ];
 }

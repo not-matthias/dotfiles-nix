@@ -3,7 +3,6 @@
   lib,
   options,
   pkgs,
-  flakes,
   ...
 }: {
   options.programs.handy = {
@@ -13,7 +12,7 @@
   config = lib.mkIf config.programs.handy.enable (
     {
       home.packages = [
-        flakes.handy.packages.${pkgs.stdenv.hostPlatform.system}.handy
+        pkgs.handy
         pkgs.wtype # Required for text input on Wayland
       ];
     }
