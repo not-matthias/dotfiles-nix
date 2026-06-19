@@ -31,9 +31,11 @@
 
       # Git interop settings
       git = {
-        auto-local-bookmark = true;
         push-branch-prefix = "push-";
       };
+
+      # Automatically track bookmarks from remotes (replaces deprecated git.auto-local-bookmark)
+      remotes.origin.auto-track-bookmarks = "*";
 
       # Color and formatting
       colors = {
