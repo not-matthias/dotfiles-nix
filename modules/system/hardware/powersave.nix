@@ -108,8 +108,8 @@ in {
         };
         charger = {
           governor = "performance";
-          turbo = "auto";
-          scaling_max_freq = 5134889; # 5.1GHz (max CPU freq)
+          energy_performance_preference = "performance";
+          turbo = "always";
         };
       };
     };
