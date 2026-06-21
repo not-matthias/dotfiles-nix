@@ -168,6 +168,7 @@
 
   services = {
     # solidtime.enable = true;
+    resolved.enable = true; # give Chrome a working local resolver (independent of VPN)
     vpn.enable = true;
     multi-scrobbler.enable = true;
     restic = {
