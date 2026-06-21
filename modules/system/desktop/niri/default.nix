@@ -20,8 +20,8 @@ in {
     };
     package = mkOption {
       type = types.package;
-      default = flakes.niri.packages.${pkgs.system}.niri-unstable;
-      example = flakes.niri.packages.${pkgs.system}.niri-unstable;
+      default = flakes.niri.packages.${pkgs.stdenv.hostPlatform.system}.niri-unstable;
+      example = flakes.niri.packages.${pkgs.stdenv.hostPlatform.system}.niri-unstable;
       description = "Which niri package to use (niri-stable or niri-unstable)";
     };
   };
