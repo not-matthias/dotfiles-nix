@@ -6,12 +6,11 @@
   src = fetchFromGitHub {
     owner = "elidickinson";
     repo = "pi-claude-bridge";
-    rev = "179b881f6c98b3b906c843c4e3487aefa3a58400";
-    hash = "sha256-Bkr3l43zNPqtWv12xnCZ+dfHw3h9atqLYDM+UvinoZw=";
+    rev = "edcc676e3897a4ee865f7b1e0ae06daa70346f7e";
+    hash = "sha256-U0KOUYohjQqrvwQ5nONOuT0n2qQ+uertYaMjO/zF7Cs=";
   };
 in
-  # Patch package-lock.json to add missing resolved/integrity for zod v4
-  # (zod v4 uses a lockfile entry without resolved URL, which breaks prefetch-npm-deps)
+  # Keep the lockfile limited to dependencies installed in the Nix build.
   runCommand "pi-claude-bridge-patched" {nativeBuildInputs = [python3];} ''
     cp -r ${src} $out
     chmod -R u+w $out
@@ -20,14 +19,29 @@ in
 
     out = pathlib.Path(sys.argv[1])
 
+    package = out / 'package.json'
+    package_data = json.loads(package.read_text())
+    package_data.pop('devDependencies', None)
+    package_data.pop('peerDependencies', None)
+    package.write_text(json.dumps(package_data, indent=2))
+
     lock = out / 'package-lock.json'
     data = json.loads(lock.read_text())
-    zod = data.get('packages', {}).get('node_modules/zod', {})
+    packages = data.get('packages', {})
+    root = packages.get("", {})
+    root.pop('devDependencies', None)
+    root.pop('peerDependencies', None)
+
+    for name in list(packages):
+        if name.startswith('node_modules/@earendil-works/'):
+            del packages[name]
+
+    zod = packages.get('node_modules/zod', {})
     if zod and not zod.get('resolved'):
         zod['resolved'] = 'https://registry.npmjs.org/zod/-/zod-' + zod['version'] + '.tgz'
         zod['integrity'] = 'sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=='
-        lock.write_text(json.dumps(data, indent=2))
 
+    lock.write_text(json.dumps(data, indent=2))
     index = out / 'src/index.ts'
     source = index.read_text()
     source = source.replace(

@@ -156,7 +156,7 @@ in
               fs.writeFileSync(file, lines.join("\n"));
             '
           '';
-          pnpmDepsHash = "sha256-I9ENJzV6RDLBFoiYleMaH1eCbsqwsfp61/zE0doFW44=";
+          pnpmDepsHash = "sha256-vehtczjbEHXs80D+G0W7vVxbsOMBJ+K0jbsNSnq2RyM=";
         };
       };
       resources.extensions = ".";
@@ -301,7 +301,7 @@ in
       src = compileExtension {
         src = withRuntimeDeps {
           src = pkgs.callPackage ./pi-claude-bridge.nix {};
-          npmDepsHash = "sha256-lITn+l+Of5SQK1+ycNK9fES0bKCvJoKAq/6Nf8tgMY0=";
+          npmDepsHash = "sha256-mzDo/T86Y5m5BWnPgp6P24+oFa+vFSZg84EafWKbPNI=";
         };
       };
       resources.extensions = ".";
