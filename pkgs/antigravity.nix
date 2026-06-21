@@ -4,7 +4,13 @@
   fetchurl,
   autoPatchelfHook,
   makeWrapper,
-  xorg,
+  libx11,
+  libxext,
+  libxcomposite,
+  libxdamage,
+  libxfixes,
+  libxrandr,
+  libxcb,
   libxkbcommon,
   libxkbfile,
   fontconfig,
@@ -36,13 +42,13 @@ in
     ];
 
     buildInputs = [
-      xorg.libX11
-      xorg.libXext
-      xorg.libXcomposite
-      xorg.libXdamage
-      xorg.libXfixes
-      xorg.libXrandr
-      xorg.libxcb
+      libx11
+      libxext
+      libxcomposite
+      libxdamage
+      libxfixes
+      libxrandr
+      libxcb
       libxkbcommon
       libxkbfile
       fontconfig

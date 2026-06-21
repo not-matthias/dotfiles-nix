@@ -14,7 +14,12 @@
   libGL,
   libxkbcommon,
   python3,
-  xorg,
+  libx11,
+  libxcb,
+  libxcb-image,
+  libxcb-keysyms,
+  libxcb-render-util,
+  libxcb-wm,
   wayland,
   zlib,
 }: let
@@ -30,12 +35,12 @@
     python3
     wayland
     zlib
-    xorg.libX11
-    xorg.libxcb
-    xorg.xcbutilimage
-    xorg.xcbutilkeysyms
-    xorg.xcbutilrenderutil
-    xorg.xcbutilwm
+    libx11
+    libxcb
+    libxcb-image
+    libxcb-keysyms
+    libxcb-render-util
+    libxcb-wm
   ];
 
   libPath = lib.makeLibraryPath requiredLibs;
