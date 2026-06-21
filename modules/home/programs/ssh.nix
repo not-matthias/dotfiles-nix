@@ -4,7 +4,7 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks."*" = {
+    settings."*" = {
       compression = true;
       addKeysToAgent = "yes";
       controlMaster = "auto";

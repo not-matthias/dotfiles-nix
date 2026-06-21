@@ -10,7 +10,7 @@
       awscli2
     ];
 
-    programs.ssh.matchBlocks."codspeeds-mac-mini" = {
+    programs.ssh.settings."codspeeds-mac-mini" = {
       host = "codspeeds-mac-mini codspeeds-mac-mini.tail0bdeec.ts.net";
       hostname = "codspeeds-mac-mini.tail0bdeec.ts.net";
       user = "codspeed";
