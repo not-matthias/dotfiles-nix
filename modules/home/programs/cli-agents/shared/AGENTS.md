@@ -28,6 +28,35 @@
 - **Fail loudly:** Make it obvious when something goes wrong. Don't silently ignore errors or edge cases.
 - **IMPORTANT**: Comments must not narrate the specific feature, caller, or task that prompted a change — that ties the comment to one use case and it goes stale as soon as other code relies on the same logic. Explain the general mechanism when it is non-obvious; otherwise omit the comment. Match the comment density of the surrounding code.
   - By default, avoid adding comments.
+- Comments explain WHY or a non-obvious invariant, never WHAT.
+  - e.g. "The buffer must be in nonpageable memory, otherwise we will bluescreen with `IRQL_NOT_LESS_OR_EQUAL`."
+- ASCII diagrams for memory layouts — used freely as comments when spatial relationships matter.
+  - e.g.
+
+    ```
+    // Find the two buffers:
+    //
+    //  code_buffer                   data_buffer
+    //  |-------|         |---------------------------------|
+    //  | .text | padding | .rdata | .data | other sections |
+    //
+    // Padding is included in .text (at the end)
+    //
+    ```
+- Struct field doc comments only on complex types. Not on trivial fields.
+
+### Rust File & Module Layout
+
+- Prefer a tree-like module structure: `<name>/mod.rs` with submodules as sibling files in the directory. A flat `<name>.rs` is fine when a module is genuinely tiny.
+- Keep each `.rs` file small. Avoid putting many structs into a single file; split related types into sibling files.
+- Prefer attaching functions to structs (methods/associated functions) over standalone free functions.
+- In `mod.rs`, just declare/export the submodules (`pub mod foo;`). Don't re-export individual functions/structs (`pub use foo::Bar;`).
+- Group `impl` blocks by concern (e.g. construction, trait impls, public API) rather than one giant block.
+
+## Code Simplicity
+
+- When writing, reviewing, or refactoring code, use the `cognitive-load` skill.
+- Preserve behavior, but prefer simpler control flow, named conditions, local reasoning, and abstractions that reduce rather than add indirection.
 
 ## Rules
 
