@@ -7,6 +7,7 @@
   fetchFromGitHub,
   electron_39,
   pnpmConfigHook,
+  pnpm,
   fetchPnpmDeps,
   darwin,
   copyDesktopItems,
@@ -45,7 +46,8 @@ in
     env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
 
     nativeBuildInputs =
-      lib.optionals (stdenv.hostPlatform.isLinux) [copyDesktopItems]
+      [pnpm]
+      ++ lib.optionals (stdenv.hostPlatform.isLinux) [copyDesktopItems]
       ++ lib.optionals stdenv.hostPlatform.isDarwin [darwin.autoSignDarwinBinariesHook];
 
     postPatch =
