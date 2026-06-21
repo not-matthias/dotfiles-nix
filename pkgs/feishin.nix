@@ -6,7 +6,8 @@
   buildNpmPackage,
   fetchFromGitHub,
   electron_39,
-  pnpm_10,
+  pnpmConfigHook,
+  fetchPnpmDeps,
   darwin,
   copyDesktopItems,
   makeDesktopItem,
@@ -22,24 +23,23 @@
   };
 
   electron = electron_39;
-  pnpm = pnpm_10;
 in
   buildNpmPackage {
     inherit pname version;
 
     inherit src;
 
-    npmConfigHook = pnpm.configHook;
+    npmConfigHook = pnpmConfigHook;
 
     npmDeps = null;
-    pnpmDeps = pnpm.fetchDeps {
+    pnpmDeps = fetchPnpmDeps {
       inherit
         pname
         version
         src
         ;
-      fetcherVersion = 2;
-      hash = "sha256-cGIdcMcBIoSbtaN4ZcS/hM0fVsW08fqac4LIlpj/nb4=";
+      fetcherVersion = 3;
+      hash = "sha256-bmdCQsoW6/+vBclC0LwDztJRG/pdKZWqfYhaNU4to24=";
     };
 
     env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
