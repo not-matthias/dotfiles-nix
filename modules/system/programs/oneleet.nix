@@ -65,12 +65,12 @@ in {
           mesa
           pango
           stdenv.cc.cc
-          xorg.libX11
-          xorg.libXcomposite
-          xorg.libXdamage
-          xorg.libXext
-          xorg.libXfixes
-          xorg.libXrandr
+          libx11
+          libxcomposite
+          libxdamage
+          libxext
+          libxfixes
+          libxrandr
         ];
 
         unpackPhase = ''

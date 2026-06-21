@@ -7,7 +7,13 @@
   zlib,
   libGL,
   glib,
-  xorg,
+  libx11,
+  libxext,
+  libxcb,
+  libxi,
+  libsm,
+  libice,
+  libxrender,
   fontconfig,
   freetype,
   dbus,
@@ -34,13 +40,13 @@ in
       zlib
       libGL
       glib
-      xorg.libX11
-      xorg.libXext
-      xorg.libxcb
-      xorg.libXi
-      xorg.libSM
-      xorg.libICE
-      xorg.libXrender
+      libx11
+      libxext
+      libxcb
+      libxi
+      libsm
+      libice
+      libxrender
       fontconfig
       freetype
       dbus

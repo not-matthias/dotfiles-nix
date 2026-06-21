@@ -12,7 +12,16 @@
   atk,
   gtk3,
   gdk-pixbuf,
-  xorg,
+  libx11,
+  libxext,
+  libxcomposite,
+  libxdamage,
+  libxfixes,
+  libxrandr,
+  libxtst,
+  libxscrnsaver,
+  libxcb,
+  libxshmfence,
   libgbm,
   expat,
   libxkbcommon,
@@ -60,16 +69,16 @@ in
       atk
       gtk3
       gdk-pixbuf
-      xorg.libX11
-      xorg.libXext
-      xorg.libXcomposite
-      xorg.libXdamage
-      xorg.libXfixes
-      xorg.libXrandr
-      xorg.libXtst
-      xorg.libXScrnSaver
-      xorg.libxcb
-      xorg.libxshmfence
+      libx11
+      libxext
+      libxcomposite
+      libxdamage
+      libxfixes
+      libxrandr
+      libxtst
+      libxscrnsaver
+      libxcb
+      libxshmfence
       libgbm
       expat
       libxkbcommon

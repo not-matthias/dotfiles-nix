@@ -10,13 +10,12 @@
       awscli2
     ];
 
-    programs.ssh.settings."codspeeds-mac-mini" = {
-      host = "codspeeds-mac-mini codspeeds-mac-mini.tail0bdeec.ts.net";
-      hostname = "codspeeds-mac-mini.tail0bdeec.ts.net";
-      user = "codspeed";
-      forwardAgent = true;
-      identitiesOnly = true;
-      remoteForwards = [
+    programs.ssh.settings."codspeeds-mac-mini codspeeds-mac-mini.tail0bdeec.ts.net" = {
+      HostName = "codspeeds-mac-mini.tail0bdeec.ts.net";
+      User = "codspeed";
+      ForwardAgent = true;
+      IdentitiesOnly = true;
+      RemoteForward = [
         {
           host.address = "/run/user/1000/gnupg/S.gpg-agent.extra";
           bind.address = "/Users/codspeed/.gnupg/S.gpg-agent";
