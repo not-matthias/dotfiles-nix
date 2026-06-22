@@ -65,11 +65,10 @@ in
             cp -r * $out/opt/binaryninja
             chmod +x $out/opt/binaryninja/binaryninja
 
-            # Find libxml2.so files to create symlinks
-            libxml2lib=$(find /nix/store -name "libxml2.so.16.1.1" -print -quit 2>/dev/null)
-            if [ -f "$libxml2lib" ]; then
-              ln -sf "$libxml2lib" $out/opt/binaryninja/libxml2.so.2
-            fi
+            # Binary Ninja links against the old libxml2.so.2 soname, but nixpkgs
+            # ships libxml2.so.16. Bridge them with a symlink to the unversioned
+            # library so this stays correct across libxml2 version bumps.
+            ln -sf ${lib.getLib libxml2}/lib/libxml2.so $out/opt/binaryninja/libxml2.so.2
 
             # Create wrapper with LD_LIBRARY_PATH for all required libraries
             makeWrapper $out/opt/binaryninja/binaryninja \
