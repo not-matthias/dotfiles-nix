@@ -19,38 +19,13 @@
               jq -cn --arg text "$text" --arg tooltip "$tooltip" --arg class "$class" '{text: $text, tooltip: $tooltip, class: $class}'
             }
 
-            maybe_notify() {
-              local word_id="$1"
-              local title="$2"
-              local body="$3"
-              local last=""
-
-              if [ -r "$NOTIFY_FILE" ]; then
-                read -r last < "$NOTIFY_FILE" || true
-              fi
-
-              if [ "$last" = "$word_id" ]; then
-                return 0
-              fi
-
-              mkdir -p "$STATE_DIR"
-              printf '%s\n' "$word_id" > "$NOTIFY_FILE"
-
-              # No previously recorded word means this is the first render, so
-              # logging in or restarting waybar doesn't fire a notification.
-              if [ -z "$last" ]; then
-                return 0
-              fi
-
-              notify-send -a Flashgen "$title" "$body" || true
-            }
-
             DB_PATH="''${FLASHGEN_DB_PATH:-${cfg.dbPath}}"
             HSK_LEVEL="''${FLASHGEN_HSK_LEVEL:-${toString cfg.hskLevel}}"
             HSK_VERSION="''${FLASHGEN_HSK_VERSION:-${toString cfg.hskVersion}}"
             STATE_HOME="''${XDG_STATE_HOME:-$HOME/.local/state}"
             STATE_DIR="$STATE_HOME/waybar"
-            NOTIFY_FILE="$STATE_DIR/flashgen-word-of-hour.notified"
+            STATE_FILE="$STATE_DIR/flashgen-word-of-hour.state"
+            hour_key=$(($(date +%s) / 3600))
             action="''${1:-}"
 
             if [ "$action" = "--open" ]; then
@@ -104,19 +79,41 @@
               exit 0
             fi
 
-            offset=$(shuf -i 0-$((count - 1)) -n 1)
+            stored_hour=""
+            last_word_id=""
+            last_offset=""
+            if [ -r "$STATE_FILE" ]; then
+              IFS=$'\t' read -r stored_hour last_word_id last_offset < "$STATE_FILE" || true
+            fi
 
-            if ! row="$(sqlite3 -separator $'\t' "$DB_PATH" "SELECT id, simplified, pinyin_display, printf('%s', tags) FROM words WHERE $column = $HSK_LEVEL AND EXISTS (SELECT 1 FROM sentences WHERE sentences.word_id = words.id AND length(trim(chinese)) > 0) ORDER BY COALESCE(frequency_rank, 2147483647), id LIMIT 1 OFFSET $offset;")"; then
-              emit "" "Flashgen word query failed: $DB_PATH" "unavailable"
-              exit 0
+            row=""
+            if [ "$stored_hour" = "$hour_key" ] && [ -n "$last_word_id" ]; then
+              row="$(sqlite3 -separator $'\t' "$DB_PATH" "SELECT id, simplified, pinyin_display, printf('%s', tags) FROM words WHERE id = $last_word_id;")"
+              if [ -n "$row" ]; then
+                offset="$last_offset"
+              fi
             fi
 
             if [ -z "$row" ]; then
-              emit "" "Flashgen returned no word for HSK $HSK_LEVEL v$HSK_VERSION" "unavailable"
-              exit 0
+              offset=$(shuf -i 0-$((count - 1)) -n 1)
+              if ! row="$(sqlite3 -separator $'\t' "$DB_PATH" "SELECT id, simplified, pinyin_display, printf('%s', tags) FROM words WHERE $column = $HSK_LEVEL AND EXISTS (SELECT 1 FROM sentences WHERE sentences.word_id = words.id AND length(trim(chinese)) > 0) ORDER BY COALESCE(frequency_rank, 2147483647), id LIMIT 1 OFFSET $offset;")"; then
+                emit "" "Flashgen word query failed: $DB_PATH" "unavailable"
+                exit 0
+              fi
+              if [ -z "$row" ]; then
+                emit "" "Flashgen returned no word for HSK $HSK_LEVEL v$HSK_VERSION" "unavailable"
+                exit 0
+              fi
             fi
 
             IFS=$'\t' read -r word_id simplified pinyin tags <<< "$row"
+
+            should_notify=0
+            if [ "$stored_hour" != "$hour_key" ] && [ -n "$last_word_id" ]; then
+              should_notify=1
+            fi
+            mkdir -p "$STATE_DIR"
+            printf '%s\t%s\t%s\n' "$hour_key" "$word_id" "$offset" > "$STATE_FILE"
 
             definition="$(sqlite3 "$DB_PATH" "SELECT printf('%s', group_concat(definition, '; ')) FROM (SELECT definition FROM definitions WHERE word_id = $word_id AND length(trim(definition)) > 0 LIMIT 3);")"
             sentence="$(sqlite3 -separator $'\t' "$DB_PATH" "SELECT chinese, pinyin, english FROM sentences WHERE word_id = $word_id AND length(trim(chinese)) > 0 ORDER BY id LIMIT 1;")"
@@ -154,7 +151,9 @@
               notify_body="$notify_body"$'\n'"$definition"
             fi
 
-            maybe_notify "$word_id" "$simplified" "$notify_body"
+            if [ "$should_notify" -eq 1 ]; then
+              notify-send -a Flashgen "$simplified" "$notify_body" || true
+            fi
 
             emit "$display_text" "$tooltip" "word"
     '';
