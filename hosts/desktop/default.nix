@@ -1,5 +1,8 @@
 {user, ...}: {
-  imports = [(import ./hardware-configuration.nix)];
+  imports = [
+    (import ./hardware-configuration.nix)
+    ../../modules/system/services/hera.nix
+  ];
 
   # Only disable when using a desktop environment:
   # desktop = {
