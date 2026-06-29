@@ -5,9 +5,9 @@
     enable = true;
     package = unstable.zed-editor;
     mutableUserSettings = true;
-    mutableUserKeymaps = true;
+    mutableUserKeymaps = false;
 
     # userSettings = lib.mkForce (builtins.fromJSON (builtins.readFile ./settings.json));
-    # userKeymaps = builtins.fromJSON (builtins.readFile ./keymaps.json);
+    userKeymaps = builtins.fromJSON (builtins.readFile ./keymaps.json);
   };
 }

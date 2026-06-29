@@ -1,7 +1,20 @@
 [
   {
+    "bindings": {
+      "ctrl-q": null
+    }
+  },
+  {
+    "context": "Editor && mode == full",
+    "bindings": {
+      "ctrl-q": "editor::Hover"
+    }
+  },
+  {
     "context": "Workspace",
-    "bindings": {}
+    "bindings": {
+      "ctrl-j": "workspace::ToggleBottomDock"
+    }
   },
   {
     "context": "Editor",
@@ -17,16 +30,6 @@
   },
   {
     "context": "vim_mode == literal",
-    "bindings": {
-      "ctrl-j": "workspace::ToggleBottomDock"
-    }
-  },
-  {
-    "context": "Workspace",
-    "bindings": {}
-  },
-  {
-    "context": "Workspace",
     "bindings": {
       "ctrl-j": "workspace::ToggleBottomDock"
     }
