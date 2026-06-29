@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }: let
   cfg = config.hardware.bluetooth;
@@ -10,12 +9,8 @@ in {
     services.blueman.enable = true;
 
     hardware.bluetooth = {
-      package = pkgs.bluez-experimental;
       settings = {
         General = {
-          Enable = "Source,Sink,Media,Socket";
-          Experimental = true;
-          KernelExperimental = true;
           # When enabled other devices can connect faster to us, however
           # the tradeoff is increased power consumption. Defaults to
           FastConnectable = true;
