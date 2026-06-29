@@ -58,6 +58,19 @@
       ${sysctlBin} vm.vfs_cache_pressure=100
     fi
   '';
+
+  # PPD has no built-in AC/battery switching without a desktop environment driving
+  # it, so pick the profile from the power-source state on plug/unplug and at boot.
+  ppdSwitch = pkgs.writeShellScript "ppd-ac-switch" ''
+    ac_online=$(cat /sys/class/power_supply/AC*/online 2>/dev/null | head -1 || echo "1")
+    ppdctl="${pkgs.power-profiles-daemon}/bin/powerprofilesctl"
+
+    if [ "$ac_online" = "1" ]; then
+      "$ppdctl" set performance || "$ppdctl" set balanced
+    else
+      "$ppdctl" set power-saver
+    fi
+  '';
 in {
   options.hardware.powersave = {
     enable = lib.mkEnableOption "Powersave Configuration";
@@ -66,6 +79,7 @@ in {
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       powertop
+      power-profiles-daemon
     ];
 
     boot.kernel.sysctl = {
@@ -87,54 +101,34 @@ in {
     };
 
     services = {
-      power-profiles-daemon.enable = false;
+      power-profiles-daemon.enable = true;
       thermald.enable = false;
       # Disable TLP — nixos-hardware's framework module enables it, but it conflicts
       # with auto-cpufreq and overrides our governor/EPP/sysctl settings on battery.
       tlp.enable = lib.mkForce false;
     };
-    programs.auto-cpufreq = {
-      enable = true;
-      settings = {
-        battery = {
-          governor = "powersave";
-          turbo = "never";
 
-          # Maximize battery
-          energy_performance_preference = "power";
-          energy_perf_bias = "power";
-          scaling_min_freq = 400000;
-          scaling_max_freq = 1200000;
-        };
-        charger = {
-          governor = "performance";
-          energy_performance_preference = "performance";
-          turbo = "always";
-        };
+    # Drive PPD from the AC/battery state. Event-driven (udev + boot), so unlike
+    # auto-cpufreq there is no polling loop that can silently die and freeze the profile.
+    systemd.services.ppd-ac-switch = {
+      description = "Select power profile based on AC/battery state";
+      wantedBy = ["multi-user.target"];
+      after = ["power-profiles-daemon.service"];
+      wants = ["power-profiles-daemon.service"];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = ppdSwitch;
       };
     };
+
+    services.udev.extraRules = ''
+      SUBSYSTEM=="power_supply", ACTION=="change", ATTR{type}=="Mains", RUN+="${pkgs.systemd}/bin/systemctl start --no-block ppd-ac-switch.service"
+    '';
 
     powerManagement = {
       enable = true;
       powertop.enable = false;
       cpuFreqGovernor = lib.mkDefault "performance";
-    };
-
-    # Allow passwordless auto-cpufreq --force for Waybar/Walker toggles
-    security.sudo.extraRules = [
-      {
-        users = ["not-matthias"];
-        commands = [
-          {
-            command = "/run/current-system/sw/bin/auto-cpufreq --force *";
-            options = ["NOPASSWD"];
-          }
-        ];
-      }
-    ];
-
-    programs.fish.shellAbbrs = {
-      "cpuf" = "sudo systemctl restart auto-cpufreq.service";
     };
   };
 }
