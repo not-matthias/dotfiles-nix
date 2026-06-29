@@ -36,7 +36,7 @@ fetch_data() {
 }
 
 rate_limited=0
-data=$(get_cached_or_fetch "codex" 300 "$force_refresh")
+data=$(get_cached_or_fetch "codex" "${AI_USAGE_REFRESH_SECONDS:-300}" "$force_refresh")
 rc=$?
 if [ "$rc" -eq 3 ]; then
   rate_limited=1

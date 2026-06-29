@@ -2,11 +2,16 @@
   runtimeDeps = [pkgs.jq pkgs.curl pkgs.coreutils pkgs.bc pkgs.gnugrep];
   runtimePath = pkgs.lib.makeBinPath runtimeDeps;
   commonLib = ./scripts/ai-usage-common.sh;
+  # /api/oauth/usage aggressively 429s; see github.com/anthropics/claude-code/issues/30930.
+  # Sourced from one place so the Waybar poll interval and the script cache TTL can't drift.
+  refreshSeconds = 600;
+  refreshEnv = ''export AI_USAGE_REFRESH_SECONDS="${toString refreshSeconds}"'';
 
   claudeScript = pkgs.writeShellScriptBin "waybar-claude-usage" ''
     export PATH="${runtimePath}:$PATH"
     export AI_USAGE_COMMON="${commonLib}"
     export AI_USAGE_RETRY_LIMIT="5"
+    ${refreshEnv}
     exec ${pkgs.bash}/bin/bash ${./scripts/claude-usage.sh}
   '';
 
@@ -14,6 +19,7 @@
     export PATH="${runtimePath}:$PATH"
     export AI_USAGE_COMMON="${commonLib}"
     export AI_USAGE_RETRY_LIMIT="5"
+    ${refreshEnv}
     exec ${pkgs.bash}/bin/bash ${./scripts/codex-usage.sh}
   '';
 in {
@@ -29,7 +35,7 @@ in {
       on-click = "${claudeScript}/bin/waybar-claude-usage --force-refresh && ${pkgs.procps}/bin/pkill -RTMIN+8 waybar";
       on-click-right = "${claudeScript}/bin/waybar-claude-usage --restart && ${pkgs.procps}/bin/pkill -RTMIN+8 waybar";
       signal = 8;
-      interval = 300; # /api/oauth/usage aggressively 429s — see github.com/anthropics/claude-code/issues/30930
+      interval = refreshSeconds;
     };
 
     "custom/codex-usage" = {
@@ -39,7 +45,7 @@ in {
       on-click = "${codexScript}/bin/waybar-codex-usage --force-refresh && ${pkgs.procps}/bin/pkill -RTMIN+10 waybar";
       on-click-right = "${codexScript}/bin/waybar-codex-usage --restart && ${pkgs.procps}/bin/pkill -RTMIN+10 waybar";
       signal = 10;
-      interval = 300;
+      interval = refreshSeconds;
     };
   };
 }
