@@ -27,10 +27,33 @@ in {
       default = null;
       description = "Path to an environment file sourced before launching omp (e.g. an agenix secret)";
     };
+    disabledProviders = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      example = ["claude"];
+      description = ''
+        Authoritative value for omp's `disabledProviders` setting. Covers both
+        discovery sources (`claude`, `codex`, `gemini`, `native`, ...) and model
+        backends (`anthropic`, `openai`, ...). Disabling the `claude` discovery
+        source stops omp from loading CLAUDE.md plus any Claude-supplied MCP
+        servers, commands, skills, hooks, and settings.
+
+        omp stores this in its mutable `~/.omp/agent/config.yml`, so it cannot be
+        a read-only symlink. We persist it via `omp config set` on activation
+        instead. Because the setting is a wholesale array, this list replaces any
+        `disabledProviders` set at runtime (e.g. via `/settings`) on each rebuild.
+      '';
+    };
   };
 
-  # omp shares the ~/.pi/agent config directory managed by the pi-mono module.
   config = mkIf cfg.enable {
     home.packages = [wrappedOmp];
+
+    home.activation.ohMyPiDisabledProviders = mkIf (cfg.disabledProviders != []) (
+      hm.dag.entryAfter ["writeBoundary"] ''
+        $DRY_RUN_CMD mkdir -p "$HOME/.omp/agent"
+        $DRY_RUN_CMD ${pkgs.oh-my-pi}/bin/omp config set disabledProviders '${builtins.toJSON cfg.disabledProviders}'
+      ''
+    );
   };
 }

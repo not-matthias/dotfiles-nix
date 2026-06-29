@@ -80,6 +80,7 @@
         oh-my-pi = {
           enable = true;
           envFile = "/run/agenix/pi-mono-env";
+          disabledProviders = ["claude"];
         };
       };
       btop.enable = true;
