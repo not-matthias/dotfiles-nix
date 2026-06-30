@@ -4,3 +4,8 @@ result
 devenv.local.nix
 .pre-commit-config.yaml
 .pi
+# Binary Ninja personal installer (non-redistributable; read into the Nix store via requireFile)
+binja-backup-2024.zip
+BinaryNinja-personal*.zip
+binaryninja_linux_stable_personal.zip
+binaryninja_linux_dev_personal.zip

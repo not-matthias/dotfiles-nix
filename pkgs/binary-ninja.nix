@@ -2,9 +2,10 @@
 {
   stdenv,
   makeWrapper,
-  fetchzip,
+  requireFile,
   lib,
   patchelf,
+  unzip,
   libxml2,
   libxcrypt,
   libuuid,
@@ -22,6 +23,23 @@
   libxcb-wm,
   wayland,
   zlib,
+  # Qt5 WebEngine deps (bundled by the personal edition)
+  libxcomposite,
+  libxcursor,
+  libxdamage,
+  libxext,
+  libxfixes,
+  libxi,
+  libxrandr,
+  libxrender,
+  libxtst,
+  alsa-lib,
+  expat,
+  glib,
+  libkrb5,
+  nspr,
+  nss,
+  gcc-unwrapped,
 }: let
   requiredLibs = [
     libxml2
@@ -41,23 +59,51 @@
     libxcb-keysyms
     libxcb-render-util
     libxcb-wm
+    # Qt5 WebEngine deps
+    libxcomposite
+    libxcursor
+    libxdamage
+    libxext
+    libxfixes
+    libxi
+    libxrandr
+    libxrender
+    libxtst
+    alsa-lib
+    expat
+    glib
+    libkrb5
+    nspr
+    nss
+    gcc-unwrapped.lib
   ];
 
   libPath = lib.makeLibraryPath requiredLibs;
 in
   stdenv.mkDerivation rec {
     pname = "binaryninja";
-    version = "6";
-    nativeBuildInputs = [makeWrapper patchelf];
+    version = "dev-personal";
+    nativeBuildInputs = [makeWrapper patchelf unzip];
     buildInputs = requiredLibs;
 
-    src = fetchzip {
-      url = "https://cdn.binary.ninja/installers/binaryninja_free_linux.zip";
-      sha256 = "sha256-vdx4L/iAyO9zvwXctZ1LgDgY6rIJHkkghmGZOtfMlD0=";
+    # Free version:
+    # src = fetchzip {
+    #   url = "https://cdn.binary.ninja/installers/binaryninja_free_linux.zip";
+    #   sha256 = "sha256-vdx4L/iAyO9zvwXctZ1LgDgY6rIJHkkghmGZOtfMlD0=";
+    # };
+    src = requireFile {
+      name = "binaryninja_linux_dev_personal.zip";
+      url = "https://binary.ninja/";
+      sha256 = "e22f6372640fe9f571ad2613bd64417d229c458872c0076432c4b307631f8175";
     };
 
     dontPatchELF = true;
     allowBrokenSymlinks = true;
+
+    unpackPhase = ''
+      unzip -q "$src"
+      cd binaryninja
+    '';
 
     installPhase = ''
             mkdir -p $out/bin
@@ -112,9 +158,9 @@ in
     '';
 
     meta = with lib; {
-      description = "Binary Ninja free edition - reverse engineering platform";
+      description = "Binary Ninja personal edition - reverse engineering platform";
       homepage = "https://binary.ninja";
-      license = licenses.unfree; # free edition but not open source
+      license = licenses.unfree;
       platforms = platforms.linux;
     };
   }
