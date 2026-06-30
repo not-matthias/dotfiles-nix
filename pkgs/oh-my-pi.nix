@@ -9,10 +9,10 @@
 # refuses to start when the system Bun is older than its MIN_BUN_VERSION).
 stdenv.mkDerivation rec {
   pname = "oh-my-pi";
-  version = "16.2.5";
+  version = "16.2.9";
   src = fetchurl {
     url = "https://github.com/can1357/oh-my-pi/releases/download/v${version}/omp-linux-x64";
-    hash = "sha256-VBcgW9727OIi6/vWyqQuDvouNRdpKngApe2itHCEdg0=";
+    hash = "sha256-c0ALboG9s+2lbInKplNd0BHhaZ6Hspfxqpi1m1dyrfA=";
   };
 
   dontUnpack = true;
