@@ -44,7 +44,8 @@ in {
             "wireplumber.profiles" = {
               "bluetooth" = {
                 "inherits" = ["main"];
-                "bluetooth.autoswitch-to-headset-profile" = true;
+                # Keep playback profiles from being preempted by headset/duplex policy.
+                "bluetooth.autoswitch-to-headset-profile" = false;
                 "bluetooth.default-node-auto-switch" = true;
               };
             };
@@ -74,7 +75,7 @@ in {
                 ];
                 actions = {
                   "update-props" = {
-                    "bluez5.auto-connect" = ["hfp_hf" "hsp_hs" "a2dp_sink"];
+                    "bluez5.auto-connect" = ["a2dp_sink"];
                     "bluez5.hw-volume" = ["hfp_hf" "hsp_hs" "a2dp_sink"];
                   };
                 };
