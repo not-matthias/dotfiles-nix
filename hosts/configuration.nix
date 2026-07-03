@@ -90,6 +90,7 @@
       "electron-31.7.7"
       "electron-36.9.5"
       "electron-39.8.10"
+      "minio-2025-10-15T17-29-55Z"
     ];
   };
   nix = {
