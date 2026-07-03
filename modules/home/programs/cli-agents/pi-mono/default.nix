@@ -125,9 +125,9 @@ in {
         ".pi/agent/verbosity.json" = {
           source = ./verbosity.json;
         };
-        # ".pi/agent/models.json" = {
-        #   source = ./models.json;
-        # };
+        ".pi/agent/models.json" = {
+          source = ./models.json;
+        };
         ".pi/agent/themes/stylix-latte-red.json" = {
           source = ./themes/stylix-latte-red.json;
         };
