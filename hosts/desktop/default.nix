@@ -37,13 +37,13 @@
       # rust.enable = true;
       cli-agents = {
         agent-browser.enable = true;
-        claude.enable = true;
         codex.enable = true;
         amp.enable = true;
         pi-mono = {
-          enable = true;
+          enable = false;
           envFile = "/run/agenix/pi-mono-env";
         };
+        oh-my-pi.enable = true;
       };
       btop.enable = true;
       #alacritty.enable = true;
