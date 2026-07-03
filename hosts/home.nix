@@ -25,6 +25,7 @@
       hexyl
       fd
       delta
+      gh
       any-nix-shell
       duf
       wl-clipboard
