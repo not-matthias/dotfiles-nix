@@ -6,6 +6,7 @@
   ...
 }: let
   cfg = config.services.sure;
+  version = "0.7.2";
 
   # Hardcoded secrets for testing (TODO: migrate to agenix for production)
   secretsFile = pkgs.writeText "sure-secrets" ''
@@ -35,7 +36,7 @@ in {
 
     virtualisation.arion.projects.sure.settings.services = {
       web.service = {
-        image = "ghcr.io/we-promise/sure:0.7.0";
+        image = "ghcr.io/we-promise/sure:${version}";
         restart = "unless-stopped";
         volumes = [
           "/var/lib/sure/app:/rails/storage:rw"
@@ -65,7 +66,7 @@ in {
       };
 
       worker.service = {
-        image = "ghcr.io/we-promise/sure:0.6.8";
+        image = "ghcr.io/we-promise/sure:${version}";
         command = "bundle exec sidekiq";
         restart = "unless-stopped";
         volumes = [
