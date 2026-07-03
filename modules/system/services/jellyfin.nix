@@ -10,7 +10,7 @@ in {
     services.jellyfin = {
       # enable = true;
     };
-    services.jellyseerr = {
+    services.seerr = {
       enable = true;
       port = 5055;
     };
