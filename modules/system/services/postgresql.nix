@@ -1,11 +1,13 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 with lib; {
   config = mkIf config.services.postgresql.enable {
     services.postgresql = {
+      package = pkgs.postgresql_16;
       enableTCPIP = mkDefault true;
       settings = {
         listen_addresses = mkDefault "*";
