@@ -65,6 +65,27 @@ if [ -n "$sd_reset" ]; then
   [ -n "$sd_ts" ] && sd_eta=$(format_eta "$sd_ts")
 fi
 
+# Per-model 7-day scoped usage (sonnet/opus/cowork top-level; Fable from limits[])
+model_line() {
+  local label="$1" pct="$2" reset="$3" eta="--" ts
+  if [ -n "$reset" ]; then
+    ts=$(date -d "$reset" +%s 2>/dev/null)
+    [ -n "$ts" ] && eta=$(format_eta "$ts")
+  fi
+  printf '%-7s %3s%%  %s' "$label" "$pct" "$eta"
+}
+
+sonnet_pct=$(echo "$data" | jq -r '.seven_day_sonnet.utilization // 0 | round')
+sonnet_reset=$(echo "$data" | jq -r '.seven_day_sonnet.resets_at // empty')
+opus_pct=$(echo "$data" | jq -r '.seven_day_opus.utilization // 0 | round')
+opus_reset=$(echo "$data" | jq -r '.seven_day_opus.resets_at // empty')
+cowork_pct=$(echo "$data" | jq -r '.seven_day_cowork.utilization // 0 | round')
+cowork_reset=$(echo "$data" | jq -r '.seven_day_cowork.resets_at // empty')
+fable_pct=$(echo "$data" | jq -r '([.limits[]? | select(.scope.model.display_name == "Fable")][0] | .percent) // 0')
+fable_reset=$(echo "$data" | jq -r '([.limits[]? | select(.scope.model.display_name == "Fable")][0] | .resets_at) // empty')
+
+models_tooltip="\n\nModels (7d scoped)\n$(model_line "Sonnet:" "$sonnet_pct" "$sonnet_reset")\n$(model_line "Opus:" "$opus_pct" "$opus_reset")\n$(model_line "Cowork:" "$cowork_pct" "$cowork_reset")\n$(model_line "Fable:" "$fable_pct" "$fable_reset")"
+
 cls=$(css_class "$fh_pct")
 rl_note=""
 if [ "$rate_limited" -eq 1 ]; then
@@ -90,7 +111,7 @@ if [ -n "$twox_json" ]; then
   fi
 fi
 
-tooltip="Claude Code Usage\n━━━━━━━━━━━━━━━━━━━━━━━━\n5h:  ${fh_pct}%  ${fh_eta}\n7d:  ${sd_pct}%  ${sd_eta}${twox_note}${rl_note}"
+tooltip="Claude Code Usage\n━━━━━━━━━━━━━━━━━━━━━━━━\n5h:  ${fh_pct}%  ${fh_eta}\n7d:  ${sd_pct}%  ${sd_eta}${models_tooltip}${twox_note}${rl_note}"
 
 # At 100%: show reset timer instead of percentage (7d takes priority)
 bar_text="${fh_pct}%"
