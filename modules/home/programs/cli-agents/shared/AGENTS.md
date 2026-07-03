@@ -24,6 +24,7 @@
 
 ## Code Style
 
+- **NEVER** write comments!
 - **Minimize nesting:** Use early returns and inverted conditionals instead of deeply nested structures.
 - **Max nesting depth:** 2-3 levels deep. Avoid 4+ level nesting.
 - **Fail loudly:** Make it obvious when something goes wrong. Don't silently ignore errors or edge cases.
@@ -61,6 +62,7 @@
 
 ## Rules
 
+- ALWAYS fix the root cause of a bug rather than patching the symptoms. When in doubt, ask the user for more context.
 - When using Rust: Always reduce nesting. Use `let-else` and early returns rather than multiple nested `if let` statements
 - When using Python: Always use `uv`
 - When working with Github: Use the `gh` and `git` CLI rather than fetching it manually
