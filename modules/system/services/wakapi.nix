@@ -47,7 +47,10 @@ in {
       mode = "0400";
     };
 
-    services.restic.paths = ["/var/lib/wakapi"];
+    services.restic.paths = [
+      "/var/lib/wakapi"
+      "/var/lib/private/wakapi"
+    ];
 
     services.caddy.virtualHosts."wakapi.${domain}".extraConfig = ''
       encode zstd gzip
