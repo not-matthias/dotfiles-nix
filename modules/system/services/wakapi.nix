@@ -26,7 +26,10 @@ in {
           port = cfg.port;
           public_url = "https://wakapi.${domain}";
         };
-        db.dialect = "sqlite3";
+        db = {
+          dialect = "sqlite3";
+          automigrate_fail_silently = true;
+        };
         app = {
           aggregation_time = "0 15 2 * * *";
           report_time_weekly = "0 0 18 * * 5";
