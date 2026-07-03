@@ -17,13 +17,13 @@
   glibc,
 }: let
   pname = "paperclip";
-  version = "0.3.1";
+  version = "2026.626.0";
 
   src = fetchFromGitHub {
     owner = "paperclipai";
     repo = "paperclip";
     tag = "v${version}";
-    hash = "sha256-t0tvIoKx6L0QzRmU0L80mz87VECskpzuHR0eCUOj9XI=";
+    hash = "sha256-0NHPGXICWOGfK1mL1Lv2Pa7XPQEbGXWx8vvAHZkjnWo=";
   };
 
   pnpm = pnpm_9;
@@ -37,7 +37,7 @@ in
     pnpmDeps = pnpm.fetchDeps {
       inherit pname version src;
       fetcherVersion = 2;
-      hash = "sha256-O7znHAOnEy+h6OFnqQC+d22XFMheCeUbwHeoscmkLm4=";
+      hash = "sha256-0B6rpc7fiMY91ZGQoVcNgAkUUKzgUeBAfAoV4xwrgPU=";
     };
 
     nativeBuildInputs = [
@@ -59,28 +59,20 @@ in
       ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
     };
 
+    # Set before configurePhase because pnpmConfigHook runs install there.
+    preConfigure = ''
+      echo "shamefully-hoist=true" >> .npmrc
+    '';
+
     buildPhase = ''
       runHook preBuild
 
-      # pnpm strict mode doesn't hoist transitive deps (e.g. zod) to
-      # workspace packages that import them. Hoist everything so the
-      # CLI can resolve all deps at runtime.
-      echo "shamefully-hoist=true" >> .npmrc
-      pnpm install --frozen-lockfile
+      pnpm -r build
 
-      # Build all workspace packages
-      pnpm --filter @paperclipai/shared build
-      pnpm --filter @paperclipai/db build
-      pnpm --filter @paperclipai/adapter-utils build
-      pnpm --filter @paperclipai/adapter-claude-local build
-      pnpm --filter @paperclipai/adapter-codex-local build
-      pnpm --filter @paperclipai/adapter-cursor-local build
-      pnpm --filter @paperclipai/adapter-gemini-local build
-      pnpm --filter @paperclipai/adapter-opencode-local build
-      pnpm --filter @paperclipai/adapter-openclaw-gateway build
-      pnpm --filter @paperclipai/ui build
-      pnpm --filter @paperclipai/server build
-      pnpm --filter paperclipai build
+      # Workspace packages export src/ (TypeScript) in development;
+      # publishConfig switches to dist/ for npm. Apply it locally so
+      # Node resolves compiled output at runtime.
+      node -e 'const fs=require("fs"),{join}=require("path"),ex=p=>fs.existsSync(p);function patch(p){if(!ex(p))return;const j=JSON.parse(fs.readFileSync(p,"utf8"));const pub=j.publishConfig||{};let c=false;for(const k of["exports","main","types","module"]){if(pub[k]){j[k]=pub[k];c=true;}}if(c)fs.writeFileSync(p,JSON.stringify(j,null,2)+"\n");}for(const d of["packages","packages/adapters","packages/plugins"]){if(!ex(d))continue;for(const e of fs.readdirSync(d)){const p=join(d,e);if(fs.statSync(p).isDirectory())patch(join(p,"package.json"));}}patch("server/package.json");patch("cli/package.json");patch("package.json");'
 
       runHook postBuild
     '';
@@ -90,6 +82,17 @@ in
 
       mkdir -p $out/lib/paperclip
       cp -r . $out/lib/paperclip/
+
+      # embedded-postgres bundles native libs as libfoo.so.X.Y but
+      # creates libfoo.so.X symlinks at runtime; the store is read-only.
+      EP_LIB="$out/lib/paperclip/node_modules/.pnpm/embedded-postgres"*/node_modules/@embedded-postgres/linux-x64/native/lib
+      for libdir in $EP_LIB; do
+        for f in "$libdir"/lib*.so.*.*; do
+          base=$(basename "$f")
+          major=$(echo "$base" | sed 's/\(.*\.so\.[0-9]*\)\..*/\1/')
+          [ ! -e "$libdir/$major" ] && ln -s "$base" "$libdir/$major"
+        done
+      done
 
       mkdir -p $out/bin
       makeWrapper ${nodejs_22}/bin/node $out/bin/paperclipai \

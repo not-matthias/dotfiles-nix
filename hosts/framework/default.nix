@@ -36,6 +36,7 @@
       feishin
       gh
       linear-cli
+      paperclip
 
       protonmail-bridge-gui
       thunderbird
