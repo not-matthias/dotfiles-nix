@@ -634,12 +634,12 @@
         "rev": "976ae9dd7eacbe30e556df7cfc6ef2ecae278146",
         "revCount": 132,
         "type": "git",
-        "url": "ssh://git@github.com/heraeyes/platform"
+        "url": "https://github.com/heraeyes/platform"
       },
       "original": {
         "ref": "main",
         "type": "git",
-        "url": "ssh://git@github.com/heraeyes/platform"
+        "url": "https://github.com/heraeyes/platform"
       }
     },
     "home-manager": {

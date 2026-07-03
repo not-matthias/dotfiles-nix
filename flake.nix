@@ -65,7 +65,7 @@
     };
 
     hera = {
-      url = "git+ssh://git@github.com/heraeyes/platform?ref=main";
+      url = "git+https://github.com/heraeyes/platform?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
