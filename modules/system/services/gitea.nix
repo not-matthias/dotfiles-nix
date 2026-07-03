@@ -23,7 +23,9 @@ in {
       };
       dump = {
         enable = true;
-        interval = "daily";
+        interval = "weekly";
+        backupDir = "/var/backup/gitea";
+        type = "tar.zst";
       };
     };
 
@@ -32,6 +34,6 @@ in {
       reverse_proxy http://127.0.0.1:11430
     '';
 
-    services.restic.paths = ["/var/lib/gitea"];
+    services.restic.paths = [ "/var/lib/gitea" ];
   };
 }
