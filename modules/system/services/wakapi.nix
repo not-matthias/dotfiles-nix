@@ -16,7 +16,9 @@ in {
 
   config = lib.mkIf cfg.enable {
     services.wakapi = {
-      passwordSaltFile = config.age.secrets.wakapi-salt.path;
+      environmentFiles = [
+        config.age.secrets.wakapi-salt.path
+      ];
       settings = {
         server = {
           listen_ipv4 = "127.0.0.1";
