@@ -27,12 +27,14 @@ in {
 
     fileSystems."/var/lib/audiobookshelf/audiobooks" = {
       device = cfg.audiobookFolder;
-      options = ["bind" "perms=444"];
+      fsType = "none";
+      options = ["bind" "ro"];
     };
 
     fileSystems."/var/lib/audiobookshelf/podcasts" = {
       device = cfg.podcastFolder;
-      options = ["bind" "perms=444"];
+      fsType = "none";
+      options = ["bind" "ro"];
     };
 
     systemd.tmpfiles.rules = [
