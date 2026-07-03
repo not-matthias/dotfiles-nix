@@ -25,10 +25,6 @@ in {
         if cfg.useNvidia
         then unstable.ollama-cuda
         else unstable.ollama;
-      acceleration =
-        if cfg.useNvidia
-        then "cuda"
-        else null;
       host = "0.0.0.0";
     };
   };
