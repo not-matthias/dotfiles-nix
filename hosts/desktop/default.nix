@@ -13,6 +13,8 @@
   # };
   stylix.enable = true;
 
+  boot.kernelModules = ["ntfs3"];
+
   home-manager.users.${user} = {
     home.stateVersion = "25.05";
     #   home.packages = with pkgs; [
