@@ -82,6 +82,7 @@
           enable = true;
           envFile = "/run/agenix/pi-mono-env";
           disabledProviders = ["claude"];
+          discoverNestedSkills = true;
         };
       };
       btop.enable = true;

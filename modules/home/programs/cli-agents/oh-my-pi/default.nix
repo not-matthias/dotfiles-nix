@@ -19,6 +19,16 @@ with lib; let
         --run '[ -f "${cfg.envFile}" ] && set -a && . "${cfg.envFile}" && set +a; true'
     '';
   };
+
+  # omp's skill scanners (provider-based and `skills.customDirectories`) are
+  # one-level non-recursive: only `<root>/<name>/SKILL.md` is discovered. The
+  # skills shared with Claude/Codex/Amp live nested one level deeper, at
+  # `~/.claude/skills/<group>/<name>/SKILL.md` (e.g. `workflows/caveman`), so
+  # they're invisible to omp unless each group directory is registered as its
+  # own scan root. Derive the group list from the shared skills tree so it
+  # never drifts from what's actually on disk.
+  sharedSkillGroups = attrNames (filterAttrs (name: type: type == "directory" && !pathExists (../shared/skills + "/${name}/SKILL.md")) (builtins.readDir ../shared/skills));
+  sharedSkillDirectories = map (group: "${config.home.homeDirectory}/.claude/skills/${group}") sharedSkillGroups;
 in {
   options.programs.cli-agents.oh-my-pi = {
     enable = mkEnableOption "oh-my-pi (omp) CLI agent";
@@ -34,9 +44,13 @@ in {
       description = ''
         Authoritative value for omp's `disabledProviders` setting. Covers both
         discovery sources (`claude`, `codex`, `gemini`, `native`, ...) and model
-        backends (`anthropic`, `openai`, ...). Disabling the `claude` discovery
-        source stops omp from loading CLAUDE.md plus any Claude-supplied MCP
-        servers, commands, skills, hooks, and settings.
+        backends (`anthropic`, `openai`, ...). Per the module doc this is meant
+        to also cut off Claude-supplied skills, but that's unverified/possibly
+        stale: on a host with `disabledProviders = ["claude"]` set, flat
+        `~/.claude/skills/<name>/SKILL.md` skills still loaded in practice
+        (confirmed by content, not just presence). Treat the skills claim in
+        this setting's effect with suspicion until re-verified against a
+        current omp build.
 
         omp stores this in its mutable `~/.omp/agent/config.yml`, so it cannot be
         a read-only symlink. We persist it via `omp config set` on activation
@@ -44,15 +58,47 @@ in {
         `disabledProviders` set at runtime (e.g. via `/settings`) on each rebuild.
       '';
     };
+    discoverNestedSkills = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        Register every subdirectory of the shared skills tree
+        (`modules/home/programs/cli-agents/shared/skills/<group>/`) as its own
+        `skills.customDirectories` scan root in omp.
+
+        omp's skill discovery only finds `<root>/<name>/SKILL.md` (one level,
+        non-recursive). Skills shared with Claude/Codex/Amp live at
+        `~/.claude/skills/<group>/<name>/SKILL.md` (e.g. `workflows/caveman`),
+        so without this every nested skill is silently invisible to omp even
+        though flat ones (`~/.claude/skills/<name>/SKILL.md`) load fine.
+
+        Requires `programs.cli-agents.claude.enable` (the source of
+        `~/.claude/skills`); this is asserted at eval time.
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = !cfg.discoverNestedSkills || config.programs.cli-agents.claude.enable;
+        message = "programs.cli-agents.oh-my-pi.discoverNestedSkills requires programs.cli-agents.claude.enable (the source of ~/.claude/skills)";
+      }
+    ];
+
     home.packages = [wrappedOmp];
 
     home.activation.ohMyPiDisabledProviders = mkIf (cfg.disabledProviders != []) (
       hm.dag.entryAfter ["writeBoundary"] ''
         $DRY_RUN_CMD mkdir -p "$HOME/.omp/agent"
         $DRY_RUN_CMD ${pkgs.oh-my-pi}/bin/omp config set disabledProviders '${builtins.toJSON cfg.disabledProviders}'
+      ''
+    );
+
+    home.activation.ohMyPiSkillDirectories = mkIf cfg.discoverNestedSkills (
+      hm.dag.entryAfter ["writeBoundary"] ''
+        $DRY_RUN_CMD mkdir -p "$HOME/.omp/agent"
+        $DRY_RUN_CMD ${pkgs.oh-my-pi}/bin/omp config set skills.customDirectories '${builtins.toJSON sharedSkillDirectories}'
       ''
     );
   };
