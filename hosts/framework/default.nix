@@ -37,6 +37,7 @@
       gh
       linear-cli
       paperclip
+      shortcut-history
 
       protonmail-bridge-gui
       thunderbird

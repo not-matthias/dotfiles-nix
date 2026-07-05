@@ -1,4 +1,5 @@
 result
+target/
 .idea/
 .devenv*
 devenv.local.nix

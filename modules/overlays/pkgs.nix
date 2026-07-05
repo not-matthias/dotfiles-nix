@@ -66,6 +66,9 @@
     (_self: super: {
       handy = super.callPackage ../../pkgs/handy.nix {};
     })
+    (_self: super: {
+      shortcut-history = super.callPackage ../../pkgs/shortcut-history {};
+    })
     (import ../../pkgs/ida-pro)
   ];
 }
