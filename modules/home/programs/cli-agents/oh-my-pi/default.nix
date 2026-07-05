@@ -58,6 +58,27 @@ in {
         `disabledProviders` set at runtime (e.g. via `/settings`) on each rebuild.
       '';
     };
+    theme = {
+      dark = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        example = "dark-aurora";
+        description = ''
+          Theme used when omp detects a dark terminal background. If unset,
+          omp keeps its existing mutable config value.
+        '';
+      };
+      light = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        example = "light";
+        description = ''
+          Theme used when omp detects a light terminal background. If unset,
+          omp keeps its existing mutable config value.
+        '';
+      };
+    };
+
     discoverNestedSkills = mkOption {
       type = types.bool;
       default = false;
@@ -92,6 +113,17 @@ in {
       hm.dag.entryAfter ["writeBoundary"] ''
         $DRY_RUN_CMD mkdir -p "$HOME/.omp/agent"
         $DRY_RUN_CMD ${pkgs.oh-my-pi}/bin/omp config set disabledProviders '${builtins.toJSON cfg.disabledProviders}'
+      ''
+    );
+
+    home.activation.ohMyPiTheme = mkIf (cfg.theme.dark != null || cfg.theme.light != null) (
+      hm.dag.entryAfter ["writeBoundary"] ''
+        $DRY_RUN_CMD mkdir -p "$HOME/.omp/agent"
+        ${optionalString (cfg.theme.dark != null) ''
+          $DRY_RUN_CMD ${pkgs.oh-my-pi}/bin/omp config set theme.dark ${escapeShellArg cfg.theme.dark}
+        ''}${optionalString (cfg.theme.light != null) ''
+          $DRY_RUN_CMD ${pkgs.oh-my-pi}/bin/omp config set theme.light ${escapeShellArg cfg.theme.light}
+        ''}
       ''
     );
 

@@ -97,6 +97,10 @@
           enable = true;
           envFile = "/run/agenix/pi-mono-env";
           disabledProviders = ["claude"];
+          theme = {
+            dark = "light";
+            light = "light";
+          };
           discoverNestedSkills = true;
         };
       };
