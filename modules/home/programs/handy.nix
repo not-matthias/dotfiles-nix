@@ -22,10 +22,6 @@
           action.spawn = ["handy" "--toggle-transcription"];
           repeat = false;
         };
-        binds."Super+Shift+H" = {
-          action.spawn = ["handy" "--toggle-post-process"];
-          repeat = false;
-        };
 
         spawn-at-startup = [
           {command = ["uwsm" "app" "--" "handy"];}
