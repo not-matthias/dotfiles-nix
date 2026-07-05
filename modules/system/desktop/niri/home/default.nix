@@ -110,6 +110,9 @@ in {
               active.color = "#ef5350";
               inactive.color = "#595959";
             };
+
+            tab-indicator.position = "right";
+            tab-indicator.place-within-column = true;
           };
           animations = {
             enable = true;

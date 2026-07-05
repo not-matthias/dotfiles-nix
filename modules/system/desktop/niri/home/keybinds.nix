@@ -32,6 +32,9 @@ in {
 
     # Tabbed column functionality
     "${mod}+T".action.toggle-column-tabbed-display = [];
+    "${mod}+Ctrl+J".action.focus-window-up = [];
+    "${mod}+Ctrl+K".action.focus-window-down = [];
+    "${mod}+Ctrl+W".action.consume-window-into-column = [];
 
     # Column navigation with HL keys
     "${mod}+H".action.focus-column-left = [];
