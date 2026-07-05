@@ -341,6 +341,28 @@
               }
             ];
           };
+          deaf = {
+            fanSpeedUpdateFrequency = 2;
+            movingAverageInterval = 5;
+            speedCurve = [
+              {
+                temp = 0;
+                speed = 20;
+              }
+              {
+                temp = 40;
+                speed = 30;
+              }
+              {
+                temp = 50;
+                speed = 50;
+              }
+              {
+                temp = 60;
+                speed = 100;
+              }
+            ];
+          };
         };
       };
     };
