@@ -181,6 +181,7 @@ in {
               ++ [
                 "custom/claude-usage"
                 "custom/codex-usage"
+                "custom/umans-usage"
               ];
           };
 

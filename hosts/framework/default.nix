@@ -36,6 +36,7 @@
       feishin
       gh
       linear-cli
+      umans
       paperclip
       shortcut-history
 

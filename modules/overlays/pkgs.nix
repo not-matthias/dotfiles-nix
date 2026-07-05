@@ -64,6 +64,9 @@
       oh-my-pi = super.callPackage ../../pkgs/oh-my-pi.nix {};
     })
     (_self: super: {
+      umans = super.callPackage ../../pkgs/umans.nix {};
+    })
+    (_self: super: {
       handy = super.callPackage ../../pkgs/handy.nix {};
     })
     (_self: super: {
