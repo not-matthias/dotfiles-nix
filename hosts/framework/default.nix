@@ -119,7 +119,7 @@
       };
       screenshot-journal.enable = false;
 
-      gitui.enable = true;
+      gitui.enable = false;
       firefox.enable = false;
       zen-browser.enable = true;
 

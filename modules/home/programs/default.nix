@@ -26,6 +26,7 @@
   ./idea-copilot.nix
   ./ghidra.nix
   ./kitty.nix
+  ./lazygit.nix
   ./minecraft.nix
   ./neovim.nix
   ./niri-organize.nix
