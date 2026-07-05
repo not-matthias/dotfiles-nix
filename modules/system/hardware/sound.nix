@@ -26,7 +26,10 @@ in {
       wireplumber = {
         enable = true;
         extraConfig = {
-          "10-auto-switch" = {
+          "10-bluetooth" = {
+            "wireplumber.settings" = {
+              "bluetooth.autoswitch-to-headset-profile" = false;
+            };
             "monitor.bluez.rules" = [
               {
                 matches = [
@@ -35,19 +38,16 @@ in {
                 actions = {
                   "update-props" = {
                     "device.profile.switch-on-connect" = true;
+                    "bluez5.auto-connect" = ["a2dp_sink"];
+                    "bluez5.hw-volume" = ["hfp_hf" "a2dp_sink"];
                   };
                 };
               }
             ];
-          };
-          "11-bluetooth-policy" = {
-            "wireplumber.profiles" = {
-              "bluetooth" = {
-                "inherits" = ["main"];
-                # Keep playback profiles from being preempted by headset/duplex policy.
-                "bluetooth.autoswitch-to-headset-profile" = false;
-                "bluetooth.default-node-auto-switch" = true;
-              };
+            "monitor.bluez.properties" = {
+              "bluez5.enable-sbc-xq" = true;
+              "bluez5.enable-hw-volume" = true;
+              "bluez5.roles" = ["a2dp_sink" "hfp_ag" "hfp_hf" "bap_sink" "bap_source"];
             };
           };
           # Use software mixer instead of hardware mixer for ALSA outputs.
@@ -66,25 +66,6 @@ in {
                 };
               }
             ];
-          };
-          "13-bluetooth-volume" = {
-            "monitor.bluez.rules" = [
-              {
-                matches = [
-                  {"device.name" = "~bluez_card.*";}
-                ];
-                actions = {
-                  "update-props" = {
-                    "bluez5.auto-connect" = ["a2dp_sink"];
-                    "bluez5.hw-volume" = ["hfp_hf" "hsp_hs" "a2dp_sink"];
-                  };
-                };
-              }
-            ];
-            "monitor.bluez.properties" = {
-              "bluez5.enable-sbc-xq" = true;
-              "bluez5.enable-hw-volume" = true;
-            };
           };
         };
       };

@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }: let
   cfg = config.hardware.bluetooth;
@@ -9,6 +10,20 @@ in {
     services.blueman.enable = true;
 
     hardware.bluetooth = {
+      package =
+        if pkgs.bluez.version == "5.86"
+        then
+          pkgs.bluez.overrideAttrs (old: {
+            patches =
+              (old.patches or [])
+              ++ [
+                (pkgs.fetchpatch {
+                  url = "https://github.com/bluez/bluez/commit/066a164a524e4983b850f5659b921cb42f84a0e0.patch";
+                  hash = "sha256-iitdib8VxPWaBUXrxAJ4/YHdBUDMGiDDSEBK+c4aPoE=";
+                })
+              ];
+          })
+        else pkgs.bluez;
       settings = {
         General = {
           # When enabled other devices can connect faster to us, however
