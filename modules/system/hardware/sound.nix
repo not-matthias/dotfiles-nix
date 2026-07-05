@@ -47,7 +47,7 @@ in {
             "monitor.bluez.properties" = {
               "bluez5.enable-sbc-xq" = true;
               "bluez5.enable-hw-volume" = true;
-              "bluez5.roles" = ["a2dp_sink" "hfp_ag" "hfp_hf" "bap_sink" "bap_source"];
+              "bluez5.roles" = ["a2dp_sink" "a2dp_source" "hfp_ag" "hfp_hf" "bap_sink" "bap_source"];
             };
           };
           # Use software mixer instead of hardware mixer for ALSA outputs.
