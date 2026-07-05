@@ -1,6 +1,6 @@
 # References:
 # https://github.com/azuwis/nix-config/blob/885e77f74bd730f37d715c6a7ed1a9269a619f7d/common/neovim/nvchad.nix
-{
+{ pkgs, ... }: {
   # https://github.com/tars0x9752/home/blob/main/modules/neovim/default.nix
   # https://github.com/notusknot/dotfiles-nix/blob/main/modules/nvim/default.nix
   programs.nixvim = {
@@ -260,7 +260,7 @@
       {
         mode = "n";
         key = "<C-p>";
-        action = "<cmd>Telescope find_files<cr>";
+        action = "<cmd>lua Snacks.picker.files()<cr>";
         options = {
           silent = true;
           desc = "Open file";
@@ -269,7 +269,7 @@
       {
         mode = "n";
         key = "<C-S-f>";
-        action = "<cmd>Telescope live_grep<cr>";
+        action = "<cmd>lua Snacks.picker.grep()<cr>";
         options = {
           silent = true;
           desc = "Find in files";
@@ -411,6 +411,14 @@
       }
       {
         mode = "n";
+        key = "<space>gl";
+        action = "<cmd>LazyGit<cr>";
+        options = {
+          desc = "LazyGit";
+        };
+      }
+      {
+        mode = "n";
         key = "<space>u";
         action = "<cmd>UndotreeToggle<cr>";
         options = {
@@ -427,6 +435,16 @@
       }
     ];
     luaLoader.enable = true;
+    extraConfigLua = ''
+      vim.api.nvim_create_autocmd("VimEnter", {
+        callback = function()
+          require("nvim-tree.api").tree.toggle({ focus = false, find_file = true })
+        end,
+      })
+      vim.cmd([[
+        cnoreabbrev <expr> q getcmdtype() ==# ':' && getcmdline() ==# 'q' ? 'qa' : 'q'
+      ]])
+    '';
     plugins = {
       # Old stuff:
       # Yazi
@@ -481,13 +499,13 @@
                   icon = " ";
                   key = "f";
                   desc = "Find File";
-                  action = ":Telescope find_files";
+                  action = ":lua Snacks.picker.files()";
                 }
                 {
                   icon = " ";
                   key = "g";
                   desc = "Find Text";
-                  action = ":Telescope live_grep";
+                  action = ":lua Snacks.picker.grep()";
                 }
                 {
                   icon = " ";
@@ -541,6 +559,7 @@
               {section = "startup";}
             ];
           };
+          picker = {};
         };
       };
       undotree.enable = true;
@@ -660,9 +679,6 @@
 
       nvim-tree = {
         enable = true;
-        filters = {
-        };
-        autoClose = true;
         settings = {
           disable_netrw = true;
           hijack_netrw = false;
@@ -674,6 +690,7 @@
             ignore = false;
           };
           modified.enable = true;
+          update_focused_file.enable = true;
           view = {
             side = "left";
             centralize_selection = false;
@@ -841,5 +858,7 @@
         enable = true;
       };
     };
+    extraPlugins = [pkgs.vimPlugins.lazygit-nvim];
+    extraPackages = [pkgs.lazygit];
   };
 }
