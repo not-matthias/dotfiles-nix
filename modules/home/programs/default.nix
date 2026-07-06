@@ -18,6 +18,7 @@
   ./firefox.nix
   ./ghostty.nix
   ./zen-browser.nix
+  ./chromium.nix
   ./git.nix
   ./gitui.nix
   ./handy.nix

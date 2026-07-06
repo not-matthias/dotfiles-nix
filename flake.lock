@@ -180,6 +180,26 @@
         "type": "github"
       }
     },
+    "custom-packages": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1783305554,
+        "narHash": "sha256-pTW5j5vkbhLDurp7criFvc+z/0RUpMwu74BpSe33dHc=",
+        "owner": "Rishabh5321",
+        "repo": "custom-packages-flake",
+        "rev": "63cd4cbe422a2198cb90fb27c83964b1fc0f6509",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rishabh5321",
+        "repo": "custom-packages-flake",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -1122,6 +1142,7 @@
         "agenix": "agenix",
         "arion": "arion",
         "auto-cpufreq": "auto-cpufreq",
+        "custom-packages": "custom-packages",
         "determinate": "determinate",
         "devenv": "devenv",
         "fenix": "fenix",

@@ -128,6 +128,7 @@
       gitui.enable = false;
       firefox.enable = false;
       zen-browser.enable = true;
+      chromium.enable = true;
 
       solidtime-desktop.enable = true;
       discord = {
