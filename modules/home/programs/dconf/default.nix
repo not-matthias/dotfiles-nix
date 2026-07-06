@@ -1,10 +1,10 @@
-{pkgs, ...}: {
+{unstable, ...}: {
   imports = import ./extensions;
 
   dconf.settings = {
     "org/gnome/desktop/applications/terminal" = {
-      exec = "${pkgs.alacritty}/bin/alacritty";
-      exec-arg = "-x";
+      exec = "${unstable.ghostty}/bin/ghostty";
+      exec-arg = "-e";
     };
 
     # https://askubuntu.com/questions/1272710/how-do-i-enable-tap-to-click-on-my-ubuntu-20-04
@@ -22,7 +22,7 @@
       ];
       favorite-apps = [
         "firefox.desktop"
-        "Alacritty.desktop"
+        "com.mitchellh.ghostty.desktop"
       ];
     };
 
@@ -39,7 +39,7 @@
     };
     "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
       binding = "<Primary><Alt>t";
-      command = "alacritty";
+      command = "ghostty +new-window";
       name = "open-terminal";
     };
 

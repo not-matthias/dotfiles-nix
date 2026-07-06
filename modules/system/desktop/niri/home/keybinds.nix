@@ -17,7 +17,7 @@ let
 in {
   programs.niri.settings.binds = {
     # Basic application binds
-    "${mod}+Q".action.spawn = ["alacritty"];
+    "${mod}+Q".action.spawn = ["ghostty" "+new-window"];
     "${mod}+C".action.close-window = [];
     "${mod}+M".action.quit = [];
     "${mod}+E".action.spawn = ["nemo"];

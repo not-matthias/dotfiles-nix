@@ -66,7 +66,7 @@
 
   environment = {
     variables = {
-      TERMINAL = "alacritty";
+      TERMINAL = "ghostty";
       BROWSER = "firefox";
       EDITOR = "nvim";
       VISUAL = "nvim";
