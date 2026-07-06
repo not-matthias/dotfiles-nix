@@ -15,9 +15,6 @@
 
   sysctlBin = "${pkgs.procps}/bin/sysctl";
 
-  # Detect current power state and apply the matching sysctl profile.
-  # Switches between performance (AC) and powersave (battery) values.
-  #
   # dirty_ratio            - % of RAM allowed dirty before processes block on writes
   # dirty_background_ratio - % of RAM allowed dirty before background flushing starts
   # dirty_writeback_centisecs - how often the kernel flusher wakes up (in 1/100s)
@@ -33,43 +30,20 @@
   # - https://wiki.archlinux.org/title/Power_management#Writeback_Time
   # - https://www.kernel.org/doc/Documentation/laptops/laptop-mode.txt
   powerSysctlScript = pkgs.writeShellScript "power-sysctl" ''
-    ac_online=$(cat /sys/class/power_supply/AC*/online 2>/dev/null || echo "1")
-
-    if [ "$ac_online" = "1" ]; then
-      # Performance profile (AC)
-      ${sysctlBin} vm.dirty_ratio=10
-      ${sysctlBin} vm.dirty_background_ratio=5
-      ${sysctlBin} vm.dirty_writeback_centisecs=500
-      ${sysctlBin} vm.dirty_expire_centisecs=1500
-      ${sysctlBin} vm.laptop_mode=0
-      ${sysctlBin} vm.swappiness=10
-      ${sysctlBin} vm.overcommit_memory=0
-      ${sysctlBin} vm.vfs_cache_pressure=50
-    else
-      # Powersave profile (battery)
-      ${sysctlBin} vm.dirty_ratio=3
-      ${sysctlBin} vm.dirty_background_ratio=1
-      ${sysctlBin} vm.dirty_writeback_centisecs=1500
-      ${sysctlBin} vm.dirty_expire_centisecs=3000
-      ${sysctlBin} vm.laptop_mode=5
-      ${sysctlBin} vm.swappiness=1
-      ${sysctlBin} vm.overcommit_memory=1
-      ${sysctlBin} vm.overcommit_ratio=50
-      ${sysctlBin} vm.vfs_cache_pressure=100
-    fi
+    ${sysctlBin} vm.dirty_ratio=10
+    ${sysctlBin} vm.dirty_background_ratio=5
+    ${sysctlBin} vm.dirty_writeback_centisecs=500
+    ${sysctlBin} vm.dirty_expire_centisecs=1500
+    ${sysctlBin} vm.laptop_mode=0
+    ${sysctlBin} vm.swappiness=10
+    ${sysctlBin} vm.overcommit_memory=0
+    ${sysctlBin} vm.vfs_cache_pressure=50
   '';
 
-  # PPD has no built-in AC/battery switching without a desktop environment driving
-  # it, so pick the profile from the power-source state on plug/unplug and at boot.
   ppdSwitch = pkgs.writeShellScript "ppd-ac-switch" ''
-    ac_online=$(cat /sys/class/power_supply/AC*/online 2>/dev/null | head -1 || echo "1")
     ppdctl="${pkgs.power-profiles-daemon}/bin/powerprofilesctl"
-
-    if [ "$ac_online" = "1" ]; then
-      "$ppdctl" set performance || "$ppdctl" set balanced
-    else
-      "$ppdctl" set power-saver
-    fi
+    "$ppdctl" configure-battery-aware --disable
+    "$ppdctl" set performance || "$ppdctl" set balanced
   '';
 in {
   options.hardware.powersave = {
@@ -108,10 +82,8 @@ in {
       tlp.enable = lib.mkForce false;
     };
 
-    # Drive PPD from the AC/battery state. Event-driven (udev + boot), so unlike
-    # auto-cpufreq there is no polling loop that can silently die and freeze the profile.
     systemd.services.ppd-ac-switch = {
-      description = "Select power profile based on AC/battery state";
+      description = "Select performance power profile";
       wantedBy = ["multi-user.target"];
       after = ["power-profiles-daemon.service"];
       wants = ["power-profiles-daemon.service"];
