@@ -14,7 +14,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "thunderbolt" "usbhid" "usb_storage" "sd_mod"];
 
   # Fixes AMD gpu crashes/timeouts which seems to be a known issue
@@ -30,14 +30,14 @@
   # [56699.794761] amdgpu 0000:c1:00.0: [drm] *ERROR* [CRTC:80:crtc-0] commit wait timed out
   # [56710.034725] amdgpu 0000:c1:00.0: [drm] *ERROR* flip_done timed out
   # [56710.034732] amdgpu 0000:c1:00.0: [drm] *ERROR* [PLANE:59:plane-3] commit wait timed out
-  boot.kernelParams = [
-    "amdgpu.dcdebugmask=0x10"
-    "btusb.enable_autosuspend=0"
-
-    # USB HID polling rate: 1ms = 1000Hz (lower input latency)
-    "usbhid.mousepoll=1"
-    "usbhid.kbpoll=1"
-  ];
+  # boot.kernelParams = [
+  #   "amdgpu.dcdebugmask=0x10"
+  #   "btusb.enable_autosuspend=0"
+  #
+  #   # USB HID polling rate: 1ms = 1000Hz (lower input latency)
+  #   "usbhid.mousepoll=1"
+  #   "usbhid.kbpoll=1"
+  # ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e33d79b0-4de1-47d3-a3fe-ab53c3f7f390";
