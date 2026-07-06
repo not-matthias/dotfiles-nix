@@ -111,7 +111,7 @@ in {
               inactive.color = "#595959";
             };
 
-            tab-indicator.position = "right";
+            tab-indicator.position = "top";
             tab-indicator.place-within-column = true;
           };
           animations = {
