@@ -15,14 +15,12 @@
     bitwarden
     ublock-origin
     vimium
-    firefox-translations
     refined-github
     leechblock-ng
     sponsorblock
     istilldontcareaboutcookies
     libredirect
     # control-panel-for-twitter
-    darkreader
     inkah
     old-reddit-redirect
     pwas-for-firefox
@@ -120,17 +118,11 @@ in {
 
         # Prevent media cache from being written to disk in private browsing
         "browser.privatebrowsing.forceMediaMemoryCache" = true;
-        "media.memory_cache_max_size" = 65536;
       };
 
       # [SECTION] CACHE AND STORAGE
       cacheSettings = {
-        "browser.cache.disk.enable" = false;
-        "browser.cache.disk.capacity" = 0;
-
         "browser.cache.memory.enable" = true;
-        "browser.cache.memory.capacity" = 1048576; # 1GB RAM cache
-        "browser.cache.memory.max_entry_size" = 65536; # 64MB max per entry
         "browser.helperApps.deleteTempFileOnExit" = true;
       };
 
@@ -209,6 +201,7 @@ in {
         "sidebar.animation.enabled" = false;
         "zen.startup.smooth-scroll-in-tabs" = false;
         "toolkit.scrollbox.smoothScroll" = false;
+        "widget.gtk.rounded-bottom-corners.enabled" = false;
       };
 
       # [SECTION] PERFORMANCE OPTIMIZATIONS
@@ -217,9 +210,6 @@ in {
 
         # Hardware acceleration
         "media.ffmpeg.vaapi.enabled" = true;
-        "widget.dmabuf.force-enabled" = true;
-        "gfx.webrender.all" = true;
-        "layers.acceleration.force-enabled" = true;
 
         # Graphics and rendering optimizations
         "gfx.canvas.accelerated" = true;
