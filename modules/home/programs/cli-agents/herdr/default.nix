@@ -3,13 +3,51 @@
   hm,
   lib,
   pkgs,
-  unstable,
   ...
 }:
 with lib; let
   cfg = config.programs.cli-agents.herdr;
   tomlFormat = pkgs.formats.toml {};
   configFile = tomlFormat.generate "herdr-config.toml" cfg.settings;
+  herdr = let
+    version = "preview-2026-07-06-4dae557eefd9";
+    assets = {
+      x86_64-linux = {
+        name = "herdr-linux-x86_64";
+        hash = "sha256-ic3LcwOyRh7VNlnB4nyrxA6xxNf0AUvA00IMeITL37A=";
+      };
+      aarch64-linux = {
+        name = "herdr-linux-aarch64";
+        hash = "sha256-ENwoC13x+InVKZhvv70sFbatUQRBOtX56iezUzISMKI=";
+      };
+    };
+    asset =
+      assets.${pkgs.stdenv.hostPlatform.system}
+      or (throw "Herdr preview ${version} is not available for ${pkgs.stdenv.hostPlatform.system}");
+  in
+    pkgs.stdenvNoCC.mkDerivation {
+      pname = "herdr";
+      inherit version;
+
+      src = pkgs.fetchurl {
+        url = "https://github.com/ogulcancelik/herdr/releases/download/${version}/${asset.name}";
+        inherit (asset) hash;
+      };
+
+      dontUnpack = true;
+
+      installPhase = ''
+        install -Dm755 $src $out/bin/herdr
+      '';
+
+      meta = {
+        description = "Terminal agent multiplexer";
+        homepage = "https://github.com/ogulcancelik/herdr";
+        license = licenses.agpl3Plus;
+        mainProgram = "herdr";
+        platforms = attrNames assets;
+      };
+    };
   package = cfg.package;
   linkPlugin = plugin: let
     enabledFlag = optionalString (!plugin.enable) " --disabled";
@@ -22,8 +60,8 @@ in {
 
     package = mkOption {
       type = types.package;
-      default = unstable.herdr;
-      defaultText = literalExpression "unstable.herdr";
+      default = herdr;
+      defaultText = literalExpression "herdr";
       description = "Herdr package to install and use for plugin activation.";
     };
 
