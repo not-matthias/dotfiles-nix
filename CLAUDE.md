@@ -248,8 +248,9 @@ The `nixosBox` function is the core abstraction that creates consistent NixOS co
 ## Key Technologies and Stack
 
 ### Desktop Environment
-- **Primary**: Hyprland with Waybar status bar, Walker launcher
-- **Alternatives**: Sway, GNOME (with extensions), Niri (scrollable-tiling compositor)
+- **Primary**: Niri with Waybar status bar and Vicinae launcher
+- **Alternatives**: GNOME (with extensions)
+- **Legacy desktop configs**: Hyprland and Sway remain in the repo for reference only. Do not edit them for terminal switches; update active/default paths such as Niri, GNOME dconf, and environment variables instead.
 - **Wayland stack**: SwayLock, Swww wallpapers, Dunst notifications
 
 #### Niri Documentation
