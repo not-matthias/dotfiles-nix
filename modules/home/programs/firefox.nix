@@ -365,7 +365,7 @@ in {
         "services.sync.prefs.sync-seen.services.sync.prefs.sync.browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
         "services.sync.prefs.sync.browser.newtabpage.activity-stream.feeds.section.topstories" = false;
       };
-      extensions = with addons; [
+      extensions.packages = with addons; [
         bitwarden
         vimium
         firefox-translations
