@@ -59,6 +59,10 @@ in {
       # rust/cargo
       "cipf" = "cargo install --path . --locked -f";
     };
+    shellAliases = {
+      # Remote hosts may not know Ghostty's xterm-ghostty terminfo yet.
+      ssh = "env TERM=xterm-256color ssh";
+    };
     interactiveShellInit =
       ''
         eval (${pkgs.direnv}/bin/direnv hook fish)
