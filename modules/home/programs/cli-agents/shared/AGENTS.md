@@ -20,7 +20,6 @@
       // ...20 more lines...
   }
   ```
-- Use skill://caveman with `intensity: full` for all explanations unless the user explicitly asks for a different intensity level.
 
 ## Code Style
 

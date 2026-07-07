@@ -108,6 +108,10 @@ in {
     ];
 
     home.packages = [wrappedOmp];
+    home.file.".omp/agent/extensions/caveman" = {
+      source = ./extensions/caveman;
+      recursive = true;
+    };
 
     home.activation.ohMyPiDisabledProviders = mkIf (cfg.disabledProviders != []) (
       hm.dag.entryAfter ["writeBoundary"] ''
