@@ -152,7 +152,6 @@ in {
           withOpenASAR = true;
         };
       };
-      ultra-power-saver.enable = false;
     };
 
     services = {

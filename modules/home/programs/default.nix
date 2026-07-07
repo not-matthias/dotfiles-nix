@@ -47,7 +47,6 @@
   ./solidtime-desktop.nix
   ./spicetify.nix
   ./ssh.nix
-  ./ultra-power-saver
   ./vscode
   ./zed-editor
   ./package-security.nix
