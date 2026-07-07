@@ -10,27 +10,27 @@ with lib; let
   tomlFormat = pkgs.formats.toml {};
   configFile = tomlFormat.generate "herdr-config.toml" cfg.settings;
   herdr = let
-    version = "preview-2026-07-06-4dae557eefd9";
+    version = "0.7.2";
     assets = {
       x86_64-linux = {
         name = "herdr-linux-x86_64";
-        hash = "sha256-ic3LcwOyRh7VNlnB4nyrxA6xxNf0AUvA00IMeITL37A=";
+        hash = "sha256-+kD847Bn9k8N+5eYdpjzNFMjeBW9MDsgL/elPxGKYzs=";
       };
       aarch64-linux = {
         name = "herdr-linux-aarch64";
-        hash = "sha256-ENwoC13x+InVKZhvv70sFbatUQRBOtX56iezUzISMKI=";
+        hash = "sha256-+zaUWEuqXfDMGNg5UlI+xRWkRMWO6JCjP9TzJG9rn9o=";
       };
     };
     asset =
       assets.${pkgs.stdenv.hostPlatform.system}
-      or (throw "Herdr preview ${version} is not available for ${pkgs.stdenv.hostPlatform.system}");
+      or (throw "Herdr ${version} is not available for ${pkgs.stdenv.hostPlatform.system}");
   in
     pkgs.stdenvNoCC.mkDerivation {
       pname = "herdr";
       inherit version;
 
       src = pkgs.fetchurl {
-        url = "https://github.com/ogulcancelik/herdr/releases/download/${version}/${asset.name}";
+        url = "https://github.com/ogulcancelik/herdr/releases/download/v${version}/${asset.name}";
         inherit (asset) hash;
       };
 
