@@ -5,7 +5,12 @@
   lib,
   flakes,
   ...
-}: {
+}: let
+  defaultBrowser = {
+    command = "helium";
+    desktop = "helium.desktop";
+  };
+in {
   imports = [
     ./hardware-configuration.nix
     ./scheduler.nix
@@ -57,6 +62,15 @@
       nil
       nixd
     ];
+    xdg.mimeApps = {
+      associations.added."text/html" = lib.mkForce defaultBrowser.desktop;
+      defaultApplications = {
+        "text/html" = lib.mkForce defaultBrowser.desktop;
+        "x-scheme-handler/http" = lib.mkForce defaultBrowser.desktop;
+        "x-scheme-handler/https" = lib.mkForce defaultBrowser.desktop;
+      };
+    };
+
     programs = {
       ghostty.enable = true;
       vscode.enable = true;
@@ -128,7 +142,7 @@
       gitui.enable = false;
       firefox.enable = false;
       zen-browser.enable = true;
-      chromium.enable = true;
+      helium.enable = true;
 
       solidtime-desktop.enable = true;
       discord = {
@@ -165,6 +179,8 @@
       ];
     };
   };
+
+  environment.variables.BROWSER = lib.mkForce defaultBrowser.command;
 
   environment.systemPackages = [
     pkgs.perf

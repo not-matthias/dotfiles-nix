@@ -40,6 +40,10 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    helium = {
+      url = "github:cjavad/nixpille-helium";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     determinate = {
       url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -55,9 +59,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-webapps.url = "github:TLATER/nix-webapps?ref=tlater/idiomatic-flake";
-    # Pinned to 1.7 to prevent constant recompilations of the devenv-tasks package
+    # devenv 2.0+ removed devenv-tasks (uses `devenv tasks` subcommand), resolving
+    # the recompilation issue that motivated the old v1.7 pin.
     # See: https://github.com/cachix/devenv/issues/1865
-    devenv.url = "github:cachix/devenv/v1.7";
+    devenv.url = "github:cachix/devenv/v2.1.2";
 
     auto-cpufreq = {
       url = "github:AdnanHodzic/auto-cpufreq";
@@ -66,10 +71,6 @@
 
     hera = {
       url = "git+https://github.com/heraeyes/platform?ref=main";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    custom-packages = {
-      url = "github:Rishabh5321/custom-packages-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

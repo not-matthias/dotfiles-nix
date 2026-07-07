@@ -19,6 +19,7 @@
   ./ghostty.nix
   ./zen-browser.nix
   ./chromium.nix
+  ./helium.nix
   ./git.nix
   ./gitui.nix
   ./handy.nix
