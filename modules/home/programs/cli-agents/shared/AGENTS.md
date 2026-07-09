@@ -5,7 +5,6 @@
 - When explaining, always use diagrams if they make sense. Use Mermaid if a tool is available, otherwise use ASCII.
 - Use bullet points (e.g. for pro/con lists, or explanations of different approaches)
 - NEVER include AI attribution (Co-Authored-By, "Generated with Claude Code","Made-with: Cursor" etc.) in commits or PRs.
-- Don't use em dashes (—)
 - When explaining an API, show only the function signatures, not their bodies. Keep the focus on the surface (names, parameters, return types).
 
   ```rust
