@@ -13,6 +13,10 @@ with lib; let
     "guardrails"
     "pi-claude-bridge"
     "subagents"
+    "mermaid"
+    "agent-stuff-session-breakdown"
+    "pi-vcc"
+    "agent-stuff-multi-edit"
   ];
   activePackages = removeAttrs packages ["pi-autoresearch"];
 
