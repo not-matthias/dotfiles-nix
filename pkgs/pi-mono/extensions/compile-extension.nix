@@ -91,6 +91,10 @@ stdenvNoCC.mkDerivation {
     mkdir -p $out
     cp -R . $out/
 
+    # Remove .ts source files so pi's auto-discovery loads the compiled .js
+    # instead of jiti-transpiling the .ts at runtime
+    find $out -name '*.ts' -not -path '*/node_modules/*' -delete
+
     # Patch package.json pi.extensions to point to compiled .js files
     if [ -f $out/package.json ]; then
       ${nodejs_22}/bin/node -e '
