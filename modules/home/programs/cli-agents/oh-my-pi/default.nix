@@ -23,7 +23,7 @@ with lib; let
   # omp's skill scanners (provider-based and `skills.customDirectories`) are
   # one-level non-recursive: only `<root>/<name>/SKILL.md` is discovered. The
   # skills shared with Claude/Codex/Amp live nested one level deeper, at
-  # `~/.claude/skills/<group>/<name>/SKILL.md` (e.g. `workflows/caveman`), so
+  # `~/.claude/skills/<group>/<name>/SKILL.md` (e.g. `workflows/brainstorm`), so
   # they're invisible to omp unless each group directory is registered as its
   # own scan root. Derive the group list from the shared skills tree so it
   # never drifts from what's actually on disk.
@@ -89,7 +89,7 @@ in {
 
         omp's skill discovery only finds `<root>/<name>/SKILL.md` (one level,
         non-recursive). Skills shared with Claude/Codex/Amp live at
-        `~/.claude/skills/<group>/<name>/SKILL.md` (e.g. `workflows/caveman`),
+        `~/.claude/skills/<group>/<name>/SKILL.md` (e.g. `workflows/brainstorm`),
         so without this every nested skill is silently invisible to omp even
         though flat ones (`~/.claude/skills/<name>/SKILL.md`) load fine.
 
@@ -108,10 +108,6 @@ in {
     ];
 
     home.packages = [wrappedOmp];
-    home.file.".omp/agent/extensions/caveman" = {
-      source = ./extensions/caveman;
-      recursive = true;
-    };
 
     home.activation.ohMyPiDisabledProviders = mkIf (cfg.disabledProviders != []) (
       hm.dag.entryAfter ["writeBoundary"] ''

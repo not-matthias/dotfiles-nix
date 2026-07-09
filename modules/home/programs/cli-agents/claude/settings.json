@@ -26,20 +26,13 @@
   "skipDangerousModePermissionPrompt": true,
   "enabledPlugins": {
     "codspeed-internal@codspeed-internal-marketplace": true,
-    "skill-creator@claude-plugins-official": true,
-    "caveman@caveman": true
+    "skill-creator@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "codspeed-internal-marketplace": {
       "source": {
         "source": "github",
         "repo": "CodSpeedHQ/platform"
-      }
-    },
-    "caveman": {
-      "source": {
-        "source": "github",
-        "repo": "JuliusBrussee/caveman"
       }
     }
   },
