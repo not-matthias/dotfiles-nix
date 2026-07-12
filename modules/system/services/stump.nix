@@ -8,6 +8,11 @@
 in {
   options.services.stump = {
     enable = lib.mkEnableOption "Enable stump";
+    booksDir = lib.mkOption {
+      type = lib.types.str;
+      default = "/mnt/data/personal/books";
+      description = "Path to the books library directory";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -29,7 +34,7 @@ in {
         ];
         volumes = [
           "/var/lib/stump/config:/config"
-          "/mnt/data/personal/books:/data"
+          "${cfg.booksDir}:/data"
         ];
       };
     };

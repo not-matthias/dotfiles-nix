@@ -239,6 +239,10 @@ in {
       };
     };
     octo-fiesta.enable = true;
+    stump = {
+      enable = true;
+      booksDir = "/home/${user}/Documents/personal/books";
+    };
     rustdesk-client.enable = true;
     # soulsync.enable = true;
     yubikey.enable = true;
