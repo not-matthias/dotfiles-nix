@@ -30,7 +30,7 @@ in {
           STUMP_TRUST_PROXY_HEADERS = "true";
         };
         ports = [
-          "127.0.0.1:10801:10801/tcp"
+          "10801:10801/tcp"
         ];
         volumes = [
           "/var/lib/stump/config:/config"
