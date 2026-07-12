@@ -9,12 +9,12 @@
     ];
 
     extensions = [
-      "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
       "nngceckbapebfimnlniiiahkandclblb" # Bitwarden
       "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
       "hlepfoohegkhhmjieoechaddaejaokhf" # Refined GitHub
       "blaaajhemilngeeffpbfkdjjoefldkok" # LeechBlock NG
       "mnjggcdmjocbbbhaepdhchncahnbgone" # SponsorBlock for YouTube
+      "khncfooichmfjbepaaaebmommgaepoid" # Unhook - Remove YouTube Recommended & Shorts
       "edibdbjcniadpccecjdfdjjppcpchdlm" # I still don't care about cookies
       "eimadpbcbfnmbkopoojfekhnkhdbieeh" # Dark Reader
       "dneaehbmnbhcippjikoajpoabadpodje" # Old Reddit Redirect
