@@ -2,6 +2,7 @@
 # https://github.com/azuwis/nix-config/blob/885e77f74bd730f37d715c6a7ed1a9269a619f7d/common/neovim/nvchad.nix
 {
   config,
+  options,
   pkgs,
   ...
 }: {
@@ -10,11 +11,40 @@
   programs.nixvim = {
     defaultEditor = true;
     colorschemes.catppuccin = {
-      settings.flavour =
-        if (config.stylix.polarity or "light") == "dark"
-        then "mocha"
-        else "latte";
       enable = true;
+      settings = {
+        flavour = "latte";
+        color_overrides =
+          if builtins.hasAttr "stylix" options
+          then let
+            color = config.lib.stylix.colors.withHashtag;
+          in {
+            latte = {
+              base = color.base00;
+              mantle = color.base01;
+              surface0 = color.base02;
+              surface1 = color.base03;
+              surface2 = color.base04;
+              text = color.base05;
+              rosewater = color.base06;
+              lavender = color.base07;
+              red = color.base08;
+              peach = color.base09;
+              yellow = color.base0A;
+              green = color.base0B;
+              teal = color.base0C;
+              blue = color.base0D;
+              mauve = color.base0E;
+              flamingo = color.base0F;
+              crust = color.base11;
+              maroon = color.base12;
+              sky = color.base15;
+              sapphire = color.base16;
+              pink = color.base17;
+            };
+          }
+          else {};
+      };
     };
     clipboard = {
       providers.wl-copy.enable = true;
@@ -442,6 +472,12 @@
       }
     ];
     luaLoader.enable = true;
+    performance.byteCompileLua = {
+      enable = true;
+      plugins = true;
+      configs = true;
+      nvimRuntime = true;
+    };
     extraConfigLua = ''
       vim.api.nvim_create_autocmd("VimEnter", {
         callback = function()
