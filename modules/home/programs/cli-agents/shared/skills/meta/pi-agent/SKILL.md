@@ -30,23 +30,7 @@ pi --model sonnet:high "solve this"                        # model + thinking sh
 
 ## DeepSeek V4 Flash & Pro
 
-Two routes. Pick based on which API key is in pi's env file
-(`secrets/pi-mono-env.age` → `~/.pi`):
-
-### Via OpenRouter — the configured provider in this dotfiles (`OPENROUTER_API_KEY`)
-
-```bash
-pi --provider openrouter --model deepseek/deepseek-v4-flash "your prompt"
-pi --provider openrouter --model deepseek/deepseek-v4-pro   "your prompt"
-
-# Free Flash tier:
-pi --provider openrouter --model "deepseek/deepseek-v4-flash:free" "your prompt"
-```
-
-> Use `--provider openrouter` explicitly. `--model deepseek/deepseek-v4-flash`
-> alone parses `deepseek/` as the *native* deepseek provider, not OpenRouter.
-
-### Via DeepSeek's native API (`DEEPSEEK_API_KEY`, api.deepseek.com)
+Via DeepSeek's native API (`DEEPSEEK_API_KEY`, api.deepseek.com):
 
 ```bash
 pi --provider deepseek --model deepseek-v4-flash "your prompt"
@@ -56,7 +40,7 @@ pi --provider deepseek --model deepseek-v4-pro   "your prompt"
 ### Cycle between Flash and Pro in-session (Ctrl+P)
 
 ```bash
-pi --provider openrouter --models deepseek/deepseek-v4-flash,deepseek/deepseek-v4-pro
+pi --provider deepseek --models deepseek-v4-flash,deepseek-v4-pro
 ```
 
 ## Notes
@@ -64,4 +48,4 @@ pi --provider openrouter --models deepseek/deepseek-v4-flash,deepseek/deepseek-v
 - Verify availability and exact ids with `pi --list-models deepseek` (needs the
   relevant API key in the environment).
 - Combine with `-p`/`--print` for non-interactive runs, e.g.
-  `pi --provider openrouter --model deepseek/deepseek-v4-pro -p "summarize README"`.
+  `pi --provider deepseek --model deepseek-v4-pro -p "summarize README"`.
