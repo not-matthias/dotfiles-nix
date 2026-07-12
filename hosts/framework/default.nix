@@ -90,21 +90,7 @@ in {
         claude.enable = true;
         codex.enable = true;
         amp.enable = true;
-        herdr = {
-          enable = true;
-          settings = {
-            onboarding = false;
-            update = {
-              version_check = false;
-              manifest_check = false;
-            };
-            theme.name = "terminal";
-            ui = {
-              show_agent_labels_on_pane_borders = true;
-              toast.delivery = "herdr";
-            };
-          };
-        };
+        herdr.enable = true;
         pi-mono = {
           enable = true;
           envFile = "/run/agenix/pi-mono-env";

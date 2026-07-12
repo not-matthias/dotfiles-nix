@@ -113,20 +113,34 @@ in {
   config = mkIf cfg.enable {
     home.packages = [package];
 
-    programs.cli-agents.herdr.settings.keys = mkDefault {
-      prefix = "ctrl+b";
-      focus_pane_left = ["prefix+h" "ctrl+alt+h"];
-      focus_pane_down = ["prefix+j" "ctrl+alt+j"];
-      focus_pane_up = ["prefix+k" "ctrl+alt+k"];
-      focus_pane_right = ["prefix+l" "ctrl+alt+l"];
-      previous_tab = ["prefix+p" "ctrl+alt+["];
-      next_tab = ["prefix+n" "ctrl+alt+]"];
-      new_tab = ["prefix+c" "ctrl+alt+c"];
-      split_vertical = ["prefix+v" "ctrl+alt+d"];
-      split_horizontal = ["prefix+minus" "ctrl+alt+shift+d"];
-      zoom = ["prefix+z" "ctrl+alt+z"];
-      switch_workspace = "prefix+shift+1..9";
-      last_pane = "ctrl+alt+tab";
+    programs.cli-agents.herdr.settings = mkDefault {
+      onboarding = false;
+      update = {
+        version_check = false;
+        manifest_check = false;
+      };
+      theme.name = "terminal";
+      keys = {
+        prefix = "ctrl+b";
+        focus_pane_left = ["prefix+h" "ctrl+alt+h"];
+        focus_pane_down = ["prefix+j" "ctrl+alt+j"];
+        focus_pane_up = ["prefix+k" "ctrl+alt+k"];
+        focus_pane_right = ["prefix+l" "ctrl+alt+l"];
+        previous_tab = ["prefix+p" "ctrl+alt+["];
+        next_tab = ["prefix+n" "ctrl+alt+]"];
+        new_tab = ["prefix+c" "ctrl+alt+c"];
+        split_vertical = ["prefix+v" "ctrl+alt+d"];
+        split_horizontal = ["prefix+minus" "ctrl+alt+shift+d"];
+        zoom = ["prefix+z" "ctrl+alt+z"];
+        switch_workspace = "prefix+shift+1..9";
+        last_pane = "ctrl+alt+tab";
+      };
+      ui = {
+        agent_panel_sort = "priority";
+        show_agent_labels_on_pane_borders = true;
+        hide_tab_bar_when_single_tab = true;
+        toast.delivery = "herdr";
+      };
     };
 
     xdg.configFile."herdr/config.toml" = mkIf (cfg.settings != {}) {
