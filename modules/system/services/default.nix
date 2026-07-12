@@ -55,6 +55,7 @@
   ./vpn.nix
   ./wakapi.nix
   ./watchyourlan.nix
+  ./umans-local-proxy.nix
   ./wordpress.nix
   ./yubikey.nix
 ]

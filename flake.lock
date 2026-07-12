@@ -1815,6 +1815,7 @@
         "nurpkgs": "nurpkgs",
         "spicetify-nix": "spicetify-nix",
         "stylix": "stylix",
+        "umans-local-proxy": "umans-local-proxy",
         "vicinae": "vicinae",
         "zen-browser": "zen-browser"
       }
@@ -2101,6 +2102,26 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "umans-local-proxy": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1783852951,
+        "narHash": "sha256-4evl+fmyd8vEfogK4xdXJCCnnySbgGooHGkkS0oiAQw=",
+        "owner": "not-matthias",
+        "repo": "umans-local-proxy",
+        "rev": "5129f69b7e29517e284b85c730f95130846387d0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "not-matthias",
+        "repo": "umans-local-proxy",
         "type": "github"
       }
     },

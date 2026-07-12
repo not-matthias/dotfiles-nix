@@ -73,6 +73,10 @@
       url = "git+https://github.com/heraeyes/platform?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    umans-local-proxy = {
+      url = "github:not-matthias/umans-local-proxy";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs = {
