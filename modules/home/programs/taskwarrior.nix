@@ -10,7 +10,7 @@
       owner = "ralphbean";
       repo = "bugwarrior";
       rev = "develop";
-      sha256 = "sha256-e28E0lCNS4JN3i/l+zYzJOqaHz+buP0xtOyJND7ytJc=";
+      sha256 = "sha256-wE83O5BTQKgAURVnqClBjMbkO6snkVsWdy2y/+YAFZA=";
     };
 
     nativeBuildInputs = with pkgs.python3Packages; [
@@ -22,6 +22,7 @@
       click
       dogpile-cache
       jinja2
+      filelock
       lockfile
       pydantic
       python-dateutil
