@@ -6,6 +6,7 @@
   pkgs,
   lib,
   config,
+  user,
   ...
 }: let
   cfg = config.programs.fcitx5;
@@ -27,6 +28,14 @@ in {
           fcitx5-material-color
         ];
       };
+    };
+
+    home-manager.users.${user} = {
+      xdg.configFile."autostart/org.fcitx.Fcitx5.desktop".text = ''
+        [Desktop Entry]
+        Type=Application
+        Hidden=true
+      '';
     };
 
     # xdg.configFile = {
