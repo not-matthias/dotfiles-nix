@@ -1,12 +1,19 @@
 # References:
 # https://github.com/azuwis/nix-config/blob/885e77f74bd730f37d715c6a7ed1a9269a619f7d/common/neovim/nvchad.nix
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   # https://github.com/tars0x9752/home/blob/main/modules/neovim/default.nix
   # https://github.com/notusknot/dotfiles-nix/blob/main/modules/nvim/default.nix
   programs.nixvim = {
     defaultEditor = true;
     colorschemes.catppuccin = {
-      settings.flavour = "latte";
+      settings.flavour =
+        if (config.stylix.polarity or "light") == "dark"
+        then "mocha"
+        else "latte";
       enable = true;
     };
     clipboard = {

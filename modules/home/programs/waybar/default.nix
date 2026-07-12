@@ -71,6 +71,7 @@ in {
   };
 
   config = {
+    stylix.targets.waybar.enable = false;
     home.packages = lib.mkIf config.programs.waybar.enable (
       [pkgs.pavucontrol]
       ++ lib.optional pomodoroCfg.enable pkgs.tomat

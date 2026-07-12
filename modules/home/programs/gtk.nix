@@ -1,8 +1,15 @@
 {
+  config,
   pkgs,
   lib,
   ...
-}: {
+}: let
+  stylixPolarity = config.stylix.polarity or "light";
+  catppuccinVariant =
+    if stylixPolarity == "dark"
+    then "mocha"
+    else "latte";
+in {
   gtk = {
     enable = true;
 
@@ -13,10 +20,10 @@
 
     # https://github.com/catppuccin/gtk
     theme = lib.mkForce {
-      name = "catppuccin-latte-red-compact";
+      name = "catppuccin-${catppuccinVariant}-red-compact";
       package = pkgs.catppuccin-gtk.override {
         size = "compact";
-        variant = "latte";
+        variant = catppuccinVariant;
         accents = ["red" "blue"];
       };
     };

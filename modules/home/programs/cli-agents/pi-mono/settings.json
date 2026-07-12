@@ -15,7 +15,6 @@
   "followUpMode": "one-at-a-time",
   "showHardwareCursor": false,
   "doubleEscapeAction": "tree",
-  "theme": "stylix-latte-red",
   "pi-codex-fast": {
     "enabled": false
   },
