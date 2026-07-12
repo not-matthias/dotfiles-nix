@@ -13,27 +13,6 @@
 }: let
   flashgenWordCfg = config.programs.waybar.flashgenWordOfHour;
   pomodoroCfg = config.programs.waybar.pomodoro;
-  waybarPalette = {
-    base00 = "#eff1f5";
-    base01 = "#e6e9ef";
-    base02 = "#ccd0da";
-    base03 = "#9ca0b0";
-    base04 = "#8c8fa1";
-    base05 = "#4c4f69";
-    base06 = "#d20f39";
-    base07 = "#d20f39";
-    base08 = "#d20f39";
-    base09 = "#fe640b";
-    base0A = "#df8e1d";
-    base0B = "#40a02b";
-    base0C = "#179299";
-    base0D = "#d20f39";
-    base0E = "#d20f39";
-    base0F = "#d20f39";
-  };
-  waybarPaletteCss = lib.concatStringsSep "\n" (
-    lib.mapAttrsToList (name: color: "@define-color ${name} ${color};") waybarPalette
-  );
 in {
   options.programs.waybar.pomodoro = {
     enable = (lib.mkEnableOption "tomat Pomodoro Waybar module + daemon") // {default = true;};
@@ -330,7 +309,7 @@ in {
           };
         }; # end customModules merge
 
-      style = waybarPaletteCss + "\n" + (builtins.readFile ./style.css) + customStyles;
+      style = (builtins.readFile ./style.css) + customStyles;
     };
   };
 }
