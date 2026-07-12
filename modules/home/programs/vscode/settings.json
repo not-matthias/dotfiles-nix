@@ -1,7 +1,6 @@
 {
   "window.titleBarStyle": "custom",
   "window.menuBarVisibility": "compact",
-  "workbench.colorTheme": "Light 2026",
   "workbench.iconTheme": "vscode-jetbrains-icon-theme",
   "keyboard.dispatch": "keyCode",
   "security.workspace.trust.untrustedFiles": "open",
