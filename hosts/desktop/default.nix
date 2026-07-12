@@ -141,7 +141,8 @@
     wakapi.enable = true;
     vikunja-app.enable = true;
     # tandoor-recipes.enable = true;
-    jellyfin.enable = true;
+    # jellyfin.enable = true;
+    stump.enable = true;
     # soulsync.enable = true;
     # nocodb.enable = true;
     # nitter.enable = true;
