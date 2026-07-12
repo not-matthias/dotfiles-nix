@@ -15,6 +15,9 @@
       accel-speed = 0.0;
       accel-profile = "adaptive";
     };
-    mouse.accel-profile = "flat";
+    mouse = {
+      accel-profile = "flat";
+      scroll-factor = 0.5;
+    };
   };
 }
