@@ -6,6 +6,7 @@
 }:
 with lib; let
   cfg = config.programs.cli-agents.pi-mono;
+  stylixPolarity = config.stylix.polarity or "light";
 
   extensions = import ../../../../../pkgs/pi-mono/extensions {inherit pkgs;};
   packages = import ../../../../../pkgs/pi-mono/packages {inherit pkgs;};
@@ -72,6 +73,10 @@ with lib; let
     settingsBase
     // {
       packages = map (name: "./packages/${name}") (builtins.attrNames activePackages);
+      theme =
+        if stylixPolarity == "dark"
+        then "stylix-mocha-red"
+        else "stylix-latte-red";
     };
   settingsFile = pkgs.writeText "pi-settings.json" (builtins.toJSON settings);
   keybindingsFile = pkgs.writeText "pi-keybindings.json" (builtins.toJSON keybindings);

@@ -1,4 +1,9 @@
-{pkgs, ...}: let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   catppuccinLatteRed = {
     base00 = "eff1f5"; # base
     base01 = "e6e9ef"; # mantle
@@ -37,15 +42,24 @@
     base0F = "f38ba8"; # red (used for pink)
   };
 in {
-  stylix = {
+  options.desktop.theme = lib.mkOption {
+    type = lib.types.enum ["light" "dark"];
+    default = "light";
+    description = "Catppuccin Latte Red for light and Catppuccin Mocha Red for dark.";
+  };
+
+  config.stylix = {
     autoEnable = true;
     targets.gtk.enable = false;
     homeManagerIntegration.autoImport = true;
     homeManagerIntegration.followSystem = true;
 
-    base16Scheme = catppuccinLatteRed;
+    base16Scheme =
+      if config.desktop.theme == "dark"
+      then catppuccinMochaRed
+      else catppuccinLatteRed;
 
-    polarity = "light";
+    polarity = config.desktop.theme;
 
     image = ./hyprland/home/wallpaper.png;
 
