@@ -56,12 +56,6 @@ in {
       power-profiles-daemon
     ];
 
-    boot.kernel.sysctl = {
-      # Disable Watchdog, can lead to significant power savings
-      # See: https://wiki.archlinux.org/title/Power_management#Disabling_NMI_watchdog
-      "kernel.nmi_watchdog" = 0;
-    };
-
     # Apply correct sysctl profile on boot
     systemd.services.power-sysctl = {
       description = "Apply power-aware sysctl values";
