@@ -10,6 +10,7 @@
       window-padding-y = 5;
       confirm-close-surface = false;
       keybind = "ctrl+enter=ignore";
+      mouse-scroll-multiplier = "precision:0.5,discrete:0.5";
     };
   };
 }
