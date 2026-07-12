@@ -35,6 +35,7 @@ in {
       binary-ninja
       vmprotect
       ida-pro
+      plannotator
       # unstable.antigravity-fhs
 
       # Install desktop apps rather than websites

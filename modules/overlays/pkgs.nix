@@ -72,6 +72,9 @@
     (_self: super: {
       shortcut-history = super.callPackage ../../pkgs/shortcut-history {};
     })
+    (_self: super: {
+      plannotator = super.callPackage ../../pkgs/plannotator.nix {};
+    })
     (import ../../pkgs/ida-pro)
   ];
 }
