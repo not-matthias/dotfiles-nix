@@ -13,7 +13,7 @@ in {
   config = lib.mkIf cfg.enable {
     virtualisation.oci-containers.containers = {
       stump = {
-        image = "docker.io/aaronleopold/stump:0.0.12";
+        image = "docker.io/aaronleopold/stump:0.1.5";
         environment = {
           PUID = "1000";
           PGID = "1000";
@@ -22,9 +22,10 @@ in {
           STUMP_ENABLE_UPLOAD = "true";
           STUMP_PORT = "10801";
           STUMP_MAX_FILE_UPLOAD_SIZE = "83886080"; # 80MB
+          STUMP_TRUST_PROXY_HEADERS = "true";
         };
         ports = [
-          "10801:10801/tcp"
+          "127.0.0.1:10801:10801/tcp"
         ];
         volumes = [
           "/var/lib/stump/config:/config"
