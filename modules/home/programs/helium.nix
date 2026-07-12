@@ -5,6 +5,7 @@
     commandLineArgs = [
       "--no-default-browser-check"
       "--disable-breakpad"
+      "--restore-last-session"
     ];
 
     extensions = [
