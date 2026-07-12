@@ -1,7 +1,7 @@
 ---
 name: scout
 description: "Use for fast reconnaissance and codebase mapping. Reads, searches, and compresses findings into structured reports for other agents."
-model: openai-codex/gpt-5.3-codex-spark
+model: inherit
 tools: Read, Grep, Glob, Bash, WebFetch, WebSearch
 ---
 
