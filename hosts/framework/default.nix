@@ -365,23 +365,15 @@ in {
             ];
           };
           deaf = {
-            fanSpeedUpdateFrequency = 2;
-            movingAverageInterval = 5;
+            fanSpeedUpdateFrequency = 1;
+            movingAverageInterval = 1;
             speedCurve = [
               {
                 temp = 0;
-                speed = 20;
+                speed = 100;
               }
               {
-                temp = 40;
-                speed = 30;
-              }
-              {
-                temp = 50;
-                speed = 50;
-              }
-              {
-                temp = 60;
+                temp = 100;
                 speed = 100;
               }
             ];
