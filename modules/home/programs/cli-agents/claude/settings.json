@@ -26,13 +26,20 @@
   "skipDangerousModePermissionPrompt": true,
   "enabledPlugins": {
     "codspeed-internal@codspeed-internal-marketplace": true,
-    "skill-creator@claude-plugins-official": true
+    "skill-creator@claude-plugins-official": true,
+    "ponytail@ponytail": true
   },
   "extraKnownMarketplaces": {
     "codspeed-internal-marketplace": {
       "source": {
         "source": "github",
         "repo": "CodSpeedHQ/platform"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
       }
     }
   },
