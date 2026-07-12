@@ -1,6 +1,6 @@
 # References:
 # https://github.com/azuwis/nix-config/blob/885e77f74bd730f37d715c6a7ed1a9269a619f7d/common/neovim/nvchad.nix
-{ pkgs, ... }: {
+{pkgs, ...}: {
   # https://github.com/tars0x9752/home/blob/main/modules/neovim/default.nix
   # https://github.com/notusknot/dotfiles-nix/blob/main/modules/nvim/default.nix
   programs.nixvim = {
@@ -438,7 +438,9 @@
     extraConfigLua = ''
       vim.api.nvim_create_autocmd("VimEnter", {
         callback = function()
-          require("nvim-tree.api").tree.toggle({ focus = false, find_file = true })
+          if vim.fn.argc() == 0 or vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
+            require("nvim-tree.api").tree.toggle({ focus = false, find_file = true })
+          end
         end,
       })
       vim.cmd([[
