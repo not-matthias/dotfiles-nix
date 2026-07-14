@@ -63,6 +63,7 @@
       ".direnv"
       ".envrc"
       ".shell.nix"
+      "profile.json.gz"
     ];
   };
 
