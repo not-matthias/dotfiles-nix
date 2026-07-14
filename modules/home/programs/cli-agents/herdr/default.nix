@@ -137,6 +137,7 @@ in {
       };
       ui = {
         agent_panel_sort = "priority";
+        sidebar_width = 36;
         show_agent_labels_on_pane_borders = true;
         hide_tab_bar_when_single_tab = true;
         toast.delivery = "herdr";
