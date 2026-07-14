@@ -41,6 +41,7 @@ in {
       # Install desktop apps rather than websites
       feishin
       gh
+      gh-dash
       linear-cli
       umans
       paperclip
