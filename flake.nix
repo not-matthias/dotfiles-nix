@@ -77,6 +77,10 @@
       url = "github:not-matthias/umans-local-proxy";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    hunk = {
+      url = "github:modem-dev/hunk";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {

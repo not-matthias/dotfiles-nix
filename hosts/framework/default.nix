@@ -62,6 +62,7 @@ in {
       # Language servers
       taplo
       nil
+      flakes.hunk.packages.${pkgs.stdenv.hostPlatform.system}.hunk
       nixd
     ];
     xdg.mimeApps = {
