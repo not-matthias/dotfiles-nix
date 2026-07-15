@@ -147,6 +147,15 @@
           desc = "Show call hierarchy";
         };
       }
+      {
+        mode = "n";
+        key = "K";
+        action = "<cmd>Lspsaga hover_doc<cr>";
+        options = {
+          silent = true;
+          desc = "Show documentation on hover";
+        };
+      }
 
       # ============================================================================
       # WINDOW MANAGEMENT (remapped from Ctrl+W to Space+W)
@@ -440,6 +449,15 @@
       }
       {
         mode = "n";
+        key = "<space>fe";
+        action = "<cmd>lua require('telescope').extensions.file_browser.file_browser({ path = vim.fn.expand('%:p:h') })<cr>";
+        options = {
+          silent = true;
+          desc = "File browser (current file dir)";
+        };
+      }
+      {
+        mode = "n";
         key = "<space>gb";
         action = "<cmd>GitBlameToggle<cr>";
         options = {
@@ -642,7 +660,7 @@
         keymaps = {
           "<space>ff" = {
             action = "find_files";
-            options.desc = "Find files (including hidden)";
+            options.desc = "Find files";
           };
           "<space>fg" = {
             action = "live_grep";
@@ -652,13 +670,11 @@
           "<space>lg" = "live_grep";
           "<space>fk" = "keymaps";
           "<space>ft" = "colorscheme";
-          "<space>fe" = "file_browser";
           "<space>fc" = "git_commits";
         };
         settings.defaults.file_ignore_patterns = [];
         settings.pickers.find_files = {
           hidden = true;
-          no_ignore = true;
         };
         extensions = {
           file-browser.enable = true;
@@ -739,6 +755,13 @@
           view = {
             side = "left";
             centralize_selection = false;
+            width = 30;
+            preserve_window_proportions = true;
+          };
+          actions = {
+            open_file = {
+              resize_window = false;
+            };
           };
         };
       };
@@ -774,11 +797,16 @@
       lsp = {
         enable = true;
         inlayHints = true;
+        keymaps.diagnostic = {
+          "[d" = "goto_prev";
+          "]d" = "goto_next";
+        };
         servers = {
           nixd.enable = true;
           pylsp.enable = true;
           beancount.enable = true;
           lua_ls.enable = true;
+          ts_ls.enable = true;
           # rust_analyzer.enable = true;
         };
       };
@@ -844,6 +872,10 @@
       blink-cmp = {
         enable = true;
         settings = {
+          keymap = {
+            preset = "super-tab";
+            "<CR>" = ["accept" "fallback"];
+          };
           sources = {
             default = [
               "lsp"
