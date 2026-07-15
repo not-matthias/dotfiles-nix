@@ -1,7 +1,7 @@
 ---
 name: oracle
 description: "Expert AI advisor for high-quality technical guidance, code reviews, architectural advice, and strategic planning. Use for complex decisions, architecture review, implementation planning, or deep technical questions that benefit from a dedicated zero-shot advisory pass. No follow-ups possible."
-model: inherit
+model: pi/plan
 tools: Read, Grep, Glob, Bash, WebFetch, WebSearch
 ---
 

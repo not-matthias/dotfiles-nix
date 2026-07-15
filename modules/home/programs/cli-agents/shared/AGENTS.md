@@ -22,15 +22,12 @@
 
 ## Code Style
 
-- **NEVER** write comments!
 - **Minimize nesting:** Use early returns and inverted conditionals instead of deeply nested structures.
 - **Max nesting depth:** 2-3 levels deep. Avoid 4+ level nesting.
 - **Fail loudly:** Make it obvious when something goes wrong. Don't silently ignore errors or edge cases.
 - **IMPORTANT**: Comments must not narrate the specific feature, caller, or task that prompted a change — that ties the comment to one use case and it goes stale as soon as other code relies on the same logic. Explain the general mechanism when it is non-obvious; otherwise omit the comment. Match the comment density of the surrounding code.
-  - By default, avoid adding comments.
 - Comments explain WHY or a non-obvious invariant, never WHAT.
-  - e.g. "The buffer must be in nonpageable memory, otherwise we will bluescreen with `IRQL_NOT_LESS_OR_EQUAL`."
-- ASCII diagrams for memory layouts — used freely as comments when spatial relationships matter.
+- Use ASCII diagrams in comments when it can improve understanding:
   - e.g.
 
     ```
@@ -39,9 +36,6 @@
     //  code_buffer                   data_buffer
     //  |-------|         |---------------------------------|
     //  | .text | padding | .rdata | .data | other sections |
-    //
-    // Padding is included in .text (at the end)
-    //
     ```
 - Struct field doc comments only on complex types. Not on trivial fields.
 
@@ -94,10 +88,11 @@ Never reference files in `.agents` within source code (e.g. comments) as they ar
 
 ## Subagents
 
-You have three different tools to start subagents:
+You have four different tools to start subagents:
 
 - "I need a senior engineer to think with me" -> Oracle
 - "I need to find code that matches a concept" -> Codebase Search Agent
+- "I need to understand how a library/framework works by reading its source code" -> Librarian
 - "I know what to do, need large multi-step execution" -> Task Tool
 
 ## Self-improving
