@@ -10,15 +10,15 @@ with lib; let
   tomlFormat = pkgs.formats.toml {};
   configFile = tomlFormat.generate "herdr-config.toml" cfg.settings;
   herdr = let
-    version = "0.7.2";
+    version = "0.7.4";
     assets = {
       x86_64-linux = {
         name = "herdr-linux-x86_64";
-        hash = "sha256-+kD847Bn9k8N+5eYdpjzNFMjeBW9MDsgL/elPxGKYzs=";
+        hash = "sha256-vA/ALUulAPnKwjU6Q+Z/4DZ4Xsym61U3jgUPrDwQMFk=";
       };
       aarch64-linux = {
         name = "herdr-linux-aarch64";
-        hash = "sha256-+zaUWEuqXfDMGNg5UlI+xRWkRMWO6JCjP9TzJG9rn9o=";
+        hash = "sha256-VE4AAt5CgG0atkzN7zp+dBTyRxewtrAivJ5X0u79JqI=";
       };
     };
     asset =
