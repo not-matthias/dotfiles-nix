@@ -29,6 +29,29 @@ with lib; let
   # never drifts from what's actually on disk.
   sharedSkillGroups = attrNames (filterAttrs (name: type: type == "directory" && !pathExists (../shared/skills + "/${name}/SKILL.md")) (builtins.readDir ../shared/skills));
   sharedSkillDirectories = map (group: "${config.home.homeDirectory}/.claude/skills/${group}") sharedSkillGroups;
+  # omp's task-agent frontmatter differs from Claude Code's: tool names are
+  # lowercase, WebFetch doesn't exist (both WebFetch and WebSearch map to
+  # web_search), model: "inherit" isn't valid (omit to inherit), and the
+  # skills field is autoloadSkills. Transform the shared definitions so omp
+  # can discover and dispatch them without breaking the other agents.
+  ompSubAgents = pkgs.runCommand "omp-sub-agents" {} ''
+    mkdir $out
+    for f in ${../shared/sub-agents}/*.md; do
+      sed \
+        -e '/^tools:/s/Read/read/g' \
+        -e '/^tools:/s/Grep/grep/g' \
+        -e '/^tools:/s/Glob/glob/g' \
+        -e '/^tools:/s/Bash/bash/g' \
+        -e '/^tools:/s/Edit/edit/g' \
+        -e '/^tools:/s/Write/write/g' \
+        -e '/^tools:/s/WebFetch/web_search/g' \
+        -e '/^tools:/s/WebSearch/web_search/g' \
+        -e '/^tools:/s/\(web_search\), *web_search/\1/' \
+        -e '/^model: inherit$/d' \
+        -e 's/^skills:/autoloadSkills:/' \
+        "$f" > "$out/$(basename "$f")"
+    done
+  '';
 in {
   options.programs.cli-agents.oh-my-pi = {
     enable = mkEnableOption "oh-my-pi (omp) CLI agent";
@@ -108,6 +131,13 @@ in {
     ];
 
     home.packages = [wrappedOmp];
+    home.file.".omp/agent/agents" = {
+      source = ompSubAgents;
+      recursive = false;
+    };
+    home.file.".omp/agent/AGENTS.md" = {
+      source = ../shared/AGENTS.md;
+    };
 
     home.activation.ohMyPiDisabledProviders = mkIf (cfg.disabledProviders != []) (
       hm.dag.entryAfter ["writeBoundary"] ''
