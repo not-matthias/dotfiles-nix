@@ -477,6 +477,27 @@
         "type": "github"
       }
     },
+    "evil-helix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay_2"
+      },
+      "locked": {
+        "lastModified": 1775336644,
+        "narHash": "sha256-debbUtuOO7sEvKfCVV2MUGiYag193bDg78HuVbvuVUw=",
+        "owner": "usagi-flow",
+        "repo": "evil-helix",
+        "rev": "a034ec2f6abd82be44d8eddb6ef74444108fce29",
+        "type": "github"
+      },
+      "original": {
+        "owner": "usagi-flow",
+        "repo": "evil-helix",
+        "type": "github"
+      }
+    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -1896,6 +1917,7 @@
         "auto-cpufreq": "auto-cpufreq",
         "determinate": "determinate",
         "devenv": "devenv",
+        "evil-helix": "evil-helix",
         "fenix": "fenix",
         "helium": "helium",
         "hera": "hera",
@@ -1945,6 +1967,27 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "rev": "dbba5f888c82ef3ce594c451c33ac2474eb80847",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "rust-overlay_2": {
+      "inputs": {
+        "nixpkgs": [
+          "evil-helix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1740623427,
+        "narHash": "sha256-3SdPQrZoa4odlScFDUHd4CUPQ/R1gtH4Mq9u8CBiK8M=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "d342e8b5fd88421ff982f383c853f0fc78a847ab",
         "type": "github"
       },
       "original": {
