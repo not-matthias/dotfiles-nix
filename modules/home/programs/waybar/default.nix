@@ -12,42 +12,7 @@
   ...
 }: let
   flashgenWordCfg = config.programs.waybar.flashgenWordOfHour;
-  pomodoroCfg = config.programs.waybar.pomodoro;
 in {
-  options.programs.waybar.pomodoro = {
-    enable = (lib.mkEnableOption "tomat Pomodoro Waybar module + daemon") // {default = true;};
-
-    work = lib.mkOption {
-      type = lib.types.number;
-      default = 25.0;
-      description = "Work session duration in minutes.";
-    };
-
-    break = lib.mkOption {
-      type = lib.types.number;
-      default = 5.0;
-      description = "Short break duration in minutes.";
-    };
-
-    longBreak = lib.mkOption {
-      type = lib.types.number;
-      default = 15.0;
-      description = "Long break duration in minutes.";
-    };
-
-    sessions = lib.mkOption {
-      type = lib.types.ints.positive;
-      default = 4;
-      description = "Number of work sessions before a long break.";
-    };
-
-    autoAdvance = lib.mkOption {
-      type = lib.types.enum ["none" "all" "to-break" "to-work"];
-      default = "none";
-      description = "Automatic phase transition behaviour.";
-    };
-  };
-
   options.programs.waybar.flashgenWordOfHour = {
     enable = (lib.mkEnableOption "Flashgen passive word-of-the-hour Waybar module") // {default = true;};
 
@@ -72,36 +37,7 @@ in {
 
   config = {
     stylix.targets.waybar.enable = false;
-    home.packages = lib.mkIf config.programs.waybar.enable (
-      [pkgs.pavucontrol]
-      ++ lib.optional pomodoroCfg.enable pkgs.tomat
-    );
-
-    # tomat is daemon-based: timer state lives in the daemon, not in `tomat status`.
-    systemd.user.services.tomat = lib.mkIf (config.programs.waybar.enable && pomodoroCfg.enable) {
-      Unit = {
-        Description = "Tomat Pomodoro daemon";
-        After = ["graphical-session.target"];
-        PartOf = ["graphical-session.target"];
-      };
-      Service = {
-        ExecStart = "${pkgs.tomat}/bin/tomat daemon run";
-        Restart = "always";
-        RestartSec = 5;
-      };
-      Install.WantedBy = ["graphical-session.target"];
-    };
-
-    xdg.configFile."tomat/config.toml" = lib.mkIf (config.programs.waybar.enable && pomodoroCfg.enable) {
-      text = ''
-        [timer]
-        work = ${toString pomodoroCfg.work}
-        break = ${toString pomodoroCfg.break}
-        long_break = ${toString pomodoroCfg.longBreak}
-        sessions = ${toString pomodoroCfg.sessions}
-        auto_advance = "${pomodoroCfg.autoAdvance}"
-      '';
-    };
+    home.packages = lib.mkIf config.programs.waybar.enable [pkgs.pavucontrol];
 
     programs.waybar = let
       isNiri = osConfig.desktop.niri.enable or false;
@@ -113,7 +49,6 @@ in {
       temperatureModule = import ./modules/temperature.nix {inherit pkgs;};
       niriWindowIndexModule = import ./modules/niri-window-index.nix {inherit pkgs;};
       aiUsageModule = import ./modules/ai-usage.nix {inherit pkgs;};
-      tomatModule = import ./modules/tomat.nix {inherit pkgs;};
       flashgenWordModule = import ./modules/flashgen-word.nix {
         inherit pkgs;
         cfg = flashgenWordCfg;
@@ -126,11 +61,9 @@ in {
         // temperatureModule.config
         // niriWindowIndexModule.config
         // aiUsageModule.config
-        // lib.optionalAttrs pomodoroCfg.enable tomatModule.config
         // lib.optionalAttrs flashgenWordCfg.enable flashgenWordModule.config;
       customStyles =
-        lib.optionalString pomodoroCfg.enable tomatModule.style
-        + lib.optionalString flashgenWordCfg.enable flashgenWordModule.style;
+        lib.optionalString flashgenWordCfg.enable flashgenWordModule.style;
     in {
       settings.mainbar =
         customModules
@@ -178,7 +111,6 @@ in {
             orientation = "horizontal";
             modules =
               lib.optional flashgenWordCfg.enable "custom/flashgen-word"
-              ++ lib.optional pomodoroCfg.enable "custom/tomat"
               ++ [
                 "custom/claude-usage"
                 "custom/codex-usage"
