@@ -128,7 +128,7 @@ in {
       };
       screenshot-journal.enable = false;
 
-      gitui.enable = false;
+      gitui.enable = true;
       firefox.enable = false;
       zen-browser.enable = true;
       helium.enable = true;
