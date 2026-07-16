@@ -133,7 +133,7 @@ in {
     home.packages = [wrappedOmp];
     home.file.".omp/agent/agents" = {
       source = ompSubAgents;
-      recursive = false;
+      recursive = true;
     };
     home.file.".omp/agent/AGENTS.md" = {
       source = ../shared/AGENTS.md;
