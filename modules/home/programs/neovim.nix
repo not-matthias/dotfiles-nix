@@ -512,7 +512,10 @@
       # Old stuff:
       # Yazi
 
-      auto-save.enable = true;
+      auto-save = {
+        enable = true;
+        settings.debounce_delay = 3000;
+      };
       autoclose.enable = true;
       comment.enable = true;
       todo-comments.enable = true;
@@ -817,7 +820,7 @@
       conform-nvim = {
         enable = true;
         settings = {
-          format_on_save = {
+          format_after_save = {
             lsp_format = "fallback";
             timeout_ms = 500;
           };
@@ -855,19 +858,6 @@
           };
         };
       };
-      copilot-lua = {
-        enable = true;
-        # settings.suggestion = {
-        #   enabled = true;
-        #   auto_trigger = true;
-        #   debounce = 90;
-        #   keymap = {
-        #     accept = "<Tab>";
-        #   };
-        # };
-        # settings.panel.enable = false;
-      };
-      # copilot-cmp.enable = true;
 
       blink-cmp = {
         enable = true;
@@ -879,16 +869,9 @@
           sources = {
             default = [
               "lsp"
-              "copilot"
               "path"
               "buffer"
             ];
-            providers.copilot = {
-              name = "copilot";
-              module = "blink-cmp-copilot";
-              score_offset = 100;
-              async = true;
-            };
             providers.git = {
               name = "git";
               module = "blink-cmp-git";
@@ -897,7 +880,6 @@
           };
         };
       };
-      blink-cmp-copilot.enable = true;
       blink-cmp-git.enable = true;
       blink-compat.enable = true;
 
@@ -905,9 +887,6 @@
 
       # Claude Code integration
       # claude-code.enable = true;
-
-      # Time tracking
-      wakatime.enable = true;
 
       # git
       trouble.enable = true;
