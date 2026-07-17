@@ -83,9 +83,29 @@
       url = "github:modem-dev/hunk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    evil-helix = {
-      url = "github:usagi-flow/evil-helix";
-      inputs.nixpkgs.follows = "nixpkgs";
+    vimhx = {
+      url = "github:mattwparas/vim.hx";
+      flake = false;
+    };
+    wakatimehx = {
+      url = "github:Xerxes-2/wakatime.hx";
+      flake = false;
+    };
+    zenmode = {
+      url = "github:notnmeyer/zen-mode.hx";
+      flake = false;
+    };
+    foresthx = {
+      url = "github:Ra77a3l3-jar/forest.hx";
+      flake = false;
+    };
+    notifyhx = {
+      url = "github:chuwy/notify.hx";
+      flake = false;
+    };
+    glyphhx = {
+      url = "github:Ra77a3l3-jar/glyph.hx";
+      flake = false;
     };
   };
 
