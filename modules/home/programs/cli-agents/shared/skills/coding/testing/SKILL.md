@@ -21,44 +21,44 @@ Mark Seemann calls this "tests as ceremony, rather than tests as an application 
 
 ---
 
-## Hard Rules
+## Core Rules
 
-These are non-negotiable. Violating any of these means the test is worse than no test.
+Use these rules to keep tests focused on observable behavior:
 
-1. **Never derive test expectations from the implementation.** Read the spec, function signature, or docstring. If you just wrote the code, pretend you haven't seen it. Ask: "What *should* this return?" not "What *does* this return?"
+1. **Derive expectations from the contract, not incidental implementation details.** Inspect the implementation to understand failure paths and integration boundaries, but do not copy its behavior into the expected result.
 
-2. **Never mock what you don't own** (or pure functions). Only mock: network calls, databases, file systems, clocks, randomness. Never mock internal collaborators.
+2. **Prefer real collaborators.** Mock external or nondeterministic boundaries when using them directly would make the test slow, unreliable, or unsafe. Avoid mocking internal call chains.
 
-3. **Never test private/internal methods directly.** Test through the public API or user-facing interface.
+3. **Prefer testing through the public API or user-facing interface.** Test an internal unit directly only when it has a meaningful isolated contract that is impractical to exercise through public behavior.
 
-4. **Never delete or weaken a failing test** to make the suite green. Fix the code or ask the user.
+4. **Do not delete or weaken a failing test solely to make the suite green.** If the observable contract intentionally changed, update the test and make the reason explicit.
 
-5. **Never write a single test case.** Minimum 3: happy path, edge case, error case.
+5. **Write only cases that defend materially distinct behavior.** One test is enough when it covers the changed contract; add boundaries and error cases when they expose different plausible failures.
 
-6. **Never write an assertion-free test.** Every test must assert at least one meaningful outcome.
+6. **Verify a meaningful outcome.** Use an explicit assertion or a framework-observed success or failure condition.
 
 ---
 
 ## Before Writing Any Test
 
-Ask yourself these questions in order:
+Ask these questions before choosing test cases:
 
-1. **What is the contract?** What should this code do, according to its spec/signature/docs? Do NOT look at the implementation to answer this.
-2. **Who are the users?** End users interact with UI. Developer users interact with APIs. Test from their perspective.
-3. **What's the worst bug that could hide here?** Off-by-one? Null handling? Race condition? Write a test for that first.
+1. **What is the observable contract?** Derive expected behavior from the specification, types, documentation, or user requirement. Then inspect the implementation to understand setup, boundaries, and failure paths.
+2. **Who uses it?** End users interact with UI. Developer users interact with APIs. Test from their perspective.
+3. **Which plausible regression matters?** Write the smallest test that would catch it.
 
 ---
 
 ## What To Test (Prioritized)
 
-Test these in this order — most agents stop at #1 and call it done:
+Choose from these based on the changed contract; do not add categories only for coverage:
 
 1. **Boundary conditions** — empty input, zero, negative, max values, off-by-one, single element vs many
 2. **Error paths** — invalid input, missing required fields, malformed data, permission denied, timeout
 3. **State transitions** — before/after, create/read/update/delete, idempotency
 4. **Equivalence classes** — one representative from each meaningful input partition
 5. **Happy path** — the obvious success case (yes, this goes last in priority)
-6. **Regression cases** — if fixing a bug, the test must fail without the fix applied
+6. **Regression cases** — for a bug fix, prefer a test that would fail without the fix when it defends observable behavior
 
 ---
 
@@ -92,7 +92,7 @@ After writing each test, apply these checks:
 | **Mirror test** | Read impl of `parse("hello")`, assert whatever it returns | Decide what `parse("hello")` *should* return from the spec, then assert |
 | **Mock fest** | Mock the DB, logger, config, clock, and half the module | Use real test DB or in-memory equivalent; only mock true external boundaries |
 | **Implementation coupling** | `expect(spy).toHaveBeenCalledWith('_internalMethod')` | Assert on observable output or side effects instead |
-| **Happy path only** | Only test `add(2, 3) == 5` | Add: `add(0, 0)`, `add(-1, 1)`, `add(MAX, 1)`, invalid input |
+| **Happy path only** | Only test `add(2, 3) == 5` | Add only materially distinct boundaries or errors the contract requires |
 | **Kitchen sink** | One test with 15 assertions checking everything | One behavior per test, one clear reason to fail |
 | **Snapshot addiction** | `toMatchSnapshot()` on everything | Assert specific values; snapshots hide what matters |
 | **Test the framework** | Assert that `useState` updates state | Test *your* code's behavior, not library internals |
@@ -101,15 +101,15 @@ After writing each test, apply these checks:
 
 ## TDD Workflow (Preferred)
 
-Test-first is recommended because it prevents tautological tests by design — you can't mirror an implementation that doesn't exist yet.
+Test-first is useful when the contract is clear because expectations are established before implementation details can influence them.
 
 1. **Red**: Write the test from the spec. Run it. Confirm it fails with a clear error.
 2. **Green**: Write the minimum code to pass. No extras.
 3. **Refactor**: Clean up while tests stay green.
 
-When fixing a bug: **always** write a failing test that reproduces the bug before writing the fix. This is non-negotiable even if you're not doing TDD otherwise.
+When fixing a bug, add the smallest regression test when it protects observable behavior and would have failed before the fix. If existing tests already cover it or a durable test is impractical, reproduce the failure and verify the narrowest relevant path instead.
 
-When writing tests after implementation: consciously ignore the implementation. Read only the function signature, types, and documentation. Derive expected values from the specification, not from running the code in your head.
+When writing tests after implementation, inspect the code to identify boundaries and hidden failure paths, but derive expected values from the observable contract.
 
 ---
 
