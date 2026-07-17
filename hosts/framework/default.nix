@@ -45,6 +45,7 @@ in {
       gh-dash
       linear-cli
       umans
+      jcode
       paperclip
       shortcut-history
 

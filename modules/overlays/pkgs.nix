@@ -78,6 +78,9 @@
     (_self: super: {
       tldraw-offline = super.callPackage ../../pkgs/tldraw-offline.nix {};
     })
+    (_self: super: {
+      jcode = super.callPackage ../../pkgs/jcode.nix {};
+    })
     (import ../../pkgs/ida-pro)
   ];
 }
