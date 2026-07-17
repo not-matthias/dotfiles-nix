@@ -75,6 +75,9 @@
     (_self: super: {
       plannotator = super.callPackage ../../pkgs/plannotator.nix {};
     })
+    (_self: super: {
+      tldraw-offline = super.callPackage ../../pkgs/tldraw-offline.nix {};
+    })
     (import ../../pkgs/ida-pro)
   ];
 }

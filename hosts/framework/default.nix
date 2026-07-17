@@ -36,6 +36,7 @@ in {
       vmprotect
       ida-pro
       plannotator
+      tldraw-offline
       # unstable.antigravity-fhs
 
       # Install desktop apps rather than websites
