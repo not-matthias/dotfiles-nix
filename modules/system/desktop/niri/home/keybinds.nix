@@ -59,7 +59,7 @@ in {
     "${mod}+Shift+S".action.screenshot = [];
 
     # Misc
-    "Ctrl+Period".action.spawn = ["wofi-emoji"];
+    "Ctrl+Period".action.spawn = ["vicinae" "deeplink" "vicinae://launch/core/search-emojis"];
     "Super+Slash".action.show-hotkey-overlay = [];
 
     # Column resizing

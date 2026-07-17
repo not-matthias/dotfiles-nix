@@ -69,7 +69,6 @@ in {
 
       # Essential packages for basic niri functionality
       systemPackages = with pkgs; [
-        wofi-emoji # Emoji picker (Ctrl+Period)
         wl-clipboard # Wayland clipboard utilities
         wlr-randr # Display configuration
         wl-mirror # Screen mirroring (use with `wl-present mirror eDP-1`)
