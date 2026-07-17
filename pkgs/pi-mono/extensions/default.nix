@@ -464,6 +464,11 @@ in
       resources.extensions = ".";
     };
 
+    "docs-rs" = {
+      src = compileExtension {src = ./custom/docs-rs;};
+      resources.extensions = ".";
+    };
+
     # cache-countdown = {
     #   src = ./custom/cache-countdown;
     #   resources.extensions = ".";

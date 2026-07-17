@@ -5,8 +5,8 @@
 #   compileExtension { src = <extension-source>; }
 #   compileExtension { src = <extension-source>; entrypoints = ["./src/index.ts"]; }
 #
-# If entrypoints is omitted, they are auto-detected from package.json's pi.extensions
-# field, falling back to index.ts at root.
+# If entrypoints is omitted, they are auto-detected from package.json's
+# omp.extensions (or legacy pi.extensions) field, falling back to index.ts at root.
 {
   stdenvNoCC,
   esbuild,
@@ -37,7 +37,7 @@ stdenvNoCC.mkDerivation {
       if [ -f package.json ]; then
         entrypoints=$(${nodejs_22}/bin/node -e '
           const pkg = JSON.parse(require("fs").readFileSync("package.json", "utf8"));
-          const entries = pkg.pi?.extensions || [];
+          const entries = pkg.omp?.extensions || pkg.pi?.extensions || [];
           const tsEntries = entries.filter(e => e.endsWith(".ts"));
           if (tsEntries.length > 0) {
             console.log(tsEntries.join(" "));
@@ -73,6 +73,7 @@ stdenvNoCC.mkDerivation {
           --target=node22 \
           '--external:@earendil-works/*' \
           '--external:@mariozechner/*' \
+          '--external:@oh-my-pi/*' \
           '--external:@anthropic-ai/*' \
           '--external:@sinclair/typebox' \
           '--external:@sinclair/typebox/*' \
@@ -95,29 +96,35 @@ stdenvNoCC.mkDerivation {
     # instead of jiti-transpiling the .ts at runtime
     find $out -name '*.ts' -not -path '*/node_modules/*' -delete
 
-    # Patch package.json pi.extensions to point to compiled .js files
+    # Patch package.json extension manifest to point to compiled .js files.
+    # Supports the current `omp.extensions` key and the legacy `pi.extensions`
+    # key; patches whichever is present. Auto-discovered extensions (no key)
+    # get an `omp.extensions` entry pointing at the compiled index.js.
     if [ -f $out/package.json ]; then
       ${nodejs_22}/bin/node -e '
         const fs = require("fs");
         const path = require("path");
         const pkgPath = process.env.out + "/package.json";
         const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
-        if (pkg.pi?.extensions) {
-          pkg.pi.extensions = pkg.pi.extensions.map(e => {
-            const jsPath = e.replace(/\.ts$/, ".js");
-            if (fs.existsSync(path.join(process.env.out, jsPath))) {
-              return jsPath;
-            }
-            return e;
-          });
+        const mapEntry = e => {
+          const jsPath = e.replace(/\.ts$/, ".js");
+          if (fs.existsSync(path.join(process.env.out, jsPath))) {
+            return jsPath;
+          }
+          return e;
+        };
+        if (pkg.omp?.extensions) {
+          pkg.omp.extensions = pkg.omp.extensions.map(mapEntry);
+          fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+        } else if (pkg.pi?.extensions) {
+          pkg.pi.extensions = pkg.pi.extensions.map(mapEntry);
           fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
         } else {
-          // Auto-discovered extension: if we compiled index.ts, add pi.extensions
+          // Auto-discovered extension: if we compiled index.ts, add omp.extensions
           const indexJs = path.join(process.env.out, "index.js");
-          const indexTs = path.join(process.env.out, "index.ts");
-          if (fs.existsSync(indexJs) && fs.existsSync(indexTs)) {
-            pkg.pi = pkg.pi || {};
-            pkg.pi.extensions = ["./index.js"];
+          if (fs.existsSync(indexJs)) {
+            pkg.omp = pkg.omp || {};
+            pkg.omp.extensions = ["./index.js"];
             fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
           }
         }

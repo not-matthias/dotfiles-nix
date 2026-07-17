@@ -17,6 +17,7 @@ with lib; let
     "agent-stuff-session-breakdown"
     "pi-vcc"
     "agent-stuff-multi-edit"
+    "docs-rs"
   ];
   activePackages = removeAttrs packages ["pi-autoresearch"];
 

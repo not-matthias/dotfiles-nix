@@ -7,6 +7,8 @@
 with lib; let
   cfg = config.programs.cli-agents.oh-my-pi;
 
+  extensions = import ../../../../../pkgs/pi-mono/extensions {inherit pkgs;};
+
   # The released `omp-linux-x64` binary bundles its own Bun runtime, so it does
   # not hit the nixpkgs Bun version check. Wrap it to optionally source an env
   # file (e.g. an agenix secret) before launching.
@@ -137,6 +139,10 @@ in {
     };
     home.file.".omp/agent/AGENTS.md" = {
       source = ../shared/AGENTS.md;
+    };
+    home.file.".omp/agent/extensions/docs-rs" = {
+      source = extensions."docs-rs".src;
+      recursive = true;
     };
 
     home.activation.ohMyPiDisabledProviders = mkIf (cfg.disabledProviders != []) (
