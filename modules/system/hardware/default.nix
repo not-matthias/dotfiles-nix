@@ -6,6 +6,7 @@
   ./luks-remote.nix
   ./nvidia.nix
   ./powersave.nix
+  ./ryzenadj.nix
   ./sound.nix
   ./ssd.nix
   ./zfs.nix
