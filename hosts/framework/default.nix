@@ -46,6 +46,7 @@ in {
       linear-cli
       umans
       jcode
+      harbor
       paperclip
       shortcut-history
 

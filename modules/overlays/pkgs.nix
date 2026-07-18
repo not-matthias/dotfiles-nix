@@ -81,6 +81,9 @@
     (_self: super: {
       jcode = super.callPackage ../../pkgs/jcode.nix {};
     })
+    (_self: super: {
+      harbor = super.callPackage ../../pkgs/harbor.nix {};
+    })
     (import ../../pkgs/ida-pro)
   ];
 }
