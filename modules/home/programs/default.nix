@@ -24,6 +24,7 @@
   ./gitui.nix
   ./handy.nix
   ./jj.nix
+  ./worktrunk.nix
   ./helix.nix
   ./idea-copilot.nix
   ./ghidra.nix
