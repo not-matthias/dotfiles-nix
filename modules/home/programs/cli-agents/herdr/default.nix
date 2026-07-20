@@ -141,6 +141,10 @@ in {
         show_agent_labels_on_pane_borders = true;
         hide_tab_bar_when_single_tab = true;
         toast.delivery = "herdr";
+        sidebar = {
+          spaces.row_gap = 1;
+          agents.row_gap = 1;
+        };
       };
     };
 
