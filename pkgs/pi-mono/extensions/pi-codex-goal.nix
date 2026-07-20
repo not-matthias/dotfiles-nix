@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "fitchmultz";
   repo = "pi-codex-goal";
-  rev = "b97bbf183d29efd09be9c1c9c80b0c2f20b05fc4";
-  hash = "sha256-Vh0ug/lm++5r9FP519RVF5oNTbdfo2wt9hvLKSz8SG8=";
+  rev = "888610bc85d0b275b516ec870793514851449afa";
+  hash = "sha256-eH4eEzyXPpsvhAtwjQlHpdtf5UXN1J55ySAwKOR5fmg=";
 }

@@ -14,10 +14,9 @@ with lib; let
     "pi-claude-bridge"
     "subagents"
     "mermaid"
-    "agent-stuff-session-breakdown"
-    "pi-vcc"
-    "agent-stuff-multi-edit"
+    "pi-codex-fast"
     "docs-rs"
+    "rtk-rewrite"
   ];
   activePackages = removeAttrs packages ["pi-autoresearch"];
 

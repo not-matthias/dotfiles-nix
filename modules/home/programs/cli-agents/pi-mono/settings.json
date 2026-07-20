@@ -6,7 +6,7 @@
     "maxDelayMs": 60000
   },
   "defaultProvider": "openai-codex",
-  "defaultModel": "openai-codex/gpt-5.5:xhigh",
+  "defaultModel": "openai-codex/gpt-5.6-sol:xhigh",
   "defaultThinkingLevel": "xhigh",
   "hideThinkingBlock": true,
   "quietStartup": false,
@@ -22,12 +22,14 @@
     "enabled": false
   },
   "enabledModels": [
-    "openai-codex/gpt-5.5:high"
+    "umans-local/umans-glm-5.2",
+    "openai-codex/gpt-5.6-sol:high",
+    "openai-codex/gpt-5.6-tera:high",
+    "openai-codex/gpt-5.6-luna:high"
   ],
   "keybindings": {
     "tui.select.up": ["up", "k"],
     "tui.select.down": ["down", "j"],
-    "tui.input.tab": ["left", "right"],
     "app.message.followUp": ["tab", "alt+enter"],
     "app.message.dequeue": ["ctrl+alt+u", "alt+up"]
   },

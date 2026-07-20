@@ -3,7 +3,7 @@
   buildNpmPackage,
   fetchNpmDeps,
   nodejs_22,
-  pnpm_9,
+  pnpm_10,
   src,
   npmDepsHash ? null,
   pnpmDepsHash ? null,
@@ -86,15 +86,15 @@
 
     nativeBuildInputs = [
       nodejs_22
-      pnpm_9.configHook
+      pnpm_10.configHook
     ];
 
-    pnpmDeps = pnpm_9.fetchDeps {
+    pnpmDeps = pnpm_10.fetchDeps {
       pname = "pi-extension-runtime";
       version = "1.0.0";
       inherit src;
       hash = pnpmDepsHash;
-      fetcherVersion = 2;
+      fetcherVersion = 3;
     };
 
     dontBuild = true;
