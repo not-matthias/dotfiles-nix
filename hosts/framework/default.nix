@@ -204,7 +204,6 @@ in {
   services = {
     # solidtime.enable = true;
     resolved.enable = true; # give Chrome a working local resolver (independent of VPN)
-    vpn.enable = true;
     multi-scrobbler.enable = true;
     umans-local-proxy.enable = true;
     restic = {
@@ -248,7 +247,7 @@ in {
     };
     octo-fiesta.enable = true;
     stump = {
-      enable = true;
+      enable = false;
       booksDir = "/home/${user}/Documents/personal/books";
     };
     rustdesk-client.enable = true;
