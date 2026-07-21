@@ -1,4 +1,5 @@
 {
+  config,
   flakes,
   pkgs,
   unstable,
@@ -16,6 +17,7 @@
       rust-analyzer
       taplo
       wakatime-cli
+      glow
     ];
     languages = {
       language = [
@@ -97,7 +99,26 @@
 
       keys.normal = {
         space.space = "file_picker";
+        space.h = ":toggle file-picker.hidden";
         space.e = ":forest-open";
+        space.y = [
+          ":sh rm -f /tmp/yazi-chooser"
+          ":insert-output yazi '%{buffer_name}' --chooser-file=/tmp/yazi-chooser"
+          '':sh printf "\x1b[?1049h\x1b[?2004h" > /dev/tty''
+          ":open %sh{cat /tmp/yazi-chooser}"
+          ":redraw"
+        ];
+        space.g.u = [
+          ":insert-output gitui </dev/tty >/dev/tty 2>&1"
+          '':sh printf "\x1b[?1049h\x1b[?2004h" > /dev/tty''
+          ":redraw"
+        ];
+        space.m = [
+          ":write"
+          ":insert-output glow -s ${config.stylix.polarity} -p '%{buffer_name}' </dev/tty >/dev/tty 2>&1"
+          '':sh printf "\x1b[?1049h\x1b[?2004h" > /dev/tty''
+          ":redraw"
+        ];
         space.w = ":w";
         space.q = ":q";
         esc = [
@@ -107,6 +128,7 @@
         "A-," = "goto_previous_buffer";
         "A-." = "goto_next_buffer";
         "A-w" = ":buffer-close";
+        "C-c" = "no_op";
       };
       keys.insert = {
         "C-c" = "normal_mode";
