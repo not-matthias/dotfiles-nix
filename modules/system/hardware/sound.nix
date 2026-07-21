@@ -38,7 +38,8 @@ in {
                 actions = {
                   "update-props" = {
                     "device.profile.switch-on-connect" = true;
-                    "bluez5.auto-connect" = ["a2dp_sink"];
+                    # Disable profile auto-reconnect so manual disconnect stays disconnected.
+                    "bluez5.auto-connect" = [];
                     "bluez5.hw-volume" = ["hfp_hf" "a2dp_sink"];
                   };
                 };
