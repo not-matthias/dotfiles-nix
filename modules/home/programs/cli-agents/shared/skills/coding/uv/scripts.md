@@ -1,7 +1,5 @@
 # Running Scripts with uv
 
-<!-- Source: https://github.com/mitsuhiko/agent-stuff/blob/main/skills/uv/scripts.md -->
-
 ## Basic Usage
 
 ```bash
@@ -45,6 +43,9 @@ Declare dependencies directly in the script:
 #   "rich",
 # ]
 # ///
+
+import requests
+from rich import print
 ```
 
 Then just: `uv run script.py`
@@ -56,6 +57,19 @@ uv init --script example.py --python 3.12   # Create script with metadata
 uv add --script example.py requests rich    # Add dependencies
 ```
 
+### Alternative Index
+
+```bash
+uv add --index "https://example.com/simple" --script example.py requests
+```
+
+Adds to metadata:
+
+```python
+# [[tool.uv.index]]
+# url = "https://example.com/simple"
+```
+
 ## Locking Dependencies
 
 ```bash
@@ -64,7 +78,7 @@ uv lock --script example.py  # Creates example.py.lock
 
 ## Reproducibility
 
-Pin resolution date in inline metadata:
+Pin resolution date:
 
 ```python
 # /// script
@@ -90,3 +104,4 @@ print(httpx.get("https://example.com"))
 chmod +x myscript
 ./myscript
 ```
+<!-- Source: https://github.com/mitsuhiko/agent-stuff/blob/main/skills/uv/scripts.md -->

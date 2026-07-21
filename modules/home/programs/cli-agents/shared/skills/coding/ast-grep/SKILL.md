@@ -1,16 +1,14 @@
 ---
 name: ast-grep
-description: Guide for writing ast-grep rules to perform structural code search and analysis. Use when users need to search codebases using Abstract Syntax Tree patterns, find specific code structures, or perform complex code queries that go beyond simple text search.
 license: MIT
+description: Guide for writing ast-grep rules to perform structural code search and analysis. Use when users need to search codebases using Abstract Syntax Tree (AST) patterns, find specific code structures, or perform complex code queries that go beyond simple text search. This skill should be used when users ask to search for code patterns, find specific language constructs, or locate code with particular structural characteristics.
 ---
-
-<!-- Source: https://github.com/ampcode/amp-contrib/blob/main/.agents/skills/ast-grep/SKILL.md -->
 
 # ast-grep Code Search
 
 ## Overview
 
-This skill helps translate natural language queries into ast-grep rules for structural code search. ast-grep (sg) is a high-performance, **polyglot** tool (C, C++, Go, HTML, Java, Python, Rust, TS/JS, YAML) that uses Abstract Syntax Tree (AST) patterns to match code based on its structure rather than just text.
+This skill helps translate natural language queries into ast-grep rules for structural code search. ast-grep uses Abstract Syntax Tree (AST) patterns to match code based on its structure rather than just text, enabling powerful and precise code search across large codebases.
 
 ## When to Use This Skill
 
@@ -23,6 +21,8 @@ Use this skill when users:
 - Need to perform complex code queries that traditional text search cannot handle
 
 ## General Workflow
+
+Follow this process to help users write effective ast-grep rules:
 
 ### Step 1: Understand the Query
 
@@ -477,3 +477,4 @@ Contains detailed documentation for ast-grep rule syntax:
 - `rule_reference.md`: Comprehensive ast-grep rule documentation covering atomic rules, relational rules, composite rules, and metavariables
 
 Load these references when detailed rule syntax information is needed.
+<!-- Source: https://github.com/ampcode/amp-contrib/blob/main/.agents/skills/ast-grep/SKILL.md -->

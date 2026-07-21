@@ -26,3 +26,5 @@ It doesn't mean you need to delete documentation. Documentation is different tha
 It doesn't mean you should blindly shorten/compact comments. Simplifying doesn't equals to compacting. Often, compacting comments creates absolutely unreadable and very hard to understand comments for other readers. Keep comments easy to understand !
 
 **Tests:** Flag weak tests added by this change (see the `testing` skill for criteria). When a weak test still covers behavior that matters, warn instead of silently deleting it.
+
+For broader code-simplicity guidance, see the `cognitive-load` skill.
