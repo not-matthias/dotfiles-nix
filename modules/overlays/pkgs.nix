@@ -84,6 +84,9 @@
     (_self: super: {
       harbor = super.callPackage ../../pkgs/harbor.nix {};
     })
+    (_self: super: {
+      maki = super.callPackage ../../pkgs/maki.nix {};
+    })
     (import ../../pkgs/ida-pro)
   ];
 }
