@@ -32,9 +32,9 @@ in {
         source = ../shared/sub-agents;
         recursive = true;
       };
-      ".codex/config.toml" = {
-        source = ./config.toml;
-      };
+      #".codex/config.toml" = {
+      #  source = ./config.toml;
+      #};
     };
   };
 }
