@@ -22,6 +22,23 @@
         }
       ];
     };
+
+    programs.fish.functions = {
+      cod-staging = ''
+        set -gx CODSPEED_API_URL https://gql.staging.preview.codspeed.io/
+        set -gx CODSPEED_UPLOAD_URL https://api.staging.preview.codspeed.io/upload
+        echo "CodSpeed staging environment activated:"
+        echo "  CODSPEED_API_URL=$CODSPEED_API_URL"
+        echo "  CODSPEED_UPLOAD_URL=$CODSPEED_UPLOAD_URL"
+      '';
+      cod-local = ''
+        set -gx CODSPEED_API_URL https://7j3xul0pqk.execute-api.eu-west-1.amazonaws.com/dev/
+        set -gx CODSPEED_UPLOAD_URL https://aiy2l19wii.execute-api.eu-west-1.amazonaws.com/upload
+        echo "CodSpeed local environment activated:"
+        echo "  CODSPEED_API_URL=$CODSPEED_API_URL"
+        echo "  CODSPEED_UPLOAD_URL=$CODSPEED_UPLOAD_URL"
+      '';
+    };
   };
 
   # Enables the 1Password CLI
