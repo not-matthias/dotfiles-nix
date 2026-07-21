@@ -27,7 +27,8 @@
   "enabledPlugins": {
     "codspeed-internal@codspeed-internal-marketplace": true,
     "skill-creator@claude-plugins-official": true,
-    "ponytail@ponytail": true
+    "ponytail@ponytail": true,
+    "worktrunk@worktrunk": true
   },
   "extraKnownMarketplaces": {
     "codspeed-internal-marketplace": {
@@ -40,6 +41,12 @@
       "source": {
         "source": "github",
         "repo": "DietrichGebert/ponytail"
+      }
+    },
+    "worktrunk": {
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
       }
     }
   },
