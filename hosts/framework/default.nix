@@ -111,6 +111,7 @@ in {
           };
           discoverNestedSkills = true;
         };
+        maki.enable = true;
       };
       btop.enable = true;
       obsidian = {
