@@ -8,6 +8,7 @@
   ./alacritty.nix
   ./atuin.nix
   ./bat.nix
+  ./btop.nix
   ./cli-agents
   ./editorconfig.nix
   ./fish
