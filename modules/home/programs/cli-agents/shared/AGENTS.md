@@ -2,7 +2,8 @@
 
 ## Style
 
-- When explaining, always use diagrams if they make sense. Use Mermaid if a tool is available, otherwise use ASCII.
+- When explaining, use diagrams (only if they make sense). Use Mermaid if a tool is available, otherwise use ASCII.
+    - Don't use diagrams if it can be displayed with bullet points (since it's easier to understand and less verbose).
 - Use bullet points (e.g. for pro/con lists, or explanations of different approaches)
 - NEVER include AI attribution (Co-Authored-By, "Generated with Claude Code","Made-with: Cursor" etc.) in commits or PRs.
 - When explaining an API, show only the function signatures, not their bodies. Keep the focus on the surface (names, parameters, return types).
@@ -19,6 +20,8 @@
       // ...20 more lines...
   }
   ```
+
+- For output shaped for an ADHD reader (action-first, numbered steps, restated state each turn), toggle the `i-have-adhd` skill with `/i-have-adhd`; stays on until "stop adhd mode".
 
 ## Code Style
 
