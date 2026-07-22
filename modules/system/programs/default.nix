@@ -6,4 +6,5 @@
   ./obs.nix
   ./oneleet.nix
   ./sccache.nix
+  ./determinate.nix
 ]

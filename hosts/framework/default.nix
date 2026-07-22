@@ -191,11 +191,6 @@ in {
     pkgs.envfs
   ];
 
-  # Disable Determinate Nix's built-in auto-GC (we use our own weekly nix-gc.timer)
-  environment.etc."determinate/config.json".text = builtins.toJSON {
-    garbageCollector.strategy = "disabled";
-  };
-
   programs = {
     noisetorch.enable = true;
     fcitx5.enable = true;
