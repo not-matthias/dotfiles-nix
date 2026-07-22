@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  flakes,
   ...
 }:
 with lib; let
@@ -12,9 +13,10 @@ with lib; let
   # The released `omp-linux-x64` binary bundles its own Bun runtime, so it does
   # not hit the nixpkgs Bun version check. Wrap it to optionally source an env
   # file (e.g. an agenix secret) before launching.
+  ompPkg = flakes.oh-my-pi.packages.${pkgs.stdenv.hostPlatform.system}.default;
   wrappedOmp = pkgs.symlinkJoin {
     name = "oh-my-pi-wrapped";
-    paths = [pkgs.oh-my-pi];
+    paths = [ompPkg];
     nativeBuildInputs = [pkgs.makeWrapper];
     postBuild = optionalString (cfg.envFile != null) ''
       wrapProgram $out/bin/omp \
@@ -148,7 +150,7 @@ in {
     home.activation.ohMyPiDisabledProviders = mkIf (cfg.disabledProviders != []) (
       hm.dag.entryAfter ["writeBoundary"] ''
         $DRY_RUN_CMD mkdir -p "$HOME/.omp/agent"
-        $DRY_RUN_CMD ${pkgs.oh-my-pi}/bin/omp config set disabledProviders '${builtins.toJSON cfg.disabledProviders}'
+        $DRY_RUN_CMD ${ompPkg}/bin/omp config set disabledProviders '${builtins.toJSON cfg.disabledProviders}'
       ''
     );
 
@@ -156,9 +158,9 @@ in {
       hm.dag.entryAfter ["writeBoundary"] ''
         $DRY_RUN_CMD mkdir -p "$HOME/.omp/agent"
         ${optionalString (cfg.theme.dark != null) ''
-          $DRY_RUN_CMD ${pkgs.oh-my-pi}/bin/omp config set theme.dark ${escapeShellArg cfg.theme.dark}
+          $DRY_RUN_CMD ${ompPkg}/bin/omp config set theme.dark ${escapeShellArg cfg.theme.dark}
         ''}${optionalString (cfg.theme.light != null) ''
-          $DRY_RUN_CMD ${pkgs.oh-my-pi}/bin/omp config set theme.light ${escapeShellArg cfg.theme.light}
+          $DRY_RUN_CMD ${ompPkg}/bin/omp config set theme.light ${escapeShellArg cfg.theme.light}
         ''}
       ''
     );
@@ -166,7 +168,7 @@ in {
     home.activation.ohMyPiSkillDirectories = mkIf cfg.discoverNestedSkills (
       hm.dag.entryAfter ["writeBoundary"] ''
         $DRY_RUN_CMD mkdir -p "$HOME/.omp/agent"
-        $DRY_RUN_CMD ${pkgs.oh-my-pi}/bin/omp config set skills.customDirectories '${builtins.toJSON sharedSkillDirectories}'
+        $DRY_RUN_CMD ${ompPkg}/bin/omp config set skills.customDirectories '${builtins.toJSON sharedSkillDirectories}'
       ''
     );
   };
