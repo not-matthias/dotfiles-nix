@@ -87,6 +87,7 @@ in {
       ai-commit-all.enable = true;
       handy.enable = true;
       rust.enable = true;
+      rust.maintenance.enable = true;
       low-battery-alert.enable = true;
       niri-organize.enable = true;
       granted.enable = true;
