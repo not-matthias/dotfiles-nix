@@ -1,6 +1,5 @@
 {
   config,
-  hm,
   lib,
   pkgs,
   ...
@@ -51,8 +50,12 @@ with lib; let
   package = cfg.package;
   linkPlugin = plugin: let
     enabledFlag = optionalString (!plugin.enable) " --disabled";
+    herdrSock = "${config.xdg.configHome}/herdr/herdr.sock";
   in ''
-    $DRY_RUN_CMD ${lib.getExe package} plugin link ${lib.escapeShellArg (toString plugin.path)}${enabledFlag}
+    # herdr plugin link is an IPC call to the running daemon; skip when no session is active.
+    if [ -S "${herdrSock}" ]; then
+      $DRY_RUN_CMD ${lib.getExe package} plugin link ${lib.escapeShellArg (toString plugin.path)}${enabledFlag}
+    fi
   '';
 in {
   options.programs.cli-agents.herdr = {

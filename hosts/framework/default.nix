@@ -96,7 +96,15 @@ in {
         claude.enable = true;
         codex.enable = true;
         amp.enable = true;
-        herdr.enable = true;
+        herdr = {
+          enable = true;
+          plugins = [
+            {
+              path = ../../pkgs/herdr-plugins/window-title-sync;
+              enable = true;
+            }
+          ];
+        };
         pi-mono = {
           enable = true;
           envFile = "/run/agenix/pi-mono-env";
