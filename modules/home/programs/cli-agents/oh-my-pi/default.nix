@@ -56,6 +56,8 @@ with lib; let
         "$f" > "$out/$(basename "$f")"
     done
   '';
+  compileExtension = args: pkgs.callPackage ../../../../../pkgs/pi-mono/extensions/compile-extension.nix args;
+  plannotatorExt = compileExtension {src = ./plannotator-omp;};
 in {
   options.programs.cli-agents.oh-my-pi = {
     enable = mkEnableOption "oh-my-pi (omp) CLI agent";
@@ -144,6 +146,10 @@ in {
     };
     home.file.".omp/agent/extensions/docs-rs" = {
       source = extensions."docs-rs".src;
+      recursive = true;
+    };
+    home.file.".omp/agent/extensions/plannotator" = {
+      source = plannotatorExt;
       recursive = true;
     };
 
