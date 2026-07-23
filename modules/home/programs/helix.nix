@@ -132,6 +132,9 @@
       };
       keys.insert = {
         "C-c" = "normal_mode";
+        j = {
+          k = "normal_mode";
+        };
       };
     };
   };
