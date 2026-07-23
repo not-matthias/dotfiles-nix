@@ -1,0 +1,43 @@
+id = "local.tab-index-title"
+name = "Tab Index Title"
+version = "0.1.0"
+min_herdr_version = "0.7.5"
+description = "Set the outer terminal title to the focused tab's switch position and name, e.g. [3] omp-reviewer."
+platforms = ["linux", "macos"]
+
+[[startup]]
+command = ["bun", "index.js"]
+
+[[actions]]
+id = "refresh"
+title = "Refresh terminal title"
+contexts = ["workspace", "tab", "pane"]
+command = ["bun", "index.js"]
+
+[[events]]
+on = "workspace.focused"
+command = ["bun", "index.js"]
+
+[[events]]
+on = "tab.focused"
+command = ["bun", "index.js"]
+
+[[events]]
+on = "tab.renamed"
+command = ["bun", "index.js"]
+
+[[events]]
+on = "pane.focused"
+command = ["bun", "index.js"]
+
+[[events]]
+on = "pane.moved"
+command = ["bun", "index.js"]
+
+[[events]]
+on = "pane.created"
+command = ["bun", "index.js"]
+
+[[events]]
+on = "pane.closed"
+command = ["bun", "index.js"]

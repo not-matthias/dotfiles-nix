@@ -85,5 +85,8 @@
       maki = super.callPackage ../../pkgs/maki.nix {};
     })
     (import ../../pkgs/ida-pro)
+    (_self: super: {
+      herdr-mirror-plugin = super.callPackage ../../pkgs/herdr-plugins/mirror.nix {};
+    })
   ];
 }

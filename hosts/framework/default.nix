@@ -101,7 +101,11 @@ in {
           enable = true;
           plugins = [
             {
-              path = ../../pkgs/herdr-plugins/window-title-sync;
+              path = ../../pkgs/herdr-plugins/tab-index-title;
+              enable = true;
+            }
+            {
+              path = pkgs.herdr-mirror-plugin;
               enable = true;
             }
           ];

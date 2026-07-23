@@ -50,12 +50,8 @@ with lib; let
   package = cfg.package;
   linkPlugin = plugin: let
     enabledFlag = optionalString (!plugin.enable) " --disabled";
-    herdrSock = "${config.xdg.configHome}/herdr/herdr.sock";
   in ''
-    # herdr plugin link is an IPC call to the running daemon; skip when no session is active.
-    if [ -S "${herdrSock}" ]; then
-      $DRY_RUN_CMD ${lib.getExe package} plugin link ${lib.escapeShellArg (toString plugin.path)}${enabledFlag}
-    fi
+    $DRY_RUN_CMD ${lib.getExe package} plugin link ${lib.escapeShellArg (toString plugin.path)}${enabledFlag}
   '';
 in {
   options.programs.cli-agents.herdr = {
@@ -137,6 +133,9 @@ in {
         zoom = ["prefix+z" "ctrl+alt+z"];
         switch_workspace = "prefix+shift+1..9";
         last_pane = "ctrl+alt+tab";
+        next_agent = ["prefix+." "ctrl+tab"];
+        previous_agent = ["prefix+," "ctrl+shift+tab"];
+        toggle_sidebar = ["prefix+b" "ctrl+alt+b"];
       };
       ui = {
         agent_panel_sort = "priority";
