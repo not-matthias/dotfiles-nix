@@ -230,8 +230,24 @@ in {
         "/home/${user}/.gnupg"
         "/home/${user}/.local/share/atuin"
         "/home/${user}/.local/share/activitywatch"
+
+        # Agent session transcripts (.jsonl only; raw data excluded below)
+        "/home/${user}/.omp/agent/sessions"
+        "/home/${user}/.claude/projects"
+        "/home/${user}/.pi/agent/sessions"
       ];
-      excludes = [];
+      excludes = [
+        # omp: advisor analysis logs + image artifacts (bash logs already excluded by *.log)
+        "**/.omp/agent/sessions/**/__advisor*.jsonl"
+        "**/.omp/agent/sessions/**/local"
+        # claude: non-transcript sidecar files (*.json won't match *.jsonl)
+        "**/.claude/projects/**/*.wakatime"
+        "**/.claude/projects/**/*.json"
+        "**/.claude/projects/**/*.txt"
+        "**/.claude/projects/**/*.md"
+        "**/.claude/projects/**/*.js"
+        "**/.claude/projects/**/*.pdf"
+      ];
       localBackup = {
         paths = [
           "/home/${user}/Videos/obs"
@@ -279,8 +295,8 @@ in {
     fw-fanctrl = {
       enable = true;
       config = {
-        defaultStrategy = "quiet";
-        strategyOnDischarging = "quiet";
+        defaultStrategy = "deaf";
+        strategyOnDischarging = "ultra";
         strategies = {
           quiet = {
             fanSpeedUpdateFrequency = 5;
@@ -446,6 +462,9 @@ in {
       luks.devices."luks-482bfe5c-c987-4a97-9c07-b8cd312cabb5".keyFile = "/crypto_keyfile.bin";
     };
   };
+  # scx_bpfland (scheduler.nix) already biases CPU toward interactive tasks; nudge
+  # nix builds further down so the desktop stays responsive under heavy build load.
+  systemd.services.nix-daemon.serviceConfig.Nice = 10;
 
   # s2idle drains the battery on this Framework, so fall through to
   # hibernation after 30 minutes of suspend.
