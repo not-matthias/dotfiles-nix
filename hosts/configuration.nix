@@ -111,9 +111,6 @@
 
     # Cachix
     settings = {
-      # Keep Determinate parallel evaluation disabled.
-      "eval-cores" = 1;
-
       trusted-users = [
         "root"
         "${user}"
@@ -122,11 +119,17 @@
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
         "https://devenv.cachix.org"
+        # Determinate Nix edge cache — mirrors cache.flakehub.com content, signed
+        # with the same flakehub keys, but serves without auth. The daemon's
+        # substituters must include it directly (extra-trusted-substituters alone
+        # is a pre-approval list, not an automatic query list).
+        "https://install.determinate.systems"
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+        "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
       ];
     };
   };

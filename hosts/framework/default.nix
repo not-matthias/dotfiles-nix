@@ -170,6 +170,10 @@ in {
       serviceConfig.TimeoutStartSec = "1min";
     };
 
+    # Client-only nix settings — these reach ~/.config/nix/nix.conf (via
+    # home-manager), NOT the daemon's nix.custom.conf. For substituters
+    # that must be queried during nixos-rebuild builds, add them to
+    # hosts/configuration.nix nix.settings instead.
     nix.settings = {
       substituters = [
         "https://cache.nixos.org"
