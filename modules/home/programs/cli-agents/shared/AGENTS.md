@@ -72,6 +72,7 @@
 - Prefix all documentation entries with the current date in YYYY-MM-DD format and put them into the `.agents/docs` directory.
 - Put all the temporary files and documentation you create into the `.agents` folder (e.g. `.agents/docs/2025-09-13-add-button.md`, ...).
 - Store any intermediate scripts (shell scripts, Python scripts, etc.) in the `.agents/scripts/` folder.
+- When changing code, don't update the .agents/docs unless the user asked you to, as they are meant to be point-in-time artifacts
 
 Never reference files in `.agents` within source code (e.g. comments) as they are gitignored and meant to be development artifacts.
 
