@@ -152,6 +152,9 @@ in {
       source = plannotatorExt;
       recursive = true;
     };
+    home.file.".omp/agent/extensions/atuin.ts" = {
+      source = ./atuin.ts;
+    };
 
     home.activation.ohMyPiDisabledProviders = mkIf (cfg.disabledProviders != []) (
       hm.dag.entryAfter ["writeBoundary"] ''
