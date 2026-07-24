@@ -94,6 +94,9 @@
       "grbi" = "git rebase -i";
       "grba" = "git rebase --abort";
       "gwip" = "git commit -m \"chore: wip [skip ci]\" --no-verify";
+      "ghpr" = "gh pr view --json url --jq .url | wl-copy";
+      "ghrepo" = "gh repo view --json url --jq .url | wl-copy";
+      "gbc" = "git branch --show-current | wl-copy";
     };
     functions = {
       # Git helper functions with fzf

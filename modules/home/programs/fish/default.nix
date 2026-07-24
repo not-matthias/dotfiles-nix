@@ -109,6 +109,20 @@ in {
         source ${unstable.granted}/share/assume.fish $argv
         set -e GRANTED_ALIAS_CONFIGURED
       '';
+      pwdc = ''
+        # Copy $PWD to the clipboard
+        if command -sq wl-copy
+          printf '%s' $PWD | wl-copy
+        else if command -sq xclip
+          printf '%s' $PWD | xclip -selection clipboard
+        else if command -sq xsel
+          printf '%s' $PWD | xsel --clipboard --input
+        else
+          echo "No clipboard tool found (install wl-clipboard, xclip, or xsel)" >&2
+          return 1
+        end
+        echo $PWD
+      '';
     };
   };
 }
