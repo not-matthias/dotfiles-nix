@@ -292,7 +292,7 @@ in {
     sound.enable = true;
     ssd.enable = true;
     fingerprint.enable = true;
-    ryzenadj.enable = true;
+    ryzenadj.enable = false;
     fw-fanctrl = {
       enable = true;
       config = {

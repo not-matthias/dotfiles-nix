@@ -1,6 +1,6 @@
 {
   services.scx = {
-    enable = true;
+    enable = false;
     scheduler = "scx_bpfland";
     extraArgs = [
       "--primary-domain"
