@@ -9,7 +9,11 @@
       window-padding-x = 5;
       window-padding-y = 5;
       confirm-close-surface = false;
-      keybind = "ctrl+enter=unbind";
+      keybind = [
+        "ctrl+enter=unbind"
+        "ctrl+tab=unbind"
+        "ctrl+shift+tab=unbind"
+      ];
       mouse-scroll-multiplier = "precision:0.5,discrete:0.5";
     };
   };

@@ -125,16 +125,16 @@ in {
         focus_pane_down = ["prefix+j" "ctrl+alt+j"];
         focus_pane_up = ["prefix+k" "ctrl+alt+k"];
         focus_pane_right = ["prefix+l" "ctrl+alt+l"];
-        previous_tab = ["prefix+p" "ctrl+alt+["];
-        next_tab = ["prefix+n" "ctrl+alt+]"];
+        previous_tab = ["prefix+p" "ctrl+alt+[" "ctrl+shift+tab"];
+        next_tab = ["prefix+n" "ctrl+alt+]" "ctrl+tab"];
         new_tab = ["prefix+c" "ctrl+alt+c"];
         split_vertical = ["prefix+v" "ctrl+alt+d"];
         split_horizontal = ["prefix+minus" "ctrl+alt+shift+d"];
         zoom = ["prefix+z" "ctrl+alt+z"];
-        switch_workspace = "prefix+shift+1..9";
         last_pane = "ctrl+alt+tab";
-        next_agent = ["prefix+." "ctrl+tab"];
-        previous_agent = ["prefix+," "ctrl+shift+tab"];
+        next_agent = "prefix+.";
+        previous_agent = "prefix+,";
+        focus_agent = "prefix+shift+1..9";
         toggle_sidebar = ["prefix+b" "ctrl+alt+b"];
       };
       ui = {
