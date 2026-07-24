@@ -11,8 +11,8 @@
     base03 = "9ca0b0"; # surface1 (darkened for contrast)
     base04 = "8c8fa1"; # surface2 (darkened for contrast)
     base05 = "4c4f69"; # text
-    base06 = "d20f39"; # rosewater
-    base07 = "d20f39"; # rosewater
+    base06 = "dc8a78"; # rosewater
+    base07 = "7287fd"; # lavender
     base08 = "d20f39"; # red
     base09 = "fe640b"; # peach
     base0A = "df8e1d"; # yellow
