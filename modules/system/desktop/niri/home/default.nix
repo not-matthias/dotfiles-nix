@@ -10,6 +10,7 @@
 }: let
   pointer = config.stylix.cursor;
   cfg = config.desktop.niri;
+  hm = config.home-manager.users.${user};
 in {
   config = lib.mkIf cfg.enable {
     home-manager.users.${user} = {
@@ -318,6 +319,22 @@ in {
           # ];
         };
       };
+
+      # Disable the built-in recent-windows switcher (Alt+Tab) introduced in niri 25.11+.
+      # The official niri-flake doesn't expose a Nix option for recent-windows yet, so we
+      # override the generated config.kdl to append `recent-windows { off }` and re-validate.
+      # TODO: switch to native programs.niri.settings.recent-windows once niri-flake PR #1467 merges:
+      # https://github.com/sodiboo/niri-flake/pull/1467
+      xdg.configFile.niri-config.source = lib.mkForce (
+        pkgs.runCommand "niri-config.kdl" {
+          config = hm.programs.niri.finalConfig + "\nrecent-windows {\n    off\n}\n";
+          passAsFile = ["config"];
+          nativeBuildInputs = [hm.programs.niri.package];
+        } ''
+          niri validate -c $configPath
+          cp $configPath $out
+        ''
+      );
     };
   };
 }
