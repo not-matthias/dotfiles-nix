@@ -44,6 +44,7 @@ in {
       gh
       gh-dash
       linear-cli
+      slk
       umans
       jcode
       harbor
