@@ -9,6 +9,7 @@
       keymap_mode = "vim-insert";
       secrets_filter = true;
       store_failed = false;
+      ai.enabled = false;
     };
   };
 }
