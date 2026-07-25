@@ -1988,10 +1988,10 @@
         "nixpkgs": "nixpkgs_13"
       },
       "locked": {
-        "lastModified": 1784743717,
-        "narHash": "sha256-6A6WVcTyZzmOR4/7z5mzq+I5AskWJ8uo6kbZWC4/iR8=",
+        "lastModified": 1784934117,
+        "narHash": "sha256-wHUQUzs7Spfsu72KjaTEwX2ApzxMfHwH+hd8rQ20Kfs=",
         "ref": "perf/startup-optimizations",
-        "rev": "2ecbf1503f9b6ae7d191e46351d19f71f29350ee",
+        "rev": "fb59564c2838e137fd0ad61edcc73a4aa0acd6ee",
         "shallow": true,
         "type": "git",
         "url": "file:///home/not-matthias/Documents/technical/git/oh-my-pi"
