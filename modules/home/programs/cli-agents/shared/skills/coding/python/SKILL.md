@@ -156,6 +156,15 @@ addopts = "-q"
 strict = true
 ignore_missing_imports = true
 ```
+### uv Build Backend
+
+For pure Python packages, `uv_build` is an alternative to hatchling:
+
+```toml
+[build-system]
+requires = ["uv_build>=0.9.28,<0.10.0"]
+build-backend = "uv_build"
+```
 
 ## Common Workflows
 
@@ -185,6 +194,21 @@ uv run my-tool              # Run the script
 uv run --with requests python script.py   # Ad-hoc dependency
 uvx python-script-tool                    # Run published tool
 ```
+### Inline Script Metadata (PEP 723)
+
+Declare dependencies directly in a standalone script — no project needed:
+
+```python
+# /// script
+# requires-python = ">=3.12"
+# dependencies = ["requests<3", "rich"]
+# ///
+
+import requests
+from rich import print
+```
+
+Then just `uv run script.py`. Manage with `uv add --script script.py requests`.
 
 ### Pre-commit Validation
 
