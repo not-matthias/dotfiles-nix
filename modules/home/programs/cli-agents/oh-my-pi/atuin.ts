@@ -5,28 +5,27 @@
  * Tracks bash commands executed by omp in Atuin history with author `omp`.
  *
  * Adapted from Atuin's pi extension (contrib/pi/atuin.ts) — omp is a pi fork
- * with the same extension API, but uses `~/.omp/agent/extensions/` and a
- * distinct author tag so commands are attributable to omp, not pi.
+ * with the same event API, but uses `~/.omp/agent/extensions/` and a distinct
+ * author tag so commands are attributable to omp, not pi. Uses
+ * node:child_process spawnSync instead of pi.exec() because no omp extension
+ * has been verified to use pi.exec(), while spawn is proven (plannotator).
  */
 
-import type { ExtensionAPI, ExtensionContext } from "@mariozechner/pi-coding-agent";
+import { spawnSync } from "node:child_process";
+import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
 
 const ATUIN_AUTHOR = "omp";
 const ATUIN_TIMEOUT_MS = 10_000;
 
-async function startHistory(
-	pi: ExtensionAPI,
-	cwd: string,
-	command: string,
-): Promise<string | undefined> {
+function startHistory(cwd: string, command: string): string | undefined {
 	try {
-		const result = await pi.exec(
+		const result = spawnSync(
 			"atuin",
 			["history", "start", "--author", ATUIN_AUTHOR, "--", command],
-			{ cwd, timeout: ATUIN_TIMEOUT_MS },
+			{ cwd, timeout: ATUIN_TIMEOUT_MS, encoding: "utf-8" },
 		);
 
-		if (result.code !== 0) return undefined;
+		if (result.status !== 0) return undefined;
 
 		const id = result.stdout.trim();
 		return id.length > 0 ? id : undefined;
@@ -35,17 +34,12 @@ async function startHistory(
 	}
 }
 
-async function endHistory(
-	pi: ExtensionAPI,
-	cwd: string,
-	historyId: string,
-	exitCode: number,
-): Promise<void> {
+function endHistory(cwd: string, historyId: string, exitCode: number): void {
 	try {
-		await pi.exec(
+		spawnSync(
 			"atuin",
 			["history", "end", historyId, "--exit", String(exitCode)],
-			{ cwd, timeout: ATUIN_TIMEOUT_MS },
+			{ cwd, timeout: ATUIN_TIMEOUT_MS, encoding: "utf-8" },
 		);
 	} catch {
 		// Ignore Atuin failures so command execution is never blocked.
@@ -83,23 +77,23 @@ export default function atuinOmpExtension(pi: ExtensionAPI) {
 	// their own bash tool (sandboxes, RTK, remote runners), while events
 	// fire no matter which extension's bash tool ends up executing the
 	// command.
-	pi.on("tool_call", async (event, ctx: ExtensionContext) => {
+	pi.on("tool_call", (event, ctx) => {
 		if (event.toolName !== "bash") return;
 
-		const command = (event.input as { command?: unknown }).command;
+		const command = event.input?.command;
 		if (typeof command !== "string" || command.length === 0) return;
 
-		const historyId = await startHistory(pi, ctx.cwd, command);
+		const historyId = startHistory(ctx.cwd, command);
 		if (historyId) pending.set(event.toolCallId, historyId);
 	});
 
 	// tool_execution_end also fires when another extension blocks the call,
 	// unlike tool_result, so entries started above are always closed.
-	pi.on("tool_execution_end", async (event, ctx: ExtensionContext) => {
+	pi.on("tool_execution_end", (event, ctx) => {
 		const historyId = pending.get(event.toolCallId);
 		if (!historyId) return;
 		pending.delete(event.toolCallId);
 
-		await endHistory(pi, ctx.cwd, historyId, exitCodeFromResult(event.result, event.isError));
+		endHistory(ctx.cwd, historyId, exitCodeFromResult(event.result, event.isError));
 	});
 }
