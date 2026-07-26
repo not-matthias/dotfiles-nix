@@ -6,6 +6,8 @@
       "--no-default-browser-check"
       "--disable-breakpad"
       "--restore-last-session"
+      "--enable-blink-features=MiddleClickAutoscroll"
+      "--enable-features=AcceleratedVideoEncoder,ParallelDownloading,Vulkan,VulkanFromANGLE,DefaultANGLEVulkan,PlatformHEVCDecoderSupport"
     ];
 
     extensions = [
