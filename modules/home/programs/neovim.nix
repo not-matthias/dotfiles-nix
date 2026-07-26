@@ -12,14 +12,19 @@
     defaultEditor = true;
     colorschemes.catppuccin = {
       enable = true;
-      settings = {
-        flavour = "latte";
+      settings = let
+        flavour =
+          if (config.stylix.polarity or "light") == "dark"
+          then "mocha"
+          else "latte";
+      in {
+        inherit flavour;
         color_overrides =
           if builtins.hasAttr "stylix" options
           then let
             color = config.lib.stylix.colors.withHashtag;
           in {
-            latte = {
+            ${flavour} = {
               base = color.base00;
               mantle = color.base01;
               surface0 = color.base02;

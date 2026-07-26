@@ -111,9 +111,9 @@ in {
         oh-my-pi = {
           enable = true;
           envFile = "/run/agenix/pi-mono-env";
-          disabledProviders = ["claude"];
+          disabledProviders = [ "claude" ];
           theme = {
-            dark = "light";
+            dark = "dark";
             light = "light";
           };
           discoverNestedSkills = true;

@@ -5,7 +5,15 @@
   unstable,
   lib,
   ...
-}: {
+}: let
+  catppuccinVariant =
+    if (config.stylix.polarity or "light") == "dark"
+    then "mocha"
+    else "latte";
+  batTheme = "Catppuccin " + (
+    if catppuccinVariant == "mocha" then "Mocha" else "Latte"
+  );
+in {
   stylix.targets.helix.enable = false;
 
   programs.helix = {
@@ -18,6 +26,7 @@
       taplo
       wakatime-cli
       glow
+      bat
       harper
     ];
     languages = {
@@ -49,7 +58,7 @@
       };
     };
     settings = {
-      theme = "catppuccin_latte";
+      theme = "catppuccin_${catppuccinVariant}";
 
       editor = {
         bufferline = "multiple";
@@ -132,7 +141,7 @@
         ];
         space.m = [
           ":write"
-          ":insert-output glow -s ${config.stylix.polarity} -p '%{buffer_name}' </dev/tty >/dev/tty 2>&1"
+          ":insert-output bat --paging=always --pager=less --theme='${batTheme}' --style=plain '%{buffer_name}' </dev/tty >/dev/tty 2>&1"
           '':sh printf "\x1b[?1049h\x1b[?2004h" > /dev/tty''
           ":redraw"
         ];
