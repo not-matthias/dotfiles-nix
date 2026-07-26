@@ -19,6 +19,7 @@
     );
 in {
   stylix.targets.helix.enable = false;
+  programs.fish.shellAbbrs.h = "hx .";
 
   programs.helix = {
     enable = true;
@@ -155,8 +156,6 @@ in {
           "collapse_selection"
           "keep_primary_selection"
         ];
-        "A-," = "goto_previous_buffer";
-        "A-." = "goto_next_buffer";
         "A-w" = ":buffer-close";
         "C-c" = "no_op";
       };
