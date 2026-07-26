@@ -3,7 +3,7 @@
 ## Style
 
 - Use bullet points (e.g. for pro/con lists, or explanations of different approaches)
-- NEVER include AI attribution (Co-Authored-By, "Generated with Claude Code","Made-with: Cursor" etc.) in commits or PRs.
+- NEVER include AI attribution (Co-Authored-By, "Generated with Claude Code", "Made-with: Cursor" etc.) in commits or PRs.
 - When explaining an API, show only the function signatures, not their bodies. Keep the focus on the surface (names, parameters, return types).
 
   ```rust
@@ -29,6 +29,7 @@
 - **Minimize nesting:** Use early returns and inverted conditionals instead of deeply nested structures.
 - **Max nesting depth:** 2-3 levels deep. Avoid 4+ level nesting.
 - **Fail loudly:** Make it obvious when something goes wrong. Don't silently ignore errors or edge cases.
+    - However, this doesn't mean that you have to handle all the error cases. Only handle what can actually occur.
 - **IMPORTANT**: Comments must not narrate the specific feature, caller, or task that prompted a change — that ties the comment to one use case and it goes stale as soon as other code relies on the same logic. Explain the general mechanism when it is non-obvious; otherwise omit the comment. Match the comment density of the surrounding code.
 - Comments explain WHY or a non-obvious invariant, never WHAT.
 - Use ASCII diagrams in comments when it can improve understanding:
@@ -75,7 +76,7 @@
 - Store any intermediate scripts (shell scripts, Python scripts, etc.) in the `.agents/scripts/` folder.
 - When changing code, don't update the .agents/docs unless the user asked you to, as they are meant to be point-in-time artifacts
 
-Never reference files in `.agents` within source code (e.g. comments) as they are gitignored and meant to be development artifacts.
+Never reference files in `.agents` within source code (e.g. comments) or public artifacts (e.g. pull requests) as they are gitignored and meant to be development artifacts.
 
 ## Available CLI Tools
 
@@ -85,21 +86,3 @@ Never reference files in `.agents` within source code (e.g. comments) as they ar
 - **Navigation:** When the user references a project or directory by name (e.g. "save this to dotfiles", "open apollo", "check the logs in my-service"), use zoxide (`z <name>`) to resolve the full path. Zoxide tracks frecency so partial names usually resolve correctly. Use it any time you need to locate a directory — navigating, saving files, reading from it, etc.
 - **NixOS:** When a program isn't installed use `nix-shell` or `nix run`
 - Use `trash-put` instead of `rm` to avoid accidental data loss.
-
-## Testing
-
-- When writing code: Use red-green testing (write a failing test first, make it pass, refactor).
-- When fixing a bug: Write a test that reproduces the bug before fixing it.
-
-## Subagents
-
-You have four different tools to start subagents:
-
-- "I need a senior engineer to think with me" -> Oracle
-- "I need to find code that matches a concept" -> Codebase Search Agent
-- "I need to understand how a library/framework works by reading its source code" -> Librarian
-- "I know what to do, need large multi-step execution" -> Task Tool
-
-## Self-improving
-
-- At the end of each session, reflect on what went well and what could be improved. Update AGENTS.md/CLAUDE.md with any new insights or rules you want to follow in the future.
