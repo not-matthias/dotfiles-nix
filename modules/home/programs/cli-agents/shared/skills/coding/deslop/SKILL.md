@@ -3,9 +3,9 @@ name: deslop
 description: >-
   Remove AI-generated slop from the comments and docs a change introduces (task/PR
   narration, comments restating the code, references to things the reader cannot
-  see), and flag low-value tests it adds. Operates on the current diff only. Use
-  when the user asks to "deslop", "remove AI slop", or clean up comments before a
-  PR.
+  see), flag low-value tests it adds, and review changed code for redundancy, dead
+  code, and over-engineering. Operates on the current diff only. Use when the user
+  asks to "deslop", "remove AI slop", "simplify", or clean up before a PR.
 ---
 
 Remove AI Slop from the comments/docs this PR adds.
@@ -28,3 +28,27 @@ It doesn't mean you should blindly shorten/compact comments. Simplifying doesn't
 **Tests:** Flag weak tests added by this change (see the `testing` skill for criteria). When a weak test still covers behavior that matters, warn instead of silently deleting it.
 
 For broader code-simplicity guidance, see the `cognitive-load` skill.
+Ensure to keep the code as minimal as possible, see the `minimal-diff` skill.
+
+## Code structure
+
+Review the changed code for structural issues and fix them in-place:
+
+1. **Simpler approach?** Is there a more straightforward way to achieve the same result? Fewer moving parts, less indirection, fewer abstractions.
+2. **Redundant code?** Are there duplicated blocks, near-identical functions, or copy-pasted logic that should be consolidated?
+3. **Duplicate logic?** Did you introduce something that already exists elsewhere in the codebase? Check for existing helpers, utilities, or patterns before adding new ones.
+4. **Dead code?** Are there unused imports, variables, functions, or commented-out blocks that should be removed?
+5. **Over-engineering?** Did you add abstractions, configurability, error handling, or future-proofing that isn't needed for the current task? Three similar lines of code is better than a premature abstraction. Do not remove helpful abstractions that improve organization and maintainability.
+6. **Clarity over brevity?** Prefer explicit, debuggable code over dense one-liners.
+7. **Readable conditionals?** Avoid nested ternaries when they hurt readability; use clearer conditionals.
+
+## Rules
+
+- Preserve functionality: never change behavior; only simplify structure and readability.
+- Only review files that were changed in this session or are staged in git.
+- Fix issues directly — don't just report them.
+- Only flag high-confidence issues. False positives are worse than missed nits.
+- If no issues are found, briefly confirm the implementation is clean (one sentence).
+- Do NOT add comments, docstrings, or type annotations that weren't there before.
+- Do NOT refactor surrounding code that wasn't part of the original change.
+- If the project has tests, run them after changes. Fix any failures before finishing.
