@@ -44,6 +44,9 @@ Choose names that reveal the domain state or reason for a decision. Do not intro
 Remove a touched, private, one-use wrapper or helper when inlining it leaves a clearer local expression and does not hide a stable domain concept.
 
 Keep duplication when a generic helper would force readers to jump across files or accept vague parameters. Three clear local lines are often better than a speculative abstraction.
+### Remove backwards-compat scaffolding
+
+Delete unused code completely. Do not leave renamed `_vars`, re-exports, or `// removed` comments as compatibility shims when cleaning up.
 
 ### Remove comments that only narrate syntax
 
@@ -156,6 +159,27 @@ fn rejects_a_range_past_capacity() {
 ```
 
 Do not rewrite test contracts, fixtures, or assertions automatically. A test is behavior, not style-only cleanup.
+### Crash rather than corrupt
+
+When an invariant is violated and continuing risks data corruption, prefer crashing (`assert!`, `unreachable!`, `panic!`) or returning an error over silently continuing in an undefined state. Do not use `if`/`else` for a branch that should never occur.
+
+```rust
+// Wrong: the else branch silently ignores an impossible state
+if condition {
+    handle()
+} else {
+    // shouldn't happen
+}
+
+// Right: make the impossibility explicit
+assert!(condition, "invariant violated: ...");
+// or
+return Err(Error::InternalError("unexpected state".into()));
+// or
+unreachable!("impossible state: ...");
+```
+
+Use `if`/`else` only when both branches are expected paths. Assert often; never silently swallow an edge case.
 
 ### Avoid avoidable copies in byte-oriented work
 

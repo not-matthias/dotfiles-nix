@@ -28,7 +28,7 @@ A local convention wins. Do not call it a violation or migrate it toward the ref
 - Inspect the request's changed or named code and enough adjacent code to understand local convention.
 - Patch only the code required by the current task. Do not turn a style request into a repository-wide cleanup.
 - Leave formatting to the target project's formatter and checked-in configuration.
-- Use existing `code-quality`, `cognitive-load`, `minimal-diff`, `rust`, and `testing` guidance when it applies. This skill selects personal preferences; it does not replace those workflows.
+- Use existing `cognitive-load`, `minimal-diff`, and `testing` guidance when it applies. This skill selects personal preferences; it does not replace those workflows.
 
 ## Review and apply workflow
 
