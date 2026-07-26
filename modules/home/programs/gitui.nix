@@ -6,6 +6,7 @@
     keyConfig = ''
       (
         open_help: Some(( code: Char('?'), modifiers: "")),
+        exit_popup: Some(( code: Backspace, modifiers: "")),
 
         tab_toggle: Some(( code: Char(']'), modifiers: "")),
         tab_toggle_reverse: Some(( code: Char('['), modifiers: "")),
