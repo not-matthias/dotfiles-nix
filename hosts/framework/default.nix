@@ -285,12 +285,11 @@ in {
     sound.enable = true;
     ssd.enable = true;
     fingerprint.enable = true;
-    ryzenadj.enable = false;
     fw-fanctrl = {
       enable = true;
       config = {
-        defaultStrategy = "deaf";
-        strategyOnDischarging = "ultra";
+        defaultStrategy = "quiet";
+        strategyOnDischarging = "quiet";
         strategies = {
           quiet = {
             fanSpeedUpdateFrequency = 5;
