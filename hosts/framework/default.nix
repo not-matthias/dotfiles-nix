@@ -80,15 +80,11 @@ in {
 
     programs = {
       ghostty.enable = true;
-      vscode.enable = true;
-      ai-commit = {
-        enable = true;
-        provider = "claude";
-      };
-      ai-commit-all.enable = true;
       handy.enable = true;
-      rust.enable = true;
-      rust.maintenance.enable = true;
+      rust = {
+        enable = true;
+        maintenance.enable = true;
+      };
       low-battery-alert.enable = true;
       niri-organize.enable = true;
       granted.enable = true;

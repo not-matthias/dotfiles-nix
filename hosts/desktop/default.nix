@@ -30,11 +30,6 @@
     #   ];
     #
     programs = {
-      ai-commit = {
-        enable = true;
-        provider = "codex";
-      };
-      ai-commit-all.enable = true;
       nixvim.enable = true;
       # rust.enable = true;
       cli-agents = {
