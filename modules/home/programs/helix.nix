@@ -10,9 +10,13 @@
     if (config.stylix.polarity or "light") == "dark"
     then "mocha"
     else "latte";
-  batTheme = "Catppuccin " + (
-    if catppuccinVariant == "mocha" then "Mocha" else "Latte"
-  );
+  batTheme =
+    "Catppuccin "
+    + (
+      if catppuccinVariant == "mocha"
+      then "Mocha"
+      else "Latte"
+    );
 in {
   stylix.targets.helix.enable = false;
 
