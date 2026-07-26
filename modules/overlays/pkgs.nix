@@ -67,9 +67,6 @@
       handy = super.callPackage ../../pkgs/handy.nix {};
     })
     (_self: super: {
-      shortcut-history = super.callPackage ../../pkgs/shortcut-history {};
-    })
-    (_self: super: {
       plannotator = super.callPackage ../../pkgs/plannotator.nix {};
     })
     (_self: super: {

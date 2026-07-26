@@ -46,13 +46,10 @@ in {
       linear-cli
       slk
       umans
-      jcode
       harbor
-      paperclip
-      shortcut-history
 
-      protonmail-bridge-gui
-      thunderbird
+      # protonmail-bridge-gui
+      # thunderbird
 
       vlc
       wdisplays
