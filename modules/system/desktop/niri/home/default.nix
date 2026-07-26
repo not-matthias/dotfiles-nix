@@ -26,7 +26,6 @@ in {
         swaylock.enable = true;
         waybar.enable = true;
         vicinae.enable = true;
-        alacritty.enable = true;
       };
       services = {
         swayidle.enable = true;

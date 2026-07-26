@@ -5,19 +5,21 @@
   lib,
   flakes,
   ...
-}: let
+}:
+let
   defaultBrowser = {
     command = "helium";
     desktop = "helium.desktop";
   };
-in {
+in
+{
   imports = [
     ./hardware-configuration.nix
     ./scheduler.nix
     ./work.nix
   ];
 
-  home-manager.users.${user} = {...}: {
+  home-manager.users.${user} = { ... }: {
     home.stateVersion = "22.05";
     home.packages = with pkgs; [
       uv
@@ -28,9 +30,9 @@ in {
       # mission-center
       # jujutsu
       # planify
-      unstable.todoist # Requires v0.23+
       unstable.beeper
       flakes.devenv.packages.${pkgs.stdenv.hostPlatform.system}.devenv
+      flakes.hunk.packages.${pkgs.stdenv.hostPlatform.system}.hunk
 
       binary-ninja
       vmprotect
@@ -58,12 +60,10 @@ in {
       file-roller
       anki
       imhex
-      unstable.obsidian
 
       # Language servers
       taplo
       nil
-      flakes.hunk.packages.${pkgs.stdenv.hostPlatform.system}.hunk
       nixd
     ];
     xdg.mimeApps = {
@@ -111,7 +111,7 @@ in {
         oh-my-pi = {
           enable = true;
           envFile = "/run/agenix/pi-mono-env";
-          disabledProviders = [ "claude" ];
+          disabledProviders = ["claude"];
           theme = {
             dark = "dark";
             light = "light";
@@ -141,7 +141,6 @@ in {
 
       gitui.enable = true;
       worktrunk.enable = true;
-      firefox.enable = false;
       zen-browser.enable = true;
       helium.enable = true;
 
@@ -197,7 +196,7 @@ in {
     noisetorch.enable = true;
     fcitx5.enable = true;
     nix-ld.enable = true;
-    nix-ld.libraries = [pkgs.libevdev];
+    nix-ld.libraries = [ pkgs.libevdev ];
     obs.enable = true;
     nix-index.enable = true;
     oneleet = {
@@ -256,7 +255,6 @@ in {
         schedule = "daily";
       };
     };
-    opensnitch.enable = false;
     safeeyes.enable = true;
     navidrome = {
       enable = true;
@@ -451,7 +449,8 @@ in {
       secrets."/crypto_keyfile.bin" = null;
 
       # Enable swap on luks
-      luks.devices."luks-482bfe5c-c987-4a97-9c07-b8cd312cabb5".device = "/dev/disk/by-uuid/482bfe5c-c987-4a97-9c07-b8cd312cabb5";
+      luks.devices."luks-482bfe5c-c987-4a97-9c07-b8cd312cabb5".device =
+        "/dev/disk/by-uuid/482bfe5c-c987-4a97-9c07-b8cd312cabb5";
       luks.devices."luks-482bfe5c-c987-4a97-9c07-b8cd312cabb5".keyFile = "/crypto_keyfile.bin";
     };
   };
