@@ -65,10 +65,8 @@ cat ~/.claude/projects/<project>/<session>.jsonl | \
 | What you found | Target skill |
 |----------------|--------------|
 | Nix hash errors, build failures, overlays | `nix-package` |
-| IDA SDK patterns, plugin boilerplate | `ida-plugin-dev` |
 | CodSpeed integration, benchmark setup | `codspeed-bench` |
 | Binary analysis, unpacking, emulation | `reverse-engineer` |
-| Rust cargo patterns | `rust` |
 
 ### 4. Write the finding
 
