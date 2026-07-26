@@ -112,7 +112,7 @@
       flake = false;
     };
     oh-my-pi = {
-      url = "git+file:///home/not-matthias/Documents/technical/git/oh-my-pi?ref=perf/startup-optimizations&shallow=1";
+      url = "github:not-matthias/oh-my-pi/perf/startup-optimizations";
     };
   };
 
