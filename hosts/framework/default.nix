@@ -5,21 +5,19 @@
   lib,
   flakes,
   ...
-}:
-let
+}: let
   defaultBrowser = {
     command = "helium";
     desktop = "helium.desktop";
   };
-in
-{
+in {
   imports = [
     ./hardware-configuration.nix
     ./scheduler.nix
     ./work.nix
   ];
 
-  home-manager.users.${user} = { ... }: {
+  home-manager.users.${user} = {...}: {
     home.stateVersion = "22.05";
     home.packages = with pkgs; [
       uv
@@ -196,7 +194,7 @@ in
     noisetorch.enable = true;
     fcitx5.enable = true;
     nix-ld.enable = true;
-    nix-ld.libraries = [ pkgs.libevdev ];
+    nix-ld.libraries = [pkgs.libevdev];
     obs.enable = true;
     nix-index.enable = true;
     oneleet = {
@@ -408,6 +406,7 @@ in
     docker.package = pkgs.docker_29; # default docker_28 is flagged insecure
   };
   desktop = {
+    theme = "light";
     niri.enable = true;
     fonts.enable = true;
   };
@@ -449,8 +448,7 @@ in
       secrets."/crypto_keyfile.bin" = null;
 
       # Enable swap on luks
-      luks.devices."luks-482bfe5c-c987-4a97-9c07-b8cd312cabb5".device =
-        "/dev/disk/by-uuid/482bfe5c-c987-4a97-9c07-b8cd312cabb5";
+      luks.devices."luks-482bfe5c-c987-4a97-9c07-b8cd312cabb5".device = "/dev/disk/by-uuid/482bfe5c-c987-4a97-9c07-b8cd312cabb5";
       luks.devices."luks-482bfe5c-c987-4a97-9c07-b8cd312cabb5".keyFile = "/crypto_keyfile.bin";
     };
   };
