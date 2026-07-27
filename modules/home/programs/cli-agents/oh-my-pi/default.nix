@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  flakes,
   ...
 }:
 with lib; let
@@ -13,7 +12,7 @@ with lib; let
   # The released `omp-linux-x64` binary bundles its own Bun runtime, so it does
   # not hit the nixpkgs Bun version check. Wrap it to optionally source an env
   # file (e.g. an agenix secret) before launching.
-  ompPkg = flakes.oh-my-pi.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  ompPkg = pkgs.oh-my-pi;
   wrappedOmp = pkgs.symlinkJoin {
     name = "oh-my-pi-wrapped";
     paths = [ompPkg];

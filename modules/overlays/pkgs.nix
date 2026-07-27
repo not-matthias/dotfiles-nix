@@ -61,6 +61,9 @@
       linear-cli = super.callPackage ../../pkgs/linear-cli.nix {};
     })
     (_self: super: {
+      oh-my-pi = super.callPackage ../../pkgs/oh-my-pi.nix {};
+    })
+    (_self: super: {
       umans = super.callPackage ../../pkgs/umans.nix {};
     })
     (_self: super: {
