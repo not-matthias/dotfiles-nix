@@ -6,8 +6,8 @@
   src = fetchFromGitHub {
     owner = "elidickinson";
     repo = "pi-claude-bridge";
-    rev = "7e412185a62c2cdbbaee020de9e01e94e11d8851";
-    hash = "sha256-UHSvO6CQOMmoH0lZ9tyfoLhhw2qVDxBf7E4yfhedokM=";
+    rev = "066767393a0efe4be09632f63dc046c2190231b7";
+    hash = "sha256-vn2geva8IVwR+sloFp+wUt1f16iGVs10vIn2PAtCSWk=";
   };
 in
   # Keep the lockfile limited to dependencies installed in the Nix build.

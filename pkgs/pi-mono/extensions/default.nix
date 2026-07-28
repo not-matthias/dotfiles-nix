@@ -68,7 +68,7 @@ in {
           "
           cp ${./tasks-package-lock.json} $out/package-lock.json
         '';
-        npmDepsHash = "sha256-u/TUCES4Bc1DifwlCVA/sJvUcAC8xJ4sD8zSrCMeQmU=";
+        npmDepsHash = "sha256-uZ+XwurlSHHS9SXuqa7aL8Twtr1cNILiEoXpH+9SrNA=";
       };
     };
     resources.extensions = ".";
@@ -125,7 +125,7 @@ in {
           import "../runs/background/subagent-runner.ts";
           EOF
         '';
-        npmDepsHash = "sha256-pkxU6WprX7Gz+xrNeCpddqcmDoOKeNwBuP3KhQHfyTg=";
+        npmDepsHash = "sha256-7jsn9Ho0TZzQn9reOnIRyQ10qswEjJvgJH+y0JC9wdY=";
       };
     };
     resources.extensions = ".";
@@ -154,7 +154,7 @@ in {
             fs.writeFileSync(file, lines.join("\n"));
           '
         '';
-        pnpmDepsHash = "sha256-KrYmv+oZGj/e97ksnCMfPuParsEDl4WjXvcgOnpKNq0=";
+        pnpmDepsHash = "sha256-XPC4IC5IZ3nU0JQPYPNlcaGxJbT8mNp+TeVZTXBP/84=";
       };
     };
     resources.extensions = ".";
@@ -299,7 +299,7 @@ in {
     src = compileExtension {
       src = withRuntimeDeps {
         src = pkgs.callPackage ./pi-claude-bridge.nix {};
-        npmDepsHash = "sha256-hGEN5htn2Dz7O8XTjW05WLFwF1hV9mL+6CvXlnICBqM=";
+        npmDepsHash = "sha256-vr/d3A9cnFNAhZHjJsn5RL3KJfXGVFglK39KVxWSMwQ=";
       };
     };
     resources.extensions = ".";

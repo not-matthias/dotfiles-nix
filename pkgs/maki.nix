@@ -3,7 +3,7 @@
   stdenvNoCC,
   fetchzip,
 }: let
-  version = "0.4.1";
+  version = "0.4.4";
 in
   stdenvNoCC.mkDerivation {
     pname = "maki";
@@ -13,7 +13,7 @@ in
     # Tarball contains `maki` at its root (no top-level dir), so stripRoot=false.
     src = fetchzip {
       url = "https://github.com/tontinton/maki/releases/download/v${version}/maki-v${version}-x86_64-unknown-linux-musl.tar.gz";
-      hash = "sha256-oIuoyGc14oK4i2sG7q+E0/1auHQ0ccomAZO28Cqg0C4=";
+      hash = "sha256-MN3i1O3X3AKDOBrObR5Z86vnPYP7eVQCEYkDwtpNTio=";
       stripRoot = false;
     };
 
