@@ -1,4 +1,4 @@
-{
+{pkgs, ...}: {
   xdg.mimeApps = {
     enable = true;
     associations.added = {
@@ -108,4 +108,7 @@
       "application/pdf" = "org.gnome.Evince.desktop";
     };
   };
+
+  # xdg-open/xdg-mime binaries: no NixOS module installs these to PATH.
+  home.packages = [pkgs.xdg-utils];
 }
