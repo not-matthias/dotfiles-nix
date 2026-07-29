@@ -74,8 +74,14 @@ in {
       ''
       + fishPrompt;
     shellInit = ''
-      # Ensure user profile binaries are available in fish, even with minimal login environments.
-      fish_add_path --prepend ~/.nix-profile/bin /etc/profiles/per-user/$USER/bin
+      # --global, never the default --universal: universal fish_user_paths is persisted to
+      # ~/.config/fish/fish_variables and accumulates entries forever, so garbage-collected
+      # store paths and per-project devenv dirs pile up as dead PATH members.
+      fish_add_path --global --prepend ~/.nix-profile/bin /etc/profiles/per-user/$USER/bin
+
+      # Appended, not prepended: imperatively installed binaries (cargo install, uv tool
+      # install) stay reachable without shadowing their Nix-managed counterparts.
+      fish_add_path --global --append ~/.cargo/bin ~/.local/bin
 
       if command -sq any-nix-shell
         any-nix-shell fish --info-right | source
