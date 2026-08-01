@@ -23,6 +23,7 @@
 - When explaining, use diagrams (only if they make sense). Use Mermaid if a tool is available, otherwise use ASCII.
     - Don't use diagrams if it can be displayed with bullet points (since it's easier to understand and less verbose).
     - Prefer to use trees and bullet points in 90% of the cases, only use Mermaid in the other 10%.
+- Use Simple Technical English
 
 ## Code Style
 
@@ -69,6 +70,7 @@
 - When writing public artifacts (issues, PRs, commit messages, public docs): NEVER include internal Slack threads, private channel discussions, internal doc links, internal tool or roadmap details, or teammate names. Describe the technical problem generically and cite only public sources; if an internal reference seems necessary, ask the user first.
 - When you need to ask the user a question, ALWAYS use the `AskUserQuestion` tool if it is available in your toolset. Never substitute plain text output for a structured question tool call.
 - Prefer rebase over squash when merging PRs.
+- NEVER reply to pull requests/review comments/GitHub issues/etc. unless the user asks you to
 
 ## Documentation
 
