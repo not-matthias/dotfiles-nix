@@ -25,6 +25,15 @@ in {
     "${mod}+R".action.spawn = ["vicinae" "toggle"];
     "${mod}+F".action.fullscreen-window = [];
     "${mod1}+L".action.spawn = ["swaylock" "-f" "-c" "000000"];
+    "${mod1}+Shift+L".action.spawn = [
+      "systemd-inhibit"
+      "--what=idle:sleep"
+      "--who=lock"
+      "--why=keep-running"
+      "swaylock"
+      "-c"
+      "000000"
+    ];
 
     # Overview mode
     "${mod}+O".action.toggle-overview = [];
