@@ -83,7 +83,10 @@ in {
       low-battery-alert.enable = true;
       niri-organize.enable = true;
       granted.enable = true;
-      nixvim.enable = true;
+      helix = {
+        enable = true;
+        compat.enable = true;
+      };
       cli-agents = {
         agent-browser.enable = true;
         claude.enable = true;

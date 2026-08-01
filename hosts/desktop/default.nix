@@ -30,7 +30,10 @@
     #   ];
     #
     programs = {
-      nixvim.enable = true;
+      helix = {
+        enable = true;
+        compat.enable = true;
+      };
       # rust.enable = true;
       cli-agents = {
         agent-browser.enable = true;
