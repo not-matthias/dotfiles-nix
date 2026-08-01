@@ -39,6 +39,11 @@
   #   "usbhid.kbpoll=1"
   # ];
 
+  # Disable btusb runtime autosuspend: otherwise the MT7922 controller
+  # suspends mid firmware-handshake, the WMT init times out (-110) and hci0
+  # never initializes ("No default controller available").
+  boot.kernelParams = ["btusb.enable_autosuspend=0"];
+
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e33d79b0-4de1-47d3-a3fe-ab53c3f7f390";
     fsType = "ext4";
