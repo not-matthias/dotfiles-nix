@@ -288,6 +288,20 @@ in {
         defaultStrategy = "quiet";
         strategyOnDischarging = "quiet";
         strategies = {
+          silent = {
+            fanSpeedUpdateFrequency = 5;
+            movingAverageInterval = 45;
+            speedCurve = [
+              {
+                temp = 0;
+                speed = 30;
+              }
+              {
+                temp = 100;
+                speed = 30;
+              }
+            ];
+          };
           quiet = {
             fanSpeedUpdateFrequency = 5;
             movingAverageInterval = 45;
