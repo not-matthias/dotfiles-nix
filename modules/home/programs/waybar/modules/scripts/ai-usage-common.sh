@@ -37,18 +37,23 @@ fetch_data_with_retries() {
   local attempt=1
   local backoff="$base_backoff"
   local output
-  local http_code
+  local fetch_rc
 
   while [ "$attempt" -le "$retry_limit" ]; do
-    if output=$(fetch_data 2>&1); then
+    output=$(fetch_data 2>&1)
+    fetch_rc=$?
+    if [ "$fetch_rc" -eq 0 ]; then
       echo "$output"
       return 0
     fi
-    http_code="${LAST_HTTP_CODE:-0}"
 
-    if [ "$http_code" = "429" ]; then
+    if [ "$fetch_rc" -eq 2 ]; then
       echo "rate_limited" >&2
       return 2
+    fi
+    if [ "$fetch_rc" -eq 4 ]; then
+      echo "$output" >&2
+      return 4
     fi
 
     if [ "$attempt" -ge "$retry_limit" ]; then
@@ -116,6 +121,9 @@ get_cached_or_fetch() {
       return 3
     fi
     return 2
+  elif [ "$rc" -eq 4 ]; then
+    echo "$data" >&2
+    return 4
   elif [ "$rc" -ne 0 ]; then
     echo "$data" >&2
     return 1

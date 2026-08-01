@@ -24,17 +24,20 @@ fetch_data() {
   response=$(curl -s -w '\n%{http_code}' "https://chatgpt.com/backend-api/wham/usage" \
     -H "Authorization: Bearer $token")
   http_code=$(echo "$response" | tail -1)
-  # shellcheck disable=SC2034
-  LAST_HTTP_CODE="$http_code"
   local body
   body=$(echo "$response" | sed '$d')
   if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
     echo "$body"
     return 0
   fi
+  if [ "$http_code" = "429" ]; then
+    return 2
+  fi
+  if [ "$http_code" = "401" ] || [ "$http_code" = "403" ]; then
+    return 4
+  fi
   return 1
 }
-
 rate_limited=0
 data=$(get_cached_or_fetch "codex" "${AI_USAGE_REFRESH_SECONDS:-300}" "$force_refresh")
 rc=$?
@@ -42,6 +45,9 @@ if [ "$rc" -eq 3 ]; then
   rate_limited=1
 elif [ "$rc" -eq 2 ]; then
   output_error "󰚩" "Rate limited (no cache)"
+  exit 0
+elif [ "$rc" -eq 4 ]; then
+  output_error "󰚩" "Authentication failed; sign in again"
   exit 0
 elif [ "$rc" -ne 0 ]; then
   output_error "󰚩" "API request failed"
