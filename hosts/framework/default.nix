@@ -195,6 +195,7 @@ in {
     fcitx5.enable = true;
     nix-ld.enable = true;
     nix-ld.libraries = [pkgs.libevdev];
+    sccache.enable = true;
     obs.enable = true;
     nix-index.enable = true;
     oneleet = {
