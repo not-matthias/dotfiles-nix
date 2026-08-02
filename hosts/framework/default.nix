@@ -284,6 +284,7 @@ in {
 
   hardware = {
     powersave.enable = true;
+    hibernate.enable = true;
     bluetooth.enable = true;
     sound.enable = true;
     ssd.enable = true;
@@ -476,20 +477,4 @@ in {
   # scx_bpfland (scheduler.nix) already biases CPU toward interactive tasks; nudge
   # nix builds further down so the desktop stays responsive under heavy build load.
   systemd.services.nix-daemon.serviceConfig.Nice = 10;
-
-  # s2idle drains the battery on this Framework, so fall through to
-  # hibernation after 30 minutes of suspend.
-  systemd.sleep.settings.Sleep = lib.mkForce {
-    AllowSuspend = "yes";
-    AllowHibernation = "yes";
-    AllowSuspendThenHibernate = "yes";
-    AllowHybridSleep = "yes";
-    HibernateDelaySec = "30min";
-  };
-
-  services.logind.settings.Login = {
-    HandleLidSwitch = "suspend-then-hibernate";
-    HandleLidSwitchDocked = "ignore";
-    HandlePowerKey = "suspend-then-hibernate";
-  };
 }
