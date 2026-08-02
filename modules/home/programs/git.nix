@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   home.packages = with pkgs; [
     git-absorb
   ];
@@ -70,6 +74,10 @@
   programs.delta = {
     enable = true;
     enableGitIntegration = true;
+    # Delta probes the terminal background to pick a theme, but that probe is
+    # skipped whenever stdout is a pipe (lazygit, jj), leaving it on its dark
+    # default. Pin the polarity so piped callers match the rest of the UI.
+    options.light = (config.stylix.polarity or "light") != "dark";
   };
 
   programs.fish = {
