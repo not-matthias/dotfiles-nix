@@ -167,6 +167,10 @@ in {
           g.r.a = "code_action";
           g.r.n = "rename_symbol";
           K = "hover";
+          # Helix has no repeat-last-change command, so `.` aliases the macro
+          # replay that `q` already runs: `Q<edit>Q` records, `.` repeats it.
+          # `A-.` stays repeat_last_motion (last f/t/search).
+          "." = "replay_macro";
           "C-/" = "toggle_line_comments";
           "C-p" = "file_picker";
           "C-b" = "goto_definition";
@@ -285,11 +289,17 @@ in {
       ;;    d and c.
       ;; 5. Linewise file-boundary operator motions: yG/ygg, dG/dgg,
       ;;    cG/cgg, >G/>gg and <G/<gg.
+      ;; 6. dw/dW deleted the trailing newline and joined the next line up
+      ;;    when the word was the last one on the line, because the word
+      ;;    motion's trailing-whitespace skip crosses line boundaries.
       ;;
       ;; Not fixed (upstream TODOs in vim-hx):
       ;; - Long-WORD text objects (daW/diW/caW/ciW/yaW/yiW) — commented out in
       ;;   delete-motions.scm:102-111 and change-motions.scm:66-75
       ;; - Backtick text objects — only " and ' are wired in visual-motions.scm
+      ;; - yw/yW have the same end-of-line newline-skip as dw/dW (see fix 6)
+      ;;   but are left yanking across the line break, since it doesn't
+      ;;   destroy text and wasn't reported.
 
       (require (prefix-in helix.static. "helix/static.scm"))
       (require (prefix-in helix. "helix/commands.scm"))
@@ -468,6 +478,39 @@ in {
       (define (yank-word-end) (vim-yank-impl helix.static.extend_next_word_end))
       (define (yank-long-word-end) (vim-yank-impl helix.static.extend_next_long_word_end))
 
+      ;; dw/dW must not delete across the newline into the next line. The
+      ;; vim-hx word-start extend skips trailing whitespace including the
+      ;; newline (needed for plain "w" movement), but Vim's exclusive-motion
+      ;; rule stops an operator ("d") at the end of the line instead of
+      ;; joining it with the next one.
+      (define (line-end-position pos)
+        ;; Last position still on the same line as `pos`: one before its
+        ;; terminating newline, or the document's last character if the
+        ;; line has none. Helix selections include the char at `head`, so
+        ;; clamping here (not at the newline itself) keeps it unselected.
+        (define rope (get-document-as-slice))
+        (let loop ([p pos])
+          (define next-ch (rope-char-at rope (+ p 1)))
+          (cond
+            [(not next-ch) p]
+            [(char=? next-ch #\newline) p]
+            [else (loop (+ p 1))])))
+
+      (define (vim-extend-word-start-line-bound extend-word-start)
+        (define start (cursor-position))
+        (extend-word-start)
+        (set-editor-count! 1)
+        (helix.static.extend_char_left)
+        (define limit (line-end-position start))
+        (when (> (cursor-position) limit)
+          (extend-to-position limit)))
+
+      (define (vim-delete-word-line-bound)
+        (vim-delete-impl (lambda () (vim-extend-word-start-line-bound vim-extend-next-word-start))))
+
+      (define (vim-delete-long-word-line-bound)
+        (vim-delete-impl (lambda () (vim-extend-word-start-line-bound vim-extend-next-long-word-start))))
+
       ;; Register all fixes — add-global-keybinding merges recursively into
       ;; the existing keymap, so new keys are added and existing leaf values
       ;; for the same key are overridden.
@@ -563,6 +606,8 @@ in {
             ;; Closing bracket aliases for delete — around
             (d (G ":vim-delete-file-end")
                (g (g ":vim-delete-file-start"))
+               (w ":vim-delete-word-line-bound")
+               (W ":vim-delete-long-word-line-bound")
                (a ("}" ":vim-delete-around-curly")
                   ("]" ":vim-delete-around-square")
                   (")" ":vim-delete-around-paren")
@@ -613,6 +658,8 @@ in {
                yank-inner-single-quote
                yank-word-end
                yank-long-word-end
+               vim-delete-word-line-bound
+               vim-delete-long-word-line-bound
                vim-comment-block-line
                vim-comment-line
                vim-comment-word
