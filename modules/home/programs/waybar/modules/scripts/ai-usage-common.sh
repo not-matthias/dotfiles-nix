@@ -51,9 +51,9 @@ fetch_data_with_retries() {
       echo "rate_limited" >&2
       return 2
     fi
-    if [ "$fetch_rc" -eq 4 ]; then
+    if [ "$fetch_rc" -eq 4 ] || [ "$fetch_rc" -eq 5 ]; then
       echo "$output" >&2
-      return 4
+      return "$fetch_rc"
     fi
 
     if [ "$attempt" -ge "$retry_limit" ]; then
@@ -121,9 +121,13 @@ get_cached_or_fetch() {
       return 3
     fi
     return 2
-  elif [ "$rc" -eq 4 ]; then
+  elif [ "$rc" -eq 4 ] || [ "$rc" -eq 5 ]; then
     echo "$data" >&2
-    return 4
+    if [ -f "$cache_file" ]; then
+      cat "$cache_file"
+      return "$rc"
+    fi
+    return "$rc"
   elif [ "$rc" -ne 0 ]; then
     echo "$data" >&2
     return 1

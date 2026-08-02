@@ -10,6 +10,14 @@ if [ ! -f "$CREDENTIALS" ]; then
   exit 0
 fi
 
+# The refresh token outlives the access token. A 401 with a valid refresh token
+# is therefore recoverable.
+refresh_token_valid() {
+  local expires_ms
+  expires_ms=$(jq -r '.claudeAiOauth.refreshTokenExpiresAt // empty' "$CREDENTIALS")
+  [ -n "$expires_ms" ] && [ "$expires_ms" -gt "$(date +%s)000" ]
+}
+
 force_refresh=0
 if [ "${1:-}" = "--force-refresh" ]; then
   force_refresh=1
@@ -35,11 +43,15 @@ fetch_data() {
     return 2
   fi
   if [ "$http_code" = "401" ] || [ "$http_code" = "403" ]; then
+    if refresh_token_valid; then
+      return 5
+    fi
     return 4
   fi
   return 1
 }
 rate_limited=0
+session_refreshing=0
 data=$(get_cached_or_fetch "claude" "${AI_USAGE_REFRESH_SECONDS:-300}" "$force_refresh")
 rc=$?
 if [ "$rc" -eq 3 ]; then
@@ -48,8 +60,14 @@ elif [ "$rc" -eq 2 ]; then
   output_error "󰜡" "Rate limited (no cache)"
   exit 0
 elif [ "$rc" -eq 4 ]; then
-  output_error "󰜡" "Authentication failed; sign in again"
+  output_error "󰜡" "Session expired; sign in again"
   exit 0
+elif [ "$rc" -eq 5 ]; then
+  if [ -z "$data" ]; then
+    output_error "󰜡" "Session refreshing"
+    exit 0
+  fi
+  session_refreshing=1
 elif [ "$rc" -ne 0 ]; then
   output_error "󰜡" "API request failed"
   exit 0
@@ -97,6 +115,10 @@ rl_note=""
 if [ "$rate_limited" -eq 1 ]; then
   rl_note="\n⚠ Rate limited — showing cached data"
 fi
+session_note=""
+if [ "$session_refreshing" -eq 1 ]; then
+  session_note="\n⚠ Session refreshing — showing cached data"
+fi
 
 # Fetch 2x promo status (best-effort, don't block on failure)
 twox_note=""
@@ -117,7 +139,7 @@ if [ -n "$twox_json" ]; then
   fi
 fi
 
-tooltip="Claude Code Usage\n━━━━━━━━━━━━━━━━━━━━━━━━\n5h:  ${fh_pct}%  ${fh_eta}\n7d:  ${sd_pct}%  ${sd_eta}${models_tooltip}${twox_note}${rl_note}"
+tooltip="Claude Code Usage\n━━━━━━━━━━━━━━━━━━━━━━━━\n5h:  ${fh_pct}%  ${fh_eta}\n7d:  ${sd_pct}%  ${sd_eta}${models_tooltip}${twox_note}${rl_note}${session_note}"
 
 # At 100%: show reset timer instead of percentage (7d takes priority)
 bar_text="${fh_pct}%"
