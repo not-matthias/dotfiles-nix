@@ -26,6 +26,7 @@
   ./worktrunk.nix
   ./helix.nix
   ./idea-copilot.nix
+  ./binary-ninja.nix
   ./ghidra.nix
   ./kitty.nix
   ./lazygit.nix

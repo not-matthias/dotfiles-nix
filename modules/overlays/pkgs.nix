@@ -4,6 +4,9 @@
       binary-ninja = super.callPackage ../../pkgs/binary-ninja.nix {};
     })
     (_self: super: {
+      binja-wasm = super.callPackage ../../pkgs/binja-wasm.nix {};
+    })
+    (_self: super: {
       detect-it-easy = super.callPackage ../../pkgs/detect-it-easy.nix {};
     })
     (_self: super: {

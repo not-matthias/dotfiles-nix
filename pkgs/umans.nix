@@ -4,7 +4,6 @@
   fetchurl,
   python3,
 }:
-
 stdenvNoCC.mkDerivation rec {
   pname = "umans";
   version = "0.1.43";

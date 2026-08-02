@@ -32,7 +32,6 @@ in {
       flakes.devenv.packages.${pkgs.stdenv.hostPlatform.system}.devenv
       flakes.hunk.packages.${pkgs.stdenv.hostPlatform.system}.hunk
 
-      binary-ninja
       vmprotect
       ida-pro
       plannotator
@@ -127,6 +126,10 @@ in {
           vaultName = "personal-vault-v2";
           desktopName = "Obsidian - Personal Vault";
         };
+      };
+      binary-ninja = {
+        enable = true;
+        extensions = [pkgs.binja-wasm];
       };
       ghidra = {
         enable = false;
