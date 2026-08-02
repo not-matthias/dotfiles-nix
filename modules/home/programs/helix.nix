@@ -480,36 +480,62 @@ in {
 
       ;; dw/dW must not delete across the newline into the next line. The
       ;; vim-hx word-start extend skips trailing whitespace including the
-      ;; newline (needed for plain "w" movement), but Vim's exclusive-motion
-      ;; rule stops an operator ("d") at the end of the line instead of
-      ;; joining it with the next one.
-      (define (line-end-position pos)
-        ;; Last position still on the same line as `pos`: one before its
-        ;; terminating newline, or the document's last character if the
-        ;; line has none. Helix selections include the char at `head`, so
-        ;; clamping here (not at the newline itself) keeps it unselected.
-        (define rope (get-document-as-slice))
-        (let loop ([p pos])
-          (define next-ch (rope-char-at rope (+ p 1)))
-          (cond
-            [(not next-ch) p]
-            [(char=? next-ch #\newline) p]
-            [else (loop (+ p 1))])))
+      ;; newline (needed for plain "w" movement). Build the range
+      ;; deterministically instead: collapse to a clean point at `start`,
+      ;; then extend forward through the word plus same-line whitespace,
+      ;; stopping before the newline.
+      ;;
+      ;; `class-select` picks the token's character class, sticky to the START
+      ;; char so `dw` on punctuation mirrors vim-hx `w` (word-vs-punct branch)
+      ;; instead of becoming a no-op.
+      (define (token-class c0)
+        (cond
+          [(is-word-char? c0) is-word-char?]
+          [(is-whitespace? c0) (lambda (_) #f)]
+          [else (lambda (ch) (and (not (is-whitespace? ch)) (not (is-word-char? ch))))]))
 
-      (define (vim-extend-word-start-line-bound extend-word-start)
+      (define (skip-while-matching pred ch-at p)
+        (let loop ([i p])
+          (define c (ch-at i))
+          (if (and c (pred c)) (loop (+ i 1)) i)))
+
+      ;; Build the range deterministically so the newline is never included.
+      ;; Collapse to a clean point at `start` (kills any stale anchor), then
+      ;; extend to the end of the token plus trailing same-line whitespace,
+      ;; clamped to the char before the newline. Returns #f when the cursor
+      ;; is on a line break (nothing to delete) so the caller skips the
+      ;; delete entirely instead of point-deleting the newline and joining
+      ;; the next line up.
+      (define (vim-extend-word-start-line-bound class-select)
+        (define rope (get-document-as-slice))
         (define start (cursor-position))
-        (extend-word-start)
-        (set-editor-count! 1)
-        (helix.static.extend_char_left)
-        (define limit (line-end-position start))
-        (when (> (cursor-position) limit)
-          (extend-to-position limit)))
+        (define ch-at (lambda (p) (rope-char-at rope p)))
+        (define c0 (ch-at start))
+        (if (or (not c0) (char=? c0 #\newline))
+            #f
+            (let* ([_ (move-to-position start)]
+                   [member? (class-select c0)]
+                   [i1 (skip-while-matching member? ch-at start)])
+              ;; phase 2: trailing whitespace, stopping before the newline
+              ;; or the next token. End is one before that boundary so
+              ;; selection [start, end] (head inclusive) excludes it.
+              (let loop ([i i1])
+                (define c (ch-at i))
+                (cond
+                  [(or (not c) (char=? c #\newline)) (- i 1)]
+                  [else (if (is-whitespace? c) (loop (+ i 1)) (- i 1))])))))
 
       (define (vim-delete-word-line-bound)
-        (vim-delete-impl (lambda () (vim-extend-word-start-line-bound vim-extend-next-word-start))))
+        (define end (vim-extend-word-start-line-bound token-class))
+        (when end
+          (vim-delete-impl (lambda () (extend-to-position end)))))
 
       (define (vim-delete-long-word-line-bound)
-        (vim-delete-impl (lambda () (vim-extend-word-start-line-bound vim-extend-next-long-word-start))))
+        (define end
+          (vim-extend-word-start-line-bound
+            (lambda (c0) (lambda (ch) (not (is-whitespace? ch))))))
+        (when end
+          (vim-delete-impl (lambda () (extend-to-position end)))))
 
       ;; Register all fixes — add-global-keybinding merges recursively into
       ;; the existing keymap, so new keys are added and existing leaf values
