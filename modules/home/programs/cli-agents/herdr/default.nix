@@ -150,9 +150,17 @@ in {
       };
     };
 
-    xdg.configFile."herdr/config.toml" = mkIf (cfg.settings != {}) {
-      source = configFile;
-    };
+    # herdr writes config.toml at runtime; keep it a mutable regular file,
+    # seeding from the declarative config only when missing or still a Nix symlink.
+    home.activation.herdrConfig = mkIf (cfg.settings != {}) (
+      hm.dag.entryAfter ["writeBoundary"] ''
+        target="$HOME/.config/herdr/config.toml"
+        if [[ ! -e "$target" || -L "$target" ]]; then
+          $DRY_RUN_CMD rm -f "$target"
+          $DRY_RUN_CMD install -Dm644 ${configFile} "$target"
+        fi
+      ''
+    );
 
     home.activation.herdrPlugins = mkIf (cfg.plugins != []) (
       hm.dag.entryAfter ["writeBoundary"] (concatMapStrings linkPlugin cfg.plugins)
