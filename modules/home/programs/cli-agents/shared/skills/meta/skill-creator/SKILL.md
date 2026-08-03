@@ -416,4 +416,3 @@ license: MIT  # If adapting external work
 | `github-raw-fetch.md` | URL transformation | Simple workflow |
 | `rust.md` | Development practices | Multiple workflows |
 | `ast-grep.md` | Code search | Multi-phase workflow |
-| `technical-researcher.md` | Research methodology | Complex reasoning |
