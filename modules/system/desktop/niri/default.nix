@@ -34,6 +34,8 @@ in {
     nixpkgs.overlays = [flakes.niri.overlays.niri];
 
     stylix.enable = true;
+    # UWSM only starts sessions automatically after graphical.target is active.
+    systemd.defaultUnit = "graphical.target";
 
     # Enable UWSM for proper systemd session management
     programs.uwsm = {
