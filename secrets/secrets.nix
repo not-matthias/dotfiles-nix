@@ -38,5 +38,4 @@ in {
   "wakapi-salt.age".publicKeys = systems;
 
   "pi-mono-env.age".publicKeys = systems;
-  "umans-local-proxy.age".publicKeys = systems;
 }

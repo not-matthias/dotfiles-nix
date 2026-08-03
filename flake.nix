@@ -75,10 +75,6 @@
       url = "git+https://github.com/heraeyes/platform?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    umans-local-proxy = {
-      url = "github:not-matthias/umans-local-proxy";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
     hunk = {
       url = "github:modem-dev/hunk/v0.18.0-beta.0";
       inputs.nixpkgs.follows = "nixpkgs";

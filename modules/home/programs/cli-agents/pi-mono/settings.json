@@ -22,7 +22,6 @@
     "enabled": false
   },
   "enabledModels": [
-    "umans-local/umans-glm-5.2",
     "openai-codex/gpt-5.6-sol:high",
     "openai-codex/gpt-5.6-tera:high",
     "openai-codex/gpt-5.6-luna:high"

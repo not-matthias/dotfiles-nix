@@ -44,7 +44,6 @@ in {
       gh-dash
       linear-cli
       slk
-      umans
       harbor
 
       # protonmail-bridge-gui
@@ -118,7 +117,6 @@ in {
           };
           discoverNestedSkills = true;
         };
-        maki.enable = true;
       };
       btop.enable = true;
       obsidian = {
@@ -216,7 +214,6 @@ in {
     # solidtime.enable = true;
     resolved.enable = true; # give Chrome a working local resolver (independent of VPN)
     multi-scrobbler.enable = true;
-    umans-local-proxy.enable = true;
     restic = {
       enable = true;
       paths = [

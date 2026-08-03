@@ -19,7 +19,6 @@ in {
     ./droid/default.nix
     ./pi-mono/default.nix
     ./oh-my-pi/default.nix
-    ./maki/default.nix
     ./herdr/default.nix
   ];
 
