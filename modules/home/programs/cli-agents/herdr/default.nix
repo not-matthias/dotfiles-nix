@@ -9,15 +9,15 @@ with lib; let
   tomlFormat = pkgs.formats.toml {};
   configFile = tomlFormat.generate "herdr-config.toml" cfg.settings;
   herdr = let
-    version = "0.7.5";
+    version = "0.8.0";
     assets = {
       x86_64-linux = {
         name = "herdr-linux-x86_64";
-        hash = "sha256-PcgyiAc+TC08Z5ow576XvMqRQcb9F9u7khkULpXFklM=";
+        hash = "sha256-uHLqfkD6LLF+hXrJtisb8m23tAPGIvXS8/WzX26azSg=";
       };
       aarch64-linux = {
         name = "herdr-linux-aarch64";
-        hash = "sha256-MudjoUmaa2lLHXCOTwYrdDvh2p80/PpNIS1ttv4JqLk=";
+        hash = "sha256-9kesZkaNnvvGQv5TT7KERo8K6mBkFgb8AI38DYKjyoc=";
       };
     };
     asset =
@@ -29,7 +29,7 @@ with lib; let
       inherit version;
 
       src = pkgs.fetchurl {
-        url = "https://github.com/ogulcancelik/herdr/releases/download/v${version}/${asset.name}";
+        url = "https://github.com/herdrdev/herdr/releases/download/v${version}/${asset.name}";
         inherit (asset) hash;
       };
 
@@ -41,8 +41,8 @@ with lib; let
 
       meta = {
         description = "Terminal agent multiplexer";
-        homepage = "https://github.com/ogulcancelik/herdr";
-        license = licenses.agpl3Plus;
+        homepage = "https://github.com/herdrdev/herdr";
+        license = licenses.asl20;
         mainProgram = "herdr";
         platforms = attrNames assets;
       };
