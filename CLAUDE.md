@@ -195,6 +195,10 @@ cat file.txt | agenix -e file.age
 - **User**: "not-matthias" (hardcoded in flake.nix outputs)
 - **Hosts**: Three active configs (desktop, framework, raspi) defined via `nixosBox` factory in `hosts/default.nix`
 
+### Host Targeting
+- `fw-desktop` is the `pc` host: use `hosts/pc/` and `.#pc`, never `hosts/desktop/` or `.#desktop`.
+- When a user names a host, verify its mapping in `hosts/` before editing or rebuilding.
+
 ### Directory Organization
 ```
 hosts/                  # Host-specific configurations
