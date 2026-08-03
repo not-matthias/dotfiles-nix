@@ -88,6 +88,11 @@
   };
 
   services = {
+    tuned = {
+      enable = true;
+      settings.dynamic_tuning = true;
+      ppdSettings.main.default = "performance";
+    };
     restic = {
       enable = true;
       paths = [
