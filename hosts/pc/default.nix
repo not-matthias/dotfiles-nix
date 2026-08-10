@@ -19,6 +19,8 @@
       evince
       kdePackages.gwenview
       file-roller
+
+      lmstudio
     ];
 
     programs = {

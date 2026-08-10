@@ -13,6 +13,9 @@
       msty = super.callPackage ../../pkgs/msty.nix {};
     })
     (_self: super: {
+      lmstudio = super.callPackage ../../pkgs/lmstudio.nix {};
+    })
+    (_self: super: {
       feishin = super.callPackage ../../pkgs/feishin.nix {};
     })
     (_self: super: {
