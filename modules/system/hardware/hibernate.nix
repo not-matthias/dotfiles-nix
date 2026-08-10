@@ -10,10 +10,6 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    # LZ4 is faster than the default LZO; the 34 GiB swap partition has
-    # headroom for the slightly larger lz4 image.
-    boot.kernelParams = ["hibernate.compressor=lz4"];
-
     # Disable zram for hibernation: its ~27 GiB of volatile anon pages are
     # snapshotted into the image anyway; 34 GiB disk swap remains.
     zramSwap.enable = lib.mkForce false;
