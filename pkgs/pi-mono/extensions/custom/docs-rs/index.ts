@@ -43,7 +43,7 @@ export default function (pi: ExtensionAPI) {
       "Search crates.io for Rust crates by keyword. Returns name, version, description and download count for the top matches.",
     parameters: z.object({
       query: z.string().describe("crate search keywords"),
-      limit: z.number().int().min(1).max(30).default(10).optional(),
+      limit: z.number().int().min(1).max(30).optional(),
     }),
     async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
       try {
@@ -65,7 +65,7 @@ export default function (pi: ExtensionAPI) {
       "Get an overview of a Rust crate: crates.io metadata plus, when available, the top-level rustdoc modules/structs/traits/functions and crate-level docs.",
     parameters: z.object({
       crate: z.string(),
-      version: z.string().default("latest").optional(),
+      version: z.string().optional(),
     }),
     async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
       try {
@@ -93,7 +93,7 @@ export default function (pi: ExtensionAPI) {
     parameters: z.object({
       crate: z.string(),
       path: z.string().describe("item path, e.g. sync::Mutex or tokio::sync::Mutex"),
-      version: z.string().default("latest").optional(),
+      version: z.string().optional(),
     }),
     async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
       try {
@@ -150,7 +150,7 @@ export default function (pi: ExtensionAPI) {
     parameters: z.object({
       crate: z.string(),
       path: z.string().describe("item path, e.g. Itertools or tokio::stream::StreamExt"),
-      version: z.string().default("latest").optional(),
+      version: z.string().optional(),
     }),
     async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
       try {
