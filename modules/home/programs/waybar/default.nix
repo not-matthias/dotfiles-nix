@@ -42,7 +42,9 @@ in {
     programs.waybar = let
       isNiri = osConfig.desktop.niri.enable or false;
       isHyprland = osConfig.desktop.hyprland.enable or false;
-
+      hasZramOnly =
+        (osConfig.zramSwap.enable or false)
+        && ((osConfig.swapDevices or []) == []);
       # Import custom modules
       dndModule = import ./modules/dnd.nix {inherit pkgs;};
       weatherModule = import ./modules/weather.nix {inherit pkgs;};
@@ -83,6 +85,7 @@ in {
           ];
           modules-right =
             [
+              "memory"
               "group/ai-usage"
               "group/utils"
             ]
@@ -202,8 +205,12 @@ in {
             };
           };
           memory = {
-            format = "ram {}%";
-            format-alt = "ram {used}/{total} GiB";
+            format = "󰍛 {percentage}%";
+            format-alt = "󰍛 {used:0.1f}/{total:0.1f} GiB";
+            tooltip-format =
+              if hasZramOnly
+              then "RAM: {used:0.1f}/{total:0.1f} GiB ({percentage}%)\nZRAM: {swapUsed:0.1f}/{swapTotal:0.1f} GiB ({swapPercentage}%)"
+              else "RAM: {used:0.1f}/{total:0.1f} GiB ({percentage}%)\nSwap: {swapUsed:0.1f}/{swapTotal:0.1f} GiB ({swapPercentage}%)";
             interval = 5;
           };
           cpu = {
