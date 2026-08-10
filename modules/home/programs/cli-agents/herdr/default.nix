@@ -165,5 +165,16 @@ in {
     home.activation.herdrPlugins = mkIf (cfg.plugins != []) (
       hm.dag.entryAfter ["writeBoundary"] (concatMapStrings linkPlugin cfg.plugins)
     );
+
+    home.activation.colliePlugin = (
+      hm.dag.entryAfter ["writeBoundary"] ''
+        herdr="${lib.getExe package}"
+        if ! "$herdr" plugin list --json | ${pkgs.jq}/bin/jq -e \
+          '.result.plugins[]? | select(.plugin_id == "herdr.collie" and .version == "0.27.0")' \
+          >/dev/null; then
+          $DRY_RUN_CMD "$herdr" plugin install AltanS/collie --ref v0.27.0 --yes
+        fi
+      ''
+    );
   };
 }
