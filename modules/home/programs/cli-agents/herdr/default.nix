@@ -48,6 +48,12 @@ with lib; let
       };
     };
   package = cfg.package;
+  collieActivationPath = lib.makeBinPath [
+    pkgs.bash
+    pkgs.bun
+    pkgs.git
+  ];
+
   linkPlugin = plugin: let
     enabledFlag = optionalString (!plugin.enable) " --disabled";
   in ''
@@ -168,6 +174,9 @@ in {
 
     home.activation.colliePlugin = (
       hm.dag.entryAfter ["writeBoundary"] ''
+        # Activation hooks may run before the home profile exposes newly declared packages.
+        # Keep the external tools needed by the installer available explicitly.
+        export PATH="${collieActivationPath}:$PATH"
         herdr="${lib.getExe package}"
         if ! "$herdr" plugin list --json | ${pkgs.jq}/bin/jq -e \
           '.result.plugins[]? | select(.plugin_id == "herdr.collie" and .version == "0.27.0")' \
