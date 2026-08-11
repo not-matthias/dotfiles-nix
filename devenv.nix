@@ -19,4 +19,5 @@
   scripts.bd.exec = "nh os switch -H desktop . -- --accept-flake-config";
   scripts.bf.exec = "nh os switch -H framework . -- --accept-flake-config";
   scripts.br.exec = "nh os switch -H raspi . -- --accept-flake-config";
+  scripts.bp.exec = "nh os switch -H pc . -- --accept-flake-config";
 }
