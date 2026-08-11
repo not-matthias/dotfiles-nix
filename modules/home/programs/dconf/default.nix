@@ -58,5 +58,10 @@
     "org/gnome/mutter" = {
       center-new-windows = true;
     };
+
+    # Evince default view (continuous = single-column scrolling)
+    "org/gnome/evinces" = {
+      default-view = "continuous";
+    };
   };
 }
