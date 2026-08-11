@@ -28,6 +28,7 @@
   ./idea-copilot.nix
   ./binary-ninja.nix
   ./ghidra.nix
+  ./lmstudio.nix
   ./kitty.nix
   ./lazygit.nix
   ./minecraft.nix
