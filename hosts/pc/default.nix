@@ -6,24 +6,35 @@
   flakes,
   nixos-hardware,
   ...
-}:
-{
+}: {
   imports = [
     ./hardware-configuration.nix
     nixos-hardware.nixosModules.framework-desktop-amd-ai-max-300-series
   ];
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 25;
+  };
 
-  home-manager.users.${user} = {...}: {
+  home-manager.users.${user} = {
+    config,
+    lib,
+    ...
+  }: {
     home.stateVersion = "26.05";
     home.packages = with pkgs; [
       evince
       kdePackages.gwenview
       file-roller
-
-      lmstudio
     ];
 
     programs = {
+      lmstudio = {
+        enable = true;
+        rocm.enable = true;
+      };
+      git.settings.commit.gpgsign = lib.mkForce false;
       ghostty.enable = true;
       rust = {
         enable = true;
@@ -80,8 +91,17 @@
   };
 
   programs = {
-    nix-ld.enable = true;
-    nix-ld.libraries = [pkgs.libevdev];
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        libevdev
+        libdrm
+        elfutils.out
+        zlib
+        zstd
+        stdenv.cc.cc.lib
+      ];
+    };
     sccache.enable = true;
     nix-index.enable = true;
     pay-respects.enable = true;
@@ -155,6 +175,18 @@
     sound.enable = true;
     ssd.enable = true;
   };
+  services.openssh = {
+    enable = true;
+    startWhenNeeded = true;
+    settings = {
+      PasswordAuthentication = true;
+      KbdInteractiveAuthentication = false;
+    };
+  };
+  users.users.${user}.openssh.authorizedKeys.keys = [
+    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDvED6PbgTV9/yjDymEci/ATe6vQDb9c11hqUwNyEStvFmkDr5ili7+2fiUhTrNaefTX5RaDIRaKBu4jl+kjSn5tfv+lvdYbl/UM8yMN8YODcM4JbAUo5cyX76s5BXaBrqQH0TGEXhKlLkVdxCJCBLm9tpakkxgLruj0qEwSoSGruM/QCYgbhXrh9NcEtOBaOBZ39DUhT3MEKgZJBlbqIXqyeHN5L1GLBEgBN73dZhh7fsJdIpfaezqzIeu8FQnAnL94eOFlDx7PXm1Wiacpcb5S7GsIFnd1iEc/TlYyaXKN+12VK2qPe6KMZfF7lBvgnjEU868sHiU8OXpWkYWQ3RJs0uQqSylQum8jsJAOWcygavVRrOO+zDxzNkPXa+7H3Jah9XoywaKjz8rsPTs0qu/AWZG/KyV7EeQu+J6oIOXGv2OBcndRuQTBKIimHCdnGEnpgkAzw9gs14oc0MN97k1izb5zyK6zf4jsD8cHl+64Hevapto28yqcCanQk9p9+M= not-matthias@laptop"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2yZENvNlZ8XQxcPVG8CrSEaUmvthPwheHRruEKqnzP not-matthias@raspi"
+  ];
 
   virtualisation.podman.enable = true;
   desktop = {
