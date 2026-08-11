@@ -40,6 +40,9 @@
       pi-coding-agent = super.callPackage ../../pkgs/pi-mono {};
     })
     (_self: super: {
+      mcporter = super.callPackage ../../pkgs/mcporter.nix {};
+    })
+    (_self: super: {
       paperclip = super.callPackage ../../pkgs/paperclip.nix {};
     })
     (_self: super: {

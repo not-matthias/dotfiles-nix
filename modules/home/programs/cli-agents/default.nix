@@ -30,7 +30,7 @@ in {
       rtk
       unstable.gogcli
       jq
-      unstable.mcporter
+      mcporter
     ];
 
     # Exclude shared agent scratch/working files from git by default
