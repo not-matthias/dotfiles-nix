@@ -66,8 +66,8 @@
     variables = {
       TERMINAL = "ghostty";
       BROWSER = "firefox";
-      EDITOR = "nvim";
-      VISUAL = "nvim";
+      EDITOR = "hx";
+      VISUAL = "hx";
       NIXPKGS_ALLOW_UNFREE = "1";
     };
     systemPackages = with pkgs; [
