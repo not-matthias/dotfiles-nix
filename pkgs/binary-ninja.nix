@@ -94,7 +94,7 @@ in
     src = requireFile {
       name = "binaryninja_linux_dev_personal.zip";
       url = "https://binary.ninja/";
-      sha256 = "e22f6372640fe9f571ad2613bd64417d229c458872c0076432c4b307631f8175";
+      sha256 = "sha256-GqNOppodEey9wM1sqRLjpxGy/HxCD7DiINf1VHf8CoQ=";
     };
 
     dontPatchELF = true;
@@ -116,10 +116,15 @@ in
             # library so this stays correct across libxml2 version bumps.
             ln -sf ${lib.getLib libxml2}/lib/libxml2.so $out/opt/binaryninja/libxml2.so.2
 
-            # Create wrapper with LD_LIBRARY_PATH for all required libraries
+            # Binary Ninja bundles Qt and expects its plugins to stay isolated
+            # from desktop Qt settings and system plugin paths.
             makeWrapper $out/opt/binaryninja/binaryninja \
               $out/bin/binaryninja \
-              --prefix LD_LIBRARY_PATH : "$out/opt/binaryninja:${libPath}:$out/opt/binaryninja/plugins/lldb/lib"
+              --prefix LD_LIBRARY_PATH : "$out/opt/binaryninja:${libPath}:$out/opt/binaryninja/plugins/lldb/lib" \
+              --unset QT_STYLE_OVERRIDE \
+              --unset QT_QPA_PLATFORMTHEME \
+              --unset QT_PLUGIN_PATH \
+              --set QT_QPA_PLATFORM "wayland;xcb"
 
             # Desktop entry + icon
             mkdir -p $out/share/applications

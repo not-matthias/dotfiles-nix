@@ -45,6 +45,10 @@
         enable = true;
         compat.enable = true;
       };
+      binary-ninja = {
+        enable = true;
+        extensions = [pkgs.binja-wasm];
+      };
       cli-agents = {
         claude.enable = true;
         herdr = {
