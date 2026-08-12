@@ -111,7 +111,10 @@
     tuned = {
       enable = true;
       settings.dynamic_tuning = true;
-      ppdSettings.main.default = "performance";
+      ppdSettings = {
+        main.default = "performance";
+        profiles.performance = "throughput-performance";
+      };
     };
     restic = {
       enable = true;
