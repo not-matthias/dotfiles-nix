@@ -57,11 +57,6 @@
         oh-my-pi = {
           enable = true;
           envFile = "/run/agenix/pi-mono-env";
-          theme = {
-            dark = "light";
-            light = "light";
-          };
-          discoverNestedSkills = true;
         };
       };
       btop.enable = true;

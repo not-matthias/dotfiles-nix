@@ -110,12 +110,9 @@ in {
         oh-my-pi = {
           enable = true;
           envFile = "/run/agenix/pi-mono-env";
-          disabledProviders = ["claude"];
-          theme = {
-            dark = "light";
-            light = "light";
+          settings = {
+            disabledProviders = ["claude"];
           };
-          discoverNestedSkills = true;
         };
       };
       btop.enable = true;
