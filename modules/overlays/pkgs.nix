@@ -7,6 +7,12 @@
       binja-wasm = super.callPackage ../../pkgs/binja-wasm.nix {};
     })
     (_self: super: {
+      binja-headless = super.callPackage ../../pkgs/binja-headless.nix {};
+    })
+    (_self: super: {
+      binja-codemode-mcp = super.callPackage ../../pkgs/binja-codemode-mcp.nix {};
+    })
+    (_self: super: {
       detect-it-easy = super.callPackage ../../pkgs/detect-it-easy.nix {};
     })
     (_self: super: {
