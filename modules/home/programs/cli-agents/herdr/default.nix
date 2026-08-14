@@ -179,9 +179,9 @@ in {
         export PATH="${collieActivationPath}:$PATH"
         herdr="${lib.getExe package}"
         if ! "$herdr" plugin list --json | ${pkgs.jq}/bin/jq -e \
-          '.result.plugins[]? | select(.plugin_id == "herdr.collie" and .version == "0.27.0")' \
+          '.result.plugins[]? | select(.plugin_id == "herdr.collie" and .version == "0.28.0")' \
           >/dev/null; then
-          $DRY_RUN_CMD "$herdr" plugin install AltanS/collie --ref v0.27.0 --yes
+          $DRY_RUN_CMD "$herdr" plugin install AltanS/collie --ref v0.28.0 --yes
         fi
       ''
     );
