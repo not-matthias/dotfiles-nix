@@ -142,6 +142,7 @@ in {
       recursive = true;
     };
     home.file.".omp/agent/extensions/atuin.ts".source = ./atuin.ts;
+    home.file.".omp/agent/extensions/herdr-tab-title.ts".source = ./herdr-tab-title.ts;
 
     home.activation.ohMyPiSettings = hm.dag.entryAfter ["writeBoundary"] ''
       ${optionalString (cfg.settings != {}) ''
