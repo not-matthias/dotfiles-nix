@@ -75,6 +75,7 @@ in {
           insert-final-newline = true;
           end-of-line-diagnostics = "hint";
           rainbow-brackets = true;
+          soft-wrap.enable = true;
 
           auto-completion = true;
           completion-trigger-len = 2;
@@ -118,7 +119,6 @@ in {
             cursor-line = "error";
             other-lines = "disable";
           };
-          soft-wrap.enable = true;
 
           auto-save = {
             after-delay = {
