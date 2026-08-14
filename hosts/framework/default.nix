@@ -124,7 +124,11 @@ in {
       };
       binary-ninja = {
         enable = true;
-        extensions = [pkgs.binja-wasm];
+        extensions = [
+          pkgs.binja-wasm
+          pkgs.binja-headless
+          pkgs.binja-codemode-mcp
+        ];
       };
       ghidra = {
         enable = false;

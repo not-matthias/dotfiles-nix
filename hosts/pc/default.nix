@@ -47,7 +47,11 @@
       };
       binary-ninja = {
         enable = true;
-        extensions = [pkgs.binja-wasm];
+        extensions = [
+          pkgs.binja-wasm
+          pkgs.binja-headless
+          pkgs.binja-codemode-mcp
+        ];
       };
       cli-agents = {
         claude.enable = true;

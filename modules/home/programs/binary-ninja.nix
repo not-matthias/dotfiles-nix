@@ -24,7 +24,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [cfg.package];
+    home.packages = [cfg.package] ++ cfg.extensions;
 
     # Keep this directory writable because Binary Ninja stores plugin manager state here.
     home.file.".binaryninja/plugins" = lib.mkIf (cfg.extensions != []) {
