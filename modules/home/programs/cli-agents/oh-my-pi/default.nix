@@ -70,6 +70,7 @@ with lib; let
       slow = "openai-codex/gpt-5.6-sol:high";
       smol = "openai-codex/gpt-5.6-luna:high";
     };
+    symbolPreset = "unicode";
     setupVersion = 1;
     dev = {
       autoqaConsent = "denied";
@@ -84,17 +85,20 @@ with lib; let
     task = {
       showResolvedModelBadge = true;
       eager = "preferred";
-      prewalk = true;
+      prewalk = false;
       enableEffort = true;
     };
     hideThinkingBlock = false;
+    externalThinking = true;
+    personality = "pragmatic";
+    providers.unexpectedStopModel = "online";
+    features.unexpectedStopDetection = true;
     display = {
       showTokenUsage = true;
       cacheMissMarker = true;
     };
     prewalk = {
-      enabled = true;
-      externalThinking = true;
+      enabled = false;
     };
   };
   effectiveSettings =
