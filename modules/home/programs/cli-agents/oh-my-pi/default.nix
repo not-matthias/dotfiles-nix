@@ -61,7 +61,7 @@ with lib; let
     ];
   defaultSettings = {
     theme = {
-      dark = "light";
+      dark = "graphite";
       light = "light";
     };
     modelRoles = {

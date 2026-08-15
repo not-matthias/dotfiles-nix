@@ -24,22 +24,22 @@
   };
   # deadnix: skip
   catppuccinMochaRed = {
-    base00 = "1e1e2e"; # base
-    base01 = "181825"; # mantle
-    base02 = "313244"; # surface0
-    base03 = "45475a"; # surface1
-    base04 = "585b70"; # surface2
-    base05 = "cdd6f4"; # text
-    base06 = "f5e0dc"; # rosewater
-    base07 = "b4befe"; # lavender
-    base08 = "f38ba8"; # red
-    base09 = "fab387"; # peach
-    base0A = "f9e2af"; # yellow
-    base0B = "a6e3a1"; # green
-    base0C = "94e2d5"; # teal
-    base0D = "f38ba8"; # red (used for blue)
-    base0E = "f38ba8"; # red (used for mauve)
-    base0F = "f38ba8"; # red (used for pink)
+    base00 = "0f1115"; # base
+    base01 = "151922"; # mantle
+    base02 = "1d2330"; # surface0
+    base03 = "303846"; # surface1
+    base04 = "4a5568"; # surface2
+    base05 = "f0f3f6"; # text
+    base06 = "ffd8d8"; # rosewater
+    base07 = "ff8f9a"; # lavender
+    base08 = "ff6b7a"; # red
+    base09 = "ff9f68"; # peach
+    base0A = "f2c866"; # yellow
+    base0B = "8bd5a8"; # green
+    base0C = "72d6c9"; # teal
+    base0D = "82aaff"; # blue
+    base0E = "c099ff"; # mauve
+    base0F = "f29ac2"; # pink
   };
 in {
   options.desktop.theme = lib.mkOption {
