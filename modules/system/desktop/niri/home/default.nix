@@ -284,7 +284,7 @@ in {
             {
               matches = [{is-window-cast-target = true;}];
               focus-ring = {
-                active.color = "#f38ba8";
+                active.color = "#ff6b7a";
                 inactive.color = "#7d0d2d";
               };
               border = {
@@ -294,7 +294,7 @@ in {
                 color = "#7d0d2d70";
               };
               tab-indicator = {
-                active.color = "#f38ba8";
+                active.color = "#ff6b7a";
                 inactive.color = "#7d0d2d";
               };
             }
