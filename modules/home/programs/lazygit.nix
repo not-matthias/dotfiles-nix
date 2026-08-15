@@ -8,10 +8,10 @@
     # `gui.sidePanels` only exists from 0.63 onwards; stable ships 0.61.
     package = unstable.lazygit;
     settings = {
-      git.pagers = [
+      git.diffRenderers = [
         {
           colorArg = "always";
-          pager = "${pkgs.delta}/bin/delta --paging=never";
+          command = "${pkgs.delta}/bin/delta --paging=never";
         }
       ];
       # Default grouping with commits and branches swapped, so commits lands on
