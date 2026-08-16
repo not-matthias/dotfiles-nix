@@ -129,7 +129,7 @@ in {
         };
 
         keys.normal = {
-          space.space = "file_picker";
+          space.f = "file_picker";
           space.h = ":toggle file-picker.hidden";
           space.e = ":forest-open";
           space.y = [
@@ -152,8 +152,6 @@ in {
           ];
           space.w = ":w";
           space.q = ":q";
-          space.f.b = "file_explorer";
-          space.f.e = "file_explorer_in_current_buffer_directory";
           space.a = "lsp_or_syntax_symbol_picker";
           "C-1" = "file_explorer";
           # Neovim-compatible aliases for actions Helix already provides.
