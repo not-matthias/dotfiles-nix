@@ -80,14 +80,25 @@ with lib; let
       enabled = true;
       autoContinue = true;
     };
+    memory.backend = "mnemopi";
+    mnemopi = {
+      enhancedRecall = true;
+      polyphonicRecall = true;
+      proactiveLinking = true;
+      scoping = "per-project-tagged";
+    };
+    github.enabled = true;
+    bash.autoBackground.enabled = true;
+    codexResets.autoRedeem = "no";
     steeringMode = "all";
     advisor.enabled = true;
     task = {
       showResolvedModelBadge = true;
-      eager = "preferred";
-      prewalk = false;
+      eager = "always";
+      prewalk = true;
       enableEffort = true;
     };
+    compaction.handoffSaveToDisk = true;
     hideThinkingBlock = false;
     externalThinking = true;
     personality = "pragmatic";
