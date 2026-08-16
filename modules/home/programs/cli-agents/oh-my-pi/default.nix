@@ -24,9 +24,24 @@ with lib; let
   };
 
   sharedSkills = ../shared/skills;
-  sharedSkillDirectories = map (group: "${config.home.homeDirectory}/.omp/agent/skills/${group}") (
-    attrNames (filterAttrs (_: type: type == "directory") (builtins.readDir sharedSkills))
-  );
+  # OMP customDirectories must point at directories whose immediate children
+  # are skill directories. Recurse to find every such parent (e.g. "coding",
+  # "third-party/mattpocock") at arbitrary depth.
+  findSkillParents = rel: dir: let
+    subdirs = attrNames (filterAttrs (_: type: type == "directory") (builtins.readDir dir));
+    isSkill = name: builtins.pathExists (dir + "/${name}/SKILL.md");
+  in
+    optional (any isSkill subdirs) rel
+    ++ concatMap (
+      name:
+        if isSkill name
+        then []
+        else findSkillParents "${rel}${optionalString (rel != "") "/"}${name}" (dir + "/${name}")
+    )
+    subdirs;
+  sharedSkillDirectories =
+    map (rel: "${config.home.homeDirectory}/.omp/agent/skills/${rel}")
+    (findSkillParents "" sharedSkills);
   # omp's task-agent frontmatter differs from Claude Code's: tool names are
   # lowercase, WebFetch doesn't exist (both WebFetch and WebSearch map to
   # web_search), model: "inherit" isn't valid (omit to inherit), and the

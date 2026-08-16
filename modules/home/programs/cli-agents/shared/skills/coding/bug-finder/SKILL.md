@@ -45,7 +45,7 @@ Hard cap: **15 findings max** per review. If you find more, keep only the highes
 6. **API misuse** — Wrong function for the job, violated contracts, deprecated calls with known bugs, incorrect argument ordering
 7. **Performance** — Only when it causes real problems: algorithmic blowup, N+1 queries, hot-path allocations, unbounded retries
 
-**Ignore these (they belong to linters and minimal-diff):**
+**Ignore these (they belong to linters and code-style review):**
 
 - Style, formatting, whitespace
 - Naming preferences

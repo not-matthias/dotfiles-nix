@@ -27,8 +27,8 @@ It doesn't mean you should blindly shorten/compact comments. Simplifying doesn't
 
 **Tests:** Flag weak tests added by this change (see the `testing` skill for criteria). When a weak test still covers behavior that matters, warn instead of silently deleting it.
 
-For broader code-simplicity guidance, see the `cognitive-load` skill.
-Ensure to keep the code as minimal as possible, see the `minimal-diff` skill.
+For broader code-simplicity guidance, use the cognitive-load reference in the `code-style` skill.
+Keep the code minimal using the minimal-diff reference in the `code-style` skill.
 
 ## Code structure
 

@@ -55,7 +55,7 @@
 
 ## Code Simplicity
 
-- When writing, reviewing, or refactoring code, use the `cognitive-load` skill.
+- When writing, reviewing, or refactoring code, use the cognitive-load guidance in the `code-style` skill.
 - Preserve behavior, but prefer simpler control flow, named conditions, local reasoning, and abstractions that reduce rather than add indirection.
 
 ## Rules

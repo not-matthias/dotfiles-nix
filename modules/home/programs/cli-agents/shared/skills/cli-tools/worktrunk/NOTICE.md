@@ -1,36 +1,41 @@
 # Vendored from Worktrunk
 
-This directory is a verbatim copy of `skills/worktrunk/` from the Worktrunk
-repository, vendored so the `worktrunk` config skill is discoverable by all
-shared CLI agents (Claude Code, omp, Codex, Amp) — not only Claude Code, which
-loads it via its own plugin marketplace.
+This directory vendors `skills/worktrunk/` from the Worktrunk repository so
+the `worktrunk` config skill is discoverable by all shared CLI agents (Claude
+Code, omp, Codex, Amp) — not only Claude Code, which loads it via its own
+plugin marketplace.
 
 - **Upstream:** https://github.com/max-sixty/worktrunk
-- **Pinned commit:** `c6eb148e62d54414918697873f2cc8f06222f02f`
+- **Pinned commit:** `18b408ce98487be334db08dd9bacb6c0ff7593e6`
   (matches the `worktrunk` flake input in this repo's `flake.lock`)
 - **License:** MIT OR Apache-2.0 — see `LICENSE` in this directory
-- **Source path:** `skills/worktrunk/` (the authored home; content-identical to
-  the plugin mirror at `plugins/worktrunk/skills/worktrunk/`)
+- **Source path:** `skills/worktrunk/`. Upstream's
+  `reference/README.md` is a symlink to the repository README; it is
+  dereferenced here so the vendored reference remains usable.
 
 ## Re-syncing
 
-When bumping the `worktrunk` flake input, re-copy the tree from the newly
-locked revision so this vendored copy does not drift:
+When bumping the `worktrunk` flake input, replace this vendored tree from the
+newly locked revision:
 
 ```bash
 DEST=modules/home/programs/cli-agents/shared/skills/cli-tools/worktrunk
 REV=$(jq -r '.nodes.worktrunk.locked.rev' flake.lock)
 TMP=$(mktemp -d)
-git init --quiet "$TMP"
-git -C "$TMP" remote add origin https://github.com/max-sixty/worktrunk
-git -C "$TMP" fetch --quiet --depth 1 origin "$REV"
-git -C "$TMP" checkout --quiet FETCH_HEAD
-cp -r "$TMP/skills/worktrunk/." "$DEST/"   # SKILL.md + reference/
-cp "$TMP/LICENSE" "$DEST/LICENSE"          # explicit LICENSE refresh
+NOTICE="$TMP/NOTICE.md"
+cp "$DEST/NOTICE.md" "$NOTICE"
+git init --quiet "$TMP/repo"
+git -C "$TMP/repo" remote add origin https://github.com/max-sixty/worktrunk
+git -C "$TMP/repo" fetch --quiet --depth 1 origin "$REV"
+git -C "$TMP/repo" checkout --quiet FETCH_HEAD
+rm -rf "$DEST"
+mkdir -p "$DEST"
+cp -RL "$TMP/repo/skills/worktrunk/." "$DEST/"
+cp "$TMP/repo/LICENSE" "$DEST/LICENSE"
+mv "$NOTICE" "$DEST/NOTICE.md"
 rm -rf "$TMP"
 ```
 
-The `LICENSE` copy is explicit — re-run it every sync. `NOTICE.md` is local
-(not upstream) and survives the copy. The `reference/` docs are regenerated
-upstream by `test_docs_are_in_sync`; a re-sync picks them up wholesale. Review
-`git diff` afterward — upstream file removals are not mirrored automatically.
+The replacement removes files deleted upstream while retaining local
+`NOTICE.md`. `-L` dereferences the upstream `reference/README.md` link so its
+repository-README content remains available in the vendored skill.

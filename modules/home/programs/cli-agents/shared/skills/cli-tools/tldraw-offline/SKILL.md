@@ -26,7 +26,7 @@ PORT=$(jq -r .port "$HOME/.config/tldraw/server.json"); TOKEN=$(jq -r .token "$H
 
 ### Helper: `tq`
 
-A ready-made helper ships next to this SKILL.md as `tq`. Resolve its path relative to this skill directory (the directory containing this file) — the install root differs per agent (`~/.claude/skills/cli-tools/tldraw-offline`, `~/.codex/skills/cli-tools/tldraw-offline`, `~/.amp/skills/...`, etc.):
+A ready-made helper ships next to this SKILL.md as `tq`. Resolve it relative to the directory containing the loaded `SKILL.md`; never assume a client-specific installation path:
 
 ```bash
 SKILL_DIR=/path/to/this/skill   # the directory containing this SKILL.md

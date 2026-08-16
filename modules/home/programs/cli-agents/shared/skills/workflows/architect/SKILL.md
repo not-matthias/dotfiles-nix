@@ -25,7 +25,7 @@ The input can be:
 - A brainstorm plan (from /brainstorm or a doc in .agents/docs/)
 - A specific technical question ("Should we use Redis or Memcached?")
 
-If the input is vague, ask 2-3 clarifying questions using **AskUserQuestion** with concrete suggestions. Don't over-ask — this skill is about analysis, not discovery (that's /brainstorm's job).
+If the input is vague, ask 2-3 clarifying questions with the available structured question tool (for example, `ask` or `AskUserQuestion`), with concrete suggestions. Don't over-ask — this skill is about analysis, not discovery (that's /brainstorm's job).
 
 ### Phase 2: Prior Art Research
 
@@ -156,6 +156,6 @@ Tell the user where the file was saved and give a 2-3 sentence summary.
 - **Be opinionated.** When prior art research reveals a clear winner, say so. Don't present 5 options as equally valid when they're not.
 - **Skip sections that don't apply.** Greenfield project? No impact analysis needed. Simple feature? Dependency map might be overkill. Use judgment.
 - **Keep it concise.** The document should be skimmable in 2-3 minutes. If a section is getting long, you're going too deep.
-- **Use AskUserQuestion** for any clarifying questions, always with concrete suggestions.
+- **Use the available structured question tool** (for example, `ask` or `AskUserQuestion`) for any clarifying questions, always with concrete suggestions.
 - **Link to files.** When referencing code, use `path/to/file.rs:line` format so the reader can jump there.
 - **Mermaid diagrams** are encouraged for architecture, data flow, and dependency visualization — but only when they add clarity over a text description.

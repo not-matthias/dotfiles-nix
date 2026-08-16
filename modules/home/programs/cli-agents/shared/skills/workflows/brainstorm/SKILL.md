@@ -19,7 +19,7 @@ If the topic relates to the current codebase, explore relevant files first (arch
 
 ### Phase 2: Ask Questions in Adaptive Rounds
 
-Ask questions using the **AskUserQuestion** tool. Each round should have 3-5 questions max (respecting the tool's 4-question limit per call — use two calls if needed for 5 questions).
+Use the available structured question tool (for example, `ask` or `AskUserQuestion`). Each round should have 3-5 questions max; respect the client's per-call question limit and split into multiple calls if needed.
 
 #### Round 1: Scope and Goals
 Establish the big picture. Example areas to cover:
@@ -59,9 +59,9 @@ Every question MUST include concrete suggestions as options. Never ask a bare op
 
 When creating options:
 - Lead with the recommended option when you have a clear opinion
-- Include 2-4 options per question (the tool enforces this)
+- Include 2-4 options per question
 - Each option needs a short label AND a description explaining tradeoffs
-- Use previews (the tool's preview field) when comparing code approaches, UI layouts, or architecture diagrams
+- Use the tool's code-preview capability when it offers one; otherwise include concise code previews in the relevant option descriptions when comparing code approaches, UI layouts, or architecture diagrams
 - There's always an implicit "Other" option, so don't waste a slot on it
 
 ### Phase 3: API / Code Design (Code-Related Topics Only)
@@ -70,7 +70,7 @@ If the brainstorm is about a software feature, enter an iterative design phase b
 
 #### How It Works
 
-1. **Propose 2-3 design options** using AskUserQuestion with code previews. Each option should show concrete code: function signatures, type definitions, data structures, API endpoints, or module interfaces — whatever is most relevant.
+1. **Propose 2-3 design options** with the available structured question tool. Each option should show concrete code through the tool's preview capability when available, or in its option description otherwise: function signatures, type definitions, data structures, API endpoints, or module interfaces — whatever is most relevant.
 
 2. **The user picks and refines.** They might pick one option, mix parts from different options, or say "none of these, try X instead."
 
@@ -80,7 +80,7 @@ If the brainstorm is about a software feature, enter an iterative design phase b
 
 #### What to Show in Previews
 
-Use the AskUserQuestion `preview` field to show actual code. Match the language the project uses.
+Use the structured question tool's code-preview capability, when available, to show actual code; otherwise include the code in the relevant option descriptions. Match the language the project uses.
 
 Examples of what to sketch:
 - **API endpoints**: Route definitions, request/response shapes
@@ -141,7 +141,7 @@ Tell the user where the file was saved and give a brief summary of the plan.
 
 ## Rules
 
-- **Always use AskUserQuestion** for questions. Never dump questions as plain text.
+- **Always use the available structured question tool** (for example, `ask` or `AskUserQuestion`) for questions. Never dump questions as plain text.
 - **Always include concrete suggestions** as options. Ground them in the project context when possible.
 - **Don't over-ask.** 2-4 rounds is the sweet spot. If the user's initial prompt is already detailed, you might only need 1-2 rounds.
 - **Don't repeat back everything the user said.** Brief summaries between rounds to confirm direction, not exhaustive recaps.

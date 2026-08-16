@@ -1,13 +1,21 @@
 ---
 name: code-style
-description: "Apply Not Matthias's Rust-first personal coding style. Use whenever the user explicitly asks to apply or review their code style, make Rust match their preferences, perform a style pass, or simplify/refactor according to their conventions. Inspect only task-touched code, honor local project conventions first, and make only safe opt-out style edits."
+description: "Keep code simple, local, and low-churn when writing, reviewing, or refactoring. Use for general code work that benefits from lower cognitive load or a minimal diff. Apply Not Matthias's personal Rust preferences only when the user explicitly asks for their code style or a style pass."
 ---
 
 # Code Style
 
-Use this skill only for an explicit request to apply, review, or refactor toward the user's code style. Rust is the primary language. For another language, use only the generic fallback below and follow that language's project conventions.
+Always use the cognitive-load and minimal-diff references for applicable code work. Use the personal Rust reference only for an explicit request to apply, review, or refactor toward the user's code style. For another language, follow that language's project conventions and use only the generic guidance.
 
-Read `references/rust-style.md` before judging a Rust change. It is a standalone personal rule ledger: it contains the rules, rationale, examples, confidence, and application boundaries needed for this skill. Do not depend on or mention outside repositories when using it.
+Read the applicable references before judging a change:
+
+- `references/rust-style.md` for the standalone personal Rust rule ledger, including rationale, examples, confidence, and application boundaries.
+- `references/cognitive-load.md` for language-independent simplification and maintainability guidance.
+- `references/minimal-diff.md` for keeping changes local, low-churn, and easy to review.
+
+The cognitive-load and minimal-diff guidance is generally applicable. Personal Rust preferences remain opt-in.
+
+Do not depend on or mention outside repositories when using them.
 
 ## Working contract
 
@@ -28,7 +36,7 @@ A local convention wins. Do not call it a violation or migrate it toward the ref
 - Inspect the request's changed or named code and enough adjacent code to understand local convention.
 - Patch only the code required by the current task. Do not turn a style request into a repository-wide cleanup.
 - Leave formatting to the target project's formatter and checked-in configuration.
-- Use existing `cognitive-load`, `minimal-diff`, and `testing` guidance when it applies. This skill selects personal preferences; it does not replace those workflows.
+- Use the cognitive-load and minimal-diff references plus the existing `testing` guidance when they apply. This skill selects personal preferences; it does not replace testing workflows.
 
 ## Review and apply workflow
 

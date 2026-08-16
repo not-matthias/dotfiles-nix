@@ -1,6 +1,6 @@
 ---
 name: skill-creator
-description: Guide for creating or importing agent skills. Use when users ask to add/create/update/copy/adapt a skill (including from URLs or GitHub). Enforces skill format, trigger-quality descriptions, and source attribution via an HTML comment at the end of SKILL.md when externally sourced.
+description: Create, discover, and import agent skills. Use when users ask to add, create, update, find, download, copy, or adapt a skill, including from GitHub or another URL. Enforces skill format, trigger-quality descriptions, and source attribution via an HTML comment at the end of SKILL.md when externally sourced.
 license: MIT
 ---
 
@@ -163,8 +163,8 @@ Analyze each example to identify:
 ### Step 3: Create the Skill File
 
 **File naming:**
-- Use lowercase with hyphens: `skill-name.md`
-- Must match `name` in frontmatter
+- Use lowercase hyphens for the skill directory: `skill-name/`.
+- The directory name must match `name` in the frontmatter.
 
 **Frontmatter (YAML):**
 ```yaml
@@ -292,6 +292,54 @@ Skills should be treated as living documentation. Periodically:
 - **Link resources**: Add MCP servers or playground links (e.g., CodSpeed, ast-grep).
 - **Prune dead patterns**: Remove advice for deprecated workflows.
 
+## Discover and Import Existing Skills
+
+Before writing a new skill, look for one that already covers the task:
+
+```bash
+gh search code "zellij" --filename SKILL.md --limit 20 \
+  --json repository,path,url
+```
+
+Replace `zellij` with the requested capability. Add a `path:` qualifier such as `path:.claude/skills` to narrow the search; `gh search code` does not support regex search.
+
+### Store Skills in This Repository
+
+```bash
+ROOT="${DOTFILE_REPO_ROOT:-$(git rev-parse --show-toplevel)}"
+SKILLS_ROOT="$ROOT/modules/home/programs/cli-agents/shared/skills"
+```
+
+- Locally authored and maintained skills belong in an existing first-party category, such as `coding`, `workflows`, or `meta`: `$SKILLS_ROOT/<category>/<skill-name>`.
+- Imported upstream skills belong at `$SKILLS_ROOT/third-party/<author>/<skill-name>`, where `author` is the upstream GitHub owner. Do not recategorize third-party copies.
+- In both layouts, the directory name and frontmatter `name` must match.
+
+### Import a Whole Directory
+
+Pin an immutable commit SHA and copy the complete directory, not only `SKILL.md`. `gh api` can fetch a GitHub archive; no extension is required:
+
+```bash
+REPO="owner/repo"
+REVISION="<40-character commit SHA>"
+SKILL_FILE_PATH=".claude/skills/zellij/SKILL.md"
+SKILL_DIR_PATH="$(dirname "$SKILL_FILE_PATH")"
+STAGING_ROOT="$(mktemp -d)"
+ARCHIVE="$STAGING_ROOT/source.tar.gz"
+
+gh api "repos/$REPO/tarball/$REVISION" >"$ARCHIVE"
+tar -xzf "$ARCHIVE" -C "$STAGING_ROOT"
+
+SOURCE_DIR="$(printf '%s\n' "$STAGING_ROOT"/*/"$SKILL_DIR_PATH")"
+TARGET_DIR="$SKILLS_ROOT/third-party/${REPO%%/*}/$(basename "$SKILL_DIR_PATH")"
+test -d "$SOURCE_DIR" && test ! -e "$TARGET_DIR" ||
+  { echo "missing source or target exists" >&2; exit 1; }
+mkdir -p "$(dirname "$TARGET_DIR")"
+mv "$SOURCE_DIR" "$TARGET_DIR"
+rm -rf "$STAGING_ROOT"
+```
+
+Retain the upstream license or NOTICE and existing source attribution. If none exists, add an HTML source footer with the exact `https://github.com/$REPO/blob/$REVISION/$SKILL_FILE_PATH` URL. Review the copied files before committing so unrelated files or secrets do not enter the shared skills tree.
+
 ## Best Practices
 
 ### Concise is Key
@@ -409,10 +457,3 @@ license: MIT  # If adapting external work
 - **Example Skills**: https://github.com/0avx/claude-skills
 - **Amp Contrib Skills**: https://github.com/ampcode/amp-contrib
 
-## Examples in This Directory
-
-| Skill | Purpose | Structure |
-|-------|---------|-----------|
-| `github-raw-fetch.md` | URL transformation | Simple workflow |
-| `rust.md` | Development practices | Multiple workflows |
-| `ast-grep.md` | Code search | Multi-phase workflow |

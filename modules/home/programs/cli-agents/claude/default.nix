@@ -8,18 +8,23 @@ with lib; let
   cfg = config.programs.cli-agents.claude;
 
   sharedSkills = ../shared/skills;
-  groups = attrNames (filterAttrs (
-    name: type:
-      type == "directory" && !pathExists (sharedSkills + "/${name}/SKILL.md")
-  ) (builtins.readDir sharedSkills));
-  nestedSkills = flatten (map (
-      group: let
-        groupDir = sharedSkills + "/${group}";
-        skills = attrNames (filterAttrs (_name: type: type == "directory") (builtins.readDir groupDir));
+  # Relative paths of every directory under sharedSkills containing SKILL.md, any depth
+  findSkills = dir: rel:
+    flatten (mapAttrsToList (
+      name: type: let
+        rel' =
+          if rel == ""
+          then name
+          else "${rel}/${name}";
       in
-        map (skill: "${group}/${skill}") skills
-    )
-    groups);
+        if type != "directory"
+        then []
+        else if pathExists (dir + "/${name}/SKILL.md")
+        then [rel']
+        else findSkills (dir + "/${name}") rel'
+    ) (builtins.readDir dir));
+  # Top-level skills already sit at $out root after cp; only nested ones need flat links
+  nestedSkills = filter (path: path != baseNameOf path) (findSkills sharedSkills "");
   claudeSkills = unstable.runCommand "claude-skills" {} ''
     mkdir $out
     cp -rT ${sharedSkills} $out
