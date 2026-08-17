@@ -65,13 +65,25 @@ with lib; let
         "$f" > "$out/$(basename "$f")"
     done
   '';
-  flattenSettings = prefix: value:
-    if isAttrs value
+  recordKeys = [
+    "modelRoles"
+    "modelTags"
+    "tools.approval"
+    "statusLine.segmentOptions"
+    "retry.fallbackChains"
+    "task.agentModelOverrides"
+    "task.agentPrewalk"
+    "task.agentAdvisor"
+    "providers.maxInFlightRequests"
+  ];
+  flattenSettings = prefix: value: let
+    path = removeSuffix "." prefix;
+  in
+    if isAttrs value && !(elem path recordKeys)
     then concatLists (mapAttrsToList (name: nested: flattenSettings "${prefix}${name}." nested) value)
     else [
       {
-        path = removeSuffix "." prefix;
-        inherit value;
+        inherit path value;
       }
     ];
   defaultSettings = {
@@ -80,10 +92,12 @@ with lib; let
       light = "light";
     };
     modelRoles = {
-      default = "openai-codex/gpt-5.6-luna:xhigh";
-      advisor = "openai-codex/gpt-5.6-sol:low";
-      slow = "openai-codex/gpt-5.6-sol:high";
-      smol = "openai-codex/gpt-5.6-luna:high";
+      default = "google-antigravity/gemini-3.7-flash";
+      task = "google-antigravity/gemini-3.7-flash";
+      advisor = "openai-codex/gpt-5.6-sol:medium";
+      slow = "openai-codex/gpt-5.6-sol:xhigh";
+      plan = "openai-codex/gpt-5.6-sol:high";
+      smol = "google-antigravity/gemini-3.7-flash";
     };
     symbolPreset = "unicode";
     setupVersion = 1;
@@ -112,12 +126,33 @@ with lib; let
       eager = "always";
       prewalk = true;
       enableEffort = true;
+      agentModelOverrides = {
+        scout = "google-antigravity/gemini-3.7-flash";
+        librarian = "google-antigravity/gemini-3.7-flash";
+        oracle = "openai-codex/gpt-5.6-sol:xhigh";
+        solver = "openai-codex/gpt-5.6-sol:xhigh";
+        reviewer = "openai-codex/gpt-5.6-sol:high";
+        security-reviewer = "openai-codex/gpt-5.6-sol:high";
+      };
     };
     compaction.handoffSaveToDisk = true;
     hideThinkingBlock = false;
     externalThinking = true;
     personality = "pragmatic";
-    providers.unexpectedStopModel = "online";
+    providers = {
+      tinyModel = "online";
+      memoryModel = "online";
+      unexpectedStopModel = "online";
+      imageOrder = [
+        "google-antigravity"
+        "openai-codex"
+        "anthropic"
+      ];
+    };
+    inspect_image = {
+      enabled = true;
+      mode = "auto";
+    };
     features.unexpectedStopDetection = true;
     display = {
       showTokenUsage = true;
@@ -126,14 +161,36 @@ with lib; let
     prewalk = {
       enabled = false;
     };
+    retry = {
+      modelFallback = true;
+      usageAwareFallback = true;
+      fallbackChains = {
+        "google-antigravity/gemini-3.7-flash" = [
+          "openai-codex/gpt-5.6-luna"
+          "anthropic/claude-sonnet-5"
+        ];
+        "openai-codex/gpt-5.6-sol" = [
+          "anthropic/claude-fable-5"
+          "google-antigravity/gemini-3.7-flash"
+        ];
+        "anthropic/claude-fable-5" = [
+          "openai-codex/gpt-5.6-sol"
+          "google-antigravity/gemini-3.7-flash"
+        ];
+      };
+    };
   };
   effectiveSettings =
     recursiveUpdate (recursiveUpdate defaultSettings {
       skills.customDirectories = sharedSkillDirectories;
     })
     cfg.settings;
+  formatValue = value:
+    if isString value
+    then value
+    else builtins.toJSON value;
   settingCommands = concatStringsSep "\n" (map (
-    setting: "$DRY_RUN_CMD ${ompPkg}/bin/omp config set ${escapeShellArg setting.path} ${escapeShellArg (builtins.toJSON setting.value)}"
+    setting: "$DRY_RUN_CMD ${ompPkg}/bin/omp config set ${escapeShellArg setting.path} ${escapeShellArg (formatValue setting.value)}"
   ) (flattenSettings "" effectiveSettings));
   compileExtension = args: pkgs.callPackage ../../../../../pkgs/pi-mono/extensions/compile-extension.nix args;
   plannotatorExt = compileExtension {src = ./plannotator-omp;};
