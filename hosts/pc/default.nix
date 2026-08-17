@@ -69,7 +69,7 @@
     };
 
     services = {
-      activitywatch.enable = false;
+      activitywatch.enable = true;
       gpg-agent.enable = true;
     };
 
