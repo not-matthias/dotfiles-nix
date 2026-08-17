@@ -66,6 +66,7 @@
       btop.enable = true;
       worktrunk.enable = true;
       helium.enable = true;
+      minecraft.enable = true;
     };
 
     services = {
