@@ -100,5 +100,17 @@
     (_self: super: {
       slk = super.callPackage ../../pkgs/slk.nix {};
     })
+    (_self: super: {
+      ffmpeg_9 = super.ffmpeg_8 or super.ffmpeg;
+      wrapFirefox = super.callPackage ({ffmpeg_8 ? null, ...} @ args:
+        super.callPackage (super.path + "/pkgs/applications/networking/browsers/firefox/wrapper.nix") (
+          (builtins.removeAttrs args ["ffmpeg_8" "ffmpeg_9"])
+          // (
+            if ffmpeg_8 != null
+            then {ffmpeg_7 = ffmpeg_8;}
+            else {}
+          )
+        )) {};
+    })
   ];
 }
