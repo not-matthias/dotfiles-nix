@@ -181,7 +181,10 @@ in {
         if ! "$herdr" plugin list --json | ${pkgs.jq}/bin/jq -e \
           '.result.plugins[]? | select(.plugin_id == "herdr.collie" and .version == "0.28.0")' \
           >/dev/null; then
-          $DRY_RUN_CMD "$herdr" plugin install AltanS/collie --ref v0.28.0 --yes
+          # The installer clones over the network, which is unreachable while
+          # switch-to-configuration restarts NetworkManager/resolved. Retry next switch.
+          $DRY_RUN_CMD "$herdr" plugin install AltanS/collie --ref v0.28.0 --yes \
+            || warnEcho "herdr: collie plugin install failed, leaving current version in place"
         fi
       ''
     );
