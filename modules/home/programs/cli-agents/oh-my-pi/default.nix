@@ -197,6 +197,32 @@ with lib; let
   ) (flattenSettings "" effectiveSettings));
   compileExtension = args: pkgs.callPackage ../../../../../pkgs/pi-mono/extensions/compile-extension.nix args;
   plannotatorExt = compileExtension {src = ./plannotator-omp;};
+  plugins = import ./plugins.nix {inherit pkgs;};
+  pluginFiles =
+    foldlAttrs (
+      acc: name: p:
+        acc
+        // {
+          ".omp/plugins/node_modules/${name}".source = p.source;
+        }
+    ) {
+      ".omp/plugins/package.json".text = builtins.toJSON {
+        name = "omp-plugins";
+        private = true;
+        dependencies = mapAttrs (name: _: "npm:${name}") plugins;
+      };
+      ".omp/plugins/omp-plugins.lock.json".text = builtins.toJSON {
+        plugins =
+          mapAttrs (_: p: {
+            version = p.version;
+            enabledFeatures = null;
+            enabled = true;
+          })
+          plugins;
+        settings = {};
+      };
+    }
+    plugins;
 in {
   options.programs.cli-agents.oh-my-pi = {
     enable = mkEnableOption "oh-my-pi (omp) CLI agent";
@@ -214,25 +240,29 @@ in {
   };
   config = mkIf cfg.enable {
     home.packages = [wrappedOmp];
-    home.file.".omp/agent/skills" = {
-      source = sharedSkills;
-      recursive = true;
-    };
-    home.file.".omp/agent/agents" = {
-      source = ompSubAgents;
-      recursive = true;
-    };
-    home.file.".omp/agent/AGENTS.md".source = ../shared/AGENTS.md;
-    home.file.".omp/agent/extensions/docs-rs" = {
-      source = extensions."docs-rs".src;
-      recursive = true;
-    };
-    home.file.".omp/agent/extensions/plannotator" = {
-      source = plannotatorExt;
-      recursive = true;
-    };
-    home.file.".omp/agent/extensions/atuin.ts".source = ./atuin.ts;
-    home.file.".omp/agent/extensions/herdr-tab-title.ts".source = ./herdr-tab-title.ts;
+    home.file =
+      {
+        ".omp/agent/skills" = {
+          source = sharedSkills;
+          recursive = true;
+        };
+        ".omp/agent/agents" = {
+          source = ompSubAgents;
+          recursive = true;
+        };
+        ".omp/agent/AGENTS.md".source = ../shared/AGENTS.md;
+        ".omp/agent/extensions/docs-rs" = {
+          source = extensions."docs-rs".src;
+          recursive = true;
+        };
+        ".omp/agent/extensions/plannotator" = {
+          source = plannotatorExt;
+          recursive = true;
+        };
+        ".omp/agent/extensions/atuin.ts".source = ./atuin.ts;
+        ".omp/agent/extensions/herdr-tab-title.ts".source = ./herdr-tab-title.ts;
+      }
+      // pluginFiles;
 
     home.activation.ohMyPiSettings = hm.dag.entryAfter ["writeBoundary"] ''
       ${optionalString (cfg.settings != {}) ''
