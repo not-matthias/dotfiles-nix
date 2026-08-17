@@ -123,49 +123,7 @@
         };
       };
     };
-    restic = {
-      enable = true;
-      paths = [
-        "/home/${user}/Documents"
-        "/home/${user}/Pictures"
-        "/home/${user}/Desktop"
-
-        "/home/${user}/.ssh"
-        "/home/${user}/.gnupg"
-        "/home/${user}/.local/share/atuin"
-        "/home/${user}/.local/share/activitywatch"
-
-        # Agent session transcripts (.jsonl only; raw data excluded below)
-        "/home/${user}/.omp/agent/sessions"
-        "/home/${user}/.claude/projects"
-        "/home/${user}/.pi/agent/sessions"
-      ];
-      excludes = [
-        # omp: advisor analysis logs + image artifacts (bash logs already excluded by *.log)
-        "**/.omp/agent/sessions/**/__advisor*.jsonl"
-        "**/.omp/agent/sessions/**/local"
-        # claude: non-transcript sidecar files (*.json won't match *.jsonl)
-        "**/.claude/projects/**/*.wakatime"
-        "**/.claude/projects/**/*.json"
-        "**/.claude/projects/**/*.txt"
-        "**/.claude/projects/**/*.md"
-        "**/.claude/projects/**/*.js"
-        "**/.claude/projects/**/*.pdf"
-      ];
-      localBackup = {
-        paths = [
-          "/home/${user}/Videos/obs"
-          "/home/${user}/Videos/Music"
-        ];
-        enable = true;
-        schedule = "daily";
-      };
-      # remoteBackup = {
-      #   enable = true;
-      #   repository = "s3:s3.eu-central-003.backblazeb2.com/framework-cf912bac41384519";
-      #   schedule = "daily";
-      # };
-    };
+    restic.enable = false; # agenix disabled on pc; re-enable once secrets work again
     navidrome = {
       enable = true;
       musicFolder = "/home/${user}/Music";
@@ -205,7 +163,8 @@
     fonts.enable = true;
   };
 
-  age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
+  age.identityPaths = [];
+  age.secrets = lib.mkForce {}; # no ssh identity on pc for agenix; restic disabled above until this is resolved
 
   networking = {
     hostName = "pc";
