@@ -116,7 +116,11 @@
       settings.dynamic_tuning = true;
       ppdSettings = {
         main.default = "performance";
-        profiles.performance = "throughput-performance";
+        profiles = {
+          power-saver = "powersave";
+          balanced = "balanced";
+          performance = "throughput-performance";
+        };
       };
     };
     restic = {
@@ -196,7 +200,7 @@
 
   virtualisation.podman.enable = true;
   desktop = {
-    theme = "light";
+    theme = "dark";
     niri.enable = true;
     fonts.enable = true;
   };
