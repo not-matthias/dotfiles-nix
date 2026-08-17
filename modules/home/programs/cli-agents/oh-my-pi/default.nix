@@ -93,6 +93,9 @@ with lib; let
     };
     modelRoles = {
       default = "google-antigravity/gemini-3.7-flash";
+      # FIXME: switch back to gemini-3.7-flash once title generation / disableReasoning works (Antigravity sends thinkingLevel: MINIMAL which 400s)
+      tiny = "anthropic/claude-haiku-4-5";
+      commit = "google-antigravity/gemini-3.7-flash";
       task = "google-antigravity/gemini-3.7-flash";
       advisor = "openai-codex/gpt-5.6-sol:medium";
       slow = "openai-codex/gpt-5.6-sol:xhigh";
