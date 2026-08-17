@@ -203,15 +203,15 @@ with lib; let
       acc: name: p:
         acc
         // {
-          ".omp/plugins/node_modules/${name}".source = p.source;
+          ".local/share/omp/plugins/node_modules/${name}".source = p.source;
         }
     ) {
-      ".omp/plugins/package.json".text = builtins.toJSON {
+      ".local/share/omp/plugins/package.json".text = builtins.toJSON {
         name = "omp-plugins";
         private = true;
         dependencies = mapAttrs (name: _: "npm:${name}") plugins;
       };
-      ".omp/plugins/omp-plugins.lock.json".text = builtins.toJSON {
+      ".local/share/omp/plugins/omp-plugins.lock.json".text = builtins.toJSON {
         plugins =
           mapAttrs (_: p: {
             version = p.version;
