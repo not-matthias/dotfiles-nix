@@ -47,6 +47,25 @@ in {
       };
     };
 
+    # uwsm ships its units via systemd.packages into /etc/systemd/user, and they embed
+    # store paths. switch-to-configuration restarts changed user units, so any uwsm bump
+    # stops wayland-wm@, tearing down the live session and leaving an irreversible
+    # wayland-session-shutdown.target job that makes the following starts fail with
+    # "Transaction order is cyclic".
+    # Upstream fix (nixpkgs#532275) is master-only; drop this on 26.11, except for
+    # wayland-wm-app-daemon which upstream still misses.
+    systemd.user.services =
+      lib.genAttrs [
+        "wayland-wm@"
+        "wayland-session-bindpid@"
+        "wayland-wm-app-daemon"
+      ] (_: {
+        restartIfChanged = false;
+        # Declaring these units here would otherwise inject the NixOS default PATH,
+        # clobbering the PATH uwsm imports into the user manager.
+        enableDefaultPath = false;
+      });
+
     # Essential Wayland environment setup
     # FIXME: Do we need this?
     programs.xwayland.enable = true;
