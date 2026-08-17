@@ -1,58 +1,35 @@
 #!/usr/bin/env bash
-# Claude Code usage for waybar — reads OAuth token from ~/.claude/.credentials.json
+# Claude Code usage for waybar — queries usage via `omp usage -p anthropic --json`
 
 # shellcheck disable=SC1090,SC1091
 source "${AI_USAGE_COMMON:?AI_USAGE_COMMON not set}"
 
-CREDENTIALS="$HOME/.claude/.credentials.json"
-if [ ! -f "$CREDENTIALS" ]; then
-  output_error "󰜡" "No credentials file"
-  exit 0
-fi
-
-# The refresh token outlives the access token. A 401 with a valid refresh token
-# is therefore recoverable.
-refresh_token_valid() {
-  local expires_ms
-  expires_ms=$(jq -r '.claudeAiOauth.refreshTokenExpiresAt // empty' "$CREDENTIALS")
-  [ -n "$expires_ms" ] && [ "$expires_ms" -gt "$(date +%s)000" ]
-}
-
 force_refresh=0
 if [ "${1:-}" = "--force-refresh" ]; then
   force_refresh=1
+  omp usage invalidate -p anthropic >/dev/null 2>&1 || true
 elif [ "${1:-}" = "--restart" ]; then
   clear_usage_cache "claude"
   force_refresh=1
+  omp usage invalidate -p anthropic >/dev/null 2>&1 || true
 fi
 
 fetch_data() {
-  local token response http_code
-  token=$(jq -r '.claudeAiOauth.accessToken' "$CREDENTIALS")
-  response=$(curl -s -w '\n%{http_code}' "https://api.anthropic.com/api/oauth/usage" \
-    -H "Authorization: Bearer $token" \
-    -H "anthropic-beta: oauth-2025-04-20")
-  http_code=$(echo "$response" | tail -1)
-  local body
-  body=$(echo "$response" | sed '$d')
-  if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
-    echo "$body"
-    return 0
+  local json
+  if ! json=$(omp usage -p anthropic --json 2>/dev/null); then
+    return 1
   fi
-  if [ "$http_code" = "429" ]; then
-    return 2
-  fi
-  if [ "$http_code" = "401" ] || [ "$http_code" = "403" ]; then
-    if refresh_token_valid; then
-      return 5
-    fi
+  local count
+  count=$(echo "$json" | jq -r '([.reports[]? | select(.provider == "anthropic")] | length) // 0' 2>/dev/null)
+  if [ -z "$count" ] || [ "$count" -eq 0 ]; then
     return 4
   fi
-  return 1
+  echo "$json"
+  return 0
 }
+
 rate_limited=0
-session_refreshing=0
-data=$(get_cached_or_fetch "claude" "${AI_USAGE_REFRESH_SECONDS:-300}" "$force_refresh")
+data=$(get_cached_or_fetch "claude" "${AI_USAGE_REFRESH_SECONDS:-600}" "$force_refresh")
 rc=$?
 if [ "$rc" -eq 3 ]; then
   rate_limited=1
@@ -60,64 +37,56 @@ elif [ "$rc" -eq 2 ]; then
   output_error "󰜡" "Rate limited (no cache)"
   exit 0
 elif [ "$rc" -eq 4 ]; then
-  output_error "󰜡" "Session expired; sign in again"
+  output_error "󰜡" "No Claude account found; check omp auth"
   exit 0
-elif [ "$rc" -eq 5 ]; then
-  if [ -z "$data" ]; then
-    output_error "󰜡" "Session refreshing"
-    exit 0
-  fi
-  session_refreshing=1
 elif [ "$rc" -ne 0 ]; then
-  output_error "󰜡" "API request failed"
+  output_error "󰜡" "Failed to fetch usage"
   exit 0
 fi
 
-fh_pct=$(echo "$data" | jq -r '.five_hour.utilization // 0 | round')
-sd_pct=$(echo "$data" | jq -r '.seven_day.utilization // 0 | round')
-fh_reset=$(echo "$data" | jq -r '.five_hour.resets_at // empty')
-sd_reset=$(echo "$data" | jq -r '.seven_day.resets_at // empty')
+fh_pct=$(echo "$data" | jq -r '([.reports[]? | select(.provider == "anthropic") | .limits[]? | select(.scope.windowId == "5h" and (.scope.shared == true or .scope.shared == null))][0] | .amount.used // 0) | round')
+sd_pct=$(echo "$data" | jq -r '([.reports[]? | select(.provider == "anthropic") | .limits[]? | select(.scope.windowId == "7d" and (.scope.shared == true or .scope.shared == null))][0] | .amount.used // 0) | round')
+fh_reset=$(echo "$data" | jq -r '([.reports[]? | select(.provider == "anthropic") | .limits[]? | select(.scope.windowId == "5h" and (.scope.shared == true or .scope.shared == null))][0] | .window.resetsAt // empty)')
+sd_reset=$(echo "$data" | jq -r '([.reports[]? | select(.provider == "anthropic") | .limits[]? | select(.scope.windowId == "7d" and (.scope.shared == true or .scope.shared == null))][0] | .window.resetsAt // empty)')
 
 fh_eta="--"
 sd_eta="--"
-if [ -n "$fh_reset" ]; then
-  fh_ts=$(date -d "$fh_reset" +%s 2>/dev/null)
-  [ -n "$fh_ts" ] && fh_eta=$(format_eta "$fh_ts")
-fi
-if [ -n "$sd_reset" ]; then
-  sd_ts=$(date -d "$sd_reset" +%s 2>/dev/null)
-  [ -n "$sd_ts" ] && sd_eta=$(format_eta "$sd_ts")
-fi
+[ -n "$fh_reset" ] && [ "$fh_reset" != "null" ] && fh_eta=$(format_eta "$fh_reset")
+[ -n "$sd_reset" ] && [ "$sd_reset" != "null" ] && sd_eta=$(format_eta "$sd_reset")
 
-# Per-model 7-day scoped usage (sonnet/opus/cowork top-level; Fable from limits[])
 model_line() {
-  local label="$1" pct="$2" reset="$3" eta="--" ts
-  if [ -n "$reset" ]; then
-    ts=$(date -d "$reset" +%s 2>/dev/null)
-    [ -n "$ts" ] && eta=$(format_eta "$ts")
+  local label="$1" pct="$2" reset="$3" eta="--"
+  if [ -n "$reset" ] && [ "$reset" != "null" ]; then
+    eta=$(format_eta "$reset")
   fi
   printf '%-7s %3s%%  %s' "$label" "$pct" "$eta"
 }
 
-sonnet_pct=$(echo "$data" | jq -r '.seven_day_sonnet.utilization // 0 | round')
-sonnet_reset=$(echo "$data" | jq -r '.seven_day_sonnet.resets_at // empty')
-opus_pct=$(echo "$data" | jq -r '.seven_day_opus.utilization // 0 | round')
-opus_reset=$(echo "$data" | jq -r '.seven_day_opus.resets_at // empty')
-cowork_pct=$(echo "$data" | jq -r '.seven_day_cowork.utilization // 0 | round')
-cowork_reset=$(echo "$data" | jq -r '.seven_day_cowork.resets_at // empty')
-fable_pct=$(echo "$data" | jq -r '([.limits[]? | select(.scope.model.display_name == "Fable")][0] | .percent) // 0')
-fable_reset=$(echo "$data" | jq -r '([.limits[]? | select(.scope.model.display_name == "Fable")][0] | .resets_at) // empty')
+get_anthropic_model() {
+  local name="$1" field="$2"
+  echo "$data" | jq -r --arg name "$name" --arg field "$field" '
+    ([.reports[]? | select(.provider == "anthropic") | .limits[]? | select(
+      ((.scope.tier // "") | ascii_downcase == $name) or
+      ((.label // "") | ascii_downcase | contains($name))
+    )][0] | if $field == "pct" then ((.amount.used // empty) | round) else (.window.resetsAt // empty) end) // empty
+  '
+}
 
-models_tooltip="\n\nModels (7d scoped)\n$(model_line "Sonnet:" "$sonnet_pct" "$sonnet_reset")\n$(model_line "Opus:" "$opus_pct" "$opus_reset")\n$(model_line "Cowork:" "$cowork_pct" "$cowork_reset")\n$(model_line "Fable:" "$fable_pct" "$fable_reset")"
+sonnet_pct=$(get_anthropic_model "sonnet" "pct")
+sonnet_reset=$(get_anthropic_model "sonnet" "reset")
+opus_pct=$(get_anthropic_model "opus" "pct")
+opus_reset=$(get_anthropic_model "opus" "reset")
+cowork_pct=$(get_anthropic_model "cowork" "pct")
+cowork_reset=$(get_anthropic_model "cowork" "reset")
+fable_pct=$(get_anthropic_model "fable" "pct")
+fable_reset=$(get_anthropic_model "fable" "reset")
+
+models_tooltip="\n\nModels (7d scoped)\n$(model_line "Sonnet:" "${sonnet_pct:-0}" "$sonnet_reset")\n$(model_line "Opus:" "${opus_pct:-0}" "$opus_reset")\n$(model_line "Cowork:" "${cowork_pct:-0}" "$cowork_reset")\n$(model_line "Fable:" "${fable_pct:-0}" "$fable_reset")"
 
 cls=$(css_class "$fh_pct")
 rl_note=""
 if [ "$rate_limited" -eq 1 ]; then
-  rl_note="\n⚠ Rate limited — showing cached data"
-fi
-session_note=""
-if [ "$session_refreshing" -eq 1 ]; then
-  session_note="\n⚠ Session refreshing — showing cached data"
+  rl_note="\n⚠ Showing cached data"
 fi
 
 # Fetch 2x promo status (best-effort, don't block on failure)
@@ -139,7 +108,7 @@ if [ -n "$twox_json" ]; then
   fi
 fi
 
-tooltip="Claude Code Usage\n━━━━━━━━━━━━━━━━━━━━━━━━\n5h:  ${fh_pct}%  ${fh_eta}\n7d:  ${sd_pct}%  ${sd_eta}${models_tooltip}${twox_note}${rl_note}${session_note}"
+tooltip="Claude Code Usage\n━━━━━━━━━━━━━━━━━━━━━━━━\n5h:  ${fh_pct}%  ${fh_eta}\n7d:  ${sd_pct}%  ${sd_eta}${models_tooltip}${twox_note}${rl_note}"
 
 # At 100%: show reset timer instead of percentage (7d takes priority)
 bar_text="${fh_pct}%"

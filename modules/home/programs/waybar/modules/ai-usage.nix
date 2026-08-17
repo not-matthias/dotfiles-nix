@@ -1,5 +1,5 @@
 {pkgs}: let
-  runtimeDeps = [pkgs.jq pkgs.curl pkgs.coreutils pkgs.bc pkgs.gnugrep];
+  runtimeDeps = [pkgs.jq pkgs.curl pkgs.coreutils pkgs.bc pkgs.gnugrep pkgs.oh-my-pi];
   runtimePath = pkgs.lib.makeBinPath runtimeDeps;
   commonLib = ./scripts/ai-usage-common.sh;
   # /api/oauth/usage aggressively 429s; see github.com/anthropics/claude-code/issues/30930.
@@ -22,8 +22,16 @@
     ${refreshEnv}
     exec ${pkgs.bash}/bin/bash ${./scripts/codex-usage.sh}
   '';
+
+  antigravityScript = pkgs.writeShellScriptBin "waybar-antigravity-usage" ''
+    export PATH="${runtimePath}:$PATH"
+    export AI_USAGE_COMMON="${commonLib}"
+    export AI_USAGE_RETRY_LIMIT="5"
+    ${refreshEnv}
+    exec ${pkgs.bash}/bin/bash ${./scripts/antigravity-usage.sh}
+  '';
 in {
-  inherit claudeScript codexScript;
+  inherit claudeScript codexScript antigravityScript;
 
   config = {
     "custom/claude-usage" = {
@@ -45,6 +53,16 @@ in {
       on-click = "${codexScript}/bin/waybar-codex-usage --force-refresh && ${pkgs.procps}/bin/pkill -RTMIN+10 waybar";
       on-click-right = "${codexScript}/bin/waybar-codex-usage --restart && ${pkgs.procps}/bin/pkill -RTMIN+10 waybar";
       signal = 10;
+      interval = refreshSeconds;
+    };
+
+    "custom/antigravity-usage" = {
+      return-type = "json";
+      format = "{}";
+      exec = "${antigravityScript}/bin/waybar-antigravity-usage";
+      on-click = "${antigravityScript}/bin/waybar-antigravity-usage --force-refresh && ${pkgs.procps}/bin/pkill -RTMIN+11 waybar";
+      on-click-right = "${antigravityScript}/bin/waybar-antigravity-usage --restart && ${pkgs.procps}/bin/pkill -RTMIN+11 waybar";
+      signal = 11;
       interval = refreshSeconds;
     };
   };

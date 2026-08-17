@@ -117,6 +117,7 @@ in {
               ++ [
                 "custom/claude-usage"
                 "custom/codex-usage"
+                "custom/antigravity-usage"
               ];
           };
 

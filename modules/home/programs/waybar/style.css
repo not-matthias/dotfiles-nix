@@ -46,6 +46,7 @@ window#waybar {
 
 #custom-claude-usage,
 #custom-codex-usage,
+#custom-antigravity-usage,
 #memory,
 #custom-niri-window-index,
 #workspaces,
@@ -104,6 +105,7 @@ window#waybar {
 #custom-temperature:hover,
 #custom-claude-usage:hover,
 #custom-codex-usage:hover,
+#custom-antigravity-usage:hover,
 #custom-niri-window-index:hover,
 #tray:hover {
     background: rgba(255, 255, 255, 0.1);

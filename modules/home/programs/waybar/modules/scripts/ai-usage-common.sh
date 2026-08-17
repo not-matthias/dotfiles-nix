@@ -69,6 +69,13 @@ fetch_data_with_retries() {
 
 format_eta() {
   local reset_ts="$1"
+  if [ -z "$reset_ts" ] || [ "$reset_ts" = "null" ]; then
+    echo "--"
+    return
+  fi
+  if [ "$reset_ts" -gt 100000000000 ]; then
+    reset_ts=$((reset_ts / 1000))
+  fi
   local now
   now=$(date +%s)
   local diff=$((reset_ts - now))
