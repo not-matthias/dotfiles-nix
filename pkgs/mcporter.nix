@@ -16,7 +16,7 @@
   src = fetchFromGitHub {
     owner = "openclaw";
     repo = "mcporter";
-    tag = "v${version}";
+    rev = "437eab2986ce4ef6c42d5d4315c1c061ae53ec84";
     hash = "sha256-joLAU2hFpN2x8UFKFa/O/EJ7uoIa4ir0bwEWx9O/TYY=";
   };
 in
