@@ -121,6 +121,7 @@ in {
       };
       btop.enable = true;
       obsidian = {
+        enable = true;
         vault-links.personal = {
           vaultName = "personal-vault-v2";
           desktopName = "Obsidian - Personal Vault";
