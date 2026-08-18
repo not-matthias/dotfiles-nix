@@ -4,6 +4,9 @@
       binary-ninja = super.callPackage ../../pkgs/binary-ninja.nix {};
     })
     (_self: super: {
+      aw-watcher-niri = super.callPackage ../../pkgs/aw-watcher-niri {};
+    })
+    (_self: super: {
       binja-wasm = super.callPackage ../../pkgs/binja-wasm.nix {};
     })
     (_self: super: {

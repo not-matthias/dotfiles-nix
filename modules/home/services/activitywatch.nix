@@ -1,4 +1,5 @@
 {
+  pkgs,
   unstable,
   config,
   lib,
@@ -26,6 +27,21 @@ in {
         After = ["graphical-session.target"];
         Requisite = ["graphical-session.target"];
         PartOf = ["graphical-session.target"];
+      };
+      Install = {WantedBy = ["graphical-session.target"];};
+    };
+
+    systemd.user.services.activitywatch-watcher-niri = {
+      Unit = {
+        Description = "ActivityWatch Niri watcher";
+        After = ["graphical-session.target" "activitywatch.service"];
+        PartOf = ["graphical-session.target"];
+        Requisite = ["graphical-session.target"];
+      };
+      Service = {
+        ExecStart = "${pkgs.aw-watcher-niri}/bin/aw-watcher-niri";
+        Restart = "always";
+        RestartSec = 3;
       };
       Install = {WantedBy = ["graphical-session.target"];};
     };
