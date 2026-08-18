@@ -1,0 +1,9 @@
+id = "local.herdr-api"
+name = "Herdr API"
+version = "0.1.0"
+min_herdr_version = "0.7.5"
+description = "Aggregate herdr agent state into an ActivityWatch bucket (aw-watcher-herdr_<hostname>) once per minute."
+platforms = ["linux"]
+
+[[startup]]
+command = ["bun", "index.js"]

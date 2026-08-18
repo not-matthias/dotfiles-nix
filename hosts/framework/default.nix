@@ -101,6 +101,10 @@ in {
               path = pkgs.herdr-mirror-plugin;
               enable = true;
             }
+            {
+              path = ../../pkgs/herdr-plugins/herdr-api;
+              enable = true;
+            }
           ];
         };
         pi-mono = {
