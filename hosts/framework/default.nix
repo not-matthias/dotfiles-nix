@@ -151,6 +151,7 @@ in {
       worktrunk.enable = true;
       zen-browser.enable = true;
       helium.enable = true;
+      minecraft.enable = true;
 
       solidtime-desktop.enable = true;
       discord = {
