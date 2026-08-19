@@ -35,6 +35,8 @@ completion:
   notify: "off"
 codexResets:
   autoRedeem: "no"
+compaction:
+  handoffSaveToDisk: true
 dev:
   autoqa: false
   autoqaConsent: denied
