@@ -1,11 +1,13 @@
 {
   config,
   lib,
+  pkgs,
   unstable,
   ...
 }:
 with lib; let
   cfg = config.programs.cli-agents.codex;
+  sharedSkillsFlat = import ../shared/skills.nix {inherit lib pkgs;};
 in {
   options.programs.cli-agents.codex = {
     enable = mkEnableOption "Codex CLI agent";
@@ -25,7 +27,7 @@ in {
         source = ../shared/AGENTS.md;
       };
       ".codex/skills" = {
-        source = ../shared/skills;
+        source = sharedSkillsFlat;
         recursive = true;
       };
       ".codex/agents" = {

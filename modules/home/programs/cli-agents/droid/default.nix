@@ -6,6 +6,7 @@
 }:
 with lib; let
   cfg = config.programs.cli-agents.droid;
+  sharedSkillsFlat = import ../shared/skills.nix {inherit lib pkgs;};
 in {
   options.programs.cli-agents.droid = {
     enable = mkEnableOption "Factory Droid CLI";
@@ -23,7 +24,7 @@ in {
         source = ../shared/AGENTS.md;
       };
       ".factory/skills" = {
-        source = ../shared/skills;
+        source = sharedSkillsFlat;
         recursive = true;
       };
     };
