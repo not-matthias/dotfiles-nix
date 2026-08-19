@@ -12,11 +12,9 @@ in {
     ./agent-browser/default.nix
     ./claude/default.nix
     ./codex/default.nix
-    ./gemini/default.nix
     ./hermes/default.nix
     ./opencode/default.nix
     ./amp/default.nix
-    ./droid/default.nix
     ./pi-mono/default.nix
     ./oh-my-pi/default.nix
     ./herdr/default.nix

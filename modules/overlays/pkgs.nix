@@ -70,9 +70,6 @@
       hermes-agent = super.callPackage ../../pkgs/hermes-agent.nix {};
     })
     (_self: super: {
-      droid = super.callPackage ../../pkgs/droid.nix {};
-    })
-    (_self: super: {
       amp-cli = super.callPackage ../../pkgs/amp-cli.nix {};
     })
     (_self: super: {

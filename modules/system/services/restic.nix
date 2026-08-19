@@ -306,7 +306,6 @@
 
     # Application temporary
     ".zoom"
-    ".gemini/tmp"
     ".config/joplin/tmp"
     ".config/joplin/cache"
     ".config/calibre/caches"

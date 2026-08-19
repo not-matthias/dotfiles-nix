@@ -58,7 +58,6 @@
     ignores = [
       ".claude"
       ".codex"
-      "GEMINI.md"
       "SCRATCHPAD.md"
       ".idea"
       ".zed"
