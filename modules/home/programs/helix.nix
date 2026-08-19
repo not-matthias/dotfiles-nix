@@ -60,6 +60,9 @@ in {
             command = "harper-ls";
             args = ["--stdio"];
           };
+          "nil" = {
+            config.nil.nix.flake.autoArchive = true;
+          };
         };
       };
       settings = {
