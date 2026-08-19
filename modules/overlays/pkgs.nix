@@ -7,6 +7,9 @@
       aw-watcher-niri = super.callPackage ../../pkgs/aw-watcher-niri {};
     })
     (_self: super: {
+      aw-watcher-media-player = super.callPackage ../../pkgs/aw-watcher-media-player.nix {};
+    })
+    (_self: super: {
       binja-wasm = super.callPackage ../../pkgs/binja-wasm.nix {};
     })
     (_self: super: {

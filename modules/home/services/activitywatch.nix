@@ -17,6 +17,8 @@ in {
       watchers = {
         awatcher.package = unstable.awatcher;
         aw-sync.package = unstable.aw-server-rust;
+        # Reports the currently playing media via MPRIS (Spotify, browsers, ...)
+        aw-watcher-media-player.package = pkgs.aw-watcher-media-player;
       };
     };
 
