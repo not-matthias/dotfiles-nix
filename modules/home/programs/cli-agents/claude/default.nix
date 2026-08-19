@@ -2,37 +2,13 @@
   config,
   lib,
   unstable,
+  pkgs,
   ...
 }:
 with lib; let
   cfg = config.programs.cli-agents.claude;
 
-  sharedSkills = ../shared/skills;
-  # Relative paths of every directory under sharedSkills containing SKILL.md, any depth
-  findSkills = dir: rel:
-    flatten (mapAttrsToList (
-      name: type: let
-        rel' =
-          if rel == ""
-          then name
-          else "${rel}/${name}";
-      in
-        if type != "directory"
-        then []
-        else if pathExists (dir + "/${name}/SKILL.md")
-        then [rel']
-        else findSkills (dir + "/${name}") rel'
-    ) (builtins.readDir dir));
-  # Top-level skills already sit at $out root after cp; only nested ones need flat links
-  nestedSkills = filter (path: path != baseNameOf path) (findSkills sharedSkills "");
-  claudeSkills = unstable.runCommand "claude-skills" {} ''
-    mkdir $out
-    cp -rT ${sharedSkills} $out
-    ${concatMapStrings (
-        path: "ln -s ${path} $out/${baseNameOf path}\n"
-      )
-      nestedSkills}
-  '';
+  sharedSkillsFlat = import ../shared/skills.nix {inherit lib pkgs;};
 in {
   options.programs.cli-agents.claude = {
     enable = mkEnableOption "Claude Code CLI agent";
@@ -60,7 +36,7 @@ in {
         source = ../shared/AGENTS.md;
       };
       ".claude/skills" = {
-        source = claudeSkills;
+        source = sharedSkillsFlat;
         recursive = true;
       };
       ".claude/agents" = {

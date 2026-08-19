@@ -23,25 +23,7 @@ with lib; let
     '';
   };
 
-  sharedSkills = ../shared/skills;
-  # OMP customDirectories must point at directories whose immediate children
-  # are skill directories. Recurse to find every such parent (e.g. "coding",
-  # "third-party/mattpocock") at arbitrary depth.
-  findSkillParents = rel: dir: let
-    subdirs = attrNames (filterAttrs (_: type: type == "directory") (builtins.readDir dir));
-    isSkill = name: builtins.pathExists (dir + "/${name}/SKILL.md");
-  in
-    optional (any isSkill subdirs) rel
-    ++ concatMap (
-      name:
-        if isSkill name
-        then []
-        else findSkillParents "${rel}${optionalString (rel != "") "/"}${name}" (dir + "/${name}")
-    )
-    subdirs;
-  sharedSkillDirectories =
-    map (rel: "${config.home.homeDirectory}/.omp/agent/skills/${rel}")
-    (findSkillParents "" sharedSkills);
+  sharedSkillsFlat = import ../shared/skills.nix {inherit lib pkgs;};
   # omp's task-agent frontmatter differs from Claude Code's: tool names are
   # lowercase, WebFetch doesn't exist (both WebFetch and WebSearch map to
   # web_search), model: "inherit" isn't valid (omit to inherit), and the
@@ -157,6 +139,11 @@ with lib; let
       mode = "auto";
     };
     features.unexpectedStopDetection = true;
+    # Also register the Nix-managed shared skill tree as a custom directory:
+    # custom-directory skills are merged in a later pass and override
+    # same-named provider skills, so this keeps it winning name collisions
+    # against imperative skills in other agents' roots (e.g. ~/.claude/skills).
+    skills.customDirectories = ["${config.home.homeDirectory}/.omp/agent/skills"];
     display = {
       showTokenUsage = true;
       cacheMissMarker = true;
@@ -183,11 +170,7 @@ with lib; let
       };
     };
   };
-  effectiveSettings =
-    recursiveUpdate (recursiveUpdate defaultSettings {
-      skills.customDirectories = sharedSkillDirectories;
-    })
-    cfg.settings;
+  effectiveSettings = recursiveUpdate defaultSettings cfg.settings;
   formatValue = value:
     if isString value
     then value
@@ -243,7 +226,7 @@ in {
     home.file =
       {
         ".omp/agent/skills" = {
-          source = sharedSkills;
+          source = sharedSkillsFlat;
           recursive = true;
         };
         ".omp/agent/agents" = {
