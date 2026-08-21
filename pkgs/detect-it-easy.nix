@@ -8,12 +8,12 @@
   ...
 }: let
   pname = "die";
-  version = "3.07";
+  version = "3.21";
   name = "${pname}-${version}";
   src = builtins.fetchurl {
     url = "https://github.com/horsicq/DIE-engine/releases/download/${version}/Detect_It_Easy-${version}-x86_64.AppImage";
     name = "detect-it-easy-${version}.AppImage";
-    sha256 = "9rr9oq2YQngN6EshFRu71/Qlle9fyjDL2yUWYrg1NwI=";
+    sha256 = "QNrPFM50AyqefK0bf1Sf/FpaZwqrbYtEZymZZvfVWU4=";
   };
   appimageContents = appimageTools.extractType2 {inherit name src;};
 in
