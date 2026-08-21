@@ -80,6 +80,8 @@ in {
           rainbow-brackets = true;
           soft-wrap.enable = true;
 
+          insecure = true;
+
           auto-completion = true;
           completion-trigger-len = 2;
           completion-timeout = 5;
