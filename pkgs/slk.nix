@@ -7,15 +7,19 @@
 }:
 buildGoModule rec {
   pname = "slk";
-  version = "0.10.0";
+  version = "0.16.0";
   src = fetchFromGitHub {
     owner = "gammons";
     repo = "slk";
     tag = "v${version}";
-    hash = "sha256-Mns5HBBz5iql/AhlZxFEK/VcPn3TPID+RgPwsGwOgvs=";
+    hash = "sha256-gYRG4/Kir4Pn2OLg25Fm834sIJ0KNPoGgf1Rdim1ox8=";
   };
 
-  vendorHash = "sha256-dPa469oNv6eYyDdly3uhc273DAGz+erc0E3K/am7WoY=";
+  vendorHash = "sha256-deqCUDgRvhe/Bpmy+9bIHjSBo+KTCtAN2XcGMhAj/G0=";
+
+  # v0.16.0 added a resolver test that spins up an HTTP server; the Nix
+  # build sandbox blocks outbound network, so the test times out.
+  doCheck = false;
 
   subPackages = ["cmd/slk"];
 
@@ -36,7 +40,7 @@ buildGoModule rec {
     "-s"
     "-w"
     "-X main.version=${version}"
-    "-X main.commit=f60601f9bdabb868a747365ad41e4a698c163596"
+    "-X main.commit=c782404508d40e6641d1dc7cff08a5fbd2f28c16"
   ];
 
   nativeBuildInputs = [makeWrapper];
