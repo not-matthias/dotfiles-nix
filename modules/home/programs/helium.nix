@@ -6,7 +6,7 @@
       "--no-default-browser-check"
       "--disable-breakpad"
       "--restore-last-session"
-      "--enable-features=AcceleratedVideoEncoder,ParallelDownloading,Vulkan,VulkanFromANGLE,DefaultANGLEVulkan,PlatformHEVCDecoderSupport"
+      "--enable-features=AcceleratedVideoEncoder,ParallelDownloading,PlatformHEVCDecoderSupport"
     ];
 
     extensions = [

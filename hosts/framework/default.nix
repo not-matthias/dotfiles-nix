@@ -284,6 +284,13 @@ in {
   hardware = {
     powersave.enable = true;
     hibernate.enable = true;
+    # Neither this repo nor nixos-hardware's framework-13-7040-amd module sets this,
+    # so without it there's no /run/opengl-driver symlink, no Vulkan ICD registration,
+    # and no VAAPI/VDPAU driver path for zen-browser, wf-recorder, and OBS to use.
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
     bluetooth.enable = true;
     sound.enable = true;
     ssd.enable = true;
