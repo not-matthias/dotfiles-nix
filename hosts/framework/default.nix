@@ -479,6 +479,13 @@ in {
       luks.devices."luks-482bfe5c-c987-4a97-9c07-b8cd312cabb5".device = "/dev/disk/by-uuid/482bfe5c-c987-4a97-9c07-b8cd312cabb5";
       luks.devices."luks-482bfe5c-c987-4a97-9c07-b8cd312cabb5".keyFile = "/crypto_keyfile.bin";
     };
+
+    # nix/cargo build scratch files live in RAM instead of on disk; a derivation
+    # needing more than 16G of scratch space will hit ENOSPC.
+    tmp = {
+      useTmpfs = true;
+      tmpfsSize = "16G";
+    };
   };
   # scx_bpfland (scheduler.nix) already biases CPU toward interactive tasks; nudge
   # nix builds further down so the desktop stays responsive under heavy build load.
