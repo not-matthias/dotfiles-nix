@@ -4,11 +4,14 @@ steeringMode: all
 theme:
   dark: graphite
 
+composer:
+  shape: pi
 statusLine:
   preset: ascii
   separator: ascii
 startup:
   quiet: true
+  setupWizard: false
 display:
   showTokenUsage: true
   cacheMissMarker: true
@@ -43,31 +46,6 @@ dev:
 tools:
   xdevDocs: catalog
 
-# Do not load slash commands from other agents' config trees.
-commands:
-  enableClaudeUser: false
-  enableClaudeProject: false
-  enableOpencodeUser: false
-  enableOpencodeProject: false
-
-disabledProviders:
-  - claude
-disabledExtensions:
-  - skill:changelog-writer
-  - skill:codspeed-writer
-  - skill:commit
-  - skill:create-pr
-  - skill:linear-plan
-  - skill:linear-update
-  - skill:frontend-design
-  - skill:codspeed
-  - skill:codspeed-bench
-  - skill:codspeed-instrument-hooks
-  - skill:codspeed-memtrack
-  - skill:codspeed-notes
-  - skill:mac-mini-copy
-  - skill:storybook-browser
-
 modelRoles:
   default: google-antigravity/gemini-3.7-flash
   # Antigravity sends thinkingLevel: MINIMAL for title generation, which 400s.
@@ -81,7 +59,6 @@ modelRoles:
 
 task:
   showResolvedModelBadge: true
-  eager: always
   enableEffort: true
   enableLsp: true
   maxEffort: xhigh
