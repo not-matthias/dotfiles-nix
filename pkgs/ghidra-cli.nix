@@ -11,16 +11,16 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "ghidra-cli";
-  version = "0.1.9";
+  version = "0.2.2";
 
   src = fetchFromGitHub {
     owner = "akiselev";
     repo = "ghidra-cli";
-    rev = "07b8d17c98f4aab2af4d26163ca25bfeda4471f1";
-    hash = "sha256-bX+lT4YeBJkOLPW+db/4CCimnLUjdc6/REk5+5PtBEE=";
+    rev = "10019ba1f3b54c9edcca8ec644a30e16fb7b7c79";
+    hash = "sha256-B4bnOOFtEsckT5TOAmjbx5AkrdpjeA248G+BrDUHY88=";
   };
 
-  cargoHash = "sha256-J+XhpIo5T/6kotHH51XEyxYLVsjJ/+p0EXTKqhef/oc=";
+  cargoHash = "sha256-r8AvlTJQ+j5YoLGJe3xIA0q+DPDTMKfhlT+nwFfNsPw=";
 
   nativeBuildInputs = [pkg-config makeWrapper];
   buildInputs = [openssl];
