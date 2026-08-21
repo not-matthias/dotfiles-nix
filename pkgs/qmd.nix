@@ -8,7 +8,7 @@
   nodejs,
 }: let
   pname = "qmd";
-  version = "2.0.1";
+  version = "2.8.3";
 in
   buildNpmPackage {
     inherit pname version;
@@ -17,14 +17,14 @@ in
       owner = "tobi";
       repo = "qmd";
       tag = "v${version}";
-      hash = "sha256-UoR9iyxqbjwAbEmiC/kxS10lvdBJmDuQigS/aEgEzDs=";
+      hash = "sha256-/7Z94r/9rXqzKlz/YkB6/nToSCPamV4Dnxm8EhelTDo=";
     };
 
     postPatch = ''
       cp ${./qmd-package-lock.json} package-lock.json
     '';
 
-    npmDepsHash = "sha256-aJr39A2PglQ4mr+SHhGsvB2oBuTcikX2NcM7TOO5r6k=";
+    npmDepsHash = "sha256-mCuFb7PCUydRMJHkwVnZv+fVtCYBQ9+t3q9t/gCd9mU=";
 
     nativeBuildInputs = [python3 makeWrapper nodejs];
     buildInputs = [sqlite];
