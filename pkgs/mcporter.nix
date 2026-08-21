@@ -11,13 +11,13 @@
   nix-update-script,
 }: let
   pname = "mcporter";
-  version = "0.12.4";
+  version = "0.13.6";
   pnpm = pnpm_10;
   src = fetchFromGitHub {
     owner = "openclaw";
     repo = "mcporter";
-    rev = "437eab2986ce4ef6c42d5d4315c1c061ae53ec84";
-    hash = "sha256-joLAU2hFpN2x8UFKFa/O/EJ7uoIa4ir0bwEWx9O/TYY=";
+    rev = "e53ef107e4c937478b89ff17411526520e448a51";
+    hash = "sha256-HjxGKxthGRG8Ta56wjlFTApKAzpH7wc4HB9lgvVAg7U=";
   };
 in
   stdenv.mkDerivation {
@@ -26,7 +26,7 @@ in
     pnpmDeps = fetchPnpmDeps {
       inherit pname version src pnpm;
       fetcherVersion = 3;
-      hash = "sha256-SLs44+VykZxVgn784fWrptG112tpSVIQT9zEAZKoMhc=";
+      hash = "sha256-uzn6SM04FmeunRo4HoSdh1yzVLXrq0FoQtEdbCu5+Hw=";
     };
 
     nativeBuildInputs = [
