@@ -5,16 +5,16 @@
   stdenv,
 }: let
   pname = "tldraw-offline";
-  version = "1.10.0";
+  version = "1.14.0";
 
   sources = {
     x86_64-linux = {
       suffix = "x86_64";
-      hash = "sha256-tIXDzOKjmNpB140kyG+SMVa2H6giPlwRV98IlteAzBE=";
+      hash = "sha256-DyJptrSgoD65t+sS1WFC3Hnqpbg08XL5QAq46V4+1W8=";
     };
     aarch64-linux = {
       suffix = "arm64";
-      hash = "sha256-6AQ8Pyqauxe+HNig5waJPyUadtR11X3II0gN8Q4g9zQ=";
+      hash = "sha256-gFvBcG0GRpFBOmMHAr8TSk2tbq4eiRm+/9SWT//par8=";
     };
   };
 
@@ -33,14 +33,13 @@ in
     inherit pname version src;
 
     extraInstallCommands = ''
-      install -Dm444 ${appimageContents}/@tldesktop.desktop \
+      install -Dm444 ${appimageContents}/tldraw-offline.desktop \
         "$out/share/applications/tldraw-offline.desktop"
       substituteInPlace "$out/share/applications/tldraw-offline.desktop" \
-        --replace-fail "Exec=AppRun --no-sandbox %U" "Exec=$out/bin/tldraw-offline --no-sandbox %U" \
-        --replace-fail "Icon=@tldesktop" "Icon=tldraw-offline"
+        --replace-fail "Exec=AppRun %U" "Exec=$out/bin/tldraw-offline --no-sandbox %U"
 
-      install -Dm444 ${appimageContents}/usr/share/icons/hicolor/1024x1024/apps/@tldesktop.png \
-        "$out/share/icons/hicolor/1024x1024/apps/tldraw-offline.png"
+      install -Dm444 ${appimageContents}/usr/share/icons/hicolor/512x512/apps/tldraw-offline.png \
+        "$out/share/icons/hicolor/512x512/apps/tldraw-offline.png"
     '';
 
     meta = {
