@@ -69,6 +69,7 @@ in {
         theme = "catppuccin_${catppuccinVariant}";
 
         editor = {
+          clipboard-provider = "termcode";
           bufferline = "multiple";
           cursorline = true;
           line-number = "relative";
