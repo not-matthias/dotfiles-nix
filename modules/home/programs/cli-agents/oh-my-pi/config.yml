@@ -53,7 +53,7 @@ modelRoles:
   commit: google-antigravity/gemini-3.7-flash
   task: google-antigravity/gemini-3.7-flash
   smol: google-antigravity/gemini-3.7-flash
-  advisor: openai-codex/gpt-5.6-terra:medium
+  advisor: openai-codex/gpt-5.6-luna
   plan: openai-codex/gpt-5.6-sol:high
   slow: openai-codex/gpt-5.6-sol:xhigh
 
