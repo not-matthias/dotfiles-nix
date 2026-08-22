@@ -19,7 +19,6 @@
   }
   ```
 
-- For output shaped for an ADHD reader (action-first, numbered steps, restated state each turn), toggle the `i-have-adhd` skill with `/i-have-adhd`; stays on until "stop adhd mode".
 - When explaining, use diagrams (only if they make sense). Use Mermaid if a tool is available, otherwise use ASCII.
     - Don't use diagrams if it can be displayed with bullet points (since it's easier to understand and less verbose).
     - Prefer to use trees and bullet points in 90% of the cases, only use Mermaid in the other 10%.
