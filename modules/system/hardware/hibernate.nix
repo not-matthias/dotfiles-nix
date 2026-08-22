@@ -10,9 +10,17 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    # Disable zram for hibernation: its ~27 GiB of volatile anon pages are
-    # snapshotted into the image anyway; 34 GiB disk swap remains.
-    zramSwap.enable = lib.mkForce false;
+    # zram absorbs transient memory-pressure spikes (compressed, RAM-resident)
+    # before overflowing to the slower LUKS disk swap partition, which keeps
+    # backing hibernation unchanged via boot.resumeDevice. Pages already in
+    # zram at hibernation time are still RAM-resident and get captured in the
+    # image as ordinary memory, so this doesn't duplicate or break the snapshot.
+    zramSwap = {
+      enable = true;
+      algorithm = "zstd";
+      memoryPercent = 25;
+      priority = 100;
+    };
 
     # s2idle drains the battery on this Framework, so fall through to
     # hibernation after 30 minutes of suspend.

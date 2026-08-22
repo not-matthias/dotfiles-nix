@@ -58,7 +58,10 @@
   };
 
   swapDevices = [
-    {device = "/dev/disk/by-uuid/8feea14d-3406-4e2f-9608-f36ad9082e4b";}
+    {
+      device = "/dev/disk/by-uuid/8feea14d-3406-4e2f-9608-f36ad9082e4b";
+      priority = 10;
+    }
   ];
 
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
