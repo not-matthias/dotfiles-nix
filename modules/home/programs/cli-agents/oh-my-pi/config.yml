@@ -58,8 +58,9 @@ modelRoles:
   slow: openai-codex/gpt-5.6-sol:xhigh
 
 task:
+  isolation:
+    mode: auto
   showResolvedModelBadge: true
-  enableEffort: true
   enableLsp: true
   maxEffort: xhigh
   agentModelOverrides:
