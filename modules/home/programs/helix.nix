@@ -215,7 +215,13 @@ in {
     # Steel plugins (loaded via init.scm on steelix startup)
     xdg.configFile."helix/plugins/vim-hx".source = flakes.vimhx;
     xdg.configFile."helix/plugins/wakatime".source = flakes.wakatimehx;
-    xdg.configFile."helix/forest".source = flakes.foresthx;
+    xdg.configFile."helix/forest".source = pkgs.runCommand "forest-hx-patched" {} ''
+      cp -r ${flakes.foresthx} $out
+      chmod -R u+w $out
+      substituteInPlace $out/forest.scm \
+        --replace-fail '(define *forest-width* 32) ;' '(define *forest-width* 48) ;' \
+        --replace-fail '(define *forest-max-width* 60)' '(define *forest-max-width* 500)'
+    '';
     xdg.configFile."helix/notify".source = flakes.notifyhx;
     xdg.configFile."helix/glyph".source = flakes.glyphhx;
     xdg.configFile."helix/paragraph-delete.scm".text = ''
