@@ -279,6 +279,15 @@ in {
     # soulsync.enable = true;
     yubikey.enable = true;
     systembus-notify.enable = lib.mkForce true;
+    timeguard = {
+      enable = true;
+      settings.rule = [
+        {
+          name = "block-reddit";
+          domains = ["reddit.com"];
+        }
+      ];
+    };
   };
 
   hardware = {
