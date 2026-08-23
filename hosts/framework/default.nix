@@ -45,6 +45,7 @@ in {
       linear-cli
       slk
       harbor
+      terminal-browser
 
       # protonmail-bridge-gui
       # thunderbird
@@ -199,8 +200,39 @@ in {
   programs = {
     noisetorch.enable = true;
     fcitx5.enable = true;
-    nix-ld.enable = true;
-    nix-ld.libraries = [pkgs.libevdev];
+    nix-ld = {
+      enable = true;
+      # Base set covers CLI tools with native deps (e.g. libevdev for
+      # input-emulation). GTK/Electron stack covers self-updating
+      # prebuilt Electron/Chromium binaries outside the nix store
+      # (e.g. terminal-browser), which are dynamically linked against
+      # the full desktop-app dependency graph.
+      libraries = with pkgs; [
+        libevdev
+        glib
+        nspr
+        nss
+        atk
+        at-spi2-atk
+        at-spi2-core
+        cups
+        dbus
+        cairo
+        gtk3
+        pango
+        libx11
+        libxcomposite
+        libxdamage
+        libxext
+        libxfixes
+        libxrandr
+        libgbm
+        expat
+        libxcb
+        libxkbcommon
+        alsa-lib
+      ];
+    };
     sccache.enable = true;
     obs.enable = true;
     nix-index.enable = true;

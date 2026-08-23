@@ -94,6 +94,9 @@
       jcode = super.callPackage ../../pkgs/jcode.nix {};
     })
     (_self: super: {
+      terminal-browser = super.callPackage ../../pkgs/terminal-browser.nix {};
+    })
+    (_self: super: {
       harbor = super.callPackage ../../pkgs/harbor.nix {};
     })
     (import ../../pkgs/ida-pro)
