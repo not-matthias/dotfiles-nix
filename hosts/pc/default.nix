@@ -28,6 +28,7 @@
       kdePackages.gwenview
       file-roller
       ida-pro
+      unstable.amdtop
     ];
 
     programs = {
