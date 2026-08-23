@@ -1,26 +1,33 @@
 {
+  "markdown_preview": {
+    "limit_content_width": false
+  },
+  "ensure_final_newline_on_save": true,
+  "remove_trailing_whitespace_on_save": false,
+  "cli_default_open_behavior": "new_window",
+  "colorize_brackets": true,
   "auto_update": false,
   "telemetry": {
     "diagnostics": false,
     "metrics": false
   },
   "redact_private_values": true,
-
-  "theme": {
-    "mode": "light",
-    "light": "Fleet Light",
-    "dark": "Fleet Dark"
-  },
   "icon_theme": {
     "mode": "light",
     "light": "Zed (Default)",
     "dark": "Zed (Default)"
   },
-  "buffer_font_family": ".ZedMono",
-  "ui_font_family": "Zed Plex Sans",
+  "buffer_font_family": "JetBrains Mono Nerd Font",
+  "buffer_font_size": 16.0,
+  "theme": {
+    "mode": "light",
+    "light": "Fleet Light",
+    "dark": "Ayu Dark"
+  },
+  "ui_font_family": "Atkinson Hyperlegible",
+  "ui_font_size": 16.0,
   "base_keymap": "JetBrains",
   "vim_mode": false,
-
   "preferred_line_length": 120,
   "soft_wrap": "editor_width",
   "show_whitespaces": "all",
@@ -30,25 +37,20 @@
   "formatter": "auto",
   "format_on_save": "off",
   "load_direnv": "shell_hook",
-
   "edit_predictions": {
-    "provider": "zed",
+    "provider": "copilot",
     "disabled_globs": [],
-    "mode": "eager",
-    "copilot": {
-      "proxy": null,
-      "proxy_no_verify": null
-    },
-    "enabled_in_text_threads": false
+    "mode": "eager"
   },
-
   "collaboration_panel": {
+    "dock": "left",
     "button": false
   },
   "notification_panel": {
     "button": false
   },
   "project_panel": {
+    "dock": "left",
     "git_status": true,
     "folder_icons": true,
     "file_icons": true
@@ -57,12 +59,15 @@
     "dock": "right"
   },
   "terminal": {
+    "font_size": 12.0,
     "dock": "bottom"
   },
   "git_panel": {
+    "group_by": "status",
+    "sort_by": "path",
+    "dock": "left",
     "tree_view": true
   },
-
   "languages": {
     "Markdown": {
       "show_edit_predictions": true
@@ -71,16 +76,17 @@
       "show_edit_predictions": true
     }
   },
-
   "agent": {
-    "dock": "bottom",
+    "dock": "right",
     "tool_permissions": {
       "default": "allow"
     },
-    "default_profile": "write",
+    "default_profile": "ask",
     "default_model": {
+      "effort": "high",
+      "enable_thinking": true,
       "provider": "copilot_chat",
-      "model": "gemini-3-pro-preview"
+      "model": "gpt-5.3-codex"
     },
     "model_parameters": []
   },
@@ -97,6 +103,27 @@
         "model": [
           "opus"
         ]
+      }
+    }
+  },
+  "lsp": {
+    "nil": {
+      "settings": {
+        "nil": {
+          "nix": {
+            "flake": {
+              "autoArchive": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "context_servers": {
+    "mcp-server-context7": {
+      "enabled": false,
+      "settings": {
+        "default_minimum_tokens": "10000"
       }
     }
   }
