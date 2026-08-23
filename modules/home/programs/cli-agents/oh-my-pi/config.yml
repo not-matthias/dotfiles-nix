@@ -76,6 +76,7 @@ providers:
     - google-antigravity
     - openai-codex
     - anthropic
+  tinyModel: lfm2-350m
 
 retry:
   usageAwareFallback: true
