@@ -49,20 +49,22 @@ in {
           };
         };
         # Custom profile: throughput-performance + vm sysctl tuning previously
-        # applied by the power-sysctl oneshot service.
+        # applied by the power-sysctl oneshot service. Byte-based dirty
+        # thresholds (not ratios) so writeback limits stay fixed regardless of
+        # installed RAM.
         profiles.framework-performance = {
           main.include = "throughput-performance";
           vm_tuning = {
             type = "sysctl";
             replace = true;
-            "vm.dirty_ratio" = 10;
-            "vm.dirty_background_ratio" = 5;
+            "vm.dirty_bytes" = 536870912; # 512MB, was dirty_ratio 10%
+            "vm.dirty_background_bytes" = 268435456; # 256MB, was dirty_background_ratio 5%
             "vm.dirty_writeback_centisecs" = 500;
             "vm.dirty_expire_centisecs" = 1500;
             "vm.laptop_mode" = 0;
-            "vm.swappiness" = 10;
+            "vm.swappiness" = 1; # avoid proactive swap-out; 1 not 0 to keep OOM killer preferring swap on some kernels
             "vm.overcommit_memory" = 0;
-            "vm.vfs_cache_pressure" = 50;
+            "vm.vfs_cache_pressure" = 25; # retain more dentry/inode cache for git/LSP indexing
           };
         };
         # Aggressive battery profile: laptop-battery-powersave + PCI runtime PM,
@@ -88,8 +90,11 @@ in {
             type = "sysctl";
             replace = true;
             "kernel.nmi_watchdog" = "0"; # reduce periodic wakeups
-            "vm.dirty_ratio" = "5";
-            "vm.dirty_background_ratio" = "2";
+            # Byte-based (not ratio) for the same reason as framework-performance:
+            # mixing ratio- and byte-based dirty knobs across profiles that tuned
+            # switches between dynamically risks one form being left at 0.
+            "vm.dirty_bytes" = "134217728"; # 128MB, was dirty_ratio 5%
+            "vm.dirty_background_bytes" = "33554432"; # 32MB, was dirty_background_ratio 2%
           };
           audio.timeout = "1";
           disk.readahead = "256";
