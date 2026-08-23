@@ -10,8 +10,8 @@ pkgs.stdenv.mkDerivation {
   src = pkgs.fetchFromGitHub {
     owner = "mrexodia";
     repo = "ida-pro-mcp";
-    rev = "main";
-    hash = "sha256-KRhirCNmoce6nn8z0PDiXTBi1Urw47a2rkdCHGeKvrY=";
+    rev = "3349ae30c6eb7fa1c14b158ff71bfc7c3081bb51";
+    hash = "sha256-lF0lsWaTurppCZRVYURWHUicsc55mODVd/wcXR2FkU0=";
   };
 
   # No build step needed -- just copy plugin files into the IDA directory layout.
