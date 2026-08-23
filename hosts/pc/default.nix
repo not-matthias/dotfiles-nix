@@ -27,6 +27,7 @@
       evince
       kdePackages.gwenview
       file-roller
+      ida-pro
     ];
 
     programs = {
@@ -45,6 +46,7 @@
         enable = true;
         compat.enable = true;
       };
+      vscode.enable = true;
       binary-ninja = {
         enable = true;
         extensions = [
