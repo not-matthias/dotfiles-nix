@@ -94,7 +94,7 @@ in
     src = requireFile {
       name = "binaryninja_linux_dev_personal.zip";
       url = "https://binary.ninja/";
-      sha256 = "sha256-GqNOppodEey9wM1sqRLjpxGy/HxCD7DiINf1VHf8CoQ=";
+      sha256 = "sha256-xvoaYRUpkAWvUPsoRjwkTGjspLtf/NPk4A4JYpjAGIA=";
     };
 
     dontPatchELF = true;
