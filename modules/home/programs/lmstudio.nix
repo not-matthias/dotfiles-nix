@@ -21,7 +21,13 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [pkgs.lmstudio];
+    home.packages = [
+      (
+        if cfg.rocm.enable
+        then pkgs.lmstudio.override {rocmVendorPath = cfg.rocm.vendorPath;}
+        else pkgs.lmstudio
+      )
+    ];
 
     home.sessionVariables = lib.mkIf cfg.rocm.enable {
       NIX_LD_LIBRARY_PATH = lib.concatStringsSep ":" [

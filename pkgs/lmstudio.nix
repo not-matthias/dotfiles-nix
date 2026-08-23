@@ -3,7 +3,9 @@
   fetchurl,
   graphicsmagick,
   lib,
+  makeWrapper,
   stdenv,
+  rocmVendorPath ? null,
 }: let
   pname = "lmstudio";
   version = "0.4.21-2";
@@ -16,7 +18,10 @@ in
   appimageTools.wrapType2 {
     inherit pname version src;
 
-    nativeBuildInputs = [graphicsmagick];
+    nativeBuildInputs = [
+      graphicsmagick
+      makeWrapper
+    ];
     extraPkgs = pkgs: [pkgs.ocl-icd];
 
     extraInstallCommands = ''
@@ -34,6 +39,10 @@ in
 
       substituteInPlace $out/share/applications/lm-studio.desktop \
         --replace-fail 'Exec=AppRun --no-sandbox %U' 'Exec=lm-studio'
+      ${lib.optionalString (rocmVendorPath != null) ''
+        wrapProgram $out/bin/lm-studio \
+          --run 'export LD_LIBRARY_PATH="/run/current-system/sw/share/nix-ld/lib:$HOME/${rocmVendorPath}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"'
+      ''}
 
       install -m 755 ${appimageContents}/resources/app/.webpack/lms $out/bin/
       patchelf --set-interpreter "${stdenv.cc.bintools.dynamicLinker}" $out/bin/lms
