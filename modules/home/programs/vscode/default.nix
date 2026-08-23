@@ -3,8 +3,11 @@
 
   programs.vscode = {
     package = unstable.vscode;
-    mutableExtensionsDir = true;
+    mutableExtensionsDir = false;
     profiles.default = {
+      extensions = with unstable.vscode-extensions; [
+        chadalen.vscode-jetbrains-icon-theme
+      ];
       enableUpdateCheck = false;
       userSettings = builtins.fromJSON (builtins.readFile ./settings.json);
       keybindings = builtins.fromJSON (builtins.readFile ./keybindings.json);

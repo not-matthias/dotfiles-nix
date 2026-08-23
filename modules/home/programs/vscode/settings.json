@@ -1,7 +1,7 @@
 {
   "window.titleBarStyle": "custom",
   "window.menuBarVisibility": "compact",
-  "workbench.iconTheme": "vscode-jetbrains-icon-theme",
+  "workbench.iconTheme": "vscode-jetbrains-icon-theme-2023-auto",
   "keyboard.dispatch": "keyCode",
   "security.workspace.trust.untrustedFiles": "open",
   "settingsSync.keybindingsPerPlatform": false,
