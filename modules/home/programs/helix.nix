@@ -89,7 +89,10 @@ in {
           insert-final-newline = true;
           end-of-line-diagnostics = "hint";
           rainbow-brackets = true;
-          soft-wrap.enable = true;
+          soft-wrap = {
+            enable = true;
+            wrap-at-text-width = true;
+          };
 
           insecure = true;
 
@@ -137,6 +140,7 @@ in {
           };
 
           auto-save = {
+            focus-lost = true;
             after-delay = {
               enable = true;
               timeout = 3000;
