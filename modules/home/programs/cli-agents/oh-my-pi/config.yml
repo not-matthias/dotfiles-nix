@@ -1,6 +1,7 @@
 setupVersion: 1
 personality: pragmatic
 steeringMode: all
+includeModelInPrompt: false
 theme:
   dark: graphite
 
