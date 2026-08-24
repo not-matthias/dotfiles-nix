@@ -3,6 +3,7 @@ personality: pragmatic
 steeringMode: all
 includeModelInPrompt: false
 textVerbosity: low
+extendedContext: false
 theme:
   dark: graphite
 
