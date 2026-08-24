@@ -32,6 +32,7 @@ autolearn:
 
 advisor:
   enabled: true
+  syncBacklog: "1"
 github:
   enabled: true
 bash:
