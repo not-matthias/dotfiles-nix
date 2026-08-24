@@ -80,6 +80,10 @@ in {
           source = ompSubAgents;
           recursive = true;
         };
+        ".omp/agent/rules" = {
+          source = ./rules;
+          recursive = true;
+        };
         ".omp/agent/AGENTS.md".source = ../shared/AGENTS.md;
         ".omp/agent/config.yml".source = ompConfig;
         ".omp/agent/extensions/docs-rs" = {
