@@ -46,6 +46,10 @@ in {
           {
             name = "markdown";
             language-servers = ["marksman" "harper-ls"];
+            formatter = {
+              command = "prettier";
+              args = ["--parser" "markdown"];
+            };
             auto-pairs = {
               "(" = ")";
               "{" = "}";
@@ -56,6 +60,9 @@ in {
           {
             name = "nix";
             auto-format = false;
+            formatter = {
+              command = "alejandra";
+            };
           }
         ];
         language-server = {
