@@ -52,5 +52,6 @@
   ./ssh.nix
   ./vscode
   ./zed-editor
+  ./lsp.nix
   ./package-security.nix
 ]
