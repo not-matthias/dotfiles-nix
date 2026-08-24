@@ -2,6 +2,7 @@ setupVersion: 1
 personality: pragmatic
 steeringMode: all
 includeModelInPrompt: false
+textVerbosity: low
 theme:
   dark: graphite
 
