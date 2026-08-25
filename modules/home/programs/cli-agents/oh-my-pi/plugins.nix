@@ -6,6 +6,10 @@
   lib,
 }: let
   plugins = {
+    "omp-reflect" = {
+      version = "0.1.0";
+      source = pkgs.callPackage ../../../../../pkgs/pi-mono/packages/omp-reflect.nix {};
+    };
     "pi-autoresearch" = {
       version = "1.6.2";
       source = pkgs.fetchzip {
