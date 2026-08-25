@@ -469,7 +469,7 @@ in {
   services.gnome.at-spi2-core.enable = true;
 
   desktop = {
-    theme = "light";
+    theme = "dark";
     niri.enable = true;
     fonts.enable = true;
   };
