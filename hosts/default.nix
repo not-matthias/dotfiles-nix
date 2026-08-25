@@ -114,6 +114,7 @@
                 imports = [
                   ./home.nix
                   nixvim.homeModules.nixvim
+                  flakes.vicinae.homeManagerModules.default
                   agenix.homeManagerModules.age
                 ];
               };

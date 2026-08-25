@@ -21,8 +21,6 @@ in {
     };
   };
 
-  xdg.configFile."vicinae/settings.json".force = true;
-
   systemd.user.services.vicinae.Service.Environment = [
     "XDG_DATA_DIRS=${builtins.concatStringsSep ":" dataDirs}"
   ];
