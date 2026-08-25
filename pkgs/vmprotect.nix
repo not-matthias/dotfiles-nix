@@ -26,7 +26,7 @@ in
 
     src = fetchurl {
       url = "https://vmpsoft.com/uploads/VMProtectDemo.tar.gz";
-      hash = "sha256-SEZmzNkvZVW5U4vWy4X6axXix/r1j7lH8ZMwqHSZfBg=";
+      hash = "sha256-yw1tLryUbdQJbP8M8E8Sq43EA1h/b3QhPTmNnviLcI0=";
       curlOptsList = ["--insecure"]; # SSL certificate issue on vmpsoft.com
     };
 
