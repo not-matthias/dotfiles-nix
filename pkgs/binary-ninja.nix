@@ -39,6 +39,7 @@
   libkrb5,
   nspr,
   nss,
+  sqlite,
   gcc-unwrapped,
 }: let
   requiredLibs = [
@@ -76,6 +77,7 @@
     nspr
     nss
     gcc-unwrapped.lib
+    sqlite
   ];
 
   libPath = lib.makeLibraryPath requiredLibs;
