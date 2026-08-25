@@ -115,7 +115,7 @@
       url = "github:not-matthias/oh-my-pi/perf/startup-optimizations";
     };
     timeguard = {
-      url = "git+file:../timeguard";
+      url = "git+ssh://git@github.com/not-matthias/timeguard.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

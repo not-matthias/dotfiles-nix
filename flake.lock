@@ -2414,17 +2414,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1787297798,
-        "narHash": "sha256-jOWNvUCy05tdrTifhoICxi+LHFt0SeVPRJ/6gN5GjEo=",
+        "lastModified": 1787419561,
+        "narHash": "sha256-Q4rOe7RWX70EBLsnovhDgPVoxH6ASculIdGASUOLW7o=",
         "ref": "refs/heads/main",
-        "rev": "f9de976d7e055f999c5e7c16d74423212e53e11a",
-        "revCount": 8,
+        "rev": "d4aea4bef6ccaa21eb95750200fce088226c889e",
+        "revCount": 9,
         "type": "git",
-        "url": "file:../timeguard"
+        "url": "ssh://git@github.com/not-matthias/timeguard.git"
       },
       "original": {
         "type": "git",
-        "url": "file:../timeguard"
+        "url": "ssh://git@github.com/not-matthias/timeguard.git"
       }
     },
     "tinted-kitty": {
