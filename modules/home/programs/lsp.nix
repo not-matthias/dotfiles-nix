@@ -1,4 +1,9 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  clangdOnly = pkgs.runCommand "clangd-only" {} ''
+    mkdir -p $out/bin
+    ln -s ${pkgs.clang-tools}/bin/clangd $out/bin/clangd
+  '';
+in {
   home.packages = with pkgs; [
     # Nix
     nil
@@ -7,9 +12,6 @@
     nixfmt
     deadnix
     statix
-
-    # Rust
-    rust-analyzer
 
     # TOML
     taplo
@@ -34,6 +36,6 @@
     shellcheck
 
     # C / C++
-    clang-tools
+    clangdOnly
   ];
 }
