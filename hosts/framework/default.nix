@@ -465,6 +465,9 @@ in {
     docker.enable = true; # Required for work (exec service)
     docker.package = pkgs.docker_29; # default docker_28 is flagged insecure
   };
+  # Required for desktop accessibility clients.
+  services.gnome.at-spi2-core.enable = true;
+
   desktop = {
     theme = "light";
     niri.enable = true;
