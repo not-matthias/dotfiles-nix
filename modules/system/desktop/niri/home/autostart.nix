@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   home.packages = with pkgs; [
     networkmanagerapplet
     blueman
@@ -12,7 +16,7 @@
     {command = ["dbus-update-activation-environment" "--all"];}
 
     # Launch apps via 'uwsm app' to integrate with systemd session management
-    {command = ["uwsm app -- swww img ~/.config/niri/wallpaper.png"];}
+    {command = ["uwsm" "app" "--" "awww" "img" "${config.home.homeDirectory}/.wallpaper.png"];}
     {command = ["uwsm" "app" "--" "waybar"];}
     {command = ["uwsm" "app" "--" "nm-applet" "--indicator"];}
     {command = ["uwsm" "app" "--" "blueman-applet"];}

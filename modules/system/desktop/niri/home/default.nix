@@ -29,7 +29,10 @@ in {
       };
       services = {
         swayidle.enable = true;
-        awww.enable = true;
+        awww = {
+          enable = true;
+          wallpaper = ../../hyprland/home/wallpaper.png;
+        };
         dunst.enable = true;
       };
 
