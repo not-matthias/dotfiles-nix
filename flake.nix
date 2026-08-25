@@ -114,6 +114,10 @@
     oh-my-pi = {
       url = "github:not-matthias/oh-my-pi/perf/startup-optimizations";
     };
+    timeguard = {
+      url = "git+file:../timeguard";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {

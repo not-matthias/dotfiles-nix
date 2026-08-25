@@ -2109,6 +2109,7 @@
         "ompnvim": "ompnvim",
         "spicetify-nix": "spicetify-nix",
         "stylix": "stylix",
+        "timeguard": "timeguard",
         "vicinae": "vicinae",
         "vimhx": "vimhx",
         "wakatimehx": "wakatimehx",
@@ -2404,6 +2405,26 @@
         "owner": "nix-systems",
         "repo": "default",
         "type": "github"
+      }
+    },
+    "timeguard": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787297798,
+        "narHash": "sha256-jOWNvUCy05tdrTifhoICxi+LHFt0SeVPRJ/6gN5GjEo=",
+        "ref": "refs/heads/main",
+        "rev": "f9de976d7e055f999c5e7c16d74423212e53e11a",
+        "revCount": 8,
+        "type": "git",
+        "url": "file:../timeguard"
+      },
+      "original": {
+        "type": "git",
+        "url": "file:../timeguard"
       }
     },
     "tinted-kitty": {

@@ -44,6 +44,7 @@
   ./slskd.nix
   ./soulsync.nix
   ./solidtime.nix
+  ./timeguard.nix
   ./tailscale.nix
   ./ziit.nix
   ./tandoor.nix
