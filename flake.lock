@@ -2009,22 +2009,6 @@
         "type": "github"
       }
     },
-    "ompnvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1786361725,
-        "narHash": "sha256-1tEnLEfMdunaoRnIXOILyWNdalwsbAYhRVPF4GFCmj4=",
-        "owner": "l3aro",
-        "repo": "omp.nvim",
-        "rev": "413906b758e247e36dbedbb56d96f6984b1e3028",
-        "type": "github"
-      },
-      "original": {
-        "owner": "l3aro",
-        "repo": "omp.nvim",
-        "type": "github"
-      }
-    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": [
@@ -2106,7 +2090,6 @@
         "notifyhx": "notifyhx",
         "nurpkgs": "nurpkgs",
         "oh-my-pi": "oh-my-pi",
-        "ompnvim": "ompnvim",
         "spicetify-nix": "spicetify-nix",
         "stylix": "stylix",
         "timeguard": "timeguard",

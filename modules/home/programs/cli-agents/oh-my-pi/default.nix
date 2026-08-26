@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  flakes,
   ...
 }:
 with lib; let
@@ -97,7 +96,6 @@ in {
         };
         ".omp/agent/extensions/atuin.ts".source = ./extensions/atuin.ts;
         ".omp/agent/extensions/herdr-tab-title.ts".source = ./extensions/herdr-tab-title.ts;
-        ".omp/agent/extensions/omp-nvim-bridge.ts".source = "${flakes.ompnvim}/extension/omp-nvim-bridge.ts";
         ".omp/agent/extensions/omp-helix-bridge.ts".source = ./extensions/omp-helix-bridge.ts;
       }
       // pluginFiles;

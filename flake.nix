@@ -91,10 +91,6 @@
       url = "github:Xerxes-2/wakatime.hx";
       flake = false;
     };
-    ompnvim = {
-      url = "github:l3aro/omp.nvim";
-      flake = false;
-    };
     zenmode = {
       url = "github:notnmeyer/zen-mode.hx";
       flake = false;
