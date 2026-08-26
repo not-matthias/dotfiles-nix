@@ -3,7 +3,6 @@
   unstable,
   user,
   lib,
-  flakes,
   nixos-hardware,
   ...
 }: {
@@ -17,11 +16,7 @@
     memoryPercent = 25;
   };
 
-  home-manager.users.${user} = {
-    config,
-    lib,
-    ...
-  }: {
+  home-manager.users.${user} = {lib, ...}: {
     home.stateVersion = "26.05";
     home.packages = with pkgs; [
       evince
@@ -140,15 +135,7 @@
     };
     octo-fiesta.enable = true;
     systembus-notify.enable = lib.mkForce true;
-    timeguard = {
-      enable = true;
-      settings.rule = [
-        {
-          name = "block-reddit";
-          domains = ["reddit.com"];
-        }
-      ];
-    };
+    timeguard.enable = true;
   };
 
   hardware = {
