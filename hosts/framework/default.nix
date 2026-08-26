@@ -470,7 +470,7 @@ in {
   services.gnome.at-spi2-core.enable = true;
 
   desktop = {
-    theme = "dark";
+    theme = "light";
     niri.enable = true;
     fonts.enable = true;
   };
