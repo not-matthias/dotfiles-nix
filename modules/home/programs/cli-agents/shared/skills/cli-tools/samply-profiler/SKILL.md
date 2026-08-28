@@ -51,22 +51,22 @@ For compiled languages, profile an optimized build unless the user explicitly wa
 
 ### 2. Capture with Samply
 
-Use `--save-only` so the agent gets a local profile file without depending on the browser UI.
+Use `--save-only` so the agent gets a local profile file without depending on the browser UI. Include the version-supported presymbolication option in saved captures so gathered symbols are embedded in the profile JSON; retain any generated sidecar files next to it. Current Samply versions use `--unstable-presymbolicate`, while some versions use `--presymbolicate`; check `samply record --help` and use whichever is supported.
 
 ```bash
-samply record --save-only -o /tmp/profile.json.gz -- <benchmark-command> <args>
+samply record --save-only --unstable-presymbolicate -o /tmp/profile.json.gz -- <benchmark-command> <args>
 ```
 
 For very short commands, run repeated iterations so the profile has enough samples:
 
 ```bash
-samply record --save-only -o /tmp/profile.json.gz --iteration-count 30 -- <short-command> <args>
+samply record --save-only --unstable-presymbolicate -o /tmp/profile.json.gz --iteration-count 30 -- <short-command> <args>
 ```
 
 For long-running services or benchmark servers on Linux, attach to the existing process for a fixed duration:
 
 ```bash
-samply record --save-only -o /tmp/profile.json.gz --duration 30 --pid <pid>
+samply record --save-only --unstable-presymbolicate -o /tmp/profile.json.gz --duration 30 --pid <pid>
 ```
 
 Useful capture options:
@@ -78,7 +78,7 @@ Useful capture options:
 | `--iteration-count <n>`     | Repeat short benchmark commands to collect enough samples.                                            |
 | `--profile-name <name>`     | Label captures clearly, especially before/after runs.                                                 |
 | `--symbol-dir <dir>`        | Point samply at separate debug symbols.                                                               |
-| `--unstable-presymbolicate` | Preserve gathered symbol data next to the profile when future symbol access may be hard.              |
+| `--unstable-presymbolicate` or `--presymbolicate` | Preserve gathered symbol data next to the profile when future symbol access may be hard. |
 
 For before/after comparisons, keep the command, inputs, sampling rate, duration, iteration count, build mode, and machine conditions the same.
 
