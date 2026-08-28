@@ -42,6 +42,8 @@ completion:
   notify: "off"
 codexResets:
   autoRedeem: "no"
+secrets:
+  enabled: true
 compaction:
   handoffSaveToDisk: true
 dev:
