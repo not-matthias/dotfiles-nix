@@ -4,7 +4,7 @@
   services.timeguard.settings.rule = [
     {
       name = "focus-distractions";
-      domains = ["reddit.com" "x.com" "youtube.com"];
+      domains = ["reddit.com" "x.com" "youtube.com" "twitch.tv"];
       schedule = {
         days = ["mon" "tue" "wed" "thu" "fri"];
         start = "09:00";
