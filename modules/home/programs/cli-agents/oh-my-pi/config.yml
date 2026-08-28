@@ -57,7 +57,7 @@ modelRoles:
   # Antigravity sends thinkingLevel: MINIMAL for title generation, which 400s.
   tiny: anthropic/claude-haiku-4-5
   commit: google-antigravity/gemini-3.7-flash
-  task: anthropic/claude-sonnet-5:high
+  task: google-antigravity/gemini-3.7-flash
   smol: google-antigravity/gemini-3.7-flash
   advisor: openai-codex/gpt-5.6-luna
   plan: openai-codex/gpt-5.6-sol:high
