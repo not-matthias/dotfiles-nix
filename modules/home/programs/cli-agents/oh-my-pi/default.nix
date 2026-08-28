@@ -96,7 +96,6 @@ in {
         };
         ".omp/agent/extensions/atuin.ts".source = ./extensions/atuin.ts;
         ".omp/agent/extensions/herdr-tab-title.ts".source = ./extensions/herdr-tab-title.ts;
-        ".omp/agent/extensions/omp-helix-bridge.ts".source = ./extensions/omp-helix-bridge.ts;
       }
       // pluginFiles;
   };

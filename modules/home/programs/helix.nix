@@ -36,7 +36,6 @@ in {
           glow
           bat
           harper
-          socat
         ];
         languages = {
           language = [
@@ -291,7 +290,6 @@ in {
                  vim-delete-to-prev-paragraph
                  set-paragraph-delete-keybindings!)
       '';
-      xdg.configFile."helix/omp-hx.scm".source = ./helix/omp-hx.scm;
 
       xdg.configFile."helix/vim-fixes.scm".text = ''
         ;; Missing and broken vim.hx keybindings.
@@ -768,8 +766,6 @@ in {
         ;; traverses the entire NixOS closure and hangs the editor on space+e.
         ;; forest-configure! REPLACES the ignore set, so list every default too.
         (forest-configure! 'left #:ignore (list ".git" "target" ".direnv" ".devenv" "node_modules" "__pycache__" ".hg" "result"))
-        (require "omp-hx.scm")
-        (set-omp-keybindings!)
       '';
 
       # The nixpkgs helix-runtime may ship grammars and queries from mismatched
