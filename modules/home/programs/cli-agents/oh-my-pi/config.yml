@@ -72,10 +72,10 @@ task:
   agentModelOverrides:
     scout: google-antigravity/gemini-3.7-flash
     librarian: google-antigravity/gemini-3.7-flash
-    oracle: openai-codex/gpt-5.6-sol:xhigh
-    solver: openai-codex/gpt-5.6-sol:xhigh
-    reviewer: openai-codex/gpt-5.6-sol:high
-    security-reviewer: openai-codex/gpt-5.6-sol:high
+    oracle: openai-codex/gpt-5.6-sol:high
+    solver: openai-codex/gpt-5.6-sol:high
+    reviewer: openai-codex/gpt-5.6-terra:high
+    security-reviewer: openai-codex/gpt-5.6-terra:high
 
 providers:
   openai-codex:
