@@ -87,4 +87,5 @@ Never reference files in `.agents` within source code (e.g. comments) or public 
 - **Python:** ALWAYS use uv for all Python package and environment operations.
 - **Navigation:** When the user references a project or directory by name (e.g. "save this to dotfiles", "open apollo", "check the logs in my-service"), use zoxide (`z <name>`) to resolve the full path. Zoxide tracks frecency so partial names usually resolve correctly. Use it any time you need to locate a directory — navigating, saving files, reading from it, etc.
 - **NixOS:** When a program isn't installed use `nix-shell` or `nix run`
+- For throwaway Bash scripts, use a `#! nix-shell` shebang to declare required tools instead of assuming they are installed. Prefer running commands through `nix-shell -p` so missing tools do not cause avoidable failures.
 - Use `trash-put` instead of `rm` to avoid accidental data loss.
