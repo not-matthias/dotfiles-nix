@@ -85,7 +85,6 @@ in {
           recursive = true;
         };
         ".omp/agent/AGENTS.md".source = ../shared/AGENTS.md;
-        ".omp/agent/config.yml".source = ompConfig;
         ".omp/agent/extensions/docs-rs" = {
           source = sharedExtensions."docs-rs".src;
           recursive = true;
@@ -98,5 +97,15 @@ in {
         ".omp/agent/extensions/herdr-tab-title.ts".source = ./extensions/herdr-tab-title.ts;
       }
       // pluginFiles;
+
+    home.activation.ompConfig = (
+      hm.dag.entryAfter ["writeBoundary"] ''
+        target="$HOME/.omp/agent/config.yml"
+        temp="$target.tmp"
+        $DRY_RUN_CMD mkdir -p "$(dirname "$target")"
+        $DRY_RUN_CMD install -m 0644 ${ompConfig} "$temp"
+        $DRY_RUN_CMD mv -f "$temp" "$target"
+      ''
+    );
   };
 }
