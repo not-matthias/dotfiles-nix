@@ -15,6 +15,7 @@ in {
     ./hardware-configuration.nix
     ./scheduler.nix
     ./work.nix
+    ../../modules/system/services/timeguard.nix
   ];
 
   home-manager.users.${user} = {...}: {

@@ -44,7 +44,7 @@
   ./slskd.nix
   ./soulsync.nix
   ./solidtime.nix
-  ./timeguard.nix
+  # Enabled explicitly by hosts that can fetch the private module.
   ./tailscale.nix
   ./ziit.nix
   ./tandoor.nix

@@ -154,7 +154,6 @@
     };
     octo-fiesta.enable = true;
     systembus-notify.enable = lib.mkForce true;
-    timeguard.enable = true;
   };
 
   hardware = {
