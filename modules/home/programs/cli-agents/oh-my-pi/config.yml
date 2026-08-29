@@ -4,6 +4,7 @@ steeringMode: all
 includeModelInPrompt: false
 textVerbosity: low
 extendedContext: false
+symbolPreset: ascii
 theme:
   dark: graphite
 
