@@ -59,7 +59,7 @@ modelRoles:
   commit: google-antigravity/gemini-3.7-flash
   task: google-antigravity/gemini-3.7-flash
   smol: google-antigravity/gemini-3.7-flash
-  advisor: openai-codex/gpt-5.6-luna
+  advisor: openai-codex/gpt-5.6-terra:high
   plan: openai-codex/gpt-5.6-sol:high
   slow: openai-codex/gpt-5.6-sol:xhigh
 
@@ -69,6 +69,11 @@ task:
   showResolvedModelBadge: true
   enableLsp: true
   maxEffort: xhigh
+  prewalk: true
+  agentPrewalk:
+    task: openai-codex/gpt-5.6-sol:high
+  agentAdvisor:
+    task: "on"
   agentModelOverrides:
     scout: google-antigravity/gemini-3.7-flash
     librarian: google-antigravity/gemini-3.7-flash
