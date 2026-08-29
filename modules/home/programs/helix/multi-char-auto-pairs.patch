@@ -1,0 +1,505 @@
+diff --git a/helix-core/src/auto_pairs.rs b/helix-core/src/auto_pairs.rs
+index 5811186c..f5677187 100644
+--- a/helix-core/src/auto_pairs.rs
++++ b/helix-core/src/auto_pairs.rs
+@@ -14,10 +14,22 @@
+     ('`', '`'),
+ ];
+ 
+-/// The type that represents the collection of auto pairs,
+-/// keyed by both opener and closer.
++/// A pair whose delimiters are not single characters, e.g. ``` ``` ``` or Jinja's `{% %}`.
+ #[derive(Debug, Clone)]
+-pub struct AutoPairs(HashMap<char, Pair>);
++pub struct MultiPair {
++    pub open: String,
++    pub close: String,
++}
++
++/// The type that represents the collection of auto pairs. Single-char pairs are
++/// keyed by both opener and closer; longer pairs are matched against the text in
++/// front of the cursor.
++#[derive(Debug, Clone)]
++pub struct AutoPairs {
++    singles: HashMap<char, Pair>,
++    /// Sorted by descending opener length so that the longest opener wins.
++    multis: Vec<MultiPair>,
++}
+ 
+ /// Represents the config for a particular pairing.
+ #[derive(Debug, Clone, Copy)]
+@@ -72,30 +84,78 @@ fn from((open, close): (&char, &char)) -> Self {
+ }
+ 
+ impl AutoPairs {
+-    /// Make a new AutoPairs set with the given pairs and default conditions.
++    /// Make a new AutoPairs set with the given single-char pairs and default conditions.
+     pub fn new<'a, V, A>(pairs: V) -> Self
+     where
+         V: IntoIterator<Item = A> + 'a,
+         A: Into<Pair>,
+     {
+-        let mut auto_pairs = HashMap::new();
++        let mut singles = HashMap::new();
+ 
+         for pair in pairs.into_iter() {
+             let auto_pair = pair.into();
+ 
+-            auto_pairs.insert(auto_pair.open, auto_pair);
++            singles.insert(auto_pair.open, auto_pair);
+ 
+             if auto_pair.open != auto_pair.close {
+-                auto_pairs.insert(auto_pair.close, auto_pair);
++                singles.insert(auto_pair.close, auto_pair);
+             }
+         }
+ 
+-        Self(auto_pairs)
++        Self {
++            singles,
++            multis: Vec::new(),
++        }
++    }
++
++    /// Build a pair set from configured string delimiters. Delimiters of exactly one
++    /// character keep the single-char behavior; anything longer becomes a `MultiPair`.
++    pub fn from_config_pairs<'a, I>(pairs: I) -> Self
++    where
++        I: IntoIterator<Item = (&'a String, &'a String)>,
++    {
++        let mut result = Self {
++            singles: HashMap::new(),
++            multis: Vec::new(),
++        };
++
++        for (open, close) in pairs {
++            match (single_char(open), single_char(close)) {
++                (Some(open), Some(close)) => {
++                    let pair = Pair { open, close };
++                    result.singles.insert(open, pair);
++
++                    if open != close {
++                        result.singles.insert(close, pair);
++                    }
++                }
++                _ => result.multis.push(MultiPair {
++                    open: open.clone(),
++                    close: close.clone(),
++                }),
++            }
++        }
++
++        result
++            .multis
++            .sort_by_key(|pair| std::cmp::Reverse(pair.open.chars().count()));
++
++        result
+     }
+ 
+     pub fn get(&self, ch: char) -> Option<&Pair> {
+-        self.0.get(&ch)
++        self.singles.get(&ch)
+     }
++
++    pub fn multis(&self) -> &[MultiPair] {
++        &self.multis
++    }
++}
++
++fn single_char(delimiter: &str) -> Option<char> {
++    let mut chars = delimiter.chars();
++    let first = chars.next()?;
++    chars.next().is_none().then_some(first)
+ }
+ 
+ impl Default for AutoPairs {
+@@ -106,8 +166,6 @@ fn default() -> Self {
+ 
+ // [TODO]
+ // * delete implementation where it erases the whole bracket (|) -> |
+-// * change to multi character pairs to handle cases like placing the cursor in the
+-//   middle of triple quotes, and more exotic pairs like Jinja's {% %}
+ 
+ #[must_use]
+ pub fn hook_insert(
+@@ -116,6 +174,10 @@ pub fn hook_insert(
+     ch: char,
+     pairs: &AutoPairs,
+ ) -> Option<(Change, Range)> {
++    if let Some(result) = hook_insert_multi(doc, range, ch, pairs) {
++        return Some(result);
++    }
++
+     log::trace!("autopairs hook range: {:#?}", range);
+ 
+     if let Some(pair) = pairs.get(ch) {
+@@ -136,6 +198,10 @@ pub fn hook_insert(
+ 
+ #[must_use]
+ pub fn hook_delete(doc: &Rope, range: &Range, pairs: &AutoPairs) -> Option<(Deletion, Range)> {
++    if let Some(result) = hook_delete_multi(doc, range, pairs) {
++        return Some(result);
++    }
++
+     log::trace!("autopairs delete hook range: {:#?}", range);
+ 
+     let text = doc.slice(..);
+@@ -415,3 +481,138 @@ fn handle_insert_same(doc: &Rope, range: &Range, pair: &Pair) -> Option<(Change,
+ 
+     Some(result)
+ }
++fn slice_eq(doc: &Rope, from: usize, expected: &str) -> bool {
++    let to = from + expected.chars().count();
++    to <= doc.len_chars() && doc.slice(from..to) == expected
++}
++
++/// Complete a multi-char pair when the typed char finishes a configured opener whose
++/// remaining characters already sit directly in front of the cursor:
++///
++///     ``|   + `   ->   ```|```
++///     {|    + %   ->   {%|%}
++#[must_use]
++fn hook_insert_multi(
++    doc: &Rope,
++    range: &Range,
++    ch: char,
++    pairs: &AutoPairs,
++) -> Option<(Change, Range)> {
++    let cursor = range.cursor(doc.slice(..));
++    let next_char = doc.get_char(cursor);
++
++    let pair = pairs.multis().iter().find(|pair| {
++        let open_len = pair.open.chars().count();
++
++        if open_len < 2 || !pair.open.ends_with(ch) {
++            return false;
++        }
++
++        let prefix_len = open_len - 1;
++        let prefix = &pair.open[..pair.open.len() - ch.len_utf8()];
++
++        cursor >= prefix_len
++            && slice_eq(doc, cursor - prefix_len, prefix)
++            // the closer is already there: fall through so the single-char handler
++            // can move over it instead of nesting another pair
++            && !slice_eq(doc, cursor, &pair.close)
++            // mirrors `Pair::should_close`: never pair against an adjacent word
++            && !prev_char(doc, cursor - prefix_len).is_some_and(|c| c.is_alphanumeric())
++            && !next_char.is_some_and(|c| c.is_alphanumeric())
++    })?;
++
++    let mut inserted = String::with_capacity(ch.len_utf8() + pair.close.len());
++    inserted.push(ch);
++    inserted.push_str(&pair.close);
++
++    let change = (cursor, cursor, Some(Tendril::from(inserted)));
++    let next_range = get_next_range_multi(doc, range, 1 + pair.close.chars().count());
++    let result = (change, next_range);
++
++    log::debug!("auto pair multi change: {:#?}", &result);
++
++    Some(result)
++}
++
++/// Cursor placement for a completed multi-char pair. The cursor lands directly after
++/// the typed opener char, on the first grapheme of the closer, so only one inserted
++/// char is ahead of it; `len_inserted` is the whole insertion and matters only when
++/// the selection spans several graphemes.
++fn get_next_range_multi(doc: &Rope, start_range: &Range, len_inserted: usize) -> Range {
++    if start_range.head == doc.len_chars() && start_range.anchor == doc.len_chars() {
++        return Range::new(start_range.anchor + 1, start_range.head + 1);
++    }
++
++    let doc_slice = doc.slice(..);
++    let single_grapheme = start_range.is_single_grapheme(doc_slice);
++
++    let end_head = if start_range.head == 0 || start_range.direction() == Direction::Backward {
++        start_range.head + 1
++    } else {
++        graphemes::prev_grapheme_boundary(doc_slice, start_range.head) + 2
++    };
++
++    let end_anchor = match (start_range.len(), start_range.direction()) {
++        (0, _) => end_head,
++        (1, Direction::Forward) => end_head - 1,
++        (1, Direction::Backward) => end_head + 1,
++
++        (_, Direction::Forward) => {
++            if single_grapheme {
++                graphemes::prev_grapheme_boundary(doc_slice, start_range.head) + 1
++            } else {
++                start_range.anchor
++            }
++        }
++
++        (_, Direction::Backward) => {
++            if single_grapheme {
++                graphemes::prev_grapheme_boundary(doc_slice, start_range.anchor) + len_inserted
++            } else {
++                start_range.anchor + len_inserted
++            }
++        }
++    };
++
++    Range::new(end_anchor, end_head)
++}
++
++/// Delete a whole multi-char pair when the cursor sits between its delimiters:
++/// ``` ```|``` ``` + backspace -> empty.
++#[must_use]
++fn hook_delete_multi(doc: &Rope, range: &Range, pairs: &AutoPairs) -> Option<(Deletion, Range)> {
++    let text = doc.slice(..);
++
++    // wider selections keep the single-char delete behavior
++    if !range.is_single_grapheme(text) {
++        return None;
++    }
++
++    let cursor = range.cursor(text);
++
++    let pair = pairs.multis().iter().find(|pair| {
++        let open_len = pair.open.chars().count();
++
++        cursor >= open_len
++            && slice_eq(doc, cursor - open_len, &pair.open)
++            && slice_eq(doc, cursor, &pair.close)
++    })?;
++
++    let start = cursor - pair.open.chars().count();
++    let end = cursor + pair.close.chars().count();
++    let len_after_delete = doc.len_chars() - (end - start);
++
++    let head = if start < len_after_delete {
++        start + 1
++    } else {
++        start
++    };
++
++    let next_range = if range.direction() == Direction::Backward {
++        Range::new(head, start)
++    } else {
++        Range::new(start, head)
++    };
++
++    Some(((start, end), next_range))
++}
+diff --git a/helix-core/src/syntax/config.rs b/helix-core/src/syntax/config.rs
+index c416bbac..06c2d8ab 100644
+--- a/helix-core/src/syntax/config.rs
++++ b/helix-core/src/syntax/config.rs
+@@ -534,8 +534,9 @@ pub enum AutoPairConfig {
+     /// Enables or disables auto pairing. False means disabled. True means to use the default pairs.
+     Enable(bool),
+ 
+-    /// The mappings of pairs.
+-    Pairs(HashMap<char, char>),
++    /// The mappings of pairs. Delimiters longer than one character, such as ``` ``` ```,
++    /// are matched against the text in front of the cursor.
++    Pairs(#[serde(deserialize_with = "deserialize_pair_map")] HashMap<String, String>),
+ }
+ 
+ impl Default for AutoPairConfig {
+@@ -549,7 +550,7 @@ fn from(auto_pair_config: &AutoPairConfig) -> Self {
+         match auto_pair_config {
+             AutoPairConfig::Enable(false) => None,
+             AutoPairConfig::Enable(true) => Some(AutoPairs::default()),
+-            AutoPairConfig::Pairs(pairs) => Some(AutoPairs::new(pairs.iter())),
++            AutoPairConfig::Pairs(pairs) => Some(AutoPairs::from_config_pairs(pairs.iter())),
+         }
+     }
+ }
+@@ -647,6 +648,24 @@ pub fn deserialize_auto_pairs<'de, D>(deserializer: D) -> Result<Option<AutoPair
+     Ok(Option::<AutoPairConfig>::deserialize(deserializer)?.and_then(AutoPairConfig::into))
+ }
+ 
++fn deserialize_pair_map<'de, D>(deserializer: D) -> Result<HashMap<String, String>, D::Error>
++where
++    D: serde::Deserializer<'de>,
++{
++    let pairs = HashMap::<String, String>::deserialize(deserializer)?;
++
++    if let Some((open, close)) = pairs
++        .iter()
++        .find(|(open, close)| open.is_empty() || close.is_empty())
++    {
++        return Err(serde::de::Error::custom(format!(
++            "auto-pairs delimiters must not be empty (got {open:?} => {close:?})"
++        )));
++    }
++
++    Ok(pairs)
++}
++
+ pub fn default_timeout() -> u64 {
+     20
+ }
+diff --git a/helix-term/src/commands/engine/steel/mod.rs b/helix-term/src/commands/engine/steel/mod.rs
+index d769954a..bb8822b8 100644
+--- a/helix-term/src/commands/engine/steel/mod.rs
++++ b/helix-term/src/commands/engine/steel/mod.rs
+@@ -1157,7 +1157,11 @@ fn load_configuration_api(engine: &mut Engine, generate_sources: bool) {
+             AutoPairConfig::Enable(enabled)
+         })
+         .register_fn("auto-pairs-map", |map: HashMap<char, char>| {
+-            AutoPairConfig::Pairs(map)
++            let pairs = map
++                .into_iter()
++                .map(|(open, close)| (open.to_string(), close.to_string()))
++                .collect();
++            AutoPairConfig::Pairs(pairs)
+         })
+         // TODO: Finish this up
+         .register_fn("auto-save-default", AutoSave::default)
+diff --git a/helix-term/tests/test/auto_pairs.rs b/helix-term/tests/test/auto_pairs.rs
+index df468aca..5aadbb4a 100644
+--- a/helix-term/tests/test/auto_pairs.rs
++++ b/helix-term/tests/test/auto_pairs.rs
+@@ -1,4 +1,5 @@
+ use helix_core::{auto_pairs::DEFAULT_PAIRS, hashmap};
++use std::collections::HashMap;
+ 
+ use super::*;
+ 
+@@ -12,6 +13,20 @@ fn matching_pairs() -> impl Iterator<Item = &'static (char, char)> {
+     DEFAULT_PAIRS.iter().filter(|(open, close)| open == close)
+ }
+ 
++fn config_with_pairs(pairs: HashMap<String, String>) -> Config {
++    Config {
++        editor: helix_view::editor::Config {
++            auto_pairs: AutoPairConfig::Pairs(pairs),
++            ..Default::default()
++        },
++        ..Default::default()
++    }
++}
++
++fn fence_pairs() -> HashMap<String, String> {
++    hashmap!("`".to_string() => "`".to_string(), "```".to_string() => "```".to_string())
++}
++
+ #[tokio::test(flavor = "multi_thread")]
+ async fn insert_basic() -> anyhow::Result<()> {
+     for pair in DEFAULT_PAIRS {
+@@ -139,7 +154,11 @@ async fn insert_whitespace_no_matching_pair() -> anyhow::Result<()> {
+ #[tokio::test(flavor = "multi_thread")]
+ async fn insert_configured_multi_byte_chars() -> anyhow::Result<()> {
+     // NOTE: these are multi-byte Unicode characters
+-    let pairs = hashmap!('„' => '“', '‚' => '‘', '「' => '」');
++    let pairs = hashmap!(
++        "„".to_string() => "“".to_string(),
++        "‚".to_string() => "‘".to_string(),
++        "「".to_string() => "」".to_string()
++    );
+ 
+     let config = Config {
+         editor: helix_view::editor::Config {
+@@ -176,6 +195,95 @@ async fn insert_configured_multi_byte_chars() -> anyhow::Result<()> {
+     Ok(())
+ }
+ 
++#[tokio::test(flavor = "multi_thread")]
++async fn insert_multi_char_pair() -> anyhow::Result<()> {
++    test_with_config(
++        AppBuilder::new().with_config(config_with_pairs(fence_pairs())),
++        (
++            format!("#[{}|]#", LINE_END),
++            "i```",
++            format!("```#[|`]#``{}", LINE_END),
++            LineFeedHandling::AsIs,
++        ),
++    )
++    .await
++}
++
++#[tokio::test(flavor = "multi_thread")]
++async fn insert_multi_char_pair_multi_range() -> anyhow::Result<()> {
++    test_with_config(
++        AppBuilder::new().with_config(config_with_pairs(fence_pairs())),
++        (
++            format!("#[{eol}|]##({eol}|)##({eol}|)#", eol = LINE_END),
++            "i```",
++            format!(
++                "```#[|`]#``{eol}```#(|`)#``{eol}```#(|`)#``{eol}",
++                eol = LINE_END
++            ),
++            LineFeedHandling::AsIs,
++        ),
++    )
++    .await
++}
++
++#[tokio::test(flavor = "multi_thread")]
++async fn insert_multi_char_pair_asymmetric() -> anyhow::Result<()> {
++    test_with_config(
++        AppBuilder::new().with_config(config_with_pairs(
++            hashmap!("{%".to_string() => "%}".to_string()),
++        )),
++        (
++            format!("#[{}|]#", LINE_END),
++            "i{%",
++            format!("{{%#[|%]#}}{}", LINE_END),
++            LineFeedHandling::AsIs,
++        ),
++    )
++    .await
++}
++
++#[tokio::test(flavor = "multi_thread")]
++async fn insert_multi_char_pair_after_word() -> anyhow::Result<()> {
++    test_with_config(
++        AppBuilder::new().with_config(config_with_pairs(fence_pairs())),
++        (
++            format!("foo#[{}|]#", LINE_END),
++            "i```",
++            format!("foo```#[|{}]#", LINE_END),
++            LineFeedHandling::AsIs,
++        ),
++    )
++    .await
++}
++
++#[tokio::test(flavor = "multi_thread")]
++async fn insert_multi_char_pair_before_word() -> anyhow::Result<()> {
++    test_with_config(
++        AppBuilder::new().with_config(config_with_pairs(fence_pairs())),
++        (
++            format!("#[f|]#oo{}", LINE_END),
++            "i```",
++            format!("```#[|f]#oo{}", LINE_END),
++            LineFeedHandling::AsIs,
++        ),
++    )
++    .await
++}
++
++#[tokio::test(flavor = "multi_thread")]
++async fn delete_multi_char_pair() -> anyhow::Result<()> {
++    test_with_config(
++        AppBuilder::new().with_config(config_with_pairs(fence_pairs())),
++        (
++            format!("```#[|`]#``{}", LINE_END),
++            "i<backspace>",
++            format!("#[|{}]#", LINE_END),
++            LineFeedHandling::AsIs,
++        ),
++    )
++    .await
++}
++
+ #[tokio::test(flavor = "multi_thread")]
+ async fn insert_after_word() -> anyhow::Result<()> {
+     for pair in differing_pairs() {
+@@ -841,7 +949,11 @@ async fn delete_whitespace_no_matching_pair() -> anyhow::Result<()> {
+ #[tokio::test(flavor = "multi_thread")]
+ async fn delete_configured_multi_byte_chars() -> anyhow::Result<()> {
+     // NOTE: these are multi-byte Unicode characters
+-    let pairs = hashmap!('„' => '“', '‚' => '‘', '「' => '」');
++    let pairs = hashmap!(
++        "„".to_string() => "“".to_string(),
++        "‚".to_string() => "‘".to_string(),
++        "「".to_string() => "」".to_string()
++    );
+ 
+     let config = Config {
+         editor: helix_view::editor::Config {

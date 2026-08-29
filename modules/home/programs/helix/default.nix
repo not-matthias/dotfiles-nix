@@ -26,7 +26,17 @@ in {
       programs.fish.shellAliases.nvim = lib.mkIf config.programs.helix.compat.enable "hx";
       programs.helix = {
         enable = true;
-        package = unstable.steelix;
+        # nixpkgs' steelix expression replaces `patches` on the unwrapped derivation,
+        # so extra source patches are applied through `postPatch`, which it leaves alone.
+        package = unstable.steelix.override {
+          helix-unwrapped = unstable.helix-unwrapped.overrideAttrs (old: {
+            postPatch =
+              (old.postPatch or "")
+              + ''
+                patch -p1 < ${./multi-char-auto-pairs.patch}
+              '';
+          });
+        };
         extraPackages = with pkgs; [
           marksman
           nixd
@@ -55,6 +65,7 @@ in {
                 "{" = "}";
                 "\"" = "\"";
                 "`" = "`";
+                "```" = "```";
               };
             }
             {

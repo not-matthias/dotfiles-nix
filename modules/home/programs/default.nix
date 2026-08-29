@@ -25,7 +25,7 @@
   ./handy.nix
   ./jj.nix
   ./worktrunk.nix
-  ./helix.nix
+  ./helix
   ./idea-copilot.nix
   ./binary-ninja.nix
   ./ghidra.nix
