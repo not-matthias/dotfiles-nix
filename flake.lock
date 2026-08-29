@@ -65,6 +65,26 @@
         "type": "github"
       }
     },
+    "backhub": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787871514,
+        "narHash": "sha256-I16X5F8BCSM2koXZbzEH7wXPCT7NeKRcZvb7jSL1WNs=",
+        "ref": "refs/heads/main",
+        "rev": "dc9550c90798da4b3311302560bd3b4e0c00672b",
+        "revCount": 16,
+        "type": "git",
+        "url": "https://github.com/not-matthias/backhub.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/not-matthias/backhub.git"
+      }
+    },
     "base16": {
       "inputs": {
         "fromYaml": "fromYaml"
@@ -2072,6 +2092,7 @@
         "agenix": "agenix",
         "arion": "arion",
         "auto-cpufreq": "auto-cpufreq",
+        "backhub": "backhub",
         "determinate": "determinate",
         "devenv": "devenv",
         "fenix": "fenix",

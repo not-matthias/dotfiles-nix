@@ -2,6 +2,7 @@
   pkgs,
   unstable,
   user,
+  flakes,
   lib,
   nixos-hardware,
   ...
@@ -16,7 +17,10 @@
     memoryPercent = 25;
   };
 
-  home-manager.users.${user} = {lib, ...}: {
+  home-manager.users.${user} = {config, lib, ...}: {
+    imports = [
+      flakes.backhub.homeManagerModules.default
+    ];
     home.stateVersion = "26.05";
     home.packages = with pkgs; [
       evince
@@ -25,6 +29,21 @@
       ida-pro
       unstable.amdtop
     ];
+    backhub = {
+      enable = true;
+      # Provisioned outside this flake; contains only the raw GitHub token.
+      secretFile = "/run/secrets/backhub-github-token";
+      settings = {
+        root = "${config.home.homeDirectory}/backups/backhub";
+        source = {
+          own = true;
+          fork = true;
+          star = true;
+          gist = true;
+          followers = true;
+        };
+      };
+    };
 
     programs = {
       lmstudio = {
