@@ -1,0 +1,34 @@
+Use input-only idle notifications for idle tracking.
+
+ext-idle-notify-v1 offers two notification kinds: the default one reports the
+compositor's effective idle state and is suppressed by idle inhibitors, while
+get_input_idle_notification (interface version 2) reports raw seat input. Time
+tracking wants the latter, otherwise any inhibitor (media playback, a status
+bar caffeine toggle) makes the user look permanently active.
+
+--- a/watchers/src/watchers/wl_connection.rs
++++ b/watchers/src/watchers/wl_connection.rs
+@@ -1,4 +1,4 @@
+-use anyhow::Context;
++use anyhow::{bail, Context};
+ use wayland_client::{
+     globals::{registry_queue_init, GlobalList, GlobalListContents},
+     protocol::{wl_registry, wl_seat::WlSeat},
+@@ -118,7 +118,16 @@
+                 .bind(&self.queue_handle, 1..=WlSeat::interface().version, ())?;
+ 
+         let idle = self.get_ext_idle()?;
+-        Ok(idle.get_idle_notification(timeout, &seat, &self.queue_handle, ()))
++        if idle.version() < 2 {
++            bail!(
++                "ext-idle-notifier-v1 v{} has no input-only idle notification",
++                idle.version()
++            );
++        }
++
++        // Input-only notifications ignore idle inhibitors, so idle tracking
++        // follows physical input rather than the compositor's idle policy.
++        Ok(idle.get_input_idle_notification(timeout, &seat, &self.queue_handle, ()))
+     }
+ 
+     pub fn get_kwin_idle_timeout(&self, timeout: u32) -> anyhow::Result<OrgKdeKwinIdleTimeout>

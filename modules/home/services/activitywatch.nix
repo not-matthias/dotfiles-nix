@@ -6,6 +6,10 @@
   ...
 }: let
   cfg = config.services.activitywatch;
+
+  # Tracks physical input instead of the compositor's effective idle state, so
+  # an active idle inhibitor cannot report the user as present indefinitely.
+  awatcherInputIdle = pkgs.callPackage ../../../pkgs/awatcher {awatcher = unstable.awatcher;};
 in {
   config = lib.mkIf cfg.enable {
     home.packages = [
@@ -15,7 +19,7 @@ in {
     services.activitywatch = {
       package = unstable.aw-server-rust;
       watchers = {
-        awatcher.package = unstable.awatcher;
+        awatcher.package = awatcherInputIdle;
         aw-sync.package = unstable.aw-server-rust;
         # Reports the currently playing media via MPRIS (Spotify, browsers, ...)
         aw-watcher-media-player.package = pkgs.aw-watcher-media-player;
