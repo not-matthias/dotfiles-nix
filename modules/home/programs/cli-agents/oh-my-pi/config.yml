@@ -79,10 +79,11 @@ task:
     solver: openai-codex/gpt-5.6-sol:high
     reviewer: openai-codex/gpt-5.6-terra:high
     security-reviewer: openai-codex/gpt-5.6-terra:high
+  eager: preferred
 
 providers:
   openai-codex:
-    codeMode: "on"
+    codeMode: auto
   imageOrder:
     - google-antigravity
     - openai-codex
