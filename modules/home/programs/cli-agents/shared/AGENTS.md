@@ -5,6 +5,8 @@
 - Use bullet points (e.g. for pro/con lists, or explanations of different approaches)
 - NEVER include AI attribution (Co-Authored-By, "Generated with Claude Code", "Made-with: Cursor" etc.) in commits or PRs.
 - When explaining an API, show only the function signatures, not their bodies. Keep the focus on the surface (names, parameters, return types).
+- When a design or interface proposal is relevant, present at least one concrete option and recommend a default when the tradeoffs support one.
+- When explaining an API or brainstorming an interface, include a concise callstack-style tree by default. Use either a plain tree or an annotated tree with inline notes on calls when their responsibility is not obvious. Omit it only when there is no meaningful execution flow to show.
 
   ```rust
   // Good — signatures only
