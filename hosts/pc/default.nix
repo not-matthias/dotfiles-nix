@@ -84,6 +84,13 @@
       worktrunk.enable = true;
       helium.enable = true;
       minecraft.enable = true;
+      discord = {
+        enable = true;
+        package = pkgs.discord.override {
+          withVencord = true;
+          withOpenASAR = true;
+        };
+      };
     };
 
     services = {
