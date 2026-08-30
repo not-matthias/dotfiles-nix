@@ -1,7 +1,6 @@
 #
 {
   stdenv,
-  makeWrapper,
   requireFile,
   lib,
   patchelf,
@@ -85,7 +84,7 @@ in
   stdenv.mkDerivation rec {
     pname = "binaryninja";
     version = "dev-personal";
-    nativeBuildInputs = [makeWrapper patchelf unzip];
+    nativeBuildInputs = [patchelf unzip];
     buildInputs = requiredLibs;
 
     # Free version:
@@ -108,50 +107,64 @@ in
     '';
 
     installPhase = ''
-            mkdir -p $out/bin
-            mkdir -p $out/opt/binaryninja
-            cp -r * $out/opt/binaryninja
-            chmod +x $out/opt/binaryninja/binaryninja
+        mkdir -p $out/bin $out/opt/binaryninja
+        cp -r * $out/opt/binaryninja
+        chmod +x $out/opt/binaryninja/binaryninja
+        ln -sf ${lib.getLib libxml2}/lib/libxml2.so $out/opt/binaryninja/libxml2.so.2
+        # The upstream application updates files beside its executable. Keep the
+        # Nix store copy as the seed and run a writable per-build copy instead.
+        cat > $out/bin/binaryninja <<EOF
+      #!${stdenv.shell}
+      set -eu
 
-            # Binary Ninja links against the old libxml2.so.2 soname, but nixpkgs
-            # ships libxml2.so.16. Bridge them with a symlink to the unversioned
-            # library so this stays correct across libxml2 version bumps.
-            ln -sf ${lib.getLib libxml2}/lib/libxml2.so $out/opt/binaryninja/libxml2.so.2
+      source_dir="$out/opt/binaryninja"
+      source_root="$out"
+      cache_root="\''${XDG_CACHE_HOME:-\''${HOME}/.cache}/binaryninja"
+      runtime_name="\$(basename "\''${source_root}")"
+      runtime_dir="\''${cache_root}/\''${runtime_name}"
 
-            # Binary Ninja bundles Qt and expects its plugins to stay isolated
-            # from desktop Qt settings and system plugin paths.
-            makeWrapper $out/opt/binaryninja/binaryninja \
-              $out/bin/binaryninja \
-              --prefix LD_LIBRARY_PATH : "$out/opt/binaryninja:${libPath}:$out/opt/binaryninja/plugins/lldb/lib" \
-              --unset QT_STYLE_OVERRIDE \
-              --unset QT_QPA_PLATFORMTHEME \
-              --unset QT_PLUGIN_PATH \
-              --set QT_QPA_PLATFORM "wayland;xcb"
-
-            # Desktop entry + icon
-            mkdir -p $out/share/applications
-            iconPath=$(find $out/opt/binaryninja -maxdepth 3 -type f -iname "binaryninja*.png" | head -n1)
-            if [ -n "$iconPath" ]; then
-              # Install icon into hicolor if size can be derived
-              sizeDir="$(basename $(dirname "$iconPath"))"
-              mkdir -p $out/share/icons/hicolor/$sizeDir/apps || true
-              cp "$iconPath" $out/share/icons/hicolor/$sizeDir/apps/binaryninja.png || true
-              iconLine="Icon=binaryninja"
-            else
-              iconLine="Icon=binaryninja"
-            fi
-            cat > $out/share/applications/binaryninja.desktop <<EOF
-      [Desktop Entry]
-      Type=Application
-      Name=Binary Ninja
-      GenericName=Reverse Engineering Platform
-      Comment=Interactive disassembler and decompiler
-      Exec=$out/bin/binaryninja %f
-      $iconLine
-      Terminal=false
-      Categories=Development;Debugger;
-      StartupWMClass=Binary Ninja
+      if [ ! -x "\''${cache_root}/\''${runtime_name}/binaryninja" ]; then
+        mkdir -p "\''${XDG_CACHE_HOME:-\''${HOME}/.cache}/binaryninja"
+        tmp_dir=\$(mktemp -d "\''${cache_root}/.binaryninja.XXXXXX")
+        trap 'rm -rf "\''${tmp_dir}"' EXIT HUP INT TERM
+        cp -a "\''${source_dir}/." "\''${tmp_dir}/"
+        chmod -R u+rwX "\''${tmp_dir}"
+        if [ ! -e "\''${cache_root}/\''${runtime_name}" ]; then
+          mv "\''${tmp_dir}" "\''${cache_root}/\''${runtime_name}"
+        fi
+      fi
+      ln -sfn ${lib.getLib libxml2}/lib/libxml2.so "\''${cache_root}/\''${runtime_name}/libxml2.so.2"
+      export LD_LIBRARY_PATH="\''${cache_root}/\''${runtime_name}:${libPath}:\''${cache_root}/\''${runtime_name}/plugins/lldb/lib\''${LD_LIBRARY_PATH:+:\''${LD_LIBRARY_PATH}}"
+      unset QT_STYLE_OVERRIDE QT_QPA_PLATFORMTHEME QT_PLUGIN_PATH
+      export QT_QPA_PLATFORM="wayland;xcb"
+      exec "\''${cache_root}/\''${runtime_name}/binaryninja" "\''${@}"
       EOF
+        chmod +x $out/bin/binaryninja
+
+              # Desktop entry + icon
+              mkdir -p $out/share/applications
+              iconPath=$(find $out/opt/binaryninja -maxdepth 3 -type f -iname "binaryninja*.png" | head -n1)
+              if [ -n "$iconPath" ]; then
+                # Install icon into hicolor if size can be derived
+                sizeDir="$(basename $(dirname "$iconPath"))"
+                mkdir -p $out/share/icons/hicolor/$sizeDir/apps || true
+                cp "$iconPath" $out/share/icons/hicolor/$sizeDir/apps/binaryninja.png || true
+                iconLine="Icon=binaryninja"
+              else
+                iconLine="Icon=binaryninja"
+              fi
+              cat > $out/share/applications/binaryninja.desktop <<EOF
+        [Desktop Entry]
+        Type=Application
+        Name=Binary Ninja
+        GenericName=Reverse Engineering Platform
+        Comment=Interactive disassembler and decompiler
+        Exec=$out/bin/binaryninja %f
+        $iconLine
+        Terminal=false
+        Categories=Development;Debugger;
+        StartupWMClass=Binary Ninja
+        EOF
     '';
 
     postFixupPhases = ["finalPatchPhase"];
