@@ -18,6 +18,7 @@
       "khncfooichmfjbepaaaebmommgaepoid" # Unhook - Remove YouTube Recommended & Shorts
       "edibdbjcniadpccecjdfdjjppcpchdlm" # I still don't care about cookies
       "eimadpbcbfnmbkopoojfekhnkhdbieeh" # Dark Reader
+      "hkgfoiooedgoejojocmhlaklaeopbecg" # Picture-in-Picture Extension (by Google)
       "dneaehbmnbhcippjikoajpoabadpodje" # Old Reddit Redirect
       "hhinaapppaileiechjoiifaancjggfjm" # Web Scrobbler
       "nglaklhklhcoonedhgnpgddginnjdadi" # ActivityWatch Web Watcher
