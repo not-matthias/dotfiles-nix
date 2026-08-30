@@ -50,8 +50,6 @@ compaction:
 dev:
   autoqa: false
   autoqaConsent: denied
-tools:
-  xdevDocs: catalog
 
 modelRoles:
   default: openai-codex/gpt-5.6-luna:high
@@ -78,7 +76,6 @@ task:
   agentModelOverrides:
     scout: google-antigravity/gemini-3.7-flash
     librarian: google-antigravity/gemini-3.7-flash
-    oracle: openai-codex/gpt-5.6-sol:high
     solver: openai-codex/gpt-5.6-sol:high
     reviewer: openai-codex/gpt-5.6-terra:high
     security-reviewer: openai-codex/gpt-5.6-terra:high
