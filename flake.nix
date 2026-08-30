@@ -68,7 +68,7 @@
     # devenv 2.0+ removed devenv-tasks (uses `devenv tasks` subcommand), resolving
     # the recompilation issue that motivated the old v1.7 pin.
     # See: https://github.com/cachix/devenv/issues/1865
-    devenv.url = "github:cachix/devenv/v2.1.2";
+    devenv.url = "github:cachix/devenv/v2.2.2";
 
     auto-cpufreq = {
       url = "github:AdnanHodzic/auto-cpufreq";
