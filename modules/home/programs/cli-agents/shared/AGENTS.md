@@ -45,6 +45,7 @@
     //  | .text | padding | .rdata | .data | other sections |
     ```
 - Struct field doc comments only on complex types. Not on trivial fields.
+- IMPORTANT: Use the minimum sufficient approach. Plan enough to remove material uncertainty, then execute the smallest coherent solution that satisfies the requested outcome.
 
 ### Rust File & Module Layout
 
