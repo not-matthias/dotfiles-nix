@@ -70,7 +70,7 @@
   - Example: `gh api repos/not-matthias/apollo/pulls/154/comments`
 - When committing: Always use semantic commit messages (e.g. `feat: add new feature`)
 - When writing public artifacts (issues, PRs, commit messages, public docs): NEVER include internal Slack threads, private channel discussions, internal doc links, internal tool or roadmap details, or teammate names. Describe the technical problem generically and cite only public sources; if an internal reference seems necessary, ask the user first.
-- When you need to ask the user a question, ALWAYS use the ask user question tool. NEVER substitute plain text output for a structured question tool call.
+- When you need to ask the user a question, ALWAYS use an available question tool. Prefer `ask_open_question` when it is available and predefined options would constrain the answer; otherwise use the option-based ask tool. NEVER substitute plain text output for a question tool call.
 - NEVER reply to pull requests/review comments/GitHub issues/etc. unless the user asks you to
 - IMPORTANT: NEVER use squash merge for PRs, ALWAYS use rebase merge
 

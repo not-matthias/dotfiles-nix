@@ -85,6 +85,7 @@ in {
           recursive = true;
         };
         ".omp/agent/AGENTS.md".source = ../shared/AGENTS.md;
+        ".omp/agent/extensions/ask-open-question.ts".source = ./extensions/ask-open-question.ts;
         ".omp/agent/extensions/docs-rs" = {
           source = sharedExtensions."docs-rs".src;
           recursive = true;
