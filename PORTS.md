@@ -1,3 +1,4 @@
+5173 = kaneo
 8083 = calibre-web
 3456 = vikunja
 11439 = wordpress

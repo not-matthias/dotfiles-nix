@@ -11,6 +11,7 @@
   ./gitea.nix
   ./homepage.nix
   ./jellyfin.nix
+  ./kaneo.nix
   ./journald.nix
   ./karakeep.nix
   ./kokoro.nix

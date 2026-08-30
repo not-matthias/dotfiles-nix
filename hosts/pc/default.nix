@@ -136,6 +136,10 @@
   };
 
   services = {
+    kaneo = {
+      enable = true;
+      publicUrl = "http://pc.ide-snares.ts.net:5173";
+    };
     tuned = {
       enable = true;
       settings.dynamic_tuning = true;

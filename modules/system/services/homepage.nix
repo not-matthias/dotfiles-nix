@@ -187,6 +187,14 @@ in {
                 siteMonitor = "https://chat.${domain}";
               };
             })
+            (includeService "kaneo" {
+              Kaneo = {
+                description = "Kaneo";
+                icon = "kanboard";
+                href = "https://kaneo.${domain}";
+                siteMonitor = "https://kaneo.${domain}";
+              };
+            })
             (includeService "navidrome" {
               Navidrome = {
                 description = "Navidrome";
