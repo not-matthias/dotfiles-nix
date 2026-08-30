@@ -3,6 +3,7 @@
   stdenv,
   fetchurl,
   autoPatchelfHook,
+  makeWrapper,
 }:
 # Standalone `bun build --compile` binary that bundles its own Bun runtime,
 # so it sidesteps the nixpkgs Bun version (the npm/source install of `omp`
@@ -18,13 +19,24 @@ stdenv.mkDerivation rec {
   dontUnpack = true;
   dontStrip = true;
 
-  nativeBuildInputs = [autoPatchelfHook];
+  nativeBuildInputs = [
+    autoPatchelfHook
+    makeWrapper
+  ];
   buildInputs = [stdenv.cc.cc.lib];
 
   installPhase = ''
     runHook preInstall
     install -Dm755 $src $out/bin/omp
     runHook postInstall
+  '';
+
+  # ONNX inference workers load prebuilt native addons from the user cache.
+  # Their dependencies are not covered by the bundled binary's RPATH, so OMP
+  # needs the Nix C++ library path when it constructs those worker environments.
+  postFixup = ''
+    wrapProgram "$out/bin/omp" \
+      --set-default OMP_NATIVE_LIBRARY_PATH "${lib.makeLibraryPath [stdenv.cc.cc.lib]}"
   '';
 
   meta = {
