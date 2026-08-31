@@ -47,6 +47,7 @@ in {
       slk
       harbor
       terminal-browser
+      hushmic
 
       # protonmail-bridge-gui
       # thunderbird

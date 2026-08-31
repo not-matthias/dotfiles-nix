@@ -85,6 +85,9 @@
       handy = super.callPackage ../../pkgs/handy.nix {};
     })
     (_self: super: {
+      hushmic = super.callPackage ../../pkgs/hushmic.nix {};
+    })
+    (_self: super: {
       plannotator = super.callPackage ../../pkgs/plannotator.nix {};
     })
     (_self: super: {
