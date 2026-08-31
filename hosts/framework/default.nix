@@ -10,6 +10,7 @@
     command = "helium";
     desktop = "helium.desktop";
   };
+  hunkCommitLog = flakes."hunk-commit-log";
 in {
   imports = [
     ./hardware-configuration.nix
@@ -20,6 +21,7 @@ in {
 
   home-manager.users.${user} = {...}: {
     home.stateVersion = "22.05";
+    home.file.".config/hunk/extensions/hunk-commit-log".source = hunkCommitLog;
     home.packages = with pkgs; [
       uv
       bun

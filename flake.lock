@@ -911,6 +911,23 @@
         "type": "github"
       }
     },
+    "hunk-commit-log": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787593924,
+        "narHash": "sha256-lVFR1YCApRa3I+Olc2SZEXSmiPUucoiuBJji3qXJa7o=",
+        "owner": "sadick254",
+        "repo": "hunk-commit-log",
+        "rev": "aac1a9b7fc1dda7fc47f058b7c35a0dbe202dec9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sadick254",
+        "repo": "hunk-commit-log",
+        "rev": "aac1a9b7fc1dda7fc47f058b7c35a0dbe202dec9",
+        "type": "github"
+      }
+    },
     "import-tree": {
       "locked": {
         "lastModified": 1763762820,
@@ -1510,6 +1527,7 @@
         "hera": "hera",
         "home-manager": "home-manager_2",
         "hunk": "hunk",
+        "hunk-commit-log": "hunk-commit-log",
         "niri": "niri",
         "nix-webapps": "nix-webapps",
         "nixos-hardware": "nixos-hardware",

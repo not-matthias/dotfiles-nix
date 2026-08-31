@@ -83,6 +83,10 @@
       url = "github:modem-dev/hunk/v0.19.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hunk-commit-log = {
+      url = "github:sadick254/hunk-commit-log/aac1a9b7fc1dda7fc47f058b7c35a0dbe202dec9";
+      flake = false;
+    };
     worktrunk = {
       url = "github:max-sixty/worktrunk";
       inputs.nixpkgs.follows = "nixpkgs";
