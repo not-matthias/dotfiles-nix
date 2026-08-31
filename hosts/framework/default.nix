@@ -316,6 +316,7 @@ in {
     yubikey.enable = true;
     systembus-notify.enable = lib.mkForce true;
     timeguard.enable = true;
+    mullvad-vpn.enable = true;
   };
 
   hardware = {
