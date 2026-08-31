@@ -4,7 +4,7 @@
   services.timeguard.settings.rule = [
     {
       name = "distraction-window";
-      domains = ["reddit.com" "x.com" "youtube.com" "twitch.tv"];
+      domains = ["reddit.com" "x.com" "youtube.com" "twitch.tv" "bhn.vercel.app" "news.ycombinator.com" "redlib.catsarch.com"];
       schedule = {
         days = ["sun" "mon" "tue" "wed" "thu" "fri" "sat"];
         start = "19:00";
