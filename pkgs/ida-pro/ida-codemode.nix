@@ -62,7 +62,10 @@ in
       runHook postInstall
     '';
 
-    passthru.pythonPackages = _ps: [ida-domain-pkg idapro-pkg];
+    passthru = {
+      ida-domain = ida-domain-pkg;
+      pythonPackages = _ps: [ida-domain-pkg idapro-pkg];
+    };
 
     meta = with lib; {
       description = "IDA Code Mode: compact Python execution surface over the ida-domain API";
