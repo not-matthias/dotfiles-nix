@@ -11,6 +11,17 @@
     desktop = "helium.desktop";
   };
   hunkCommitLog = flakes."hunk-commit-log";
+  setFrameworkMicrophoneVolume = pkgs.writeShellScript "set-framework-microphone-volume" ''
+    attempts=0
+    while ! ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 0.2 >/dev/null 2>&1; do
+      attempts=$((attempts + 1))
+      if [ "$attempts" -ge 30 ]; then
+        echo "Could not set the default microphone volume to 20%." >&2
+        exit 1
+      fi
+      ${pkgs.coreutils}/bin/sleep 1
+    done
+  '';
 in {
   imports = [
     ./hardware-configuration.nix
@@ -173,6 +184,20 @@ in {
 
     systemd.user.services.home-manager = {
       serviceConfig.TimeoutStartSec = "1min";
+    };
+
+    systemd.user.services.framework-microphone-volume = {
+      Unit = {
+        Description = "Set the default microphone volume to 20%";
+        After = ["graphical-session.target" "pipewire.service" "wireplumber.service"];
+        Requisite = ["graphical-session.target"];
+        PartOf = ["graphical-session.target"];
+      };
+      Service = {
+        Type = "oneshot";
+        ExecStart = setFrameworkMicrophoneVolume;
+      };
+      Install = {WantedBy = ["graphical-session.target"];};
     };
 
     # Client-only nix settings — these reach ~/.config/nix/nix.conf (via
