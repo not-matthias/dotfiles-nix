@@ -19,8 +19,8 @@ pkgs.stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/plugins
-    cp -r * $out/plugins/
+    mkdir -p $out/plugins/ida-theme-explorer
+    cp -r * $out/plugins/ida-theme-explorer/
 
     runHook postInstall
   '';

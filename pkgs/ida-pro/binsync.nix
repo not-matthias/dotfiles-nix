@@ -14,6 +14,19 @@
       );
     });
 
+  # libbs 3.x imports PLY from pycparser; pycparser 3.0 removed that package.
+  pycparserLegacy = ps.buildPythonPackage rec {
+    pname = "pycparser";
+    version = "2.23";
+    pyproject = true;
+    src = ps.fetchPypi {
+      inherit pname version;
+      sha256 = "1hh01mrc0rcwr7fs8s5zzrnfknaa896mpw6n0q5g3n5d4i7nv0bq";
+    };
+    build-system = [ps.setuptools];
+    pythonImportsCheck = ["pycparser" "pycparser.ply"];
+  };
+
   libbs-pkg = noRuntimeCheck (
     ps.buildPythonPackage rec {
       pname = "libbs";
@@ -32,7 +45,7 @@
         ply
         prompt-toolkit
         psutil
-        pycparser
+        pycparserLegacy
         toml
         tqdm
       ];
@@ -56,7 +69,7 @@
       toml
       gitpython
       filelock
-      pycparser
+      pycparserLegacy
       ply
       prompt-toolkit
       requests
