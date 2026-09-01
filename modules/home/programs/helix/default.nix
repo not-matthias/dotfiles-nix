@@ -16,14 +16,12 @@
     then "dark"
     else "light";
 in {
-  options.programs.helix.compat.enable = lib.mkEnableOption "the nvim compatibility alias";
   config =
     (lib.optionalAttrs (options ? stylix) {
       stylix.targets.helix.enable = true;
     })
     // {
       programs.fish.shellAbbrs.h = "hx .";
-      programs.fish.shellAliases.nvim = lib.mkIf config.programs.helix.compat.enable "hx";
       programs.helix = {
         enable = true;
         # nixpkgs' steelix expression replaces `patches` on the unwrapped derivation,

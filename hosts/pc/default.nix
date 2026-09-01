@@ -17,7 +17,11 @@
     memoryPercent = 25;
   };
 
-  home-manager.users.${user} = {config, lib, ...}: {
+  home-manager.users.${user} = {
+    config,
+    lib,
+    ...
+  }: {
     imports = [
       flakes.backhub.homeManagerModules.default
     ];
@@ -58,10 +62,7 @@
         maintenance.enable = true;
       };
       niri-organize.enable = true;
-      helix = {
-        enable = true;
-        compat.enable = true;
-      };
+      helix.enable = true;
       vscode.enable = true;
       binary-ninja = {
         enable = true;
