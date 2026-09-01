@@ -154,7 +154,11 @@
         };
       };
     };
-    restic.enable = false; # agenix disabled on pc; re-enable once secrets work again
+    restic = {
+      enable = true;
+      localBackup.enable = true;
+      remoteBackup.enable = false;
+    };
     navidrome = {
       enable = true;
       musicFolder = "/home/${user}/Music";
@@ -194,8 +198,7 @@
     fonts.enable = true;
   };
 
-  age.identityPaths = [];
-  age.secrets = lib.mkForce {}; # no ssh identity on pc for agenix; restic disabled above until this is resolved
+  age.identityPaths = ["/etc/ssh/ssh_host_ed25519_key"];
 
   networking = {
     hostName = "pc";
