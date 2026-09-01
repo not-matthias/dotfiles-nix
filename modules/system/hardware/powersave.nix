@@ -12,6 +12,52 @@
   ...
 }: let
   cfg = config.hardware.powersave;
+
+  sysctlBin = "${pkgs.procps}/bin/sysctl";
+
+  # Detect current power state and apply the matching sysctl profile.
+  # Switches between performance (AC) and powersave (battery) values.
+  #
+  # dirty_ratio            - % of RAM allowed dirty before processes block on writes
+  # dirty_background_ratio - % of RAM allowed dirty before background flushing starts
+  # dirty_writeback_centisecs - how often the kernel flusher wakes up (in 1/100s)
+  # dirty_expire_centisecs - how long dirty pages stay in memory before forced write (in 1/100s)
+  # laptop_mode            - batches disk writes to allow longer disk idle time (0=off, 5=aggressive)
+  # swappiness             - how aggressively the kernel swaps pages to disk (0-200, lower=less swap)
+  # overcommit_memory      - 0=heuristic deny, 1=always allow (risks OOM), 2=strict limit
+  # overcommit_ratio       - % of RAM for overcommit (only applies when overcommit_memory=2)
+  # vfs_cache_pressure     - how aggressively the kernel reclaims inode/dentry caches (lower=keep longer)
+  #
+  # References:
+  # - https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/
+  # - https://wiki.archlinux.org/title/Power_management#Writeback_Time
+  # - https://www.kernel.org/doc/Documentation/laptops/laptop-mode.txt
+  powerSysctlScript = pkgs.writeShellScript "power-sysctl" ''
+    ac_online=$(cat /sys/class/power_supply/AC*/online 2>/dev/null || echo "1")
+
+    if [ "$ac_online" = "1" ]; then
+      # Performance profile (AC)
+      ${sysctlBin} vm.dirty_ratio=10
+      ${sysctlBin} vm.dirty_background_ratio=5
+      ${sysctlBin} vm.dirty_writeback_centisecs=500
+      ${sysctlBin} vm.dirty_expire_centisecs=1500
+      ${sysctlBin} vm.laptop_mode=0
+      ${sysctlBin} vm.swappiness=10
+      ${sysctlBin} vm.overcommit_memory=0
+      ${sysctlBin} vm.vfs_cache_pressure=50
+    else
+      # Powersave profile (battery)
+      ${sysctlBin} vm.dirty_ratio=3
+      ${sysctlBin} vm.dirty_background_ratio=1
+      ${sysctlBin} vm.dirty_writeback_centisecs=1500
+      ${sysctlBin} vm.dirty_expire_centisecs=3000
+      ${sysctlBin} vm.laptop_mode=5
+      ${sysctlBin} vm.swappiness=1
+      ${sysctlBin} vm.overcommit_memory=1
+      ${sysctlBin} vm.overcommit_ratio=50
+      ${sysctlBin} vm.vfs_cache_pressure=100
+    fi
+  '';
 in {
   options.hardware.powersave = {
     enable = lib.mkEnableOption "Powersave Configuration";
@@ -20,117 +66,76 @@ in {
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       powertop
-      power-profiles-daemon
     ];
 
-    services = {
-      tuned = {
-        enable = true;
-        # Keep this desktop profile static; the profile is selected explicitly
-        # through tuned-ppd rather than by TuneD's workload monitor.
-        settings.dynamic_tuning = false;
-        ppdSettings = {
-          main = {
-            default = "performance";
-            # With an 80% charge limit, the battery reports "Not charging"
-            # while AC is connected. tuned-ppd then flaps between AC and DC
-            # profiles instead of keeping the selected performance profile.
-            battery_detection = false;
-          };
-          profiles = {
-            power-saver = "framework-battery";
-            balanced = "balanced";
-            performance = "framework-performance";
-          };
-          battery = {
-            balanced = "balanced-battery";
-            # On battery, downgrade PPD "performance" from framework-performance
-            # to stock `balanced`. Can't map to framework-battery — that collides
-            # with profiles.power-saver and breaks tuned-ppd's injectivity
-            # requirement (config.py:138), which needs a reversible PPD<->TuneD
-            # mapping. framework-ultra-powersave would be injective but is
-            # deliberately kept off the PPD surface (see profiles comment).
-            performance = "balanced";
-          };
-        };
-        # Custom profile: throughput-performance + vm sysctl tuning previously
-        # applied by the power-sysctl oneshot service. Byte-based dirty
-        # thresholds (not ratios) so writeback limits stay fixed regardless of
-        # installed RAM.
-        profiles.framework-performance = {
-          main.include = "throughput-performance";
-          vm_tuning = {
-            type = "sysctl";
-            replace = true;
-            "vm.dirty_bytes" = 536870912; # 512MB, was dirty_ratio 10%
-            "vm.dirty_background_bytes" = 268435456; # 256MB, was dirty_background_ratio 5%
-            "vm.dirty_writeback_centisecs" = 500;
-            "vm.dirty_expire_centisecs" = 1500;
-            "vm.laptop_mode" = 0;
-            "vm.swappiness" = 1; # avoid proactive swap-out; 1 not 0 to keep OOM killer preferring swap on some kernels
-            "vm.overcommit_memory" = 0;
-            "vm.vfs_cache_pressure" = 25; # retain more dentry/inode cache for git/LSP indexing
-          };
-        };
-        # Aggressive battery profile: laptop-battery-powersave + PCI runtime PM,
-        # SMT disable, nmi_watchdog off, per-device power saving.
-        # Adapted from https://github.com/isning/nix-config
-        profiles.framework-battery = {
-          main.include = "laptop-battery-powersave";
-          cpu = {
-            energy_perf_bias = "power";
-            boost = "1";
-            force_latency = "None"; # allow deep C-states
-          };
-          sysfs = {
-            # PCI runtime PM — lets unused controllers enter D3cold
-            "/sys/bus/pci/devices/*/power/control" = "auto";
-            "/sys/bus/pci/devices/*/power/autosuspend_delay_ms" = "0";
-            "/sys/firmware/acpi/platform_profile" = "low-power";
-            "/sys/module/pcie_aspm/parameters/policy" = "powersave";
-            # Disable SMT on battery — fewer active threads, lower power
-            "/sys/devices/system/cpu/smt/control" = "off";
-          };
-          battery_sysctl = {
-            type = "sysctl";
-            replace = true;
-            "kernel.nmi_watchdog" = "0"; # reduce periodic wakeups
-            # Byte-based (not ratio) for the same reason as framework-performance:
-            # mixing ratio- and byte-based dirty knobs across profiles that tuned
-            # switches between dynamically risks one form being left at 0.
-            "vm.dirty_bytes" = "134217728"; # 128MB, was dirty_ratio 5%
-            "vm.dirty_background_bytes" = "33554432"; # 32MB, was dirty_background_ratio 2%
-          };
-          audio.timeout = "1";
-          disk.readahead = "256";
-          usb.autosuspend = "1";
-        };
-        # Ultra-powersave: stacks on framework-battery with turbo disabled and a
-        # hard clock ceiling. Opt-in only via `tuned-adm profile
-        # framework-ultra-powersave` (PPD exposes only power-saver/balanced/
-        # performance, so this is not reachable through powerprofilesctl).
-        # Expect single-thread sluggishness — emergency/flight use, not daily.
-        profiles.framework-ultra-powersave = {
-          main.include = "framework-battery";
-          cpu.boost = "0"; # framework-battery keeps boost=1; ultra kills turbo spikes
-          sysfs."/sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq" = "1800000"; # 1.8 GHz hard ceiling, above scaling_min_freq (1.1 GHz)
-        };
+    boot.kernel.sysctl = {
+      # Disable Watchdog, can lead to significant power savings
+      # See: https://wiki.archlinux.org/title/Power_management#Disabling_NMI_watchdog
+      "kernel.nmi_watchdog" = 0;
+    };
+
+    # Apply correct sysctl profile on boot
+    systemd.services.power-sysctl = {
+      description = "Apply power-aware sysctl values";
+      wantedBy = ["multi-user.target"];
+      after = ["sysinit.target"];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = powerSysctlScript;
       };
+    };
+
+    services = {
+      tuned.enable = false;
+      power-profiles-daemon.enable = false;
       thermald.enable = false;
-      # nixos-hardware's framework module enables TLP, which conflicts with tuned
-      # and overrides our governor/EPP/sysctl settings on battery.
+      # Disable TLP — nixos-hardware's framework module enables it, but it conflicts
+      # with auto-cpufreq and overrides our governor/EPP/sysctl settings on battery.
       tlp.enable = lib.mkForce false;
     };
-    # tuned-ppd ships WantedBy=graphical.target, but this host has no display
-    # manager so graphical.target never activates. Force multi-user.target so
-    # the PPD compat layer (ppdSettings default profile + battery_detection +
-    # the powerprofilesctl D-Bus name) is live at boot.
-    systemd.services.tuned-ppd.wantedBy = lib.mkForce ["multi-user.target"];
+    programs.auto-cpufreq = {
+      enable = true;
+      settings = {
+        battery = {
+          governor = "powersave";
+          turbo = "never";
+
+          # Maximize battery
+          energy_performance_preference = "power";
+          energy_perf_bias = "power";
+          scaling_min_freq = 400000;
+          scaling_max_freq = 1200000;
+        };
+        charger = {
+          governor = "performance";
+          energy_performance_preference = "performance";
+          turbo = "always";
+        };
+      };
+    };
 
     powerManagement = {
       enable = true;
       powertop.enable = false;
       cpuFreqGovernor = lib.mkDefault "performance";
+    };
+
+    # Allow passwordless auto-cpufreq --force for Waybar/Walker toggles
+    security.sudo.extraRules = [
+      {
+        users = ["not-matthias"];
+        commands = [
+          {
+            command = "/run/current-system/sw/bin/auto-cpufreq --force *";
+            options = ["NOPASSWD"];
+          }
+        ];
+      }
+    ];
+
+    programs.fish.shellAbbrs = {
+      "cpuf" = "sudo systemctl restart auto-cpufreq.service";
     };
   };
 }
