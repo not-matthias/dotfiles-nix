@@ -77,6 +77,7 @@
         herdr = {
           enable = true;
         };
+        pi-mono.enable = true;
         oh-my-pi = {
           enable = true;
           envFile = "/run/agenix/pi-mono-env";
