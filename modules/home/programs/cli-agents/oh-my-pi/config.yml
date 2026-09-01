@@ -71,8 +71,11 @@ task:
   prewalk: true
   agentPrewalk:
     task: google-antigravity/gemini-3.7-flash
-  agentAdvisor:
-    task: "on"
+
+  # Currently disabled as it increases the context usage quite a lot. I observed up to 50% of total token usage being
+  # used up by the advisor. Enable it only if not doing work with lots of subagents.
+  # agentAdvisor:
+  #   task: "on"
   agentModelOverrides:
     scout: google-antigravity/gemini-3.7-flash
     librarian: google-antigravity/gemini-3.7-flash
