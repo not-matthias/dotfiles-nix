@@ -11,12 +11,6 @@
 }: let
   inherit (pkgs) stdenv;
   ida-sdk = pkgs.callPackage ./ida-sdk-source.nix {};
-  z3-src = fetchFromGitHub {
-    owner = "Z3Prover";
-    repo = "z3";
-    rev = "745087e237e669d709ae35694728a0c479e572b3";
-    hash = "sha256-eyF3ELv81xEgh9Km0Ehwos87e4VJ82cfsp53RCAtuTo=";
-  };
 in
   stdenv.mkDerivation rec {
     pname = "ida-structor";
@@ -38,12 +32,22 @@ in
 
     buildInputs = [
       z3
+      z3.dev
+      z3.lib
     ];
+
+    postPatch = ''
+      substituteInPlace CMakeLists.txt \
+        --replace-fail 'add_library(z3_custom STATIC IMPORTED GLOBAL)' 'add_library(z3_custom UNKNOWN IMPORTED GLOBAL)' \
+        --replace-fail 'elseif(NOT Z3_CUSTOM_LIBRARY MATCHES' 'elseif(FALSE AND NOT Z3_CUSTOM_LIBRARY MATCHES'
+    '';
 
     cmakeFlags = [
       "-DCMAKE_BUILD_TYPE=Release"
       "-DIDA_SDK_DIR=${ida-sdk}"
-      "-DFETCHCONTENT_SOURCE_DIR_Z3=${z3-src}"
+      "-DZ3_USE_CUSTOM=ON"
+      "-DZ3_CUSTOM_INCLUDE_DIR=${z3.dev}/include"
+      "-DZ3_CUSTOM_LIBRARY=${z3.lib}/lib/libz3.so"
     ];
 
     preBuild = ''
