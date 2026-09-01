@@ -16,30 +16,30 @@
 in
   pkgs.stdenv.mkDerivation rec {
     pname = "ida-pro";
-    version = "9.3";
+    version = "9.4";
 
     src = pkgs.requireFile {
-      name = "ida-pro_93_x64linux.run";
+      name = "ida-pro_94_x64linux.run";
       url = "https://my.hex-rays.com/";
-      sha256 = "2ed43ae4bb84d74dcae6f0099210dfa8d61bfea4952f5f9a07a9aae16cb70f82";
+      sha256 = "eabb64c3c849d3858759558359e9cebcf17e2a91bcc60523533df8b84462aa54";
     };
 
     license = pkgs.requireFile {
       name = "idapro.hexlic";
       url = "https://my.hex-rays.com/";
-      sha256 = "b60465440c1f3c7dbc52e7771479b2ee06813a770f8892bbca61a46ab1388e1d";
+      sha256 = "fbcf5bdd56c9e8543220ac3fa71f64d6b5e406a35bab414fa568d497ff0b8d75";
     };
 
     patchedLibida = pkgs.requireFile {
       name = "libida.so";
       url = "https://my.hex-rays.com/";
-      sha256 = "7eb70f6dc2d579cfaab7e0f006f577fed35364e640394dc86e75d4f1a357325f";
+      sha256 = "d16dffb4515157c7b2baef8c68d6df4055c1ddc4c6bc3f9da4cbadcb53aa3430";
     };
 
     patchedLibida32 = pkgs.requireFile {
       name = "libida32.so";
       url = "https://my.hex-rays.com/";
-      sha256 = "17985fa1a0d1bf404e19bde0a50ac712feabba0bea05f0aa8c06b8c010302596";
+      sha256 = "b9695790c93a3ceaa282f6e1cdcbe58471ec532e304118803e7510a1c7e9c364";
     };
 
     nativeBuildInputs = with pkgs; [

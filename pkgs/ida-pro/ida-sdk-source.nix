@@ -6,13 +6,13 @@
 }:
 stdenv.mkDerivation rec {
   pname = "ida-sdk-source";
-  version = "9.3";
+  version = "9.4";
 
   src = fetchFromGitHub {
     owner = "HexRaysSA";
     repo = "ida-sdk";
-    rev = "v${version}";
-    hash = "sha256-saL163WsoYZ/tub+7Ds0pW4MWOI/GvOrOCTCE0tVauw=";
+    rev = "v9.4.0-sdk.1";
+    hash = "sha256-j6H6CDr26l0RNfbKOzUQBYGzKCQH0m7IX/L1CIjlxvQ=";
     fetchSubmodules = true;
   };
 
@@ -26,6 +26,7 @@ stdenv.mkDerivation rec {
     mkdir -p $out
 
     cp -r $src/* $out/
+    chmod -R u+w $out
 
     cd $out
 
@@ -33,6 +34,9 @@ stdenv.mkDerivation rec {
     ln -s src/lib lib
     ln -s src/cmake cmake
     ln -s src/module module
+
+    # Keep compatibility with external CMake projects using the pre-9.4 name.
+    ln -s x64_linux_64 $out/src/lib/x64_linux_gcc_64
 
     runHook postInstall
   '';
