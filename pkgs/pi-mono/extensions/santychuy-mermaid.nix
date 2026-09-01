@@ -5,8 +5,8 @@
   src = fetchFromGitHub {
     owner = "santychuy";
     repo = "pi-setup";
-    rev = "0a0692fffea3c83725e7cae7219cb0699fb2f8a4";
-    hash = "sha256-BPJxfRmmrgxS8k9melTmHRMzwlfHuyukSKxGyIUxifM=";
+    rev = "c4bd7b9d459bc510283b91202449abb4c2f7bfc6";
+    hash = "sha256-OH8LFW7PWwdi13Hd99vZTuOdsSeK2priaBo2AhDOOOM=";
   };
 in
   runCommand "santychuy-mermaid-src" {} ''

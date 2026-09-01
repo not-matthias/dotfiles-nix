@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "yinloo-ola";
   repo = "pi-workflow-kit";
-  rev = "1321354e84f2af8a196ca71a69279e529a70b88a";
-  hash = "sha256-fMVXbA+Ha8egXj2tzM/QqFWId4acs86Tjzb9fUlidXQ=";
+  rev = "a81a633aadb0c0c244b8b54dbf70a07cd6f3fa65";
+  hash = "sha256-4qFqs9XRjrOeQ25NRhU3MOPWUtCdgL+jnBciSPrThq0=";
 }

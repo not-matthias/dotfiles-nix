@@ -6,11 +6,11 @@
   nodejs_22,
 }: let
   pname = "tintinweb-pi-subagents";
-  version = "0.10.0";
+  version = "0.19.0";
 
   rawSrc = fetchzip {
     url = "https://registry.npmjs.org/@tintinweb/pi-subagents/-/pi-subagents-${version}.tgz";
-    hash = "sha256-O3JoFzLgO6baVCQsNbBH0tWHKqH8q8gSQq6ysRl2VBA=";
+    hash = "sha256-xqbnZ8IQ4dpc1Wmkmt96Nye3XoEm1ECI434nGMrXBXk=";
   };
 
   patchedSrc = runCommand "${pname}-src" {} ''
@@ -38,7 +38,7 @@ in
     npmDeps = fetchNpmDeps {
       name = "${pname}-${version}-npm-deps";
       src = patchedSrc;
-      hash = "sha256-VFKb4Y58NTGhveN3Dt5w72pICSUnMaKj8r83HrNqtCg=";
+      hash = "sha256-wc21VenZ1YKDQBAacWztNQVQZrIXcch+qEdkwLQathE=";
     };
 
     dontNpmBuild = true;

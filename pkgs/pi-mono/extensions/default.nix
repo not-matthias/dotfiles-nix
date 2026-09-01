@@ -68,7 +68,7 @@ in {
           "
           cp ${./tasks-package-lock.json} $out/package-lock.json
         '';
-        npmDepsHash = "sha256-uZ+XwurlSHHS9SXuqa7aL8Twtr1cNILiEoXpH+9SrNA=";
+        npmDepsHash = "sha256-i2qivh0IwDqlLDas0B7+ea2hvBgSTp96jZKLRfCKewM=";
       };
     };
     resources.extensions = ".";
@@ -103,11 +103,16 @@ in {
 
             const typesFile = process.env.out + "/src/shared/types.ts";
             const typesSource = fs.readFileSync(typesFile, "utf8");
-            const tempPattern = /export const TEMP_ROOT_DIR = path\.join\(os\.tmpdir\(\), `pi-subagents-[^`]+`\);/;
-            const tempNew = "export const TEMP_ROOT_DIR = path.join(os.homedir(), \".cache\", \"pi-subagents\", resolveTempScopeId());";
-            const patchedTypes = typesSource.replace(tempPattern, tempNew);
-            if (typesSource === patchedTypes) throw new Error("Failed to patch subagent temp directory");
-            fs.writeFileSync(typesFile, patchedTypes);
+            const start = typesSource.indexOf("const configuredTempRoot =");
+            const end = typesSource.indexOf("export const RESULTS_DIR", start);
+            if (start === -1 || end === -1) throw new Error("Failed to locate subagent temp directory");
+            const tempNew = [
+              "const configuredTempRoot = process.env.PI_SUBAGENTS_TEMP_ROOT?.trim();",
+              "export const TEMP_ROOT_DIR = configuredTempRoot",
+              "\t? path.resolve(configuredTempRoot)",
+              "\t: path.join(os.homedir(), \".cache\", \"pi-subagents\", resolveTempScopeId());",
+            ].join("\n") + "\n";
+            fs.writeFileSync(typesFile, typesSource.slice(0, start) + tempNew + typesSource.slice(end));
           '
 
           # The esbuild bundle (src/extension/index.js) resolves runtime-loaded
@@ -125,7 +130,7 @@ in {
           import "../runs/background/subagent-runner.ts";
           EOF
         '';
-        npmDepsHash = "sha256-7jsn9Ho0TZzQn9reOnIRyQ10qswEjJvgJH+y0JC9wdY=";
+        npmDepsHash = "sha256-YZpXAkW7nOx5SEIh86lpPMXSwkxF5cl2oDTucq9zsH0=";
       };
     };
     resources.extensions = ".";
@@ -154,7 +159,7 @@ in {
             fs.writeFileSync(file, lines.join("\n"));
           '
         '';
-        pnpmDepsHash = "sha256-XPC4IC5IZ3nU0JQPYPNlcaGxJbT8mNp+TeVZTXBP/84=";
+        pnpmDepsHash = "sha256-dUdN/1UjmzyCENKRWS42JXD8PngQcXriisK8pdpfLl8=";
       };
     };
     resources.extensions = ".";
@@ -204,12 +209,12 @@ in {
   #   resources.extensions = ".";
   # };
 
-  "pi-pane" = {
-    src = compileExtension {
-      src = call (import ./pi-pane.nix);
-    };
-    resources.extensions = ".";
-  };
+  # "pi-pane" = {
+  #   src = compileExtension {
+  #     src = call (import ./pi-pane.nix);
+  #   };
+  #   resources.extensions = ".";
+  # };
 
   # "pi-fff" = {
   #   src = withRuntimeDeps {
@@ -295,15 +300,15 @@ in {
     resources.extensions = ".";
   };
 
-  "pi-claude-bridge" = {
-    src = compileExtension {
-      src = withRuntimeDeps {
-        src = pkgs.callPackage ./pi-claude-bridge.nix {};
-        npmDepsHash = "sha256-vr/d3A9cnFNAhZHjJsn5RL3KJfXGVFglK39KVxWSMwQ=";
-      };
-    };
-    resources.extensions = ".";
-  };
+  # "pi-claude-bridge" = {
+  #   src = compileExtension {
+  #     src = withRuntimeDeps {
+  #       src = pkgs.callPackage ./pi-claude-bridge.nix {};
+  #       npmDepsHash = "sha256-MGx+F48b0UAfxQT0WPzlZBX3jZ/O5xamdv3gy/DzikU=";
+  #     };
+  #   };
+  #   resources.extensions = ".";
+  # };
 
   "pi-codex-fast" = {
     src = compileExtension {
@@ -326,49 +331,49 @@ in {
   #   resources.extensions = ".";
   # };
 
-  "pi-token-usage" = {
-    src = compileExtension {
-      src = withRuntimeDeps {
-        src = pkgs.runCommand "pi-token-usage-src" {} ''
-          mkdir -p $out
-          cd $out
-          tar xzf ${pkgs.fetchurl (import ./pi-token-usage.nix)} --strip-components=1
-          ${pkgs.nodejs_22}/bin/node -e "
-            const fs = require('fs');
-            const path = '$out/package.json';
-            const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
-            delete pkg.peerDependencies;
-            delete pkg.devDependencies;
-            fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
-          "
-          cp ${./pi-token-usage-package-lock.json} $out/package-lock.json
-        '';
-        npmDepsHash = "sha256-wUGcqe71RCNDuTDqrd11L1o4PGVkFRwwM4sZsWBG9jY=";
-      };
-    };
-    resources.extensions = ".";
-  };
+  # "pi-token-usage" = {
+  #   src = compileExtension {
+  #     src = withRuntimeDeps {
+  #       src = pkgs.runCommand "pi-token-usage-src" {} ''
+  #         mkdir -p $out
+  #         cd $out
+  #         tar xzf ${pkgs.fetchurl (import ./pi-token-usage.nix)} --strip-components=1
+  #         ${pkgs.nodejs_22}/bin/node -e "
+  #           const fs = require('fs');
+  #           const path = '$out/package.json';
+  #           const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+  #           delete pkg.peerDependencies;
+  #           delete pkg.devDependencies;
+  #           fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
+  #         "
+  #         cp ${./pi-token-usage-package-lock.json} $out/package-lock.json
+  #       '';
+  #       npmDepsHash = "sha256-wUGcqe71RCNDuTDqrd11L1o4PGVkFRwwM4sZsWBG9jY=";
+  #     };
+  #   };
+  #   resources.extensions = ".";
+  # };
 
-  "rtk-rewrite" = {
-    src = compileExtension {
-      src = pkgs.runCommand "pi-rtk-rewrite-src" {} ''
-        mkdir -p $out
-        cp -R ${call (import ./rtk-rewrite.nix)}/packages/rtk-rewrite/. $out/
-        chmod -R +w $out
-        ${pkgs.nodejs_22}/bin/node -e '
-          const fs = require("fs");
-          const file = process.env.out + "/src/rtk-rewrite.ts";
-          const src = fs.readFileSync(file, "utf8");
-          const old = "\t\tawait refreshAvailability(ctx, false);\n\t\tupdateStatus(ctx);\n\t\tif (rtkAvailable === false && ctx.hasUI) {\n\t\t\tctx.ui.notify(\"RTK rewrite extension loaded, but `rtk rewrite` is not available from PATH.\", \"warning\");\n\t\t}";
-          const replacement = "\t\trefreshAvailability(ctx, false).then(() => {\n\t\t\tupdateStatus(ctx);\n\t\t\tif (rtkAvailable === false && ctx.hasUI) {\n\t\t\t\tctx.ui.notify(\"RTK rewrite extension loaded, but `rtk rewrite` is not available from PATH.\", \"warning\");\n\t\t\t}\n\t\t});";
-          const patched = src.replace(old, replacement);
-          if (patched === src) throw new Error("Failed to patch rtk-rewrite session_start");
-          fs.writeFileSync(file, patched);
-        '
-      '';
-    };
-    resources.extensions = ".";
-  };
+  # "rtk-rewrite" = {
+  #   src = compileExtension {
+  #     src = pkgs.runCommand "pi-rtk-rewrite-src" {} ''
+  #       mkdir -p $out
+  #       cp -R ${call (import ./rtk-rewrite.nix)}/packages/rtk-rewrite/. $out/
+  #       chmod -R +w $out
+  #       ${pkgs.nodejs_22}/bin/node -e '
+  #         const fs = require("fs");
+  #         const file = process.env.out + "/src/rtk-rewrite.ts";
+  #         const src = fs.readFileSync(file, "utf8");
+  #         const old = "\t\tawait refreshAvailability(ctx, false);\n\t\tupdateStatus(ctx);\n\t\tif (rtkAvailable === false && ctx.hasUI) {\n\t\t\tctx.ui.notify(\"RTK rewrite extension loaded, but `rtk rewrite` is not available from PATH.\", \"warning\");\n\t\t}";
+  #         const replacement = "\t\trefreshAvailability(ctx, false).then(() => {\n\t\t\tupdateStatus(ctx);\n\t\t\tif (rtkAvailable === false && ctx.hasUI) {\n\t\t\t\tctx.ui.notify(\"RTK rewrite extension loaded, but `rtk rewrite` is not available from PATH.\", \"warning\");\n\t\t\t}\n\t\t});";
+  #         const patched = src.replace(old, replacement);
+  #         if (patched === src) throw new Error("Failed to patch rtk-rewrite session_start");
+  #         fs.writeFileSync(file, patched);
+  #       '
+  #     '';
+  #   };
+  #   resources.extensions = ".";
+  # };
 
   # "pi-better-messages-cache" = {
   #   src = withRuntimeDeps {

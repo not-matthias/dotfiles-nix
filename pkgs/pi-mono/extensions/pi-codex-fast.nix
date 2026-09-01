@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "calesennett";
   repo = "pi-codex-fast";
-  rev = "34804067eb7c2766e38ef70ba3f156c8b5293914";
-  hash = "sha256-buSD2OuCzrczbEPK+MbVJYB9CFr69lsUTZdCWxCcxMY=";
+  rev = "ea393bf8b1f55b318b88d2aeeca2298f21b7e90d";
+  hash = "sha256-zbLoCiH0iuWs6cSj4DqK0mwmWt2JpZVtnLJ7ztqPU30=";
 }

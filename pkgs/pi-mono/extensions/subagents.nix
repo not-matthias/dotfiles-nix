@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "nicobailon";
   repo = "pi-subagents";
-  rev = "051c5867a16d918103f8985aa886ba3671ce87b5";
-  hash = "sha256-c4H8n039ebgvR0k11DLlzy7cM6VtpsTuPvs9264+yDo=";
+  rev = "a9b17bb718686f3d6dc531e06c385fd8cf7b612c";
+  hash = "sha256-2pEz35W+NAd/KWyRkUBsS8rRywa5vqobtndCbqILv04=";
 }
