@@ -27,6 +27,7 @@
       kdePackages.gwenview
       file-roller
       ida-pro
+      radius2
       unstable.amdtop
     ];
     backhub = {
@@ -211,4 +212,3 @@
     efi.canTouchEfiVariables = true;
   };
 }
-      radius2

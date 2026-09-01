@@ -37,6 +37,7 @@ in {
 
       vmprotect
       ida-pro
+      radius2
       plannotator
       tldraw-offline
       # unstable.antigravity-fhs
@@ -532,4 +533,3 @@ in {
   # nix builds further down so the desktop stays responsive under heavy build load.
   systemd.services.nix-daemon.serviceConfig.Nice = 10;
 }
-      radius2
