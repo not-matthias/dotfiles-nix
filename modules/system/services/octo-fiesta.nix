@@ -1,3 +1,6 @@
+# Tidal authentication for a running container with a persistent /config mount:
+# docker exec -it octo-fiesta dotnet octo-fiesta.dll --tidal-login
+# The token is stored at /config/tidal-tokens.json.
 {
   config,
   lib,
