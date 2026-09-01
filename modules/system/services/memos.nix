@@ -14,7 +14,7 @@ in {
   config = lib.mkIf cfg.enable {
     virtualisation.oci-containers.containers = {
       memos = {
-        image = "docker.io/neosmemo/memos:stable";
+        image = "docker.io/neosmemo/memos:0.30.0";
         environment = {
           MEMOS_METRIC = "false";
         };

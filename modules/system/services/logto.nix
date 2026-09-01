@@ -68,7 +68,7 @@ in {
     # Logto OCI container
     virtualisation.oci-containers.containers = {
       "logto" = {
-        image = "docker.io/svhd/logto:1.37.1";
+        image = "docker.io/svhd/logto:1.43.0";
         environment = {
           "TRUST_PROXY_HEADER" = "1";
           "DB_URL" = "postgresql://logto:${cfg.dbPassword}@localhost:5432/logto";

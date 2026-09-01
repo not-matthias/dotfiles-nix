@@ -14,7 +14,7 @@ in {
     virtualisation.oci-containers.containers = {
       maloja = {
         # https://hub.docker.com/r/krateng/maloja/tags
-        image = "krateng/maloja:3.2.4";
+        image = "krateng/maloja:3.2.6";
         environment = {
           MALOJA_DATA_DIRECTORY = "/mljdata";
           MALOJA_FORCE_PASSWORD = "admin"; # FIXME: Change this

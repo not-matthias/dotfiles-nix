@@ -6,7 +6,7 @@
   ...
 }: let
   cfg = config.services.sure;
-  version = "0.7.2";
+  version = "0.7.4";
 
   # Hardcoded secrets for testing (TODO: migrate to agenix for production)
   secretsFile = pkgs.writeText "sure-secrets" ''
@@ -94,7 +94,7 @@ in {
       };
 
       db.service = {
-        image = "postgres:16";
+        image = "postgres:16.15";
         restart = "unless-stopped";
         volumes = [
           "/var/lib/sure/postgres:/var/lib/postgresql/data:rw"

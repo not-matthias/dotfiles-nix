@@ -14,7 +14,7 @@ in {
     };
     version = lib.mkOption {
       type = lib.types.str;
-      default = "v0.2.4";
+      default = "v0.8.1";
     };
   };
 

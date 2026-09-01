@@ -21,7 +21,7 @@ in {
 
     version = lib.mkOption {
       type = lib.types.str;
-      default = "v1.0.2";
+      default = "v1.1.3";
       description = "Docker image version tag for Ziit";
     };
   };

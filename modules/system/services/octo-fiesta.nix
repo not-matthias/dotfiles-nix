@@ -16,7 +16,7 @@ in {
 
     version = lib.mkOption {
       type = lib.types.str;
-      default = "v0.8";
+      default = "v0.10";
       description = "Docker image tag";
     };
   };

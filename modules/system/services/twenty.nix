@@ -23,7 +23,7 @@ in {
     enable = lib.mkEnableOption "Twenty CRM service";
     version = lib.mkOption {
       type = lib.types.str;
-      default = "v1.5";
+      default = "v2.37.0";
     };
   };
 
@@ -73,7 +73,7 @@ in {
       containers = {
         twenty_db = {
           autoStart = true;
-          image = "postgres:16-alpine";
+          image = "postgres:16.15-alpine";
           volumes = ["${dataDir}/db:/var/lib/postgresql/data"];
           environment = {
             POSTGRES_USER = "postgres";

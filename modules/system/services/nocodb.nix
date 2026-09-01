@@ -13,7 +13,7 @@ in {
   config = lib.mkIf cfg.enable {
     virtualisation.oci-containers.containers = {
       nocodb = {
-        image = "nocodb/nocodb:0.301.3";
+        image = "nocodb/nocodb:2026.08.1";
         ports = ["8080:8080"];
         volumes = ["/var/lib/nocodb:/usr/app/data"];
       };
