@@ -46,6 +46,9 @@
       ghidra-cli = super.callPackage ../../pkgs/ghidra-cli.nix {};
     })
     (_self: super: {
+      radius2 = super.callPackage ../../pkgs/radius2.nix {};
+    })
+    (_self: super: {
       soulsync = super.callPackage ../../pkgs/soulsync.nix {};
     })
     (_self: super: {

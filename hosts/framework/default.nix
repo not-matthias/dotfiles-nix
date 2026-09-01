@@ -532,3 +532,4 @@ in {
   # nix builds further down so the desktop stays responsive under heavy build load.
   systemd.services.nix-daemon.serviceConfig.Nice = 10;
 }
+      radius2
