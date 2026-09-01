@@ -26,11 +26,16 @@ in {
     services = {
       tuned = {
         enable = true;
-        settings.dynamic_tuning = true;
+        # Keep this desktop profile static; the profile is selected explicitly
+        # through tuned-ppd rather than by TuneD's workload monitor.
+        settings.dynamic_tuning = false;
         ppdSettings = {
           main = {
             default = "performance";
-            battery_detection = true;
+            # With an 80% charge limit, the battery reports "Not charging"
+            # while AC is connected. tuned-ppd then flaps between AC and DC
+            # profiles instead of keeping the selected performance profile.
+            battery_detection = false;
           };
           profiles = {
             power-saver = "framework-battery";
