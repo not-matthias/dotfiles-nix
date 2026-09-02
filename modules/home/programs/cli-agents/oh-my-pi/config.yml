@@ -21,7 +21,7 @@ display:
   cacheMissMarker: true
 
 memory:
-  backend: mnemopi
+  backend: sharpshooter
 mnemopi:
   enhancedRecall: true
   polyphonicRecall: true
