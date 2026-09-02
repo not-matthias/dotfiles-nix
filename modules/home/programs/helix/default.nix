@@ -259,6 +259,8 @@ in {
         substituteInPlace $out/input.scm \
           --replace-fail '(string (key-event-char event))' '(list->string (list (key-event-char event)))'
       '';
+      xdg.dataFile."steel/cogs/helix-file-watcher".source = "${pkgs.helix-file-watcher}/share/steel/cogs/helix-file-watcher";
+      xdg.dataFile."steel/native/libhelix_file_watcher.so".source = "${pkgs.helix-file-watcher}/lib/libhelix_file_watcher.so";
       xdg.configFile."helix/vim-hx-additions".source = ./vim-hx-additions;
       xdg.configFile."helix/theme-picker".source = ./theme-picker;
       xdg.configFile."helix/init.scm".source = ./init.scm;

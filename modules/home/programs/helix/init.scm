@@ -14,4 +14,6 @@
 ;; traverses the entire NixOS closure and hangs the editor on space+e.
 ;; forest-configure! REPLACES the ignore set, so list every default too.
 (forest-configure! 'left #:ignore (list ".git" "target" ".direnv" ".devenv" "node_modules" "__pycache__" ".hg" "result"))
+(require "helix-file-watcher/file-watcher.scm")
+(spawn-watcher 2000)
 (require "theme-picker/theme-picker.scm")

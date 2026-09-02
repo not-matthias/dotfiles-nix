@@ -124,5 +124,8 @@
           )
         )) {};
     })
+    (_self: super: {
+      helix-file-watcher = super.callPackage ../../pkgs/helix-file-watcher.nix {};
+    })
   ];
 }
