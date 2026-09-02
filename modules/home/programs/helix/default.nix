@@ -160,6 +160,7 @@ in {
             space.f = "file_picker";
             space.h = ":toggle file-picker.hidden";
             space.e = ":forest-open";
+            space.t = ":theme-picker-open";
             space.y = [
               ":sh rm -f /tmp/yazi-chooser"
               ":insert-output yazi '%{buffer_name}' --chooser-file=/tmp/yazi-chooser"
@@ -252,7 +253,14 @@ in {
       '';
       xdg.configFile."helix/notify".source = flakes.notifyhx;
       xdg.configFile."helix/glyph".source = flakes.glyphhx;
+      xdg.configFile."helix/microscope".source = pkgs.runCommand "microscope-hx-patched" {} ''
+        cp -r ${flakes.microscopehx} $out
+        chmod -R u+w $out
+        substituteInPlace $out/input.scm \
+          --replace-fail '(string (key-event-char event))' '(list->string (list (key-event-char event)))'
+      '';
       xdg.configFile."helix/vim-hx-additions".source = ./vim-hx-additions;
+      xdg.configFile."helix/theme-picker".source = ./theme-picker;
       xdg.configFile."helix/init.scm".source = ./init.scm;
 
       # The nixpkgs helix-runtime may ship grammars and queries from mismatched

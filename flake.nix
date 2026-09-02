@@ -115,6 +115,10 @@
       url = "github:Ra77a3l3-jar/glyph.hx";
       flake = false;
     };
+    microscopehx = {
+      url = "github:chuwy/microscope.hx/7fe4e60f0c4fb715118591c71ed0a82b111f07a8";
+      flake = false;
+    };
     oh-my-pi = {
       url = "github:not-matthias/oh-my-pi/perf/startup-optimizations";
     };

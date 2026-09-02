@@ -943,6 +943,23 @@
         "type": "github"
       }
     },
+    "microscopehx": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774692117,
+        "narHash": "sha256-j1sNxa19bbskizNSzTYDCSXImfOkXMOEdb7hGg5tuxQ=",
+        "owner": "chuwy",
+        "repo": "microscope.hx",
+        "rev": "7fe4e60f0c4fb715118591c71ed0a82b111f07a8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "chuwy",
+        "repo": "microscope.hx",
+        "rev": "7fe4e60f0c4fb715118591c71ed0a82b111f07a8",
+        "type": "github"
+      }
+    },
     "niri": {
       "inputs": {
         "niri-stable": "niri-stable",
@@ -1528,6 +1545,7 @@
         "home-manager": "home-manager_2",
         "hunk": "hunk",
         "hunk-commit-log": "hunk-commit-log",
+        "microscopehx": "microscopehx",
         "niri": "niri",
         "nix-webapps": "nix-webapps",
         "nixos-hardware": "nixos-hardware",
