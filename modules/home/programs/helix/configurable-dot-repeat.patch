@@ -1,0 +1,15 @@
+diff --git a/helix-term/src/ui/editor.rs b/helix-term/src/ui/editor.rs
+index 87f2a582..eed9270e 100644
+--- a/helix-term/src/ui/editor.rs
++++ b/helix-term/src/ui/editor.rs
+@@ -1026,7 +1026,9 @@ impl EditorView {
+                 cxt.editor.count = NonZeroUsize::new(i);
+             }
+             // special handling for repeat operator
+-            (key!('.'), _) if self.keymaps.pending().is_empty() => {
++            (key!('.'), _)
++                if self.keymaps.pending().is_empty() && !self.keymaps.contains_key(mode, event) =>
++            {
+                 for _ in 0..cxt.editor.count.map_or(1, NonZeroUsize::into) {
+                     // first execute whatever put us into insert mode
+                     self.last_insert.0.execute(cxt);

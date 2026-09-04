@@ -52,6 +52,7 @@ in {
               (old.postPatch or "")
               + ''
                 patch -p1 < ${./multi-char-auto-pairs.patch}
+                patch -p1 < ${./configurable-dot-repeat.patch}
               '';
           });
         };
