@@ -99,6 +99,13 @@ in {
               command = "harper-ls";
               args = ["--stdio"];
             };
+            # Nix's clang is a wrapper script that injects the glibc header
+            # paths; clangd uses its own built-in driver logic, so without
+            # querying the real driver it finds no system headers at all.
+            "clangd" = {
+              command = "clangd";
+              args = ["--query-driver=/nix/store/*/bin/*"];
+            };
             "nil" = {
               config.nil.nix.flake.autoArchive = true;
             };
