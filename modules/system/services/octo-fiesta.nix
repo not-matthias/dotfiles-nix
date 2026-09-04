@@ -16,7 +16,7 @@ in {
 
     version = lib.mkOption {
       type = lib.types.str;
-      default = "v0.10";
+      default = "dev";
       description = "Docker image tag";
     };
   };
@@ -32,21 +32,30 @@ in {
     virtualisation.oci-containers.containers.octo-fiesta = {
       image = "ghcr.io/v1ck3s/octo-fiesta:${cfg.version}";
       ports = ["${toString port}:8080"];
-      volumes = ["${navidromeCfg.musicFolder}/octo-fiesta:/app/downloads"];
+      volumes = [
+        "${navidromeCfg.musicFolder}/octo-fiesta:/app/downloads"
+        "/var/lib/octo-fiesta:/config"
+      ];
       environment = {
         Library__DownloadPath = "/app/downloads";
 
         Subsonic__Url = "http://host.docker.internal:${toString navidromeCfg.settings.Port}";
-        Subsonic__MusicService = "SquidWTF";
+        Subsonic__MusicService = "Tidal";
         Subsonic__StorageMode = "Permanent";
         Subsonic__EnableExternalPlaylists = "true";
         Subsonic__FolderTemplate = "{artist}/{album}/{track} - {title}";
 
-        SquidWTF__Source = "Tidal";
-        SquidWTF__Quality = "HI_RES_LOSSLESS";
+        Tidal__TokenStore = "/config/tidal-tokens.json";
+        Tidal__Quality = "HI_RES_LOSSLESS";
       };
       extraOptions = ["--add-host=host.docker.internal:host-gateway"];
     };
+
+    systemd.tmpfiles.rules = [
+      "d /var/lib/octo-fiesta 0700 root root -"
+    ];
+
+    services.restic.paths = ["/var/lib/octo-fiesta"];
 
     # Inherit mount dependency from Navidrome (they share the same music directory)
     systemd.services.docker-octo-fiesta = lib.mkIf (navidromeCfg.requiredMount != null) {
