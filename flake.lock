@@ -1556,6 +1556,7 @@
         "nurpkgs": "nurpkgs",
         "oh-my-pi": "oh-my-pi",
         "spicetify-nix": "spicetify-nix",
+        "steel-pty": "steel-pty",
         "stylix": "stylix",
         "timeguard": "timeguard",
         "vicinae": "vicinae",
@@ -1682,6 +1683,23 @@
       "original": {
         "owner": "Gerg-L",
         "repo": "spicetify-nix",
+        "type": "github"
+      }
+    },
+    "steel-pty": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771782331,
+        "narHash": "sha256-7teIMyLmfPkNEhTFlzmtKaewwwDrlcgmx06prUqXz1g=",
+        "owner": "mattwparas",
+        "repo": "steel-pty",
+        "rev": "4d41b6988107b50777d87e587fba7b6b272f069e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mattwparas",
+        "repo": "steel-pty",
+        "rev": "4d41b6988107b50777d87e587fba7b6b272f069e",
         "type": "github"
       }
     },

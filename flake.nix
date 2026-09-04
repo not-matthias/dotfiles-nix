@@ -95,6 +95,10 @@
       url = "github:mattwparas/vim.hx";
       flake = false;
     };
+    steel-pty = {
+      url = "github:mattwparas/steel-pty/4d41b6988107b50777d87e587fba7b6b272f069e";
+      flake = false;
+    };
     wakatimehx = {
       url = "github:Xerxes-2/wakatime.hx";
       flake = false;

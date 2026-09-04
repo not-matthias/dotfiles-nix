@@ -1,0 +1,380 @@
+--- a/term.scm
++++ b/term.scm
+@@ -290,7 +290,7 @@
+   ;; Update the box to now show this
+   (set-box! (Terminal-focused? term) #t)
+ 
+-  (set-editor-clip-right! *default-terminal-cols*)
++  (set-editor-clip-right! 0)
+ 
+   ;; Mark the terminal as active, only if it isn't active already.
+   ;; We don't want to push this component again if it already is
+@@ -315,6 +315,7 @@
+ 
+ (define stashed-area #f)
+ (define terminal-area #f)
++(define *terminal-height* #f)
+ 
+ ;; Window size calculation
+ (struct FractionAsWidth (fraction))
+@@ -330,6 +331,7 @@
+ (provide set-terminal-fraction)
+ (define (set-terminal-fraction fract)
+   (set! stashed-area #f)
++  (set! *terminal-height* #f)
+   (set! *terminal-fraction* fract))
+ 
+ ;;@doc
+@@ -338,6 +340,7 @@
+ (provide set-terminal-width-window)
+ (define (set-terminal-width-window numerator denominator)
+   (set! stashed-area #f)
++  (set! *terminal-height* #f)
+   (set! *terminal-fraction* (/ (string->int numerator) (string->int denominator))))
+ 
+ ;; Do as a percentage of the terminal area, rather
+@@ -346,18 +349,22 @@
+   (if (and terminal-area (equal? stashed-area rect))
+       terminal-area
+       (begin
++        (set! global-max-height (area-height rect))
+         (set! stashed-area rect)
+ 
+-        ;; Just drop the width by 4, always use a quarter of the screen
+-        (set! *default-terminal-cols* (round (* *terminal-fraction* (area-width rect))))
++        ;; Keep the dragged height stable while the editor is resized.
++        (when (not *terminal-height*)
++          (set! *terminal-height* (round (* *terminal-fraction* (area-height rect)))))
++        (set! *terminal-height* (min *terminal-height* (area-height rect)))
++        (set! *default-terminal-rows* *terminal-height*)
+ 
+-        (set-editor-clip-right! *default-terminal-cols*)
+-        (term-resize-impl (- (area-height rect) 3) (- *default-terminal-cols* 5)) ;; Shave one off
++        (set-editor-clip-right! 0)
++        (term-resize-impl (- *default-terminal-rows* 2) (- (area-width rect) 2))
+         (set! terminal-area
+-              (area (+ (area-x rect) (- (area-width rect) *default-terminal-cols*))
+-                    (area-y rect)
+-                    *default-terminal-cols*
+-                    (- (area-height rect) 1)))
++              (area (area-x rect)
++                    (+ (area-y rect) (- (area-height rect) *default-terminal-rows*))
++                    (area-width rect)
++                    *default-terminal-rows*))
+         terminal-area)))
+ 
+ ; (define (alternative-calculate-block-area state rect)
+@@ -530,90 +537,57 @@
+ (define on-click-start (mutable-vector 0 0))
+ (define on-click-end (mutable-vector 0 0))
+ 
++(define *resizing-terminal* #f)
++
++(define (resize-terminal-height! state row)
++  (define current-height *terminal-height*)
++  (define delta-y (- row (mut-vector-ref on-click-start 1)))
++  (define min-height (+ *min-term-height* 2))
++  (define next-height (max min-height (min (- current-height delta-y) global-max-height)))
++
++  (if (= current-height next-height)
++      event-result/consume-without-rerender
++      (begin
++        (set! *terminal-height* next-height)
++        (set! *terminal-fraction* (/ next-height global-max-height))
++        (set! stashed-area #f)
++        (vector-set! on-click-start 1 row)
++        event-result/consume)))
++
+ (define (handle-mouse-event state event *vte*)
++  (define terminal-area (unbox (Terminal-area state)))
++  (define inside? (mouse-event-within-area? event terminal-area))
++  (define resize-handle? (<= (abs (- (event-mouse-row event) (area-y terminal-area))) 1))
+ 
+   (cond
+-    [(mouse-event-within-area? event (unbox (Terminal-area state)))
+-
++    [(or inside? (eq? state *resizing-terminal*))
+      (case (event-mouse-kind event)
+-       ;; Mouse event down - any mouse button
+        [(0 1 2)
+-
+-        ;; Update the position to compare against
+-        (vector-set! on-click-start 0 (event-mouse-col event))
+-        (vector-set! on-click-start 1 (event-mouse-row event))
+-
++        (set-box! (Terminal-focused? state) #t)
++        (when resize-handle?
++          (set! *resizing-terminal* state)
++          (vector-set! on-click-start 1 (event-mouse-row event)))
+         event-result/consume]
+-
+        [(3 4 5)
+-
+-        (set-box! (Terminal-dragged? state) #f)
+-
++        (when (eq? state *resizing-terminal*)
++          (set! *resizing-terminal* #f))
+         event-result/consume]
+-
+        [(6 7 8)
+-        ;; TODO: Implement mouse smoothing, or at least don't necessarily re-render on _every_ single drag?
+-        ;; Maybe move multiple pixels at a time?
+-        (define delta-x (- (event-mouse-col event) (mut-vector-ref on-click-start 0)))
+-        (define delta-y (- (event-mouse-row event) (mut-vector-ref on-click-start 1)))
+-        (define left-min (round (/ (area-width (unbox (Terminal-area state))) 2)))
+-        (define x-term (unbox (Terminal-x-term state)))
+-        (define y-term (unbox (Terminal-y-term state)))
+-
+-        ;; Only drag when the delta is large enough to warrant it
+-        ;; TODO: This should be a ratio of the overall screen space
+-        (if (or (> (abs delta-x) 3) (> (abs delta-y) 3))
+-
+-            (begin
+-
+-              (vector-set! on-click-start 0 (event-mouse-col event))
+-              (vector-set! on-click-start 1 (event-mouse-row event))
+-
+-              (set-box! (Terminal-dragged? state) #t)
+-
+-              (when x-term
+-                (when (< (+ x-term delta-x left-min) global-max-width)
+-                  (set-box! (Terminal-x-term state) (max (+ x-term delta-x) (round left-min)))))
+-              (when y-term
+-                (when (< (+ y-term delta-y (area-height (unbox (Terminal-area state))))
+-                         global-max-height)
+-                  (set-box! (Terminal-y-term state) (max (+ y-term delta-y) 0))))
+-
+-              event-result/consume)
+-
++        (if (eq? state *resizing-terminal*)
++            (resize-terminal-height! state (event-mouse-row event))
+             event-result/consume-without-rerender)]
+-       ; [(3) (error "todo")]
+-       ; [(4) (error "todo")]
+-       ; [(5) (error "todo")]
+-       ; [(6) (error "todo")]
+-       ; [(7) (error "todo")]
+-       ; [(8) (error "todo")]
+-       ; [(9) (error "todo")]
+-       ;; Scroll down
+        [(10)
+-
+         (vte/scroll-down *vte*)
+-
+         event-result/consume]
+-       ;; Scroll up
+-       ; (pty-process-send-command *pty-process* "\u001e")
+-       ; event-result/consume
+        [(11)
+-
+         (vte/scroll-up *vte*)
+-
+         event-result/consume]
+-       ; [(12) (error "todo")]
+-       ; [(13) (error "todo")]
+-       ; (error "todo")
+        [else event-result/ignore])]
+-
+     [else
+-
+      (set-box! (Terminal-focused? state) #f)
+-
+      event-result/ignore]))
+ 
++(define ctrl-h (string->key-event "C-h"))
+ (define ctrl-l (string->key-event "C-l"))
+ 
+ ;; Event handler for the terminal.
+@@ -621,104 +595,94 @@
+ ;; and the mouse events down to the underlying terminal
+ ;; instance. Care is taken to avoid extra allocations
+ ;; in order to make this as smooth as possible.
++(define *pending-vim-escape-terminal* #f)
++
++(define (unfocus-terminal state)
++  (set! *pending-vim-escape-terminal* #f)
++  (set-box! (Terminal-focused? state) #f))
++
++(define (flush-pending-vim-escape state pty-process)
++  (when (eq? state *pending-vim-escape-terminal*)
++    (set! *pending-vim-escape-terminal* #f)
++    (when (unbox (Terminal-focused? state))
++      (pty-process-send-command-char pty-process #\j))))
++
++(define (queue-vim-escape state pty-process)
++  (set! *pending-vim-escape-terminal* state)
++  (enqueue-thread-local-callback-with-delay
++   200
++   (lambda ()
++     (flush-pending-vim-escape state pty-process))))
++
+ (define (terminal-event-handler state event)
+   (define char (key-event-char event))
+   (define *pty-process* (Terminal-*pty-process* state))
+   (define *vte* (Terminal-*vte* state))
+-  (define now (instant/now))
+ 
+   (cond
+-    ;; If the terminal is focused, we are going to
+-    ;; possibly capture input
+     [(unbox (Terminal-focused? state))
+-
+      (cond
+-
+-       ;; TODO: Add custom key bindings for this
+-       [(and char (equal? (event->key-event event) ctrl-l))
+-        (pty-process-send-command *pty-process* "clear\n")
++       [(and char
++             (equal? char #\k)
++             (eq? state *pending-vim-escape-terminal*))
++        (unfocus-terminal state)
+         event-result/consume]
+-
+-       ;; Backspace
+-       [(key-event-backspace? event)
+-
+-        (pty-process-send-command *pty-process* "\x7f;")
+-        event-result/consume]
+-
+-       ;; Close with ctrl-esc
+-       [(key-event-escape? event)
+-        (if (equal? (key-event-modifier event) key-modifier-ctrl)
+-            (begin
+-
+-              (set-box! (Terminal-active state) #f)
+-              (set-editor-clip-right! 0)
+-
+-              event-result/close)
+-            (begin
+-              (pty-process-send-command *pty-process* "\x1b;")
+-              event-result/consume))]
+-
+-       [(equal? char #\c)
+-
+-        (if (equal? (key-event-modifier event) key-modifier-ctrl)
+-            (begin
+-              (pty-process-send-command *pty-process* "\x03;")
+-              event-result/consume)
+-
+-            (begin
+-
+-              (pty-process-send-command-char *pty-process* char)
+-              event-result/consume))]
+-
+-       [(key-event-enter? event)
+-        (pty-process-send-command *pty-process* "\r")
+-        event-result/consume]
+-
+-       [(key-event-tab? event)
+-
+-        (if (equal? (key-event-modifier event) key-modifier-shift)
+-            (begin
+-              (set-box! (Terminal-focused? state) #f)
+-              event-result/consume)
+-
+-            (begin
+-              (pty-process-send-command *pty-process* "\x09;")
+-              event-result/consume))]
+-
+-       ;; TODO: Handle modifiers here
+-       [(key-event-up? event)
+-        (pty-process-send-command *pty-process* "\x1b;[A")
+-        event-result/consume]
+-       [(key-event-down? event)
+-        (pty-process-send-command *pty-process* "\x1b;[B")
+-        event-result/consume]
+-       [(key-event-right? event)
+-        (pty-process-send-command *pty-process* "\x1b;[C")
+-        event-result/consume]
+-       [(key-event-left? event)
+-        (pty-process-send-command *pty-process* "\x1b;[D")
+-        event-result/consume]
+-
+-       [char
+-        (pty-process-send-command-char *pty-process* char)
+-        event-result/consume]
+-
+-       [(mouse-event? event) (handle-mouse-event state event *vte*)]
+-       [else event-result/ignore])]
+-
+-    [(mouse-event? event)
+-     (cond
+-       [(mouse-event-within-area? event (unbox (Terminal-area state)))
+-        (case (event-mouse-kind event)
+-          ;; Mouse event down - any mouse button
+-          [(0 1 2)
+-           (set-box! (Terminal-focused? state) #t)
++       [else
++        (flush-pending-vim-escape state *pty-process*)
++        (cond
++          [(and char (equal? (event->key-event event) ctrl-h))
++           (unfocus-terminal state)
++           event-result/consume]
++          [(and char (equal? (event->key-event event) ctrl-l))
++           (pty-process-send-command *pty-process* "clear\n")
++           event-result/consume]
++          [(key-event-backspace? event)
++           (pty-process-send-command *pty-process* "\x7f;")
++           event-result/consume]
++          [(key-event-escape? event)
++           (unfocus-terminal state)
++           event-result/consume]
++          [(equal? char #\c)
++           (if (equal? (key-event-modifier event) key-modifier-ctrl)
++               (begin
++                 (unfocus-terminal state)
++                 event-result/consume)
++               (begin
++                 (pty-process-send-command-char *pty-process* char)
++                 event-result/consume))]
++          [(key-event-enter? event)
++           (pty-process-send-command *pty-process* "\r")
++           event-result/consume]
++          [(key-event-tab? event)
++           (if (equal? (key-event-modifier event) key-modifier-shift)
++               (begin
++                 (unfocus-terminal state)
++                 event-result/consume)
++               (begin
++                 (pty-process-send-command *pty-process* "\x09;")
++                 event-result/consume))]
++          [(key-event-up? event)
++           (pty-process-send-command *pty-process* "\x1b;[A")
++           event-result/consume]
++          [(key-event-down? event)
++           (pty-process-send-command *pty-process* "\x1b;[B")
++           event-result/consume]
++          [(key-event-right? event)
++           (pty-process-send-command *pty-process* "\x1b;[C")
++           event-result/consume]
++          [(key-event-left? event)
++           (pty-process-send-command *pty-process* "\x1b;[D")
++           event-result/consume]
++          [(equal? char #\j)
++           (queue-vim-escape state *pty-process*)
++           event-result/consume]
++          [char
++           (pty-process-send-command-char *pty-process* char)
+            event-result/consume]
+-          [else event-result/ignore])]
+-       [else event-result/ignore])]
+-    ;; Close the terminal popup if it is open
++          [(mouse-event? event) (handle-mouse-event state event *vte*)]
++          [else event-result/ignore])])]
++    [(mouse-event? event) (handle-mouse-event state event *vte*)]
+     [(unbox (Terminal-kill-switch state)) event-result/close]
+-
+     [else event-result/ignore]))
+ 
+ ;; Make one global registry, that when creating a new terminal,
+@@ -855,9 +819,9 @@
+ ;; Hides the terminal
+ (define (hide-terminal)
+   (define cursor (TerminalRegistry-cursor *terminal-registry*))
+-  (define term (list-ref (TerminalRegistry-terminals *terminal-registry*) cursor))
+ 
+   (when cursor
++    (define term (list-ref (TerminalRegistry-terminals *terminal-registry*) cursor))
+     (set-box! (Terminal-focused? term) #f)
+     (set-box! (Terminal-active term) #f)
+     (set-editor-clip-right! 0)

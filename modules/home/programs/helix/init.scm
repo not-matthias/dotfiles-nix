@@ -1,4 +1,6 @@
 (require "plugins/vim-hx/init.scm")
+(require "steel-pty/term.scm")
+(set-default-shell! "fish")
 (set-vim-keybindings!)
 (require "vim-hx-additions/paragraph-delete.scm")
 (set-paragraph-delete-keybindings!)

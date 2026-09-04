@@ -15,6 +15,26 @@
     if catppuccinVariant == "mocha"
     then "dark"
     else "light";
+  steelPtySource = pkgs.applyPatches {
+    name = "steel-pty-source";
+    src = flakes.steel-pty;
+    patches = [./steel-pty-bottom-panel.patch];
+  };
+  steelPty = pkgs.rustPlatform.buildRustPackage rec {
+    pname = "steel-pty";
+    version = "0.1.0-unstable-2026-08-28";
+    src = steelPtySource;
+    cargoHash = "sha256-vUlSStpLgcOgpCgqWlcNFgDxemIoP0Hak3BG+iR6agc=";
+    postPatch = ''
+      ln -s termwiz-0.24.0 "$cargoDepsCopy/source-git-0/termwiz"
+    '';
+
+    installPhase = ''
+      runHook preInstall
+      install -Dm755 target/${pkgs.stdenv.hostPlatform.rust.rustcTarget}/release/libsteel_pty.so $out/lib/libsteel_pty.so
+      runHook postInstall
+    '';
+  };
 in {
   config =
     (lib.optionalAttrs (options ? stylix) {
@@ -159,6 +179,7 @@ in {
           keys.normal = {
             space.f = "file_picker";
             space.h = ":toggle file-picker.hidden";
+            space.H = ":open-term";
             space.e = ":forest-open";
             space.t = ":theme-picker-open";
             space.y = [
@@ -262,6 +283,8 @@ in {
       xdg.dataFile."steel/cogs/helix-file-watcher".source = "${pkgs.helix-file-watcher}/share/steel/cogs/helix-file-watcher";
       xdg.dataFile."steel/native/libhelix_file_watcher.so".source = "${pkgs.helix-file-watcher}/lib/libhelix_file_watcher.so";
       xdg.configFile."helix/vim-hx-additions".source = ./vim-hx-additions;
+      xdg.dataFile."steel/cogs/steel-pty".source = steelPtySource;
+      xdg.dataFile."steel/native/libsteel_pty.so".source = "${steelPty}/lib/libsteel_pty.so";
       xdg.configFile."helix/theme-picker".source = ./theme-picker;
       xdg.configFile."helix/init.scm".source = ./init.scm;
 
