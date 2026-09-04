@@ -55,9 +55,9 @@ modelRoles:
   default: openai-codex/gpt-5.6-luna:high
   # Antigravity sends thinkingLevel: MINIMAL for title generation, which 400s.
   tiny: anthropic/claude-haiku-4-5
-  commit: google-antigravity/gemini-3.7-flash
+  commit: google-antigravity/gemini-3.8-flash
   task: openai-codex/gpt-5.6-sol:high
-  smol: google-antigravity/gemini-3.7-flash
+  smol: google-antigravity/gemini-3.8-flash
   advisor: openai-codex/gpt-5.6-terra:high
   plan: openai-codex/gpt-5.6-sol:high
   slow: openai-codex/gpt-5.6-sol:xhigh
@@ -70,15 +70,15 @@ task:
   maxEffort: xhigh
   prewalk: true
   agentPrewalk:
-    task: google-antigravity/gemini-3.7-flash
+    task: google-antigravity/gemini-3.8-flash
 
   # Currently disabled as it increases the context usage quite a lot. I observed up to 50% of total token usage being
   # used up by the advisor. Enable it only if not doing work with lots of subagents.
   # agentAdvisor:
   #   task: "on"
   agentModelOverrides:
-    scout: google-antigravity/gemini-3.7-flash
-    librarian: google-antigravity/gemini-3.7-flash
+    scout: google-antigravity/gemini-3.8-flash
+    librarian: google-antigravity/gemini-3.8-flash
     solver: openai-codex/gpt-5.6-sol:high
     reviewer: openai-codex/gpt-5.6-terra:high
     security-reviewer: openai-codex/gpt-5.6-terra:high
@@ -96,16 +96,16 @@ providers:
 retry:
   usageAwareFallback: false
   fallbackChains:
-    google-antigravity/gemini-3.7-flash:
+    google-antigravity/gemini-3.8-flash:
       - openai-codex/gpt-5.6-luna
       - anthropic/claude-sonnet-5
     openai-codex/gpt-5.6-sol:
       - anthropic/claude-fable-5
-      - google-antigravity/gemini-3.7-flash
+      - google-antigravity/gemini-3.8-flash
     openai-codex/gpt-5.6-terra:
       - anthropic/claude-opus-5
     anthropic/claude-fable-5:
       - openai-codex/gpt-5.6-sol
-      - google-antigravity/gemini-3.7-flash
+      - google-antigravity/gemini-3.8-flash
     anthropic/claude-haiku-4-5:
       - openai-codex/gpt-5.3-codex-spark
