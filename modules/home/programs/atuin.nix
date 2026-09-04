@@ -2,6 +2,7 @@
   programs.atuin = {
     enable = true;
     package = unstable.atuin;
+    daemon.enable = true;
     enableFishIntegration = false;
     settings = {
       search_mode = "daemon-fuzzy"; # fuzzy: doesn't quite work for me. example: search for env var i set before
