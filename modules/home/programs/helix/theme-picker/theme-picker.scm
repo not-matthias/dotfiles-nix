@@ -60,5 +60,14 @@
   (with-handler (lambda (_) void) (helix.theme item))
   (cons event-result/close state))
 
+(define (tp-on-move item state)
+  (with-handler (lambda (_) void) (helix.theme item)))
+
+(define (tp-on-cancel original-theme state)
+  (with-handler (lambda (_) void) (helix.theme original-theme)))
+
 (define (theme-picker-open)
-  (microscope (Picker tp-fetch tp-show tp-on-select #f)))
+  (let ([original-theme (current-theme-name)])
+    (microscope (Picker tp-fetch tp-show tp-on-select #f)
+                tp-on-move
+                (lambda (state) (tp-on-cancel original-theme state)))))

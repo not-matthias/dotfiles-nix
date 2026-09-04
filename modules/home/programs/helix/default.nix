@@ -274,12 +274,11 @@ in {
       '';
       xdg.configFile."helix/notify".source = flakes.notifyhx;
       xdg.configFile."helix/glyph".source = flakes.glyphhx;
-      xdg.configFile."helix/microscope".source = pkgs.runCommand "microscope-hx-patched" {} ''
-        cp -r ${flakes.microscopehx} $out
-        chmod -R u+w $out
-        substituteInPlace $out/input.scm \
-          --replace-fail '(string (key-event-char event))' '(list->string (list (key-event-char event)))'
-      '';
+      xdg.configFile."helix/microscope".source = pkgs.applyPatches {
+        name = "microscope-hx-patched";
+        src = flakes.microscopehx;
+        patches = [./microscope-live-preview.patch];
+      };
       xdg.dataFile."steel/cogs/helix-file-watcher".source = "${pkgs.helix-file-watcher}/share/steel/cogs/helix-file-watcher";
       xdg.dataFile."steel/native/libhelix_file_watcher.so".source = "${pkgs.helix-file-watcher}/lib/libhelix_file_watcher.so";
       xdg.configFile."helix/vim-hx-additions".source = ./vim-hx-additions;

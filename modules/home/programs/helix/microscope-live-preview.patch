@@ -1,0 +1,103 @@
+diff -r a/input.scm b/input.scm
+--- a/input.scm	1970-01-01 01:00:01.000000000 +0100
++++ b/input.scm	2026-09-02 14:32:54.746841567 +0200
+@@ -16,7 +16,7 @@
+         [cursor (unbox (Input-cursor input))])
+     (cond
+         ((key-event-char event)
+-         (let* ([char (string (key-event-char event))]
++         (let* ([char (list->string (list (key-event-char event)))]
+                 [text-next (if cursor (insert-char text char cursor) (string-append text char))])
+                (begin
+                  (set-box! (Input-text input) text-next)
+diff -r a/microscope.scm b/microscope.scm
+--- a/microscope.scm	1970-01-01 01:00:01.000000000 +0100
++++ b/microscope.scm	2026-09-02 14:32:54.748352506 +0200
+@@ -11,9 +11,11 @@
+ (define MICROSCOPE-COMPONENT-NAME "microscope")
+ 
+ 
+-(define (microscope config)
++(define (microscope config . callbacks)
++  (define on-move (if (pair? callbacks) (car callbacks) #f))
++  (define on-cancel (if (and (pair? callbacks) (pair? (cdr callbacks))) (cadr callbacks) #f))
+   (define input (Input (box "") (box #f)))
+-  (define state (Microscope config (box input) (box (list)) (box 0) (box 1) (box #f)))
++  (define state (Microscope config (box input) (box (list)) (box 0) (box 1) (box #f) on-move on-cancel))
+ 
+   (Microscope-refresh state)
+   (push-component! (new-component! MICROSCOPE-COMPONENT-NAME
+@@ -29,10 +31,16 @@
+          (position (area-y inner-area) (+ 1 (area-x inner-area) (if cursor-position cursor-position (string-length (Microscope-get-input state)))))))
+ 
+ 
++(define (move-and-preview state move)
++  (let ([previous (unbox (Microscope-selected state))])
++    (move state)
++    (when (not (= previous (unbox (Microscope-selected state))))
++      (Microscope-preview-selection state))))
++
+ (define (handle-microscope-event state event)
+-  (cond ([key-event-up? event] (begin (Microscope-prev state) event-result/consume))
+-        ([key-event-down? event] (begin (Microscope-next state) event-result/consume))
+-        ([key-event-escape? event] event-result/close)
++  (cond ([key-event-up? event] (begin (move-and-preview state Microscope-prev) event-result/consume))
++        ([key-event-down? event] (begin (move-and-preview state Microscope-next) event-result/consume))
++        ([key-event-escape? event] (begin (Microscope-cancel state) event-result/close))
+         ([key-event-enter? event] (Microscope-select state))
+         (else (process-press (Input-press (unbox (Microscope-input state)) event) state))))
+ 
+@@ -91,7 +99,7 @@
+ ;; In case of a cursor move we don't call Microscope-refresh
+ (define (process-press result state)
+   (case result
+-        ((changed) (Microscope-refresh state) event-result/consume)
++        ((changed) (begin (Microscope-refresh state) (Microscope-preview-selection state)) event-result/consume)
+         ((moved) event-result/consume)
+         (else event-result/ignore)))
+ 
+diff -r a/state.scm b/state.scm
+--- a/state.scm	1970-01-01 01:00:01.000000000 +0100
++++ b/state.scm	2026-09-02 14:32:54.746894267 +0200
+@@ -3,7 +3,7 @@
+ (require "input.scm")
+ 
+ (provide Picker Picker-preview
+-         Microscope Microscope-picker Microscope-input Microscope-items Microscope-selected Microscope-refresh Microscope-selected-slot Microscope-slots Microscope-get-preview
++         Microscope Microscope-picker Microscope-input Microscope-items Microscope-selected Microscope-refresh Microscope-selected-slot Microscope-slots Microscope-get-preview Microscope-on-move Microscope-on-cancel Microscope-preview-selection Microscope-cancel
+          Microscope-prev Microscope-next Microscope-get-input Microscope-select Microscope-render-items Microscope-get-page)
+ 
+ 
+@@ -19,7 +19,11 @@
+         ;; Number of slots to display
+         slots
+         ;; User-defined mutable state, preserved between Picker-on-select calls
+-        state))
++        state
++        ;; Optional callback invoked after selection moves
++        on-move
++        ;; Optional callback invoked when selection is cancelled
++        on-cancel))
+ 
+ 
+ ;;@doc
+@@ -52,6 +56,19 @@
+                                (lambda () (preview (Microscope-selected-item mcs)))))
+ 
+ 
++(define (Microscope-preview-selection mcs)
++  (let ([callback (Microscope-on-move mcs)]
++        [items (unbox (Microscope-items mcs))])
++    (when (and callback (pair? items))
++      (callback (Microscope-selected-item mcs) (unbox (Microscope-state mcs))))))
++
++
++(define (Microscope-cancel mcs)
++  (let ([callback (Microscope-on-cancel mcs)])
++    (when callback
++      (callback (unbox (Microscope-state mcs))))))
++
++
+ (define (Microscope-select mcs)
+   (let* ([selected (Microscope-selected-item mcs)]
+          [callback (Picker-on-select (Microscope-picker mcs))]
