@@ -6,7 +6,7 @@ Code, omp, Codex, Amp) — not only Claude Code, which loads it via its own
 plugin marketplace.
 
 - **Upstream:** https://github.com/max-sixty/worktrunk
-- **Pinned commit:** `18b408ce98487be334db08dd9bacb6c0ff7593e6`
+- **Pinned commit:** `bc2ec124d6be16b1af1d93c19820417328e071eb`
   (matches the `worktrunk` flake input in this repo's `flake.lock`)
 - **License:** MIT OR Apache-2.0 — see `LICENSE` in this directory
 - **Source path:** `skills/worktrunk/`. Upstream's

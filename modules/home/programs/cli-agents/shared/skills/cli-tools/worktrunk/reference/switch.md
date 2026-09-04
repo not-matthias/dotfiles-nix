@@ -6,7 +6,7 @@ Worktrees are addressed by branch name; paths are computed from a configurable t
 
 ## Examples
 
-```bash
+```console
 $ wt switch feature-auth           # Switch to worktree
 $ wt switch -                      # Previous worktree (like cd -)
 $ wt switch --create new-feature   # Create new branch and worktree
@@ -19,6 +19,8 @@ $ wt switch https://github.com/owner/repo/pull/123   # ...or paste the PR's URL
 
 The `--create` flag creates a new branch from `--base` — the default branch unless specified. Without `--create`, the branch must already exist. Switching to a remote branch (e.g., `wt switch feature` when only `origin/feature` exists) creates a local tracking branch.
 
+One rule decides the upstream, whatever `branch.autoSetupMerge` is set to: a new branch tracks the remote branch it starts from only when the two share a name. Switching to `origin/feature` shares it, so that branch tracks. `--create` need not: `--create release --base origin/release` tracks `origin/release`, while `--create feature --base origin/release` — and the bare `--base release` that resolves to it — gets no upstream. Git's default would have `feature` track `origin/release`, so under `push.default = upstream` a bare `git push` would push the new work to `release`. Publishing such a branch takes `git push --set-upstream origin <branch>`, or git's `push.autoSetupRemote = true` set once, after which a bare `git push` from the new worktree publishes it and configures its tracking.
+
 ## Creating worktrees
 
 If the branch already has a worktree, `wt switch` changes directories to it. Otherwise, it creates one:
@@ -29,7 +31,7 @@ If the branch already has a worktree, `wt switch` changes directories to it. Oth
 4. Runs [pre-start hooks](https://worktrunk.dev/hook/#hook-types), blocking until complete
 5. Spawns [post-start](https://worktrunk.dev/hook/#hook-types) and [post-switch hooks](https://worktrunk.dev/hook/#hook-types) in the background
 
-```bash
+```console
 $ wt switch feature                        # Existing branch → creates worktree
 $ wt switch --create feature               # New branch and worktree
 $ wt switch --create fix --base release    # New branch from release
@@ -50,7 +52,7 @@ Worktrees are addressed by branch name, and every argument that takes one also a
 | `pr:{N}` | GitHub PR #N's branch |
 | `mr:{N}` | GitLab MR !N's branch |
 
-```bash
+```console
 $ wt switch -                           # Back to previous
 $ wt switch ^                           # Default branch worktree
 $ wt switch --create fix --base=@       # Branch from current HEAD
@@ -80,8 +82,8 @@ The CI column shows each row's PR/MR CI and review status, the same as [`wt list
 | `Alt-o` | Open the selected row's PR/MR URL in the browser |
 | `Alt-r` | Refresh the list (pick up worktrees created elsewhere) |
 | `Esc` | Cancel |
-| `Alt-1`–`Alt-7` | Jump to a preview tab |
-| `Tab`/`Shift-Tab` | Cycle preview tabs forward/backward |
+| `Alt-1`–`Alt-8` | Jump to a preview tab |
+| `Tab`/`Shift-Tab` | Cycle available preview tabs forward/backward |
 | `Alt-p` | Toggle preview panel |
 | `Ctrl-u`/`Ctrl-d` | Scroll preview up/down |
 
@@ -95,13 +97,16 @@ Typing a gutter sigil filters by row kind: `+` narrows to linked worktrees and `
 
 **Preview tabs:**
 
-1. **HEAD±** — Diff of uncommitted changes
-2. **log** — Recent commits; commits already on the default branch have dimmed hashes
-3. **main…±** — Diff of changes since the merge-base with the default branch
-4. **remote⇅** — Ahead/behind diff vs upstream tracking branch
-5. **summary** — LLM-generated branch summary; requires `[list] summary = true` and [`commit.generation`](https://worktrunk.dev/config/#commit)
-6. **pr** — The selected row's PR/MR, for any row whose branch has one
-7. **comments** — The PR/MR's comment thread, fetched from the forge for any row whose branch has one
+1. **diff** — One net diff from the comparison base through the current worktree: committed, staged, unstaged, and untracked changes
+2. **working** — Staged, unstaged, and untracked changes against `HEAD`
+3. **committed** — Committed changes since the comparison base
+4. **log** — Recent commits; commits already on the default branch have dimmed hashes
+5. **remote⇅** — Ahead/behind diff vs upstream tracking branch
+6. **summary** — LLM-generated branch summary; requires `[list] summary = true` and [`commit.generation`](https://worktrunk.dev/config/#commit)
+7. **pr** — The selected row's PR/MR, for any row whose branch has one
+8. **comments** — The PR/MR's comment thread, fetched from the forge for any row whose branch has one
+
+The comparison base is the merge-base with the default branch, or with its upstream when the local default branch lags. The picker opens on **diff** for local rows and **pr** for a PR/MR listed by `--prs` but not available locally. `Tab` and `Shift-Tab` skip tabs without content; `Alt-1` through `Alt-8` open any tab directly. After you choose a tab, that choice stays active while you navigate.
 
 On narrow previews the tab bar compacts to digits — only the active tab keeps its label — so every `Alt-N` accelerator stays visible.
 
@@ -116,7 +121,7 @@ pager = "delta --paging=never --width=$COLUMNS"
 
 The `pr:<number>` / `mr:<number>` shortcut and the PR/MR's web URL both resolve to its branch. For same-repo PRs/MRs, worktrunk switches to the branch directly. For fork PRs/MRs, it fetches the ref (`refs/pull/N/head` or `refs/merge-requests/N/head`) and configures `pushRemote` to the fork URL.
 
-```bash
+```console
 $ wt switch pr:101                                  # GitHub PR #101
 $ wt switch https://github.com/owner/repo/pull/101  # ...the same PR, by URL
 $ wt switch mr:101                                  # GitLab MR !101
@@ -157,8 +162,7 @@ Arguments:
   [EXECUTE_ARGS]...
           Additional arguments for --execute command (after --)
 
-          Arguments after -- are appended to the execute command. Each argument is expanded for
-          templates, then POSIX shell-escaped.
+          Each argument is expanded for templates and passed directly to the program.
 
 Options:
   -c, --create
@@ -171,18 +175,27 @@ Options:
           pr:{N}, mr:{N}.
 
   -x, --execute <EXECUTE>
-          Command to run after switch
+          Program to run after switch
 
-          Replaces the wt process with the command after switching, giving it full terminal control.
-          Useful for launching editors, AI agents, or other interactive tools.
+          Runs one external program after switching, with full terminal control. Arguments after --
+          go directly to that program without Worktrunk shell parsing. Program lookup and argument
+          decoding follow the operating system. Shell syntax requires an explicit shell, for example
+          -x sh -- -c 'npm install && npm test'. On Windows, shell shims need their extension (-x
+          code.cmd) or an explicit shell such as -x cmd.exe -- /C code.
 
           Without a branch argument, the interactive picker opens and the command runs against the
           selected worktree — so wt switch -x claude picks a worktree, then launches Claude Code
-          there.
+          there. With --no-cd, the program starts in the invoking directory instead.
 
           Supports hook template variables ({{ branch }}, {{ worktree_path }}, etc.) and filters. {{
           base }} and {{ base_worktree_path }} describe the source: the selected base with --create,
           or the invoking worktree when switching to an existing worktree.
+
+          A variable inside a shell body is substituted before that shell parses it, so a path with
+          spaces splits into several arguments. Pass it as a separate argument instead — sh binds
+          the first one to $0, so the path arrives as $1:
+
+            wt switch feature -x sh -- -c 'cd "$1" && npm test' sh '{{ worktree_path }}'
 
           Especially useful with shell aliases:
 
@@ -203,7 +216,7 @@ Options:
           Skip directory change after switching
 
           Hooks still run normally. Useful when hooks handle navigation (e.g., tmux workflows) or
-          for CI/automation. Use --cd to override.
+          for CI/automation. --execute also starts in the invoking directory. Use --cd to override.
 
   -h, --help
           Print help (see a summary with '-h')
