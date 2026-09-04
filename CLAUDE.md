@@ -204,7 +204,7 @@ cat file.txt | agenix -e file.age
 hosts/                  # Host-specific configurations
 ├── configuration.nix   # Common system configuration
 ├── default.nix        # Host factory function with nixosBox
-├── home.nix           # Common home-manager configuration  
+├── home.nix           # Common home-manager configuration
 ├── desktop/           # Desktop machine config
 ├── framework/         # Framework laptop config
 └── raspi/             # Raspberry Pi config
@@ -216,7 +216,7 @@ modules/
 ├── overlays/          # Nix package overlays
 └── system/            # NixOS system modules
     ├── desktop/       # Desktop environment configs
-    ├── hardware/      # Hardware-specific modules  
+    ├── hardware/      # Hardware-specific modules
     ├── programs/      # System programs
     ├── services/      # System services
     └── virtualization/ # VM and container configs
@@ -245,7 +245,7 @@ The `nixosBox` function is the core abstraction that creates consistent NixOS co
 
 ### Module Architecture
 - **System modules** (`modules/system/`): Hardware, services, system programs
-- **Home modules** (`modules/home/`): User-space applications and services  
+- **Home modules** (`modules/home/`): User-space applications and services
 - **Clean separation** between system and user configurations
 - **Kebab-case preservation**: Keep attribute names like `ui-port`, `api-port` even if inconsistent with Nix conventions
 
@@ -330,7 +330,7 @@ When adding a new service to the desktop host:
 Hardware modules provide clean boolean flags:
 ```nix
 hardware.nvidia.enable = true;
-hardware.zfs.enable = true;  
+hardware.zfs.enable = true;
 hardware.ssd.enable = true;
 ```
 
