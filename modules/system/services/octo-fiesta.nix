@@ -43,6 +43,7 @@ in {
         Subsonic__MusicService = "Tidal";
         Subsonic__StorageMode = "Permanent";
         Subsonic__EnableExternalPlaylists = "true";
+        Subsonic__AutoUpgradeQuality = "true";
         Subsonic__FolderTemplate = "{artist}/{album}/{track} - {title}";
 
         Tidal__TokenStore = "/config/tidal-tokens.json";
