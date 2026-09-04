@@ -38,6 +38,11 @@
         echo "  CODSPEED_API_URL=$CODSPEED_API_URL"
         echo "  CODSPEED_UPLOAD_URL=$CODSPEED_UPLOAD_URL"
       '';
+      cod-skip = ''
+        set -gx CODSPEED_SKIP_UPLOAD true
+        echo "CodSpeed upload skipping activated:"
+        echo "  CODSPEED_SKIP_UPLOAD=$CODSPEED_SKIP_UPLOAD"
+      '';
     };
   };
 
