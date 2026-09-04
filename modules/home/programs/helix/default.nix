@@ -203,7 +203,7 @@ in {
             ];
             space.m = [
               ":write"
-              ":insert-output glow --pager --style=${glowStyle} '%{buffer_name}' </dev/tty >/dev/tty 2>&1"
+              ":insert-output glow --pager --width 120 --style=${glowStyle} '%{buffer_name}' </dev/tty >/dev/tty 2>&1"
               '':sh printf "\x1b[?1049h\x1b[?2004h" > /dev/tty''
               ":redraw"
             ];
@@ -229,6 +229,7 @@ in {
             "C-/" = "toggle_line_comments";
             "C-p" = "file_picker";
             "C-b" = "goto_definition";
+            "C-h" = ":hide-terminal";
             "C-S-f" = "global_search";
             "C-S-n" = "lsp_or_syntax_symbol_picker";
             "C-S-p" = "command_palette";
@@ -246,7 +247,7 @@ in {
               "collapse_selection"
               "keep_primary_selection"
             ];
-            "A-w" = ":buffer-close";
+            space.x = ":buffer-close";
             "C-c" = "no_op";
           };
           keys.select = {
