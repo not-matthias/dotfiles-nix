@@ -1,5 +1,13 @@
 --- a/term.scm
 +++ b/term.scm
+@@ -57,6 +57,7 @@
+ (provide open-term
+          new-term
++         toggle-term
+          kill-active-terminal
+          switch-term
+          term-resize
+         (contract/out set-default-terminal-cols! (->/c int? void?))
 @@ -290,7 +290,7 @@
    ;; Update the box to now show this
    (set-box! (Terminal-focused? term) #t)
@@ -378,3 +386,16 @@
      (set-box! (Terminal-focused? term) #f)
      (set-box! (Terminal-active term) #f)
      (set-editor-clip-right! 0)
+@@ -866,3 +830,12 @@
++;;@doc
++;; Toggles the terminal's visibility without replacing its shell.
++(define (toggle-term)
++  (define cursor (TerminalRegistry-cursor *terminal-registry*))
++  (if (and cursor
++           (unbox (Terminal-active (list-ref (TerminalRegistry-terminals *terminal-registry*) cursor))))
++      (hide-terminal)
++      (open-term)))
++
+ ;;@doc
+ ;; Opens a new terminal
+ (define (open-term)

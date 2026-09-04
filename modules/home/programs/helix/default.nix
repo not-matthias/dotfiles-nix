@@ -187,7 +187,7 @@ in {
           keys.normal = {
             space.f = "file_picker";
             space.h = ":toggle file-picker.hidden";
-            space.H = ":open-term";
+            space.H = ":toggle-term";
             space.e = ":forest-open";
             space.t = ":theme-picker-open";
             space.y = [
@@ -223,14 +223,13 @@ in {
             g.r.a = "code_action";
             g.r.n = "rename_symbol";
             K = "hover";
-            # Helix has no repeat-last-change command, so `.` aliases the macro
-            # replay that `q` already runs: `Q<edit>Q` records, `.` repeats it.
-            # `A-.` stays repeat_last_motion (last f/t/search).
+            # `Q<edit>Q` records a macro; `.` replays it.
             "." = "replay_macro";
             "C-/" = "toggle_line_comments";
             "C-p" = "file_picker";
             "C-b" = "goto_definition";
             "C-h" = ":hide-terminal";
+            "C-j" = ":toggle-term";
             "C-S-f" = "global_search";
             "C-S-n" = "lsp_or_syntax_symbol_picker";
             "C-S-p" = "command_palette";
