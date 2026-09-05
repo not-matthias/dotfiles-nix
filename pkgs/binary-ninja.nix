@@ -83,7 +83,7 @@
 in
   stdenv.mkDerivation rec {
     pname = "binaryninja";
-    version = "dev-personal";
+    version = "6.0.10601";
     nativeBuildInputs = [patchelf unzip];
     buildInputs = requiredLibs;
 
@@ -93,9 +93,9 @@ in
     #   sha256 = "sha256-vdx4L/iAyO9zvwXctZ1LgDgY6rIJHkkghmGZOtfMlD0=";
     # };
     src = requireFile {
-      name = "binaryninja_linux_dev_personal.zip";
+      name = "binaryninja_linux_6.0.10601_personal.zip";
       url = "https://binary.ninja/";
-      sha256 = "sha256-xvoaYRUpkAWvUPsoRjwkTGjspLtf/NPk4A4JYpjAGIA=";
+      sha256 = "sha256-OOuY5Pw6I5iL3CrDDEPDj2UysjD2ZlADAw7L+SGVRMc=";
     };
 
     dontPatchELF = true;

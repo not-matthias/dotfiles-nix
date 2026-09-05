@@ -33,7 +33,7 @@
       ida-pro
       radius2
       unstable.amdtop
-    ];
+      plannotator ];
     backhub = {
       enable = true;
       # Provisioned outside this flake; contains only the raw GitHub token.
