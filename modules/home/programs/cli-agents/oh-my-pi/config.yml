@@ -68,7 +68,9 @@ task:
   showResolvedModelBadge: true
   enableLsp: true
   maxEffort: xhigh
-  prewalk: true
+  # Temporarily disabled because prewalk doesn't work with GPT+Google due to encrypted
+  # reasoning traces that hide the thinking.
+  # prewalk: true
   agentPrewalk:
     task: google-antigravity/gemini-3.8-flash
 
