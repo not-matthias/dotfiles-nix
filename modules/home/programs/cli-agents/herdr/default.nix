@@ -48,16 +48,32 @@ with lib; let
       };
     };
   package = cfg.package;
-  collieActivationPath = lib.makeBinPath [
+  # Activation hooks may run before the home profile exposes newly declared packages.
+  # Keep the toolchains plugin build steps need available explicitly.
+  githubActivationPath = lib.makeBinPath [
     pkgs.bash
     pkgs.bun
     pkgs.git
+    pkgs.go
   ];
 
   linkPlugin = plugin: let
     enabledFlag = optionalString (!plugin.enable) " --disabled";
   in ''
     $DRY_RUN_CMD ${lib.getExe package} plugin link ${lib.escapeShellArg (toString plugin.path)}${enabledFlag}
+  '';
+
+  installGithubPlugin = plugin: let
+    version = removePrefix "v" plugin.ref;
+  in ''
+    if ! "$herdr" plugin list --json | ${pkgs.jq}/bin/jq -e \
+      '.result.plugins[]? | select(.plugin_id == ${builtins.toJSON plugin.id} and .version == ${builtins.toJSON version})' \
+      >/dev/null; then
+      # The installer clones over the network, which is unreachable while
+      # switch-to-configuration restarts NetworkManager/resolved. Retry next switch.
+      $DRY_RUN_CMD "$herdr" plugin install ${lib.escapeShellArg plugin.source} --ref ${lib.escapeShellArg plugin.ref} --yes \
+        || warnEcho "herdr: ${plugin.id} plugin install failed, leaving current version in place"
+    fi
   '';
 in {
   options.programs.cli-agents.herdr = {
@@ -112,6 +128,32 @@ in {
         ]
       '';
       description = "Plugin source directories to link idempotently with `herdr plugin link`.";
+    };
+
+    github = mkOption {
+      type = types.listOf (types.submodule {
+        options = {
+          source = mkOption {
+            type = types.str;
+            example = "owner/repo";
+            description = "GitHub `owner/repo[/subdir]` passed to `herdr plugin install`.";
+          };
+
+          ref = mkOption {
+            type = types.str;
+            example = "v1.2.3";
+            description = "Git tag to install; the leading `v` is stripped to match the manifest version.";
+          };
+
+          id = mkOption {
+            type = types.str;
+            example = "owner.plugin";
+            description = "Plugin id from the repository's herdr-plugin.toml, used to detect an existing install.";
+          };
+        };
+      });
+      default = [];
+      description = "Plugins Herdr installs from GitHub and builds locally when the pinned version is missing.";
     };
   };
 
@@ -172,20 +214,11 @@ in {
       hm.dag.entryAfter ["writeBoundary"] (concatMapStrings linkPlugin cfg.plugins)
     );
 
-    home.activation.colliePlugin = (
+    home.activation.herdrGithubPlugins = mkIf (cfg.github != []) (
       hm.dag.entryAfter ["writeBoundary"] ''
-        # Activation hooks may run before the home profile exposes newly declared packages.
-        # Keep the external tools needed by the installer available explicitly.
-        export PATH="${collieActivationPath}:$PATH"
+        export PATH="${githubActivationPath}:$PATH"
         herdr="${lib.getExe package}"
-        if ! "$herdr" plugin list --json | ${pkgs.jq}/bin/jq -e \
-          '.result.plugins[]? | select(.plugin_id == "herdr.collie" and .version == "1.6.0")' \
-          >/dev/null; then
-          # The installer clones over the network, which is unreachable while
-          # switch-to-configuration restarts NetworkManager/resolved. Retry next switch.
-          $DRY_RUN_CMD "$herdr" plugin install AltanS/collie --ref v1.6.0 --yes \
-            || warnEcho "herdr: collie plugin install failed, leaving current version in place"
-        fi
+        ${concatMapStrings installGithubPlugin cfg.github}
       ''
     );
   };

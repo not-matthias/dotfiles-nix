@@ -76,6 +76,18 @@
         claude.enable = true;
         herdr = {
           enable = true;
+          github = [
+            {
+              source = "AltanS/collie";
+              ref = "v1.6.0";
+              id = "herdr.collie";
+            }
+            {
+              source = "kryptamine/herdr-auto-title";
+              ref = "v0.4.0";
+              id = "herdr.auto-title";
+            }
+          ];
         };
         pi-mono.enable = true;
         oh-my-pi = {

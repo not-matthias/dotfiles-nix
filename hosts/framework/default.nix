@@ -122,6 +122,13 @@ in {
               enable = true;
             }
           ];
+          github = [
+            {
+              source = "AltanS/collie";
+              ref = "v1.6.0";
+              id = "herdr.collie";
+            }
+          ];
         };
         pi-mono = {
           enable = true;
