@@ -8,6 +8,7 @@
   ./bat.nix
   ./btop.nix
   ./cli-agents
+  ./idasql
   ./editorconfig.nix
   ./fish
   ./tmux

@@ -47,7 +47,6 @@ in {
       flakes.hunk.packages.${pkgs.stdenv.hostPlatform.system}.hunk
 
       vmprotect
-      ida-pro
       radius2
       plannotator
       tldraw-offline
@@ -100,6 +99,7 @@ in {
       granted.enable = true;
       nixvim.enable = true;
       helix.enable = true;
+      idasql.enable = true;
       cli-agents = {
         agent-browser.enable = true;
         claude.enable = true;
