@@ -48,6 +48,15 @@ with lib; let
       };
     };
   package = cfg.package;
+  renameAgent = pkgs.writeShellScript "herdr-rename-agent" ''
+    set -eu
+    herdr="''${HERDR_BIN_PATH:?HERDR_BIN_PATH is not set}"
+    pane_id="''${HERDR_ACTIVE_PANE_ID:?HERDR_ACTIVE_PANE_ID is not set}"
+    printf "Agent name: "
+    IFS= read -r name
+    test -n "$name" || exit 0
+    exec "$herdr" agent rename "$pane_id" "$name"
+  '';
   # Activation hooks may run before the home profile exposes newly declared packages.
   # Keep the toolchains plugin build steps need available explicitly.
   githubActivationPath = lib.makeBinPath [
@@ -175,6 +184,15 @@ in {
         previous_agent = "prefix+,";
         focus_agent = "prefix+shift+1..9";
         toggle_sidebar = ["prefix+b" "ctrl+alt+b"];
+        command = [
+          {
+            key = "prefix+shift+r";
+            type = "popup";
+            command = "${renameAgent}";
+            width = "60%";
+            height = "20%";
+          }
+        ];
       };
       ui = {
         agent_panel_sort = "priority";
