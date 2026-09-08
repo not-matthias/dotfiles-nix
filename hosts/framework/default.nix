@@ -124,9 +124,9 @@ in {
           ];
           github = [
             {
+              # v1.6.0
               source = "AltanS/collie";
-              ref = "v1.6.0";
-              id = "herdr.collie";
+              rev = "2e3df8aa32e5306f8d945d6b3c2c134306976a41";
             }
           ];
         };

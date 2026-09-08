@@ -63,16 +63,14 @@ with lib; let
     $DRY_RUN_CMD ${lib.getExe package} plugin link ${lib.escapeShellArg (toString plugin.path)}${enabledFlag}
   '';
 
-  installGithubPlugin = plugin: let
-    version = removePrefix "v" plugin.ref;
-  in ''
+  installGithubPlugin = plugin: ''
     if ! "$herdr" plugin list --json | ${pkgs.jq}/bin/jq -e \
-      '.result.plugins[]? | select(.plugin_id == ${builtins.toJSON plugin.id} and .version == ${builtins.toJSON version})' \
+      '.result.plugins[]? | select(.source.resolved_commit == ${builtins.toJSON plugin.rev})' \
       >/dev/null; then
       # The installer clones over the network, which is unreachable while
       # switch-to-configuration restarts NetworkManager/resolved. Retry next switch.
-      $DRY_RUN_CMD "$herdr" plugin install ${lib.escapeShellArg plugin.source} --ref ${lib.escapeShellArg plugin.ref} --yes \
-        || warnEcho "herdr: ${plugin.id} plugin install failed, leaving current version in place"
+      $DRY_RUN_CMD "$herdr" plugin install ${lib.escapeShellArg plugin.source} --ref ${lib.escapeShellArg plugin.rev} --yes \
+        || warnEcho "herdr: ${plugin.source} plugin install failed, leaving current version in place"
     fi
   '';
 in {
@@ -139,21 +137,14 @@ in {
             description = "GitHub `owner/repo[/subdir]` passed to `herdr plugin install`.";
           };
 
-          ref = mkOption {
-            type = types.str;
-            example = "v1.2.3";
-            description = "Git tag to install; the leading `v` is stripped to match the manifest version.";
-          };
-
-          id = mkOption {
-            type = types.str;
-            example = "owner.plugin";
-            description = "Plugin id from the repository's herdr-plugin.toml, used to detect an existing install.";
+          rev = mkOption {
+            type = types.strMatching "[0-9a-f]{40}";
+            description = "Full commit hash to install; compared against Herdr's recorded resolved commit.";
           };
         };
       });
       default = [];
-      description = "Plugins Herdr installs from GitHub and builds locally when the pinned version is missing.";
+      description = "Plugins Herdr installs from GitHub and builds locally when the pinned commit is not installed.";
     };
   };
 

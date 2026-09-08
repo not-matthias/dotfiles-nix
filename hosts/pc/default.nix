@@ -78,14 +78,19 @@
           enable = true;
           github = [
             {
+              # v1.6.0
               source = "AltanS/collie";
-              ref = "v1.6.0";
-              id = "herdr.collie";
+              rev = "2e3df8aa32e5306f8d945d6b3c2c134306976a41";
             }
             {
+              # v0.4.0
               source = "kryptamine/herdr-auto-title";
-              ref = "v0.4.0";
-              id = "herdr.auto-title";
+              rev = "0f0026b0897f74e33f8809f3c48e3c631761a693";
+            }
+            {
+              # 0.3.0, main (no release tags upstream)
+              source = "plannotator/herdr-annotate";
+              rev = "46cbf5dab1746dfeb46eb160c33990b0e0de15b0";
             }
           ];
         };
