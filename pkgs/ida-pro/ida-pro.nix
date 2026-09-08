@@ -169,6 +169,14 @@ in
                 --run "${pkgs.socat}/bin/socat -s tcp4-listen:1234,fork,reuseaddr openssl:lumen.abda.nl:1235,cafile=$IDADIR/hexrays.crt &"
             done
 
+            makeShellWrapper ${pythonForIDA}/bin/python $out/bin/ida-nexus \
+              --set IDADIR $IDADIR \
+              --prefix LD_LIBRARY_PATH : $out/lib \
+              --prefix PYTHONPATH : $IDADIR/plugins \
+              --set PYTHONHOME ${pythonForIDA} \
+              --set _PYTHON_SYSCONFIGDATA_NAME _sysconfigdata__linux_x86_64-linux-gnu \
+              --add-flags "-m ida_nexus.cli"
+
             # Install desktop entry.
             if [ -d "$IDADIR/.local/share/applications" ]; then
               cp $IDADIR/.local/share/applications/*.desktop $out/share/applications/ 2>/dev/null || true

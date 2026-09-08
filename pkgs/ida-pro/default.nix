@@ -21,15 +21,20 @@ _self: super: {
   ida-bitopt = super.callPackage ./ida-bitopt.nix {};
   ida-d810 = super.callPackage ./ida-d810.nix {};
   ida-pro = super.callPackage ./ida-pro.nix {
-    plugins = with _self; [ida-nexus ida-mcp ida-codemode bindiff-ida binsync-ida ida-theme-explorer ida-wakatime ida-guides ida-sigmaker ida-structor ida-lifter ida-hrtng ida-bitopt ida-d810];
+    plugins = with _self; [ida-nexus.passthru.plugin ida-mcp ida-codemode bindiff-ida binsync-ida ida-theme-explorer ida-wakatime ida-guides ida-sigmaker ida-structor ida-lifter ida-hrtng ida-bitopt ida-d810];
     extraPythonPackages = ps:
       (_self.binsync-ida.passthru.pythonPackages ps)
       ++ (_self.headless-ida.passthru.pythonPackages ps)
-      ++ (_self.ida-nexus.passthru.pythonPackages ps)
+      ++ [
+        _self.ida-nexus
+      ]
       ++ (_self.ida-codemode.passthru.pythonPackages ps)
       ++ (_self.ida-d810.passthru.pythonPackages ps);
   };
   ida-mcp-rs = super.callPackage ./ida-mcp-rs.nix {
+    inherit (_self) ida-pro;
+  };
+  idasql = super.callPackage ./idasql.nix {
     inherit (_self) ida-pro;
   };
 }

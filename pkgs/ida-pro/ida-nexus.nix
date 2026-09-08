@@ -6,6 +6,14 @@
   python313Packages,
   ida-domain,
 }: let
+  version = "0.9.1";
+  src = fetchFromGitHub {
+    owner = "HexRaysSA";
+    repo = "ida-nexus";
+    rev = "abac0b389fe280e66f17f74a17708ee38dc0bb0a";
+    hash = "sha256-7Q/nYxZzXj7GgukYbN2fN+RIX8Kjzlbjf3xs5O5Qmw0=";
+  };
+
   zeromcp = python313Packages.buildPythonPackage {
     pname = "zeromcp";
     version = "1.9.0";
@@ -17,34 +25,33 @@
     build-system = [python313Packages.hatchling];
     doCheck = false;
   };
-in
-  stdenvNoCC.mkDerivation {
-    pname = "ida-nexus";
-    version = "0.9.1";
 
-    src = fetchFromGitHub {
-      owner = "HexRaysSA";
-      repo = "ida-nexus";
-      rev = "abac0b389fe280e66f17f74a17708ee38dc0bb0a";
-      hash = "sha256-7Q/nYxZzXj7GgukYbN2fN+RIX8Kjzlbjf3xs5O5Qmw0=";
-    };
-
+  plugin = stdenvNoCC.mkDerivation {
+    pname = "ida-nexus-plugin";
+    inherit version src;
     dontBuild = true;
 
     installPhase = ''
-      runHook preInstall
-
       mkdir -p $out/plugins
       cp ida_nexus_plugin.py $out/plugins/
       cp -r ida_nexus $out/plugins/
-
-      runHook postInstall
     '';
+  };
+in
+  python313Packages.buildPythonPackage {
+    pname = "ida-nexus";
+    inherit version src;
 
-    passthru.pythonPackages = _ps: [zeromcp ida-domain];
+    pyproject = true;
+    build-system = [python313Packages.hatchling];
+    dependencies = [ida-domain python313Packages.packaging zeromcp];
+
+    doCheck = false;
+
+    passthru.plugin = plugin;
 
     meta = with lib; {
-      description = "Official Hex-Rays IDA Nexus plugin";
+      description = "IDA Nexus command-line tools";
       homepage = "https://github.com/HexRaysSA/ida-nexus";
       license = licenses.mit;
       platforms = platforms.linux;
