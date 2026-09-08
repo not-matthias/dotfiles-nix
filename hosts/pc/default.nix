@@ -192,7 +192,9 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2yZENvNlZ8XQxcPVG8CrSEaUmvthPwheHRruEKqnzP not-matthias@raspi"
   ];
 
-  virtualisation.podman.enable = true;
+  virtualisation = {
+    podman.enable = true;
+    qemu.enable = true; };
   desktop = {
     theme = "dark";
     niri.enable = true;
