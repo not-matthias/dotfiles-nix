@@ -113,6 +113,10 @@ in {
             "nil" = {
               config.nil.nix.flake.autoArchive = true;
             };
+            # Request timeout in seconds (default 20). A server that stops
+            # answering blocks `:w` for this long, since writes await the
+            # formatting response before the save future is queued.
+            "yaml-language-server".timeout = 3;
             # Without an explicit option set, nixd evaluates <nixpkgs/nixos>
             # and knows neither this flake's modules nor Home Manager options.
             "nixd".config.nixd = let
