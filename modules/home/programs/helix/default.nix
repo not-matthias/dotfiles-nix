@@ -107,8 +107,26 @@ in {
               command = "clangd";
               args = ["--query-driver=/nix/store/*/bin/*"];
             };
+            # The rustup package's `rust-analyzer` proxy wins the profile PATH
+            # merge; without the component installed it exits at startup.
+            "rust-analyzer".command = lib.getExe pkgs.rust-analyzer;
             "nil" = {
               config.nil.nix.flake.autoArchive = true;
+            };
+            # Without an explicit option set, nixd evaluates <nixpkgs/nixos>
+            # and knows neither this flake's modules nor Home Manager options.
+            "nixd".config.nixd = let
+              flake = ''(builtins.getFlake "${config.home.homeDirectory}/projects/dotfiles-nix")'';
+              hostOptions = host: "${flake}.nixosConfigurations.${host}.options";
+            in {
+              nixpkgs.expr = "import ${flake}.inputs.nixpkgs {}";
+              options = {
+                nixos = {expr = hostOptions "pc";};
+                nixos-framework = {expr = hostOptions "framework";};
+                # `type.getSubOptions` only sees the shared submodule; the
+                # evaluated per-user tree includes the host's own HM modules.
+                home-manager = {expr = "${hostOptions "pc"}.home-manager.users.valueMeta.attrs.${config.home.username}.configuration.options";};
+              };
             };
           };
         };
