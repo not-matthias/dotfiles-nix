@@ -55,7 +55,9 @@ modelRoles:
   default: openai-codex/gpt-5.6-luna:high
   tiny: openai-codex/gpt-5.3-codex-spark
   commit: google-antigravity/gemini-3.8-flash
-  task: openai-codex/gpt-5.6-sol:high
+  # Only use sol with prewalk, otherwise use:
+  # task: openai-codex/gpt-5.6-sol:high
+  task: openai-codex/gpt-5.6-luna:xhigh
   smol: google-antigravity/gemini-3.8-flash
   advisor: openai-codex/gpt-5.6-terra:high
   plan: openai-codex/gpt-5.6-sol:high
