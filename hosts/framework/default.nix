@@ -30,7 +30,12 @@ in {
     ../../modules/system/services/timeguard.nix
   ];
 
-  home-manager.users.${user} = {...}: {
+  home-manager.users.${user} = {
+    config,
+    lib,
+    pkgs,
+    ...
+  }: {
     home.stateVersion = "22.05";
     home.file.".config/hunk/extensions/hunk-commit-log".source = hunkCommitLog;
     home.packages = with pkgs; [
@@ -113,10 +118,6 @@ in {
               enable = true;
             }
             {
-              path = pkgs.herdr-mirror-plugin;
-              enable = true;
-            }
-            {
               path = ../../pkgs/herdr-plugins/herdr-api;
               enable = true;
             }
@@ -174,6 +175,20 @@ in {
         };
       };
     };
+
+    # Herdr's local-plugin links persist in its own state independently of the
+    # Nix module declaration, so an idempotent guard here (matched narrowly by
+    # id, local-link source, and package path) is needed to unlink a plugin
+    # after it stops being declared.
+    home.activation.herdrMirrorCleanup = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      herdr="${lib.getExe config.programs.cli-agents.herdr.package}"
+      if "$herdr" plugin list --json | ${pkgs.jq}/bin/jq -e \
+        '.result.plugins[]? | select(.plugin_id == "mirror" and .source.kind == "local" and (.plugin_root // "" | test("herdr-mirror-plugin")))' \
+        >/dev/null; then
+        $DRY_RUN_CMD "$herdr" plugin unlink mirror \
+          || warnEcho "herdr: could not unlink the removed mirror plugin"
+      fi
+    '';
 
     services = {
       activitywatch.enable = true;

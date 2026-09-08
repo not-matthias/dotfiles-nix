@@ -107,9 +107,6 @@
     })
     (import ../../pkgs/ida-pro)
     (_self: super: {
-      herdr-mirror-plugin = super.callPackage ../../pkgs/herdr-plugins/mirror.nix {};
-    })
-    (_self: super: {
       slk = super.callPackage ../../pkgs/slk.nix {};
     })
     (_self: super: {
