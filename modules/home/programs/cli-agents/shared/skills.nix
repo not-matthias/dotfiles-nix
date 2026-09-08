@@ -15,6 +15,7 @@
 {
   lib,
   pkgs,
+  programSkills ? {},
 }: let
   src = ./skills;
   # Relative path of every directory containing SKILL.md, at any depth.
@@ -38,4 +39,8 @@ in
     ${lib.concatMapStrings (
       path: "ln -s ${src}/${path} $out/${baseNameOf path}\n"
     ) (findSkills src "")}
+    ${lib.concatStringsSep "" (lib.mapAttrsToList (
+        name: path: "ln -s ${path} $out/${name}\n"
+      )
+      programSkills)}
   ''

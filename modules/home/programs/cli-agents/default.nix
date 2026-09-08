@@ -6,8 +6,13 @@
   ...
 }: let
   anyCliAgentEnabled =
-    builtins.any (agent: agent.enable or false) (builtins.attrValues config.programs.cli-agents);
+    builtins.any (agent: agent.enable or false) (builtins.attrValues (builtins.removeAttrs config.programs.cli-agents ["programSkills"]));
 in {
+  options.programs.cli-agents.programSkills = lib.mkOption {
+    type = lib.types.attrsOf lib.types.path;
+    default = {};
+    description = "Program-owned skill directories keyed by exposed skill name; values are directories containing SKILL.md.";
+  };
   imports = [
     ./agent-browser/default.nix
     ./claude/default.nix

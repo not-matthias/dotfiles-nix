@@ -6,7 +6,10 @@
 }:
 with lib; let
   cfg = config.programs.cli-agents.amp;
-  sharedSkillsFlat = import ../shared/skills.nix {inherit lib pkgs;};
+  agentSkillsFlat = import ../shared/skills.nix {
+    inherit lib pkgs;
+    programSkills = config.programs.cli-agents.programSkills;
+  };
 in {
   options.programs.cli-agents.amp = {
     enable = mkEnableOption "AMP CLI agent";
@@ -23,7 +26,7 @@ in {
         source = ../shared/AGENTS.md;
       };
       ".amp/skills" = {
-        source = sharedSkillsFlat;
+        source = agentSkillsFlat;
         recursive = true;
       };
     };

@@ -7,7 +7,10 @@
 }:
 with lib; let
   cfg = config.programs.cli-agents.opencode;
-  sharedSkillsFlat = import ../shared/skills.nix {inherit lib pkgs;};
+  agentSkillsFlat = import ../shared/skills.nix {
+    inherit lib pkgs;
+    programSkills = config.programs.cli-agents.programSkills;
+  };
 in {
   options.programs.cli-agents.opencode = {
     enable = mkEnableOption "OpenCode CLI agent";
@@ -29,7 +32,7 @@ in {
         source = ../shared/AGENTS.md;
       };
       ".opencode/skills" = {
-        source = sharedSkillsFlat;
+        source = agentSkillsFlat;
         recursive = true;
       };
 

@@ -23,7 +23,10 @@ with lib; let
     '';
   };
 
-  sharedSkillsFlat = import ../shared/skills.nix {inherit lib pkgs;};
+  agentSkillsFlat = import ../shared/skills.nix {
+    inherit lib pkgs;
+    programSkills = config.programs.cli-agents.programSkills;
+  };
 
   # skills.customDirectories is derived from config.home.homeDirectory, so it
   # is merged into the hand-written config instead of being duplicated there.
@@ -73,7 +76,7 @@ in {
     home.file =
       {
         ".omp/agent/skills" = {
-          source = sharedSkillsFlat;
+          source = agentSkillsFlat;
           recursive = true;
         };
         ".omp/agent/agents" = {

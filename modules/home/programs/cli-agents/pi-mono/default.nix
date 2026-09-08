@@ -6,7 +6,10 @@
 }:
 with lib; let
   cfg = config.programs.cli-agents.pi-mono;
-  sharedSkillsFlat = import ../shared/skills.nix {inherit lib pkgs;};
+  agentSkillsFlat = import ../shared/skills.nix {
+    inherit lib pkgs;
+    programSkills = config.programs.cli-agents.programSkills;
+  };
 
   extensions = import ../../../../../pkgs/pi-mono/extensions {inherit pkgs;};
   packages = import ../../../../../pkgs/pi-mono/packages {inherit pkgs;};
@@ -140,7 +143,7 @@ in {
           source = ./themes/stylix-mocha-red.json;
         };
         ".pi/agent/skills" = {
-          source = sharedSkillsFlat;
+          source = agentSkillsFlat;
           recursive = true;
         };
         ".pi/agent/agents" = {

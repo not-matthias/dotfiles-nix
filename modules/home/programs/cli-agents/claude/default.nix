@@ -8,7 +8,10 @@
 with lib; let
   cfg = config.programs.cli-agents.claude;
 
-  sharedSkillsFlat = import ../shared/skills.nix {inherit lib pkgs;};
+  agentSkillsFlat = import ../shared/skills.nix {
+    inherit lib pkgs;
+    programSkills = config.programs.cli-agents.programSkills;
+  };
 in {
   options.programs.cli-agents.claude = {
     enable = mkEnableOption "Claude Code CLI agent";
@@ -36,7 +39,7 @@ in {
         source = ../shared/AGENTS.md;
       };
       ".claude/skills" = {
-        source = sharedSkillsFlat;
+        source = agentSkillsFlat;
         recursive = true;
       };
       ".claude/agents" = {
