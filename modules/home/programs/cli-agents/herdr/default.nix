@@ -9,15 +9,15 @@ with lib; let
   tomlFormat = pkgs.formats.toml {};
   configFile = tomlFormat.generate "herdr-config.toml" cfg.settings;
   herdr = let
-    version = "0.8.2";
+    version = "0.9.0";
     assets = {
       x86_64-linux = {
         name = "herdr-linux-x86_64";
-        hash = "sha256-l2FQoU1JDJSyQ+ouGn6y37Z/EuNrGC25CTb2co5q7PQ=";
+        hash = "sha256-T6GgEVjdgEPaktMbJweAsNzBBgMDjZthysTYGrY/tx8=";
       };
       aarch64-linux = {
         name = "herdr-linux-aarch64";
-        hash = "sha256-9VYQZY4cLg0qrvcwtLKriF9/i6AChas3K/sU8uPVtA0=";
+        hash = "sha256-nI2yD7fnQnsTjVNnET8WIf/TGfL2XW8AniWUApEV8NI=";
       };
     };
     asset =
@@ -179,11 +179,11 @@ in {
         export PATH="${collieActivationPath}:$PATH"
         herdr="${lib.getExe package}"
         if ! "$herdr" plugin list --json | ${pkgs.jq}/bin/jq -e \
-          '.result.plugins[]? | select(.plugin_id == "herdr.collie" and .version == "0.28.0")' \
+          '.result.plugins[]? | select(.plugin_id == "herdr.collie" and .version == "1.6.0")' \
           >/dev/null; then
           # The installer clones over the network, which is unreachable while
           # switch-to-configuration restarts NetworkManager/resolved. Retry next switch.
-          $DRY_RUN_CMD "$herdr" plugin install AltanS/collie --ref v0.28.0 --yes \
+          $DRY_RUN_CMD "$herdr" plugin install AltanS/collie --ref v1.6.0 --yes \
             || warnEcho "herdr: collie plugin install failed, leaving current version in place"
         fi
       ''

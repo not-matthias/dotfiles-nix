@@ -4,15 +4,15 @@
   fetchurl,
   ...
 }: let
-  version = "0.3.1";
+  version = "0.4.3";
   assets = {
     x86_64-linux = {
       name = "herdr-mirror-linux-x86_64";
-      hash = "sha256-jW5Y+sa2A8A1b3d6CbgFW7lnkk9++UfxDFSrmkcaLGA=";
+      hash = "sha256-FbZLS5OljpTnDmm0YhQGma/7soYxc35TnMo0vAnptig=";
     };
     aarch64-linux = {
       name = "herdr-mirror-linux-aarch64";
-      hash = "sha256-TkBGFQWeGn26E54+oOhLNBkWOgfSsfKvqxTXkIAWk+E=";
+      hash = "sha256-eYmIMgVn3A3R+uiqczrW+Ffx3Hk8+8+fqBEgr0WniX8=";
     };
   };
   asset =
