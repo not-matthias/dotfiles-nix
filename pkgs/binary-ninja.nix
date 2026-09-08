@@ -154,17 +154,17 @@ in
                 iconLine="Icon=binaryninja"
               fi
               cat > $out/share/applications/binaryninja.desktop <<EOF
-        [Desktop Entry]
-        Type=Application
-        Name=Binary Ninja
-        GenericName=Reverse Engineering Platform
-        Comment=Interactive disassembler and decompiler
-        Exec=$out/bin/binaryninja %f
-        $iconLine
-        Terminal=false
-        Categories=Development;Debugger;
-        StartupWMClass=Binary Ninja
-        EOF
+      [Desktop Entry]
+      Type=Application
+      Name=Binary Ninja
+      GenericName=Reverse Engineering Platform
+      Comment=Interactive disassembler and decompiler
+      Exec=$out/bin/binaryninja %f
+      $iconLine
+      Terminal=false
+      Categories=Development;Debugger;
+      StartupWMClass=Binary Ninja
+      EOF
     '';
 
     postFixupPhases = ["finalPatchPhase"];
