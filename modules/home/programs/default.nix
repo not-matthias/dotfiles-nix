@@ -8,6 +8,7 @@
   ./bat.nix
   ./btop.nix
   ./cli-agents
+  ./ida-pro
   ./idasql
   ./editorconfig.nix
   ./fish

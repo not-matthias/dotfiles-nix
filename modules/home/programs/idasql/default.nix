@@ -29,5 +29,6 @@ in {
     };
 
     programs.cli-agents.programSkills.idasql = ./skill;
+    programs.ida-pro.enable = mkDefault cfg.enable;
   };
 }

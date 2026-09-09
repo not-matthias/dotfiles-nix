@@ -34,7 +34,7 @@ in {
           # Enable all controllers when they are found. This includes
           # adapters present on start as well as adapters that are plugged
           # in later on. Defaults to 'true'.
-          AutoEnable = false;
+          AutoEnable = true;
         };
         LE = {
           EnableAdvMonInterleave = true;

@@ -21,7 +21,7 @@ in {
       settings = {
         service = {
           enableregistration = false;
-          timezone = "Europe/Vienna";
+          timezone = "America/Toronto";
         };
       };
     };
