@@ -263,8 +263,6 @@ in {
         nspr
         nss
         atk
-        at-spi2-atk
-        at-spi2-core
         cups
         dbus
         cairo
@@ -521,7 +519,7 @@ in {
   services.gnome.at-spi2-core.enable = true;
 
   desktop = {
-    theme = "light";
+    theme = "dark";
     niri.enable = true;
     fonts.enable = true;
   };
