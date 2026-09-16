@@ -28,7 +28,7 @@ with lib; let
     }
     {
       workspace = "chat";
-      appIds = ["^discord$" "^Discord$" "^slack$" "^element$" "^telegram$" "^BeeperTexts$"];
+      appIds = ["^discord$" "^Discord$" "^slack$" "^element$" "^telegram$" "^BeeperTexts$" "^Beeper$"];
     }
     {
       workspace = "music";

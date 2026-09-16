@@ -215,6 +215,7 @@ in {
                 {app-id = "^element$";}
                 {app-id = "^telegram$";}
                 {app-id = "^BeeperTexts$";}
+                {app-id = "^Beeper$";}
               ];
             }
             # Music apps on workspace "music"
