@@ -72,7 +72,7 @@ in {
                 --why="Media is playing" \
                 sleep infinity &
               inhibit_pid=$!
-              # Create a marker file for waybar
+              # Create a marker file for the status bar
               touch "$marker_file"
             fi
           }

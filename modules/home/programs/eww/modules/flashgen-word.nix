@@ -122,19 +122,4 @@
   };
 in {
   inherit script;
-
-  config = {
-    "custom/flashgen-word" = {
-      return-type = "json";
-      format = "{text}";
-      exec = "${script}/bin/flashgen-word-of-hour";
-      on-click = "${pkgs.procps}/bin/pkill -RTMIN+9 waybar";
-      on-click-right = "${script}/bin/flashgen-word-of-hour --open";
-      signal = 9;
-      interval = 3600;
-      tooltip = true;
-      hide-empty-text = true;
-    };
-  };
-  style = builtins.readFile ./flashgen-word/style.css;
 }

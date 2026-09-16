@@ -1,0 +1,252 @@
+// The dark scheme keeps base0D on blue; base08 is the theme's red accent.
+$accent: $base08;
+$pad-x: 8px;
+
+* {
+  all: unset;
+  font-family: "JetBrains Mono Nerd Font", monospace;
+  font-size: 12px;
+}
+
+window {
+  background: transparent;
+}
+
+.bar {
+  min-height: 42px;
+  padding: 0 10px;
+  color: $base05;
+}
+
+.section {
+  min-height: 34px;
+  margin: 4px 8px;
+  padding: 0 $pad-x;
+  border: 1px solid rgba($base05, 0.08);
+  border-radius: 17px;
+  background: rgba($base01, 0.9);
+}
+
+.left {
+  min-width: 420px;
+  padding-left: 6px;
+}
+
+.center {
+  padding: 0 16px;
+  background: rgba($base00, 0.94);
+}
+
+.right {
+  margin: 0 5px;
+}
+
+button {
+  margin: 0 2px;
+  border-radius: 8px;
+}
+
+button:hover {
+  color: $base05;
+  background: $base02;
+}
+
+.workspace {
+  min-width: 22px;
+  margin: 0 3px;
+  padding: 0 $pad-x;
+  color: rgba($base05, 0.55);
+  font-weight: 600;
+}
+
+.workspace.active {
+  color: $accent;
+}
+
+.workspace.focused {
+  color: $base00;
+  background: $accent;
+}
+
+.workspace.focused:hover {
+  color: $base00;
+  background: $accent;
+}
+
+.workspace.urgent {
+  color: $base00;
+  background: $base0A;
+}
+
+.workspace.urgent:hover {
+  color: $base00;
+  background: $base0A;
+}
+
+.window-dots {
+  margin-left: 10px;
+}
+
+.window-dot {
+  margin: 0 2px;
+  padding: 0;
+  color: rgba($base05, 0.45);
+  font-size: 11px;
+}
+
+.window-dot.focused {
+  color: $accent;
+}
+
+.clock {
+  color: $base05;
+}
+
+.right-group {
+  min-height: 32px;
+  margin: 4px 0;
+  padding: 0;
+}
+
+.right-item {
+  min-height: 30px;
+  margin: 0 3px;
+  border: 1px solid rgba($base05, 0.08);
+  border-radius: 8px;
+  background-color: $base01;
+}
+
+// A merged group draws the pill itself so its items read as one control.
+.right-group.merged {
+  margin: 4px 3px;
+  border: 1px solid rgba($base05, 0.08);
+  border-radius: 8px;
+  background-color: $base01;
+}
+
+.right-group.merged .right-item {
+  margin: 0;
+  border: none;
+  background-color: transparent;
+}
+
+.right-group.merged .right-item:hover {
+  background-color: $base02;
+}
+
+// GTK event boxes ignore CSS padding while measuring, so a pill that wraps its
+// text in one must carry the padding on the text node itself.
+label.right-item,
+.right-item label,
+.clock-item label,
+.tray {
+  padding: 0 $pad-x;
+}
+
+.right-item.flashgen {
+  border-color: rgba($accent, 0.35);
+  color: $accent;
+}
+
+.right-item:hover {
+  color: $base05;
+  background-color: $base02;
+}
+
+.right-item.flashgen:hover {
+  color: $base00;
+  background-color: $accent;
+}
+
+tooltip {
+  border: 1px solid rgba($base05, 0.12);
+  border-radius: 8px;
+  background-color: rgba($base00, 0.98);
+  color: $base05;
+  padding: 4px $pad-x;
+}
+
+.ai-item {
+  color: $base05;
+}
+
+.status {
+  color: rgba($base05, 0.8);
+}
+
+.status.active,
+.status.volume {
+  color: $accent;
+}
+
+.status.muted,
+.status.warning {
+  color: $base09;
+}
+
+.status.inactive,
+.status.unavailable {
+  color: rgba($base05, 0.6);
+}
+
+.ai-item.mid {
+  color: $base09;
+}
+
+.ai-item.high,
+.ai-item.critical,
+.battery.critical {
+  color: $base08;
+}
+
+.battery.warning {
+  color: $base09;
+}
+
+.calendar-popup {
+  padding: 4px 6px 1px;
+  border: 1px solid rgba($base05, 0.12);
+  border-radius: 12px;
+  color: $base05;
+  background: rgba($base00, 0.98);
+}
+
+.calendar {
+  margin: 0;
+  padding: 0;
+}
+
+.calendar:selected {
+  min-width: 22px;
+  min-height: 22px;
+  margin: 1px;
+  padding: 0;
+  border-radius: 5px;
+  color: $base00;
+  background: $accent;
+  font-weight: 700;
+}
+
+.calendar.header,
+.calendar.button {
+  color: $accent;
+}
+
+.calendar.button {
+  min-width: 22px;
+  min-height: 22px;
+  border-radius: 6px;
+}
+
+.calendar.button:hover {
+  color: $base00;
+  background: $accent;
+}
+
+.calendar.highlight {
+  color: rgba($base05, 0.72);
+}
+
+.calendar:indeterminate {
+  color: rgba($base05, 0.38);
+}

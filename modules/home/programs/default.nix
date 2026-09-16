@@ -13,7 +13,7 @@
   ./editorconfig.nix
   ./fish
   ./tmux
-  ./waybar
+  ./eww
   ./direnv.nix
   ./dunst.nix
   ./firefox.nix

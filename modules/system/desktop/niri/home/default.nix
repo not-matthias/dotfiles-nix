@@ -24,7 +24,10 @@ in {
 
       programs = {
         swaylock.enable = true;
-        waybar.enable = true;
+        eww = {
+          enable = true;
+          systemd.enable = true;
+        };
         vicinae.enable = true;
       };
       services = {
@@ -253,7 +256,6 @@ in {
                   title = "^Picture-in-Picture$";
                 }
                 {
-                  app-id = "^google-chrome$";
                   title = "^Picture-in-Picture$";
                 }
               ];

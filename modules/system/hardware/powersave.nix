@@ -121,7 +121,7 @@ in {
       cpuFreqGovernor = lib.mkDefault "performance";
     };
 
-    # Allow passwordless auto-cpufreq --force for Waybar/Walker toggles
+    # Allow passwordless auto-cpufreq --force for bar/Walker toggles
     security.sudo.extraRules = [
       {
         users = ["not-matthias"];

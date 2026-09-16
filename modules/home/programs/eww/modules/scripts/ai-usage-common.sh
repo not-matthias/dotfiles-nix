@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Shared utilities for AI usage waybar modules
+# Shared utilities for AI usage Eww modules
 
-CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/waybar-ai-usage"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/ai-usage"
 
 get_retry_limit() {
   local retry_limit="${AI_USAGE_RETRY_LIMIT:-3}"
@@ -147,7 +147,7 @@ get_cached_or_fetch() {
 output_error() {
   local icon="$1"
   local msg="$2"
-  printf '{"text":"%s Err","tooltip":"%s","class":"critical"}\n' "$icon" "$msg"
+  printf '{"text":"%s Err","tooltip":"%s","class":"critical","percentage":0}\n' "$icon" "$msg"
 }
 
 css_class() {

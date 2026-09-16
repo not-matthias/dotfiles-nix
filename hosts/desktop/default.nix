@@ -49,7 +49,6 @@
       };
       btop.enable = true;
       #alacritty.enable = true;
-      #waybar.enable = true;
       #firefox.enable = true;
     };
   };
