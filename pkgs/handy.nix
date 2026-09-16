@@ -7,16 +7,16 @@
   xdotool,
 }: let
   pname = "handy";
-  version = "0.9.5";
+  version = "0.9.6";
 
   sources = {
     x86_64-linux = {
       suffix = "amd64";
-      hash = "sha256-u6HXEDrMMO8DRpcK8sHYh13zI40dZbelv1oOSKGn7Zw=";
+      hash = "sha256-xlL2lXLMhGMC12B2GYoHtNYrX3tUgoWTNSdYSjxi9P0=";
     };
     aarch64-linux = {
       suffix = "aarch64";
-      hash = "sha256-udSvbyN/Z1glIaA77I7p6+UxTbvpXZHqzA8svJUSP9k=";
+      hash = "sha256-0PK333FRSGJe+1sDChhVsnIWVjSgvbGDVZPc2/Le9no=";
     };
   };
 

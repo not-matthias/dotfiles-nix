@@ -24,16 +24,20 @@
   mesa,
   libGL,
   libdrm,
+  webkitgtk_4_1,
+  libsoup_3,
+  libsecret,
 }: let
   pname = "antigravity";
-  version = "1.11.5";
+  version = "2.5.5";
 in
   stdenv.mkDerivation rec {
     inherit pname version;
 
     src = fetchurl {
-      url = "https://edgedl.me.gvt1.com/edgedl/release2/j0qc3/antigravity/stable/1.11.5-5234145629700096/linux-x64/Antigravity.tar.gz";
-      hash = "sha256-TgMVGlV0PPMPrFlauzQ8nrWjtqgNJUATbXW06tgHIRI=";
+      name = "antigravity.tar.gz";
+      url = "https://edgedl.me.gvt1.com/edgedl/release2/j0qc3/antigravity/stable/2.5.5-4923483625488384/linux-x64/Antigravity%20IDE.tar.gz";
+      hash = "sha256-DFIzspfSs667Ya9J+JRAEsKVPTYaXrsWl4SQY2kX+DE=";
     };
 
     nativeBuildInputs = [
@@ -62,6 +66,9 @@ in
       mesa
       libGL
       libdrm
+      webkitgtk_4_1
+      libsoup_3
+      libsecret
     ];
 
     dontConfigure = true;
@@ -74,16 +81,16 @@ in
       tar -xzf $src -C $out/opt/antigravity --strip-components=1
 
       # Make the main binary executable
-      chmod +x $out/opt/antigravity/antigravity
+      chmod +x $out/opt/antigravity/antigravity-ide
 
       # Create a wrapper script to set up the environment
       mkdir -p $out/bin
-      makeWrapper $out/opt/antigravity/antigravity $out/bin/antigravity \
+      makeWrapper $out/opt/antigravity/antigravity-ide $out/bin/antigravity \
         --prefix LD_LIBRARY_PATH : "${libPath}:$out/opt/antigravity"
 
       # Install the icon
       mkdir -p $out/share/icons/hicolor/512x512/apps
-      cp $out/opt/antigravity/resources/app/out/vs/workbench/contrib/antigravityCustomAppIcon/browser/media/antigravity/antigravity.png \
+      cp $out/opt/antigravity/resources/app/resources/linux/code.png \
         $out/share/icons/hicolor/512x512/apps/antigravity.png
 
       # Create desktop entry

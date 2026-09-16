@@ -12,11 +12,11 @@
 # has no top-level directory, so it is extracted manually in installPhase.
 stdenv.mkDerivation rec {
   pname = "jcode";
-  version = "0.50.0";
+  version = "0.84.0";
 
   src = fetchurl {
     url = "https://github.com/1jehuang/jcode/releases/download/v${version}/jcode-linux-x86_64.tar.gz";
-    hash = "sha256-bJdtXx1b/01lt1qn82zvJ5QZ4G9a/QH/jzPLTUBZrpA=";
+    hash = "sha256-4A6u3hpPJoEudzgr2p2C4tMBr/2YPRito4/d1D3OlXE=";
   };
 
   dontUnpack = true;

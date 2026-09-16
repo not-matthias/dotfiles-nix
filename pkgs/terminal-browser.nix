@@ -62,11 +62,11 @@
 in
   stdenv.mkDerivation rec {
     pname = "terminal-browser";
-    version = "0.6.0";
+    version = "0.8.1";
 
     src = fetchurl {
       url = "https://github.com/zenbu-labs/terminal-browser/releases/download/v${version}/${pname}-linux-x64.tar.gz";
-      hash = "sha256-fCN1WTYjoSEJYV7KlM6u7OamGTxMyVW6FZIV8PbAn/c=";
+      hash = "sha256-NeeAidEIncT0krvX0qA9V+1VQ7Q5S0/d875Xx1t3dH4=";
     };
 
     nativeBuildInputs = [makeWrapper patchelf];

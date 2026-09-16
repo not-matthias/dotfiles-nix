@@ -25,13 +25,13 @@
 # bump this package to update.
 stdenv.mkDerivation rec {
   pname = "harbor";
-  version = "0.5.5";
+  version = "0.5.10";
 
   src = fetchFromGitHub {
     owner = "av";
     repo = "harbor";
     rev = "v${version}";
-    hash = "sha256-6KUsuc7UCTfM56ix0N/UCgMxOBS74bTW9+mCNMNlEbY=";
+    hash = "sha256-pDWXtJlkyJV0tHIZPx6fHj58glYmY+An1d7i+NLFU4E=";
   };
 
   dontBuild = true;

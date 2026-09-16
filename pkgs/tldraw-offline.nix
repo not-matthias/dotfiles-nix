@@ -5,16 +5,16 @@
   stdenv,
 }: let
   pname = "tldraw-offline";
-  version = "1.14.0";
+  version = "1.19.0";
 
   sources = {
     x86_64-linux = {
       suffix = "x86_64";
-      hash = "sha256-DyJptrSgoD65t+sS1WFC3Hnqpbg08XL5QAq46V4+1W8=";
+      hash = "sha256-JdsszRqGVL58NvK/5jAwjCbHan9BNYPm1vCZF6KBdQY=";
     };
     aarch64-linux = {
       suffix = "arm64";
-      hash = "sha256-gFvBcG0GRpFBOmMHAr8TSk2tbq4eiRm+/9SWT//par8=";
+      hash = "sha256-zRUNdEGzGeI0EfYdgfGB7KmoY4ajqAkdchb0vjbFvUA=";
     };
   };
 

@@ -8,7 +8,7 @@
   chromaprint,
 }: let
   pname = "soulsync";
-  version = "3.2.2";
+  version = "3.4.2";
 
   pythonEnv = python3.withPackages (ps:
     with ps; [
@@ -40,7 +40,7 @@ in
       owner = "Nezreka";
       repo = "SoulSync";
       rev = version;
-      hash = "sha256-ffJ54zRch4gBrf8+en4Lw4T6Wx9/EFFLnByZiE3lhzw=";
+      hash = "sha256-IWo/QbTR3Dr6pS0CRZqXlPTUxkLMuf6RuOmv/P7x/w4=";
     };
 
     nativeBuildInputs = [makeWrapper];
