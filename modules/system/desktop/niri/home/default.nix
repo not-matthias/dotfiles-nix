@@ -180,6 +180,8 @@ in {
                 {app-id = "^brave$";}
                 {app-id = "^chromium$";}
                 {app-id = "^librewolf$";}
+                {app-id = "^helium$";}
+                {app-id = "^google-chrome$";}
               ];
             }
             # Code editors on workspace "code"

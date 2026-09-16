@@ -16,7 +16,7 @@ with lib; let
   workspaceRules = [
     {
       workspace = "web";
-      appIds = ["^firefox$" "floorp" "^zen-browser$" "^brave$" "^chromium$" "^librewolf$" "^google-chrome$" "^chrome-"];
+      appIds = ["^firefox$" "floorp" "^zen-browser$" "^brave$" "^chromium$" "^librewolf$" "^google-chrome$" "^chrome-" "^helium$"];
     }
     {
       workspace = "code";
