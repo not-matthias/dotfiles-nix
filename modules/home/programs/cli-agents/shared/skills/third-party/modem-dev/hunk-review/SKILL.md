@@ -59,6 +59,7 @@ hunk session review (<session-id> | --repo <path>) [--include-patch] [--include-
 
 ```bash
 hunk session navigate (<session-id> | --repo <path>) --file <path> (--hunk <n> | --old-line <n> | --new-line <n>) [--json]
+hunk session navigate (<session-id> | --repo <path>) --comment <id> [--json]
 hunk session navigate (<session-id> | --repo <path>) (--next-comment | --prev-comment) [--json]
 ```
 
@@ -68,6 +69,12 @@ Absolute navigation requires `--file` and exactly one of `--hunk`, `--new-line`,
 hunk session navigate --repo . --file src/App.tsx --hunk 2
 hunk session navigate --repo . --file src/App.tsx --new-line 372
 hunk session navigate --repo . --file src/App.tsx --old-line 355
+```
+
+Exact comment navigation uses the `commentId` returned by `hunk session comment list --json` and does not require `--file`:
+
+```bash
+hunk session navigate --repo . --comment comment-1
 ```
 
 Relative comment navigation jumps between annotated hunks and does not require `--file`:
@@ -111,7 +118,7 @@ hunk session reload --session-path /path/to/live-window --source /path/to/other-
 ### Comments
 
 ```bash
-hunk session comment add (<session-id> | --repo <path>) --file <path> (--old-line <n> | --new-line <n>) --summary <text> [--rationale <text>] [--author <name>] [--markup <stml>] [--focus] [--json]
+hunk session comment add (<session-id> | --repo <path>) (--reply-to <note-id> | --file <path> (--old-line <n> | --new-line <n>)) --summary <text> [--rationale <text>] [--author <name>] [--markup <stml>] [--focus] [--json]
 hunk session comment apply (<session-id> | --repo <path>) --stdin [--focus] [--json]
 hunk session comment list (<session-id> | --repo <path>) [--file <path>] [--type <live|all|ai|agent|user>] [--json]
 hunk session comment rm (<session-id> | --repo <path>) <comment-id> [--json]
@@ -122,13 +129,14 @@ Examples:
 
 ```bash
 hunk session comment add --repo . --file README.md --new-line 103 --summary "Tighten this wording"
+hunk session comment add --repo . --reply-to user:123 --summary "Addressed in the latest revision"
 printf '%s\n' '{"comments":[{"filePath":"README.md","newLine":103,"summary":"Tighten this wording"}]}' | hunk session comment apply --repo . --stdin
 ```
 
 - `comment list --type user` shows human-authored inline notes; without `--type`, `comment list` preserves the legacy live-agent-comment view
 - `comment add` is best for one note; `comment apply` is best when an agent already has several notes ready
-- `comment add` requires `--file`, `--summary`, and exactly one of `--old-line` or `--new-line`
-- `comment apply` payload items require `filePath`, `summary`, and exactly one target such as `hunk`, `hunkNumber`, `oldLine`, or `newLine`
+- Root `comment add` notes require `--file`, `--summary`, and exactly one of `--old-line` or `--new-line`; replies use `--reply-to <note-id>` with `--summary` and inherit the parent's anchor
+- `comment apply` items require `summary` plus either `replyTo` by itself or `filePath` with exactly one target such as `hunk`, `hunkNumber`, `oldLine`, or `newLine`
 - `comment apply` reads a JSON batch from stdin and validates the full batch before mutating the live session
 - Pass `--focus` when you want to jump to the new note or the first note in a batch
 - `comment list` and `comment clear` accept optional `--file`
@@ -153,7 +161,7 @@ hunk session highlight clear --repo .
 
 - `highlight add` requires `--file`, exactly one of `--old-line` or `--new-line`, and the `--start` / `--end` offsets
 - `--start` is a 0-based inclusive offset into the line's text and `--end` is exclusive, counted in UTF-16 code units — the same `[start, end)` range extensions use
-- Tones: `match` (default), `info`, `warning`, `error`; `current` renders as reverse video and is best reserved for the one range under discussion
+- Tones: `match` (default), `info`, `warning`, `error`, `dim`; `current` renders as reverse video and is best reserved for the one range under discussion
 - Pass `--focus` to also land the viewport on the marked line
 - Marks survive scrolling, navigation, and reloads that leave the marked file's content unchanged; a reload that changes that file drops its marks, and `highlight clear` removes them explicitly (optionally per `--file`)
 - Marks are visual only — pair them with a `comment add` when the explanation should persist as a note

@@ -10,7 +10,6 @@
     command = "helium";
     desktop = "helium.desktop";
   };
-  hunkCommitLog = flakes."hunk-commit-log";
   setFrameworkMicrophoneVolume = pkgs.writeShellScript "set-framework-microphone-volume" ''
     attempts=0
     while ! ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 0.2 >/dev/null 2>&1; do
@@ -37,7 +36,6 @@ in {
     ...
   }: {
     home.stateVersion = "22.05";
-    home.file.".config/hunk/extensions/hunk-commit-log".source = hunkCommitLog;
     home.packages = with pkgs; [
       uv
       bun
@@ -49,7 +47,6 @@ in {
       # planify
       unstable.beeper
       flakes.devenv.packages.${pkgs.stdenv.hostPlatform.system}.devenv
-      flakes.hunk.packages.${pkgs.stdenv.hostPlatform.system}.hunk
 
       vmprotect
       radius2

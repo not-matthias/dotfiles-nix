@@ -897,34 +897,17 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1786909527,
-        "narHash": "sha256-PWblqDS86PaSl5ToFawCNGTxmrWcmoBAfq8R5lMDbyk=",
+        "lastModified": 1788999234,
+        "narHash": "sha256-dc4/xLAyQe7mL/KMcpjsjgHzgf0tRomQAemVABwUWFY=",
         "owner": "modem-dev",
         "repo": "hunk",
-        "rev": "44e16f6d6e7a6167c9057c9e66c1ea908dcc6261",
+        "rev": "3fdfde2dd77eb93802c43304c8edd34d79ce81de",
         "type": "github"
       },
       "original": {
         "owner": "modem-dev",
-        "ref": "v0.19.0",
+        "ref": "v0.22.0",
         "repo": "hunk",
-        "type": "github"
-      }
-    },
-    "hunk-commit-log": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1787593924,
-        "narHash": "sha256-lVFR1YCApRa3I+Olc2SZEXSmiPUucoiuBJji3qXJa7o=",
-        "owner": "sadick254",
-        "repo": "hunk-commit-log",
-        "rev": "aac1a9b7fc1dda7fc47f058b7c35a0dbe202dec9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sadick254",
-        "repo": "hunk-commit-log",
-        "rev": "aac1a9b7fc1dda7fc47f058b7c35a0dbe202dec9",
         "type": "github"
       }
     },
@@ -1544,7 +1527,6 @@
         "hera": "hera",
         "home-manager": "home-manager_2",
         "hunk": "hunk",
-        "hunk-commit-log": "hunk-commit-log",
         "microscopehx": "microscopehx",
         "niri": "niri",
         "nix-webapps": "nix-webapps",
