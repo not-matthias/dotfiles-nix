@@ -13,6 +13,8 @@ composer:
 statusLine:
   preset: ascii
   separator: ascii
+tui:
+  tight: true
 startup:
   quiet: true
   setupWizard: false
@@ -47,6 +49,7 @@ secrets:
   enabled: true
 compaction:
   handoffSaveToDisk: true
+  experimentalContextManagement: true
 dev:
   autoqa: false
   autoqaConsent: denied
@@ -85,7 +88,8 @@ task:
     solver: openai-codex/gpt-5.6-sol:high
     reviewer: openai-codex/gpt-5.6-terra:high
     security-reviewer: openai-codex/gpt-5.6-terra:high
-  eager: preferred
+  # Currently disabled, as it can increase the cost. Use orchestrate or workflowz instead
+  # eager: preferred
 
 providers:
   openai-codex:
@@ -94,7 +98,7 @@ providers:
     - google-antigravity
     - openai-codex
     - anthropic
-  tinyModel: lfm2-350m
+  tinyModel: lfm2-230m
 
 retry:
   usageAwareFallback: false
