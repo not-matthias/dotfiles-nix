@@ -417,6 +417,42 @@
           desc = "Toggle terminal (from terminal mode)";
         };
       }
+      {
+        mode = "n";
+        key = "<C-j>";
+        action = "<C-w>j";
+        options = {
+          silent = true;
+          desc = "Move to below window";
+        };
+      }
+      {
+        mode = "n";
+        key = "<C-k>";
+        action = "<C-w>k";
+        options = {
+          silent = true;
+          desc = "Move to above window";
+        };
+      }
+      {
+        mode = "n";
+        key = "<C-l>";
+        action = "<C-w>l";
+        options = {
+          silent = true;
+          desc = "Move to right window";
+        };
+      }
+      {
+        mode = "t";
+        key = "<C-h>";
+        action = "<cmd>ToggleTerm<cr>";
+        options = {
+          silent = true;
+          desc = "Hide terminal";
+        };
+      }
 
       # ============================================================================
       # TOOL WINDOWS (using Ctrl since Alt is reserved for window manager)
@@ -441,26 +477,8 @@
       }
 
       # ============================================================================
-      # LEGACY SPACE-BASED KEYBINDS (preserved for compatibility)
+      # SPACE-BASED KEYBINDS
       # ============================================================================
-      {
-        mode = "n";
-        key = "<space>fb";
-        action = "<cmd>:NvimTreeToggle<cr>";
-        options = {
-          silent = true;
-          desc = "Toggle file manager";
-        };
-      }
-      {
-        mode = "n";
-        key = "<space>fe";
-        action = "<cmd>lua require('telescope').extensions.file_browser.file_browser({ path = vim.fn.expand('%:p:h') })<cr>";
-        options = {
-          silent = true;
-          desc = "File browser (current file dir)";
-        };
-      }
       {
         mode = "n";
         key = "<space>gb";
@@ -493,6 +511,200 @@
           desc = "Symbol outline";
         };
       }
+      {
+        mode = "n";
+        key = "<space>f";
+        action = "<cmd>Telescope find_files<cr>";
+        options = {
+          silent = true;
+          desc = "Find files";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>h";
+        action = "<cmd>Telescope find_files hidden=true no_ignore=true<cr>";
+        options = {
+          silent = true;
+          desc = "Find hidden and ignored files";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>e";
+        action = "<cmd>NvimTreeFocus<cr>";
+        options = {
+          silent = true;
+          desc = "Focus file explorer";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>x";
+        action = "<cmd>bdelete<cr>";
+        options = {
+          silent = true;
+          desc = "Close buffer";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>?";
+        action = "<cmd>WhichKey<cr>";
+        options = {
+          silent = true;
+          desc = "Show keymaps";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>b";
+        action = "<cmd>Telescope buffers<cr>";
+        options = {
+          silent = true;
+          desc = "Find buffers";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>m";
+        action = "<cmd>Telescope marks<cr>";
+        options = {
+          silent = true;
+          desc = "Find marks";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>o";
+        action = "<cmd>Telescope oldfiles<cr>";
+        options = {
+          silent = true;
+          desc = "Find recent files";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>z";
+        action = "<cmd>Telescope current_buffer_fuzzy_find<cr>";
+        options = {
+          silent = true;
+          desc = "Find in current buffer";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>c";
+        action = "<cmd>Telescope git_commits<cr>";
+        options = {
+          silent = true;
+          desc = "Find Git commits";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>gt";
+        action = "<cmd>Telescope git_status<cr>";
+        options = {
+          silent = true;
+          desc = "Find Git status";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>t";
+        action = "<cmd>Telescope colorscheme<cr>";
+        options = {
+          silent = true;
+          desc = "Choose colorscheme";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>n";
+        action = "<cmd>set nu!<cr>";
+        options = {
+          silent = true;
+          desc = "Toggle line numbers";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>rn";
+        action = "<cmd>set rnu!<cr>";
+        options = {
+          silent = true;
+          desc = "Toggle relative numbers";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>ds";
+        action = "<cmd>lua vim.diagnostic.setloclist()<cr>";
+        options = {
+          silent = true;
+          desc = "Show diagnostics";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>F";
+        action = "<cmd>lua require('conform').format({ lsp_fallback = true })<cr>";
+        options = {
+          silent = true;
+          desc = "Format file";
+        };
+      }
+      {
+        mode = "n";
+        key = "<space>/";
+        action = "<Plug>(comment_toggle_linewise_current)";
+        options = {
+          desc = "Toggle comment";
+        };
+      }
+      {
+        mode = "v";
+        key = "<space>/";
+        action = "<Plug>(comment_toggle_linewise_visual)";
+        options = {
+          desc = "Toggle comment";
+        };
+      }
+      {
+        mode = "n";
+        key = ";";
+        action = ":";
+        options = {
+          desc = "Enter command mode";
+        };
+      }
+      {
+        mode = "i";
+        key = "jk";
+        action = "<Esc>";
+        options = {
+          desc = "Exit insert mode";
+        };
+      }
+      {
+        mode = "n";
+        key = "<C-s>";
+        action = "<cmd>write<cr>";
+        options = {
+          silent = true;
+          desc = "Save file";
+        };
+      }
+      {
+        mode = "n";
+        key = "<C-n>";
+        action = "<cmd>NvimTreeToggle<cr>";
+        options = {
+          silent = true;
+          desc = "Toggle file explorer";
+        };
+      }
     ];
     luaLoader.enable = true;
     performance.byteCompileLua = {
@@ -502,16 +714,24 @@
       nvimRuntime = true;
     };
     extraConfigLua = ''
-      vim.api.nvim_create_autocmd("VimEnter", {
-        callback = function()
-          if vim.fn.argc() == 0 or vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
-            require("nvim-tree.api").tree.toggle({ focus = false, find_file = true })
-          end
-        end,
-      })
       vim.cmd([[
         cnoreabbrev <expr> q getcmdtype() ==# ':' && getcmdline() ==# 'q' ? 'qa' : 'q'
       ]])
+      vim.api.nvim_create_autocmd("VimEnter", {
+        callback = function()
+          if #vim.api.nvim_list_uis() == 0 then
+            return
+          end
+          local argc = vim.fn.argc()
+          local directory = argc == 1 and vim.fn.isdirectory(vim.fn.argv(0)) == 1 and vim.fn.argv(0) or nil
+
+          if argc == 0 or directory then
+            vim.schedule(function()
+              require("telescope.builtin").find_files({cwd = directory})
+            end)
+          end
+        end,
+      })
     '';
     plugins = {
       # Old stuff:
@@ -530,23 +750,8 @@
       # bullets.enable = true;
       nvim-autopairs.enable = true;
       diffview.enable = true;
-      zen-mode.enable = true;
       bufferline.enable = true;
       toggleterm.enable = true;
-
-      # Session management
-      auto-session = {
-        enable = false;
-        settings = {
-          auto_save_enabled = true;
-          auto_restore_enabled = true;
-          auto_session_suppress_dirs = [
-            "~/"
-            "~/Projects"
-            "/tmp"
-          ];
-        };
-      };
 
       # QoL
       easyescape.enable = true;
@@ -658,7 +863,8 @@
         enable = true;
         settings = {
           notify = true;
-          preset = "modern";
+          preset = "helix";
+          delay = 0;
         };
       };
 
@@ -666,23 +872,13 @@
       telescope = {
         enable = true;
         keymaps = {
-          "<space>ff" = {
-            action = "find_files";
-            options.desc = "Find files";
-          };
-          "<space>fg" = {
-            action = "live_grep";
-            options.desc = "Live grep";
-          };
           "<space>gf" = "git_files";
           "<space>lg" = "live_grep";
-          "<space>fk" = "keymaps";
-          "<space>ft" = "colorscheme";
-          "<space>fc" = "git_commits";
         };
         settings.defaults.file_ignore_patterns = [];
         settings.pickers.find_files = {
-          hidden = true;
+          hidden = false;
+          no_ignore = false;
         };
         extensions = {
           file-browser.enable = true;
@@ -693,6 +889,10 @@
       lualine = {
         enable = true;
         settings = {
+          component_separators = {
+            left = "";
+            right = "";
+          };
           options = {
             theme = "auto";
             globalstatus = true;
@@ -701,7 +901,6 @@
             lualine_a = ["mode"];
             lualine_b = ["branch" "diff" "diagnostics"];
             lualine_c = ["filename"];
-            lualine_x = ["encoding" "fileformat" "filetype"];
             lualine_y = ["progress"];
             lualine_z = ["location"];
           };
@@ -711,12 +910,6 @@
       # Visual
       fidget.enable = true; # LSP status
       web-devicons.enable = true;
-      indent-blankline = {
-        enable = true;
-        settings = {
-          scope.enabled = true;
-        };
-      };
       tiny-inline-diagnostic = {
         enable = true;
         settings = {
