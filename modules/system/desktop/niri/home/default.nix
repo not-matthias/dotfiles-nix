@@ -223,6 +223,7 @@ in {
                 {app-id = "^spotify$";}
                 {app-id = "^Spotify$";}
                 {app-id = "^feishin$";}
+                {app-id = "^sone$";}
               ];
             }
             # VLC - prevent oversized windows

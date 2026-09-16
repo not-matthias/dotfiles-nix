@@ -32,7 +32,7 @@ with lib; let
     }
     {
       workspace = "music";
-      appIds = ["^spotify$" "^Spotify$" "^feishin$"];
+      appIds = ["^spotify$" "^Spotify$" "^feishin$" "^sone$"];
     }
   ];
 

@@ -63,6 +63,7 @@ in {
       harbor
       terminal-browser
       hushmic
+      sone
 
       # protonmail-bridge-gui
       # thunderbird
