@@ -84,7 +84,7 @@
 
           datetime          " {format} "
           datetime_format   "%H:%M %d-%b-%y"
-          datetime_timezone "America/Toronto"
+          datetime_timezone "Europe/Amsterdam"
         }
       }
     }

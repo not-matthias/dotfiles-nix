@@ -20,7 +20,7 @@ in {
         volumes = ["/var/lib/watchyourlan:/data/WatchYourLAN"];
         environment = {
           IFACES = cfg.ifaces;
-          TZ = "America/Toronto";
+          TZ = "Europe/Amsterdam";
         };
         image = "aceberg/watchyourlan:2.1.4";
         extraOptions = [
