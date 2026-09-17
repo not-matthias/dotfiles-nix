@@ -25,6 +25,14 @@ It doesn't mean you need to delete documentation. Documentation is different fro
 
 It doesn't mean you should blindly shorten/compact comments. Simplifying does not equal compacting. Often, compacting comments creates absolutely unreadable and very hard to understand comments for other readers. Keep comments easy to understand!
 
+## Example: documenting absence
+
+Never document the absence of removed code or configuration. Delete the comment; if a non-obvious constraint matters, describe the current design where it applies.
+
+- **Bad:** `# Deliberately no [package.metadata.dist]: exec-harness is not released separately.`
+- **Better:** No comment.
+- **If needed near `[[bin]]`:** `# Standalone entry point for development and integration tests.`
+
 ## Tests
 
 Check the tests this change adds. Coding agents love adding tests to look thorough. The bad ones only pad coverage, break on a refactor that doesn't change behavior (a good test breaks when behavior changes, not when the implementation moves), lean on a pile of mocks, or assert implementation details instead of the observable result. See the `testing` skill for the full criteria.
