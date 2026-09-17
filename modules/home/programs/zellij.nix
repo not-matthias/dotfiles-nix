@@ -1,4 +1,11 @@
-{unstable, ...}: {
+{
+  unstable,
+  lib,
+  osConfig ? {},
+  ...
+}: let
+  datetimeTimezone = lib.optionalString (osConfig ? time.timeZone) "datetime_timezone \"${osConfig.time.timeZone}\"";
+in {
   programs.fish.interactiveShellInit = ''
     # Wrap zellij to auto-name sessions (rename-session is broken inside zellij, so we set it at launch)
     function zellij --wraps=zellij
@@ -84,7 +91,7 @@
 
           datetime          " {format} "
           datetime_format   "%H:%M %d-%b-%y"
-          datetime_timezone "Europe/Amsterdam"
+          ${datetimeTimezone}
         }
       }
     }

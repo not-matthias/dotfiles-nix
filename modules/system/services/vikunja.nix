@@ -21,7 +21,7 @@ in {
       settings = {
         service = {
           enableregistration = false;
-          timezone = "Europe/Amsterdam";
+          timezone = config.time.timeZone;
         };
       };
     };
