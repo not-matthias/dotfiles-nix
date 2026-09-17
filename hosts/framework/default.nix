@@ -7,7 +7,6 @@
   ...
 }: let
   defaultBrowser = {
-    command = "helium";
     desktop = "helium.desktop";
   };
   setFrameworkMicrophoneVolume = pkgs.writeShellScript "set-framework-microphone-volume" ''
@@ -85,14 +84,13 @@ in {
       associations.added."text/html" = lib.mkForce defaultBrowser.desktop;
       defaultApplications = {
         "text/html" = lib.mkForce defaultBrowser.desktop;
-        "x-scheme-handler/http" = lib.mkForce defaultBrowser.desktop;
-        "x-scheme-handler/https" = lib.mkForce defaultBrowser.desktop;
       };
     };
 
     programs = {
       ghostty.enable = true;
       handy.enable = true;
+      choosr.enable = true;
       rust = {
         enable = true;
         maintenance.enable = true;
@@ -238,7 +236,7 @@ in {
     };
   };
 
-  environment.variables.BROWSER = lib.mkForce defaultBrowser.command;
+  environment.variables.BROWSER = lib.mkForce "choosr";
 
   environment.systemPackages = [
     pkgs.perf

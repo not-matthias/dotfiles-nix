@@ -21,6 +21,7 @@
   ./gh.nix
   ./zen-browser.nix
   ./chromium.nix
+  ./choosr.nix
   ./helium.nix
   ./git.nix
   ./gitui.nix
