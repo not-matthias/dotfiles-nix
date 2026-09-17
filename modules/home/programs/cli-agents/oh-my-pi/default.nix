@@ -72,6 +72,7 @@ in {
     };
   };
   config = mkIf cfg.enable {
+    programs.cli-agents.programSkills.omp-ttsr-rules = ./skills/omp-ttsr-rules;
     home.packages = [wrappedOmp];
     home.file =
       {
