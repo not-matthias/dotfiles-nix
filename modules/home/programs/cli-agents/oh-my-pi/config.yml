@@ -62,7 +62,7 @@ modelRoles:
   # task: openai-codex/gpt-5.6-sol:high
   task: openai-codex/gpt-5.6-luna:xhigh
   smol: google-antigravity/gemini-3.8-flash
-  advisor: openai-codex/gpt-5.6-terra:high
+  advisor: google-antigravity/gemini-3.8-flash
   plan: openai-codex/gpt-5.6-sol:high
   slow: openai-codex/gpt-5.6-sol:xhigh
 
@@ -93,7 +93,9 @@ task:
 
 providers:
   openai-codex:
-    codeMode: auto
+    # Currently disabled as it makes GPT models fail at editing because the tool documentation isn't emebedded in the system
+    # prompt anymore. This makes models assume it's a patch-based edit tool, when it's actually hashline.
+    # codeMode: auto
   imageOrder:
     - google-antigravity
     - openai-codex
