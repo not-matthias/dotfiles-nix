@@ -5,7 +5,15 @@
   ...
 }: let
   cfg = config.programs.eww;
-  colors = config.lib.stylix.colors.withHashtag;
+  darkColors = {
+    base00 = "#0f1115";
+    base01 = "#151922";
+    base02 = "#1d2330";
+    base05 = "#f0f3f6";
+    base08 = "#ff6b7a";
+    base09 = "#ff9f68";
+    base0A = "#f2c866";
+  };
   niriState = import ./modules/niri-state.nix {inherit pkgs;};
   aiUsage = import ./modules/ai-usage.nix {inherit pkgs;};
   dnd = import ./modules/dnd.nix {inherit pkgs;};
@@ -150,13 +158,13 @@ in {
         [flashgenCommand flashgenOpenCommand niriStateCommand calendarToggleCommand]
         (builtins.readFile ./eww.yuck);
       scssConfig = ''
-        $base00: ${colors.base00};
-        $base01: ${colors.base01};
-        $base02: ${colors.base02};
-        $base05: ${colors.base05};
-        $base08: ${colors.base08};
-        $base09: ${colors.base09};
-        $base0A: ${colors.base0A};
+        $base00: ${darkColors.base00};
+        $base01: ${darkColors.base01};
+        $base02: ${darkColors.base02};
+        $base05: ${darkColors.base05};
+        $base08: ${darkColors.base08};
+        $base09: ${darkColors.base09};
+        $base0A: ${darkColors.base0A};
         ${builtins.readFile ./eww.scss}
       '';
     };
