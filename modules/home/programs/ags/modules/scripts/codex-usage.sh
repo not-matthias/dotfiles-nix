@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Codex CLI usage for Eww — queries usage via `omp usage -p openai-codex --json`
+# Codex CLI usage — queries usage via `omp usage -p openai-codex --json`
 
 # shellcheck disable=SC1090,SC1091
 source "${AI_USAGE_COMMON:?AI_USAGE_COMMON not set}"

@@ -14,7 +14,7 @@
     {command = ["dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" "NIRI_SOCKET"];}
     {command = ["systemctl" "--user" "import-environment" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" "NIRI_SOCKET"];}
     {command = ["dbus-update-activation-environment" "--all"];}
-    {command = ["systemctl" "--user" "restart" "eww.service"];}
+    {command = ["systemctl" "--user" "restart" "ags.service"];}
 
     # Launch apps via 'uwsm app' to integrate with systemd session management
     {command = ["uwsm" "app" "--" "awww" "img" "${config.home.homeDirectory}/.wallpaper.png"];}

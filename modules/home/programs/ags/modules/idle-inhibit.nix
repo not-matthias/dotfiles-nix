@@ -1,9 +1,9 @@
 {pkgs}: {
   status = pkgs.writeShellApplication {
-    name = "eww-idle-inhibit-status";
+    name = "ags-idle-inhibit-status";
     runtimeInputs = [pkgs.jq pkgs.systemd];
     text = ''
-      if ${pkgs.systemd}/bin/systemctl --user is-active --quiet eww-idle-inhibit.service; then
+      if ${pkgs.systemd}/bin/systemctl --user is-active --quiet ags-idle-inhibit.service; then
         ${pkgs.jq}/bin/jq -cn '{text: "󰅶", tooltip: "Idle inhibit: ON", class: "active"}'
       else
         ${pkgs.jq}/bin/jq -cn '{text: "󰾪", tooltip: "Idle inhibit: OFF", class: "inactive"}'
@@ -17,7 +17,7 @@
       PartOf = ["graphical-session.target"];
     };
     Service = {
-      ExecStart = "${pkgs.wlinhibit}/bin/wlinhibit";
+      ExecStart = "${pkgs.systemd}/bin/systemd-inhibit --what=idle:sleep:handle-lid-switch --who=Caffeine --why='Caffeine is enabled' ${pkgs.coreutils}/bin/sleep infinity";
       Restart = "on-failure";
     };
   };

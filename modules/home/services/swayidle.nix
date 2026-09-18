@@ -26,6 +26,13 @@
     then status: "${pkgs.hyprland}/bin/hyprctl dispatch dpms ${status}"
     else status: "${pkgs.wlopm}/bin/wlopm --${status} '*'";
   lockCmd = "${pkgs.swaylock}/bin/swaylock --daemonize";
+  runUnlessCaffeinated = name: command: "${pkgs.writeShellScript "swayidle-${name}" ''
+    if ${pkgs.systemd}/bin/systemctl --user is-active --quiet ags-idle-inhibit.service; then
+      exit 0
+    fi
+
+    exec ${command}
+  ''}";
 in {
   options.services.swayidle.suspendCommand = lib.mkOption {
     type = lib.types.str;
@@ -129,20 +136,20 @@ in {
       timeouts = [
         {
           timeout = notifyTimeout;
-          command = "${pkgs.libnotify}/bin/notify-send 'Locking in 60 seconds' -w";
+          command = runUnlessCaffeinated "notify" "${pkgs.libnotify}/bin/notify-send 'Locking in 60 seconds' -w";
         }
         {
           timeout = lockTimeout;
-          command = lockCmd;
+          command = runUnlessCaffeinated "lock" lockCmd;
         }
         {
           timeout = screenOffTimeout;
-          command = displayCmd "off";
+          command = runUnlessCaffeinated "display-off" (displayCmd "off");
           resumeCommand = displayCmd "on";
         }
         {
           timeout = suspendTimeout;
-          command = cfg.suspendCommand;
+          command = runUnlessCaffeinated "suspend" cfg.suspendCommand;
         }
       ];
       events = {

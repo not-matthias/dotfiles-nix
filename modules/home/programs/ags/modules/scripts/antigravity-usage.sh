@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Google Antigravity usage for Eww — queries usage via `omp usage -p google-antigravity --json`
+# Google Antigravity usage — queries usage via `omp usage -p google-antigravity --json`
 
 # shellcheck disable=SC1090,SC1091
 source "${AI_USAGE_COMMON:?AI_USAGE_COMMON not set}"

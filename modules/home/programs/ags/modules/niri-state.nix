@@ -1,6 +1,6 @@
 {pkgs}:
 pkgs.writeShellApplication {
-  name = "eww-niri-state";
+  name = "ags-niri-state";
   runtimeInputs = [pkgs.coreutils pkgs.jq pkgs.niri];
   text = ''
     emit_empty() {

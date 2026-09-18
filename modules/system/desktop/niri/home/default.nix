@@ -24,7 +24,7 @@ in {
 
       programs = {
         swaylock.enable = true;
-        eww = {
+        ags = {
           enable = true;
           systemd.enable = true;
         };

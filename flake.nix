@@ -17,6 +17,10 @@
   inputs = {
     nixpkgs.url = "https://flakehub.com/f/DeterminateSystems/nixpkgs-26.05-chilled/0.1";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    ags = {
+      url = "github:Aylur/ags";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     backhub = {
       url = "git+https://github.com/not-matthias/backhub.git";
       inputs.nixpkgs.follows = "nixpkgs";

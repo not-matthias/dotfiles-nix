@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Shared utilities for AI usage Eww modules
+# Shared utilities for AI usage status bar widgets
 
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/ai-usage"
 

@@ -1,7 +1,3 @@
-// The dark scheme keeps base0D on blue; base08 is the theme's red accent.
-$accent: $base08;
-$pad-x: 8px;
-
 * {
   all: unset;
   font-family: "JetBrains Mono Nerd Font", monospace;
@@ -15,16 +11,16 @@ window {
 .bar {
   min-height: 42px;
   padding: 0 10px;
-  color: $base05;
+  color: #f0f3f6;
 }
 
 .section {
   min-height: 34px;
   margin: 4px 8px;
-  padding: 0 $pad-x;
-  border: 1px solid rgba($base05, 0.08);
+  padding: 0 8px;
+  border: 1px solid rgba(240, 243, 246, 0.08);
   border-radius: 17px;
-  background: rgba($base01, 0.9);
+  background: rgba(21, 25, 34, 0.9);
 }
 
 .left {
@@ -34,7 +30,7 @@ window {
 
 .center {
   padding: 0 16px;
-  background: rgba($base00, 0.94);
+  background: rgba(15, 17, 21, 0.94);
 }
 
 .right {
@@ -47,40 +43,40 @@ button {
 }
 
 button:hover {
-  color: $base05;
-  background: $base02;
+  color: #f0f3f6;
+  background: #1d2330;
 }
 
 .workspace {
   min-width: 22px;
   margin: 0 3px;
-  padding: 0 $pad-x;
-  color: rgba($base05, 0.55);
+  padding: 0 8px;
+  color: rgba(240, 243, 246, 0.55);
   font-weight: 600;
 }
 
 .workspace.active {
-  color: $accent;
+  color: #ff6b7a;
 }
 
 .workspace.focused {
-  color: $base00;
-  background: $accent;
+  color: #0f1115;
+  background: #ff6b7a;
 }
 
 .workspace.focused:hover {
-  color: $base00;
-  background: $accent;
+  color: #0f1115;
+  background: #ff6b7a;
 }
 
 .workspace.urgent {
-  color: $base00;
-  background: $base0A;
+  color: #0f1115;
+  background: #f2c866;
 }
 
 .workspace.urgent:hover {
-  color: $base00;
-  background: $base0A;
+  color: #0f1115;
+  background: #f2c866;
 }
 
 .window-dots {
@@ -90,16 +86,16 @@ button:hover {
 .window-dot {
   margin: 0 2px;
   padding: 0;
-  color: rgba($base05, 0.45);
+  color: rgba(240, 243, 246, 0.45);
   font-size: 11px;
 }
 
 .window-dot.focused {
-  color: $accent;
+  color: #ff6b7a;
 }
 
 .clock {
-  color: $base05;
+  color: #f0f3f6;
 }
 
 .right-group {
@@ -111,17 +107,16 @@ button:hover {
 .right-item {
   min-height: 30px;
   margin: 0 3px;
-  border: 1px solid rgba($base05, 0.08);
+  border: 1px solid rgba(240, 243, 246, 0.08);
   border-radius: 8px;
-  background-color: $base01;
+  background-color: #151922;
 }
 
-// A merged group draws the pill itself so its items read as one control.
 .right-group.merged {
   margin: 4px 3px;
-  border: 1px solid rgba($base05, 0.08);
+  border: 1px solid rgba(240, 243, 246, 0.08);
   border-radius: 8px;
-  background-color: $base01;
+  background-color: #151922;
 }
 
 .right-group.merged .right-item {
@@ -131,84 +126,82 @@ button:hover {
 }
 
 .right-group.merged .right-item:hover {
-  background-color: $base02;
+  background-color: #1d2330;
 }
 
-// GTK event boxes ignore CSS padding while measuring, so a pill that wraps its
-// text in one must carry the padding on the text node itself.
 label.right-item,
 .right-item label,
 .clock-item label,
 .tray {
-  padding: 0 $pad-x;
+  padding: 0 8px;
 }
 
 .right-item.flashgen {
-  border-color: rgba($accent, 0.35);
-  color: $accent;
+  border-color: rgba(255, 107, 122, 0.35);
+  color: #ff6b7a;
 }
 
 .right-item:hover {
-  color: $base05;
-  background-color: $base02;
+  color: #f0f3f6;
+  background-color: #1d2330;
 }
 
 .right-item.flashgen:hover {
-  color: $base00;
-  background-color: $accent;
+  color: #0f1115;
+  background-color: #ff6b7a;
 }
 
 tooltip {
-  border: 1px solid rgba($base05, 0.12);
+  border: 1px solid rgba(240, 243, 246, 0.12);
   border-radius: 8px;
-  background-color: rgba($base00, 0.98);
-  color: $base05;
-  padding: 4px $pad-x;
+  background-color: rgba(15, 17, 21, 0.98);
+  color: #f0f3f6;
+  padding: 4px 8px;
 }
 
 .ai-item {
-  color: $base05;
+  color: #f0f3f6;
 }
 
 .status {
-  color: rgba($base05, 0.8);
+  color: rgba(240, 243, 246, 0.8);
 }
 
 .status.active,
 .status.volume {
-  color: $accent;
+  color: #ff6b7a;
 }
 
 .status.muted,
 .status.warning {
-  color: $base09;
+  color: #ff9f68;
 }
 
 .status.inactive,
 .status.unavailable {
-  color: rgba($base05, 0.6);
+  color: rgba(240, 243, 246, 0.6);
 }
 
 .ai-item.mid {
-  color: $base09;
+  color: #ff9f68;
 }
 
 .ai-item.high,
 .ai-item.critical,
 .battery.critical {
-  color: $base08;
+  color: #ff6b7a;
 }
 
 .battery.warning {
-  color: $base09;
+  color: #ff9f68;
 }
 
 .calendar-popup {
   padding: 4px 6px 1px;
-  border: 1px solid rgba($base05, 0.12);
+  border: 1px solid rgba(240, 243, 246, 0.12);
   border-radius: 12px;
-  color: $base05;
-  background: rgba($base00, 0.98);
+  color: #f0f3f6;
+  background: rgba(15, 17, 21, 0.98);
 }
 
 .calendar {
@@ -222,14 +215,14 @@ tooltip {
   margin: 1px;
   padding: 0;
   border-radius: 5px;
-  color: $base00;
-  background: $accent;
+  color: #0f1115;
+  background: #ff6b7a;
   font-weight: 700;
 }
 
 .calendar.header,
 .calendar.button {
-  color: $accent;
+  color: #ff6b7a;
 }
 
 .calendar.button {
@@ -239,14 +232,14 @@ tooltip {
 }
 
 .calendar.button:hover {
-  color: $base00;
-  background: $accent;
+  color: #0f1115;
+  background: #ff6b7a;
 }
 
 .calendar.highlight {
-  color: rgba($base05, 0.72);
+  color: rgba(240, 243, 246, 0.72);
 }
 
 .calendar:indeterminate {
-  color: rgba($base05, 0.38);
+  color: rgba(240, 243, 246, 0.38);
 }

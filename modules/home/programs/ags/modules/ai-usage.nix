@@ -14,7 +14,7 @@
       exec ${pkgs.bash}/bin/bash ${script}
     '';
 in {
-  claudeScript = mkUsageScript "eww-claude-usage" ./scripts/claude-usage.sh;
-  codexScript = mkUsageScript "eww-codex-usage" ./scripts/codex-usage.sh;
-  antigravityScript = mkUsageScript "eww-antigravity-usage" ./scripts/antigravity-usage.sh;
+  claudeScript = mkUsageScript "ags-claude-usage" ./scripts/claude-usage.sh;
+  codexScript = mkUsageScript "ags-codex-usage" ./scripts/codex-usage.sh;
+  antigravityScript = mkUsageScript "ags-antigravity-usage" ./scripts/antigravity-usage.sh;
 }

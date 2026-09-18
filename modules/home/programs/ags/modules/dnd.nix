@@ -1,6 +1,6 @@
 {pkgs}:
 pkgs.writeShellApplication {
-  name = "eww-dnd-status";
+  name = "ags-dnd-status";
   runtimeInputs = [pkgs.dunst pkgs.jq];
   text = ''
     state="$(${pkgs.dunst}/bin/dunstctl is-paused 2>/dev/null || true)"

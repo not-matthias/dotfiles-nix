@@ -1,6 +1,6 @@
 {pkgs}:
 pkgs.writeShellApplication {
-  name = "eww-battery-status";
+  name = "ags-battery-status";
   runtimeInputs = [pkgs.coreutils pkgs.jq];
   text = ''
     for battery in /sys/class/power_supply/BAT*; do

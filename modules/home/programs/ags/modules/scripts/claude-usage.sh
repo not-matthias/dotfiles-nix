@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Code usage for Eww — queries usage via `omp usage -p anthropic --json`
+# Claude Code usage — queries usage via `omp usage -p anthropic --json`
 
 # shellcheck disable=SC1090,SC1091
 source "${AI_USAGE_COMMON:?AI_USAGE_COMMON not set}"
