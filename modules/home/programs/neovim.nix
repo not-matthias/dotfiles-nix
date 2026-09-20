@@ -66,6 +66,7 @@
       tabstop = 4;
       shiftwidth = 4;
       swapfile = false;
+      exrc = true;
     };
     keymaps = [
       # ============================================================================
@@ -674,14 +675,14 @@
           desc = "Format file";
         };
       }
-      {
-        mode = "n";
-        key = "<space>/";
-        action = "<cmd>Telescope live_grep<cr>";
-        options = {
-          desc = "Search text";
-        };
-      }
+      # {
+      #   mode = "n";
+      #   key = "<space>/";
+      #   action = "<cmd>Telescope live_grep<cr>";
+      #   options = {
+      #     desc = "Search text";
+      #   };
+      # }
       {
         mode = "v";
         key = "<space>/";
@@ -893,13 +894,11 @@
         keymaps = {
           "<space>gf" = "git_files";
           "<space>lg" = "live_grep";
+          "<space>/" = "live_grep";
         };
-        settings.defaults.file_ignore_patterns = [];
-        settings.defaults.layout_config.prompt_position = "top";
-        settings.defaults.sorting_strategy = "ascending";
-        settings.pickers.find_files = {
-          hidden = false;
-          no_ignore = false;
+        settings.defaults = {
+          layout_config.prompt_position = "top";
+          sorting_strategy = "ascending";
         };
         extensions = {
           file-browser.enable = true;
@@ -977,7 +976,7 @@
           view = {
             side = "left";
             centralize_selection = false;
-            width = 30;
+            width = 48;
             preserve_window_proportions = true;
           };
           actions = {
@@ -1058,22 +1057,6 @@
             yaml = ["prettier"];
             markdown = ["prettier"];
             typst = ["typstyle"];
-          };
-        };
-      };
-
-      # Copilot
-      avante = {
-        enable = false;
-        settings = {
-          provider = "copilot";
-          auto_suggestions_frequency = "copilot";
-          copilot = {
-            model = "claude-3.7-sonnet";
-          };
-          file_selector = {
-            provider = "fzf";
-            provider_opts = {};
           };
         };
       };

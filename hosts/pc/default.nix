@@ -33,7 +33,8 @@
       ida-pro
       radius2
       unstable.amdtop
-      plannotator ];
+      plannotator
+    ];
     backhub = {
       enable = true;
       # Provisioned outside this flake; contains only the raw GitHub token.
@@ -63,6 +64,7 @@
       };
       niri-organize.enable = true;
       helix.enable = true;
+      nixvim.enable = true;
       vscode.enable = true;
       binary-ninja = {
         enable = true;
@@ -211,7 +213,8 @@
 
   virtualisation = {
     podman.enable = true;
-    qemu.enable = true; };
+    qemu.enable = true;
+  };
   desktop = {
     theme = "dark";
     niri.enable = true;
