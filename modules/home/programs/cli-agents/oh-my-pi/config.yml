@@ -100,7 +100,7 @@ providers:
     - google-antigravity
     - openai-codex
     - anthropic
-  tinyModel: lfm2-230m
+  tinyModel: lfm2.5-230m
 
 retry:
   usageAwareFallback: false
