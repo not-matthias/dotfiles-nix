@@ -24,10 +24,7 @@ in {
 
       programs = {
         swaylock.enable = true;
-        ags = {
-          enable = true;
-          systemd.enable = true;
-        };
+        quickshellBar.enable = true;
         vicinae.enable = true;
       };
       services = {

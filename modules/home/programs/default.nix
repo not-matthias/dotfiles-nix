@@ -13,7 +13,7 @@
   ./editorconfig.nix
   ./fish
   ./tmux
-  ./ags
+  ./quickshell
   ./direnv.nix
   ./dunst.nix
   ./firefox.nix

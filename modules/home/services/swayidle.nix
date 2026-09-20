@@ -27,7 +27,7 @@
     else status: "${pkgs.wlopm}/bin/wlopm --${status} '*'";
   lockCmd = "${pkgs.swaylock}/bin/swaylock --daemonize";
   runUnlessCaffeinated = name: command: "${pkgs.writeShellScript "swayidle-${name}" ''
-    if ${pkgs.systemd}/bin/systemctl --user is-active --quiet ags-idle-inhibit.service; then
+    if ${pkgs.systemd}/bin/systemctl --user is-active --quiet quickshell-idle-inhibit.service; then
       exit 0
     fi
 
