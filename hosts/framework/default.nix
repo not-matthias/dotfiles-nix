@@ -164,7 +164,7 @@ in {
 
       gitui.enable = true;
       worktrunk.enable = true;
-      zen-browser.enable = true;
+      zen-browser.enable = false;
       helium.enable = true;
       minecraft.enable = true;
 
@@ -309,6 +309,7 @@ in {
         "/home/${user}/.pi/agent/sessions"
       ];
       excludes = [
+        "**/*.perf"
         # omp: advisor analysis logs + image artifacts (bash logs already excluded by *.log)
         "**/.omp/agent/sessions/**/__advisor*.jsonl"
         "**/.omp/agent/sessions/**/local"
