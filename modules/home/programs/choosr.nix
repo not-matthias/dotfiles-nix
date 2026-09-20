@@ -43,7 +43,7 @@ in {
     xdg.desktopEntries = {
       google-chrome-work = {
         name = "Google Chrome Work";
-        exec = "${pkgs.google-chrome}/bin/google-chrome-stable --user-data-dir=${config.xdg.dataHome}/google-chrome-work %U";
+        exec = "${pkgs.google-chrome}/bin/google-chrome-stable --profile-directory=\"Profile 1\" %U";
         type = "Application";
         terminal = false;
         mimeType = [
