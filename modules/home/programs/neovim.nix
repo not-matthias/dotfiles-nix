@@ -386,6 +386,25 @@
           desc = "Previous buffer/tab";
         };
       }
+
+      {
+        mode = "n";
+        key = "gn";
+        action = "<cmd>BufferLineCycleNext<cr>";
+        options = {
+          silent = true;
+          desc = "Next buffer/tab";
+        };
+      }
+      {
+        mode = "n";
+        key = "gp";
+        action = "<cmd>BufferLineCyclePrev<cr>";
+        options = {
+          silent = true;
+          desc = "Previous buffer/tab";
+        };
+      }
       {
         mode = "n";
         key = "<C-t>";
@@ -658,9 +677,9 @@
       {
         mode = "n";
         key = "<space>/";
-        action = "<Plug>(comment_toggle_linewise_current)";
+        action = "<cmd>Telescope live_grep<cr>";
         options = {
-          desc = "Toggle comment";
+          desc = "Search text";
         };
       }
       {
@@ -876,6 +895,8 @@
           "<space>lg" = "live_grep";
         };
         settings.defaults.file_ignore_patterns = [];
+        settings.defaults.layout_config.prompt_position = "top";
+        settings.defaults.sorting_strategy = "ascending";
         settings.pickers.find_files = {
           hidden = false;
           no_ignore = false;
