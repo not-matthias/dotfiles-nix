@@ -37,6 +37,7 @@ in {
   "slskd-env.age".publicKeys = systems;
   "solidtime.age".publicKeys = systems;
   "ziit.age".publicKeys = systems;
+  "timeguard-rules.age".publicKeys = systems;
   "wakapi-salt.age".publicKeys = systems;
 
   "pi-mono-env.age".publicKeys = systems;

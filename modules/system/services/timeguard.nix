@@ -1,15 +1,16 @@
-{flakes, ...}: {
+{
+  config,
+  flakes,
+  ...
+}: {
   imports = [flakes.timeguard.nixosModules.default];
 
-  services.timeguard.settings.rule = [
-    {
-      name = "distraction-window";
-      domains = ["reddit.com" "x.com" "youtube.com" "twitch.tv" "bhn.vercel.app" "news.ycombinator.com" "redlib.catsarch.com"];
-      schedule = {
-        days = ["sun" "mon" "tue" "wed" "thu" "fri" "sat"];
-        start = "19:00";
-        end = "18:30";
-      };
-    }
-  ];
+  age.secrets.timeguard-rules = {
+    file = ../../../secrets/timeguard-rules.age;
+    owner = "root";
+    group = "timeguard-proxy";
+    mode = "0440";
+  };
+
+  services.timeguard.rulesFile = config.age.secrets.timeguard-rules.path;
 }
