@@ -97,7 +97,6 @@
 
       gitui.enable = true;
       firefox.enable = false;
-      zen-browser.enable = true;
 
       obs-studio = {
         enable = true;

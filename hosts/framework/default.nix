@@ -164,7 +164,6 @@ in {
 
       gitui.enable = true;
       worktrunk.enable = true;
-      zen-browser.enable = false;
       helium.enable = true;
       minecraft.enable = true;
 
