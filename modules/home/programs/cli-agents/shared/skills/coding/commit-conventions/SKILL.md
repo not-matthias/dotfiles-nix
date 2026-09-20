@@ -35,7 +35,6 @@ fix: keep keyboards and mice awake despite powertop autosuspend
 fix(ida-pro): fix plugin loading errors for bindiff and binsync
 fix: pin docker container images to specific versions instead of latest
 fix: tune ZFS txg_sync and zrepl retention to reduce CPU overhead
-feat: add agent-browser with versioned npm cache and corruption recovery
 feat(niri): add shortcuts for focusing on columns
 ```
 

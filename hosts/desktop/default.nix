@@ -36,7 +36,6 @@
       };
       # rust.enable = true;
       cli-agents = {
-        agent-browser.enable = true;
         codex.enable = true;
         amp.enable = true;
         pi-mono = {

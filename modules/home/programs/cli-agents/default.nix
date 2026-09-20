@@ -14,7 +14,6 @@ in {
     description = "Program-owned skill directories keyed by exposed skill name; values are directories containing SKILL.md.";
   };
   imports = [
-    ./agent-browser/default.nix
     ./claude/default.nix
     ./codex/default.nix
     ./hermes/default.nix

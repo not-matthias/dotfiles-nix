@@ -102,7 +102,6 @@ in {
       helix.enable = true;
       idasql.enable = true;
       cli-agents = {
-        agent-browser.enable = true;
         claude.enable = true;
         codex.enable = true;
         amp.enable = true;

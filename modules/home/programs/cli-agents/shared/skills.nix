@@ -5,7 +5,6 @@
 # level too deep. Expose a farm of symlinks instead, one entry per skill:
 #
 #   $out/code-style   -> <store>/coding/code-style
-#   $out/agent-browser -> <store>/third-party/vercel-labs/agent-browser
 #
 # Targets are absolute so the links survive being copied into home-manager's file tree, which
 # preserves symlinks verbatim rather than following them.
