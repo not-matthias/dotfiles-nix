@@ -1,34 +1,27 @@
 import QtQuick
+import Quickshell
 import Quickshell.Io
+import Quickshell.Services.Pipewire
 import qs.Shared
 
 BarButton {
     id: root
 
-    text: statusPoll.value.text
-    tooltipText: statusPoll.value.tooltip
-    foreground: Theme.statusColor(statusPoll.value.class)
+    property var sink: Pipewire.defaultAudioSink
+    readonly property bool ready: sink?.ready ?? false
+    readonly property real volume: ready ? (sink.audio?.volume ?? 0) : 0
+    readonly property bool muted: ready ? (sink.audio?.muted ?? false) : false
+    readonly property int percentage: Math.round(volume * 100)
+
+    text: !ready ? "vol unavailable" : muted ? "vol muted" : `vol ${percentage}%`
+    tooltipText: !ready ? "Audio sink unavailable" : muted ? "Volume: muted" : `Volume: ${percentage}%`
+    foreground: Theme.statusColor(!ready ? "unavailable" : muted ? "muted" : "volume")
     background: "transparent"
     borderColor: "transparent"
-    interactive: true
+    interactive: ready
 
-    JsonPoll {
-        id: statusPoll
-
-        command: Commands.volumeStatus
-        interval: 250
-        fallback: ({
-                text: "vol unavailable",
-                tooltip: "Audio sink unavailable",
-                class: "unavailable",
-                percentage: 0
-            })
-    }
-
-    Process {
-        id: volumeProcess
-        command: []
-        onExited: statusPoll.refresh()
+    PwObjectTracker {
+        objects: root.sink ? [root.sink] : []
     }
 
     Process {
@@ -38,10 +31,9 @@ BarButton {
     }
 
     function adjustVolume(steps) {
-        if (steps === 0)
+        if (steps === 0 || !sink?.audio)
             return;
-        volumeProcess.command = [Commands.wpctl, "set-volume", "-l", "1.0", "@DEFAULT_AUDIO_SINK@", steps > 0 ? "1%+" : "1%-",];
-        volumeProcess.running = true;
+        sink.audio.volume = Math.max(0, Math.min(1, volume + steps * 0.01));
     }
 
     onClicked: function (button) {

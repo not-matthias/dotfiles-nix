@@ -13,7 +13,6 @@
   aiUsage = import ./config/Components/AiUsage/default.nix {inherit pkgs;};
   idleInhibit = import ./config/Components/IdleInhibit/default.nix {inherit pkgs;};
   dnd = import ./config/Components/DoNotDisturb/default.nix {inherit pkgs;};
-  volume = import ./config/Components/Volume/default.nix {inherit pkgs;};
   battery = import ./config/Components/Battery/default.nix {inherit pkgs;};
 
   flashgenEnabled = cfg.flashgenWordOfHour.enable;
@@ -32,7 +31,6 @@
       aiUsage.codexScript
       aiUsage.antigravityScript
       dnd
-      volume
       battery
       idleInhibit.status
     ]
@@ -47,11 +45,9 @@
     antigravityUsage = "${aiUsage.antigravityScript}/bin/quickshell-antigravity-usage";
     idleInhibitStatus = "${idleInhibit.status}/bin/quickshell-idle-inhibit-status";
     dndStatus = "${dnd}/bin/quickshell-dnd-status";
-    volumeStatus = "${volume}/bin/quickshell-volume-status";
     batteryStatus = "${battery}/bin/quickshell-battery-status";
     pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
     dunstctl = "${pkgs.dunst}/bin/dunstctl";
-    wpctl = "${pkgs.wireplumber}/bin/wpctl";
     niri = "${pkgs.niri}/bin/niri";
     systemctl = "${pkgs.systemd}/bin/systemctl";
   };
@@ -68,11 +64,9 @@
         readonly property string antigravityUsage: ${builtins.toJSON commands.antigravityUsage}
         readonly property string idleInhibitStatus: ${builtins.toJSON commands.idleInhibitStatus}
         readonly property string dndStatus: ${builtins.toJSON commands.dndStatus}
-        readonly property string volumeStatus: ${builtins.toJSON commands.volumeStatus}
         readonly property string batteryStatus: ${builtins.toJSON commands.batteryStatus}
         readonly property string pavucontrol: ${builtins.toJSON commands.pavucontrol}
         readonly property string dunstctl: ${builtins.toJSON commands.dunstctl}
-        readonly property string wpctl: ${builtins.toJSON commands.wpctl}
         readonly property string niri: ${builtins.toJSON commands.niri}
         readonly property string systemctl: ${builtins.toJSON commands.systemctl}
     }
