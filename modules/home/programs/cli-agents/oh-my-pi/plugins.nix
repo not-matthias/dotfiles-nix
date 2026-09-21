@@ -10,6 +10,10 @@
       version = "0.1.0";
       source = pkgs.callPackage ../../../../../pkgs/pi-mono/packages/omp-reflect.nix {};
     };
+    "omp-oracle" = {
+      version = "0.3.2";
+      source = pkgs.callPackage ../../../../../pkgs/pi-mono/packages/omp-oracle.nix {};
+    };
     "pi-autoresearch" = {
       version = "1.6.2";
       source = pkgs.fetchzip {
