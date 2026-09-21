@@ -32,9 +32,18 @@ Singleton {
         }
 
         onRunningChanged: {
-            if (!running)
-                running = true;
+            if (running)
+                retryTimer.stop();
+            else
+                retryTimer.restart();
         }
+    }
+
+    Timer {
+        id: retryTimer
+        interval: 1000
+        repeat: false
+        onTriggered: stateProcess.running = true
     }
 
     function consume(line) {

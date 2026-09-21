@@ -70,10 +70,6 @@ pkgs.writeShellApplication {
 
     while :; do
       refresh
-      ${pkgs.niri}/bin/niri msg --json event-stream 2>/dev/null |
-        while IFS= read -r _event; do
-          refresh
-        done
       ${pkgs.coreutils}/bin/sleep 1
     done
   '';
