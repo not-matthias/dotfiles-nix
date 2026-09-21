@@ -15,7 +15,7 @@ BarButton {
 
     text: !ready ? "vol unavailable" : muted ? "vol muted" : `vol ${percentage}%`
     tooltipText: !ready ? "Audio sink unavailable" : muted ? "Volume: muted" : `Volume: ${percentage}%`
-    foreground: Theme.statusColor(!ready ? "unavailable" : muted ? "muted" : "volume")
+    foreground: !ready ? Theme.muted : muted ? Theme.warning : Theme.foreground
     background: "transparent"
     borderColor: "transparent"
     interactive: ready
