@@ -7,6 +7,7 @@ import qs.Components.DoNotDisturb
 import qs.Components.Flashgen
 import qs.Components.IdleInhibit
 import qs.Components.Language
+import qs.Components.Media
 import qs.Components.SystemTray
 import qs.Components.Volume
 import qs.Components.Workspaces
@@ -14,6 +15,7 @@ import qs.Shared
 
 Item {
     id: bar
+    required property var screen
 
     implicitHeight: Theme.barHeight
     anchors.fill: parent
@@ -30,9 +32,22 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
     }
 
-    Clock {
-        id: clock
+    Row {
+        id: centerItems
         anchors.centerIn: parent
+        spacing: 4
+
+        Media {
+            id: media
+            popupCenterX: centerItems.x + media.x + media.width / 2
+            screen: bar.screen
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
+        Clock {
+            id: clock
+            anchors.verticalCenter: parent.verticalCenter
+        }
     }
 
     Row {

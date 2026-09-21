@@ -25,6 +25,7 @@ ShellRoot {
             color: "transparent"
 
             Bar {
+                screen: modelData
                 anchors.fill: parent
             }
         }
