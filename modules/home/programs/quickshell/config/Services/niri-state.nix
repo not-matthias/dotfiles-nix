@@ -35,6 +35,7 @@ pkgs.writeShellApplication {
               workspaces: ([
                 $workspaces[]
                 | select($output != null and .output == $output)
+                | select(.name != null)
                 | {
                     id,
                     idx,
