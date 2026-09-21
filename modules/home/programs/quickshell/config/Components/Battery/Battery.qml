@@ -4,13 +4,26 @@ import qs.Shared
 BarButton {
     id: root
 
-    text: statusPoll.value.text
+    readonly property int percentage: statusPoll.value.percentage
+    function iconForPercentage() {
+        if (percentage < 15)
+            return "\uf244";
+        if (percentage < 30)
+            return "\uf243";
+        if (percentage < 60)
+            return "\uf242";
+        if (percentage < 90)
+            return "\uf241";
+        return "\uf240";
+    }
+
+    text: iconForPercentage()
     tooltipText: statusPoll.value.tooltip
     foreground: Theme.statusColor(statusPoll.value.class)
     background: "transparent"
     borderColor: "transparent"
     interactive: false
-    visible: text !== ""
+    visible: statusPoll.value.available
 
     JsonPoll {
         id: statusPoll
@@ -18,7 +31,7 @@ BarButton {
         command: Commands.batteryStatus
         interval: 60_000
         fallback: ({
-                text: "",
+                available: false,
                 tooltip: "No battery",
                 class: "unavailable",
                 percentage: 0

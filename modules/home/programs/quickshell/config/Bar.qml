@@ -65,9 +65,8 @@ Item {
             DoNotDisturb {}
         }
 
-        Language {}
-
         PillGroup {
+            Language {}
             Volume {}
             Battery {}
         }

@@ -1,17 +1,28 @@
 import QtQuick
 import Quickshell
 import Quickshell.Services.SystemTray as SystemTrayService
+import qs.Shared
 
-Row {
+PillGroup {
     id: root
 
-    readonly property bool hasItems: SystemTrayService.SystemTray.items.values.length > 0
+    visible: SystemTrayService.SystemTray.items.values.length > 0
 
-    spacing: 2
-    visible: hasItems
+    Item {
+        anchors.verticalCenter: parent.verticalCenter
+        implicitWidth: trayItems.implicitWidth + 16
+        implicitHeight: trayItems.implicitHeight
 
-    Repeater {
-        model: SystemTrayService.SystemTray.items
-        delegate: TrayItem {}
+        Row {
+            id: trayItems
+
+            anchors.centerIn: parent
+            spacing: 2
+
+            Repeater {
+                model: SystemTrayService.SystemTray.items
+                delegate: TrayItem {}
+            }
+        }
     }
 }

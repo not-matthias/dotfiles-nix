@@ -15,11 +15,11 @@ pkgs.writeShellApplication {
       elif [ "$capacity" -lt 30 ]; then
         class="warning"
       fi
-      ${pkgs.jq}/bin/jq -cn --arg text "bat ''${capacity}%" --arg tooltip "Battery: ''${capacity}% (''${status})" --arg class "$class" --argjson percentage "$capacity" \
-        '{text: $text, tooltip: $tooltip, class: $class, percentage: $percentage}'
+      ${pkgs.jq}/bin/jq -cn --arg tooltip "Battery: ''${capacity}% (''${status})" --arg class "$class" --argjson percentage "$capacity" \
+        '{available: true, tooltip: $tooltip, class: $class, percentage: $percentage}'
       exit 0
     done
 
-    ${pkgs.jq}/bin/jq -cn '{text: "", tooltip: "No battery", class: "unavailable", percentage: 0}'
+    ${pkgs.jq}/bin/jq -cn '{available: false, tooltip: "No battery", class: "unavailable", percentage: 0}'
   '';
 }
