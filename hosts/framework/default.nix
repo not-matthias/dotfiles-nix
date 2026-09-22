@@ -34,6 +34,9 @@ in {
     pkgs,
     ...
   }: {
+    imports = [
+      ../../modules/home/programs/taskwarrior.nix
+    ];
     home.stateVersion = "22.05";
     home.packages = with pkgs; [
       uv

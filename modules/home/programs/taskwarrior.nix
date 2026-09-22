@@ -10,7 +10,7 @@
       owner = "ralphbean";
       repo = "bugwarrior";
       rev = "develop";
-      sha256 = "sha256-wE83O5BTQKgAURVnqClBjMbkO6snkVsWdy2y/+YAFZA=";
+      sha256 = "sha256-0W4ZSy0lcOK8h44SUckgrnLQP9Ce/3C+qtj+VV43LUs=";
     };
 
     nativeBuildInputs = with pkgs.python3Packages; [
