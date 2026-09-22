@@ -68,7 +68,7 @@ modelRoles:
 
 task:
   isolation:
-    mode: auto
+    enabled: true
   showResolvedModelBadge: true
   enableLsp: true
   maxEffort: xhigh
