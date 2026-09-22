@@ -2,10 +2,11 @@ import QtQuick
 import Quickshell
 import qs.Shared
 import Quickshell.Io
+import qs.Services
 
 BarButton {
     id: root
-    property var status: statusPoll.value || statusPoll.fallback
+    property var status: Status.dnd
 
     background: "transparent"
     borderColor: "transparent"
@@ -14,24 +15,10 @@ BarButton {
     text: status.text
     tooltipText: status.tooltip
 
-    JsonPoll {
-        id: statusPoll
-
-        command: Commands.dndStatus
-        interval: 2000
-        fallback: ({
-                text: "󰂚",
-                tooltip: "Do not disturb: OFF",
-                class: "inactive"
-            })
-    }
-
     Process {
         id: action
 
         command: [Commands.dunstctl, "set-paused", "toggle"]
-
-        onExited: statusPoll.refresh()
     }
 
     onClicked: function (button) {
