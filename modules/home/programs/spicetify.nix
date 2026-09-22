@@ -26,7 +26,6 @@ in {
           hidePodcasts
           shuffle
           songStats
-          betterGenres
           catJamSynced
           privateSession
           sideHide
