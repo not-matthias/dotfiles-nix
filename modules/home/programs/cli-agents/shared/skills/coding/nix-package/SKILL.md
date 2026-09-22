@@ -1,104 +1,49 @@
 ---
 name: nix-package
-description: Creating and debugging Nix packages - fetchers, hash generation, overlays, AppImage wrapping, and common build patterns for NixOS dotfiles.
+description: "Creating and debugging Nix packages in dotfiles: fetchers, hashes, overlays, prebuilt artifacts, AppImages, and runtime wrappers."
 license: MIT
 ---
 
-# Nix Package Creation & Debugging
+# Nix package creation and debugging
 
-Guide for creating custom Nix packages, debugging build failures, and integrating packages into a NixOS overlay.
+Use this skill when adding or updating a package under `pkgs/`, wiring it into the dotfiles overlay or a host, debugging evaluation/build failures, or packaging an AppImage or other prebuilt artifact.
 
-## When to Use This Skill
+## Choose the workflow
 
-- Creating a new package in `pkgs/`
-- Updating a package version (hash mismatch)
-- Debugging eval errors or build failures
-- Wrapping an AppImage or prebuilt binary
-- Adding a package to the overlay
+Start by inspecting the real source or release (`file`, `tar tzf`, `ldd`, and `objdump -p`). Do not infer an artifact's layout or dependencies.
 
-## Rapid Prototyping
+- **Raw ELF, flat tarball, Bun executable, AppImage, Qt GUI, or a source tree that needs writable user state:** follow [references/prebuilt-artifacts.md](references/prebuilt-artifacts.md).
+- **A prebuilt ELF fails at runtime after `patchELF`:** follow [references/elf-rpath.md](references/elf-rpath.md), especially for `dlopen`-loaded libraries.
+- **Normal source package:** use the generic derivation and wiring workflow below.
 
-Before writing a full package, test dependencies or binaries in a shell:
+The prebuilt references describe immutable packages installed in the Nix store. Do not silently substitute them for mutable self-updating foreign binaries or a `nix-ld` workflow.
+
+## Rapid prototyping
+
+Try dependencies and dynamic linking before writing a full derivation:
 
 ```bash
-# Enter shell with specific packages
 nix-shell -p openssl pkg-config gnumake
-
-# Test a prebuilt binary's dynamic links
 nix-shell -p ldd --run "ldd ./my-binary"
-```
-
-### Boilerplate Generation
-
-Use **`nix-init`** to automatically generate a package from a URL or repo:
-
-```bash
 nix-shell -p nix-init --run "nix-init https://github.com/user/repo"
 ```
 
-It handles hash generation, fetchers, and standard build inputs automatically.
+`nix-init` is a starting point, not a substitute for checking the generated fetcher, metadata, install layout, and runtime dependencies.
 
-## Adding a New Package
+## Generic source package
 
-### Step 1: Create `pkgs/<name>/default.nix` (or `pkgs/<name>.nix`)
+Create `pkgs/<name>.nix` (or `pkgs/<name>/default.nix`) with a real version, source hash, build inputs, and metadata:
 
-#### URL/Tarball (prebuilt binary)
 ```nix
-{lib, stdenv, fetchurl, ...}: let
-  pname = "my-app";
-  version = "1.2.3";
-in stdenv.mkDerivation {
-  inherit pname version;
-  src = fetchurl {
-    url = "https://example.com/my-app-${version}.tar.gz";
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-  };
-  installPhase = ''
-    mkdir -p $out/bin
-    cp my-app $out/bin/
-    chmod +x $out/bin/my-app
-  '';
-  meta = {
-    description = "My application";
-    homepage = "https://example.com";
-    license = lib.licenses.mit;
-    platforms = lib.platforms.linux;
-    mainProgram = "my-app";
-  };
-}
-```
-
-#### AppImage
-```nix
-{lib, appimageTools, fetchurl}: let
-  pname = "my-app";
-  version = "1.2.3";
-  src = fetchurl {
-    url = "https://example.com/my-app-${version}.AppImage";
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-  };
-in appimageTools.wrapType2 {
-  inherit pname version src;
-  meta = {
-    description = "My application";
-    homepage = "https://example.com";
-    license = lib.licenses.unfree;
-    platforms = ["x86_64-linux"];
-    mainProgram = pname;
-  };
-}
-```
-
-#### GitHub Source
-```nix
-{lib, stdenv, fetchFromGitHub, cmake, ...}: stdenv.mkDerivation rec {
+{lib, stdenv, fetchFromGitHub, cmake, ...}:
+stdenv.mkDerivation rec {
   pname = "my-tool";
   version = "1.2.3";
   src = fetchFromGitHub {
     owner = "org";
     repo = "repo";
     rev = "v${version}";
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-...";
   };
   nativeBuildInputs = [cmake];
   meta = {
@@ -106,113 +51,91 @@ in appimageTools.wrapType2 {
     homepage = "https://github.com/org/repo";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
+    mainProgram = pname;
   };
 }
 ```
 
-### Step 2: Register in overlay (`modules/overlays/pkgs.nix`)
+For a URL/tarball package, use `fetchurl` and install the actual program under `$out/bin`. For an AppImage, use the extraction and desktop-entry procedure in the reference rather than guessing filenames.
+
+## Hashes and version updates
+
+For a release asset:
+
+```bash
+curl -fsSL -o /tmp/artifact.tar.gz <release-url>
+nix hash file /tmp/artifact.tar.gz
+```
+
+For an unpacked GitHub source archive:
+
+```bash
+nix-prefetch-url --unpack <url> | xargs -I{} nix hash to-sri --type sha256 {}
+```
+
+A placeholder SRI hash can be used while drafting; copy Nix's reported hash from the mismatch. Prefer a published checksum when available.
+
+Before updating an existing package, inspect upstream changes. Electron applications may need a new `electron_NN`; removed build dependencies require removing their hooks and inputs; changed source paths require updating `substituteInPlace` targets.
+
+## Overlay and host installation
+
+Register the package in `modules/overlays/pkgs.nix`:
 
 ```nix
 (_self: super: {
   my-app = super.callPackage ../../pkgs/my-app.nix {};
-  # For subdirectory packages:
-  my-app = super.callPackage ../../pkgs/my-app {};
+  # A directory package uses ../../pkgs/my-app instead.
 })
 ```
 
-### Step 3: Add to host config
+Then install it explicitly:
 
 ```nix
 home.packages = with pkgs; [my-app];
-# or system-wide:
+# or:
 environment.systemPackages = with pkgs; [my-app];
 ```
 
-## Updating Existing Packages
+The overlay alone does not install a package or create a top-level flake output. A new `pkgs/<name>.nix` must be staged before flakes can see it; already tracked dirty edits remain visible.
 
-Before editing a package for a new version, check what changed upstream:
+## Debugging
 
-```bash
-# For electron apps — fetch package.json from the new tag to verify:
-# - electron version (may need electron_NN bump in nix)
-# - dropped dependencies (e.g. sass-embedded removed → delete preBuild hook)
-curl -s "https://raw.githubusercontent.com/<owner>/<repo>/refs/tags/v<version>/package.json" | jq '{electron: .devDependencies.electron}'
-```
-
-Changes to watch for:
-- **Electron version bump** → update `electron_NN` input
-- **Dropped build-time deps** (sass, native addons) → remove corresponding `nativeBuildInputs` and build hooks
-- **New postPatch substitutions** → check if old `substituteInPlace` paths still exist in the new source
-
-## Getting Hashes
-
-**Start with a fake hash — Nix will tell you the real one:**
-
-```nix
-hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-```
-
-Build fails with: `hash mismatch ... got: sha256-<actual>` — copy that value.
-
-```bash
-# Prefetch before writing the package
-nix-prefetch-url --type sha256 <url>
-# Convert hex → SRI: nix hash to-sri --type sha256 <hex>
-
-# For GitHub
-nix-prefetch-fetchFromGitHub --owner <org> --repo <repo> --rev <tag>
-```
-
-## Debugging Build Failures
-
-### Eval errors (before build)
+Evaluation failures happen before a build:
 
 ```bash
 sudo nixos-rebuild build --flake .#framework --show-trace
-# Cached failure? Force re-eval:
 sudo nixos-rebuild build --flake .#framework --option eval-cache false
 ```
 
-Common eval errors:
-- `attribute 'X' missing` → Check overlay registration or callPackage args
-- `infinite recursion` → Use `super` not `self` in overlay
-- `cannot coerce X to string` → Wrong type passed to a string context
+Common causes:
 
-### Build errors (during build)
+- `attribute 'X' missing`: check overlay registration and `callPackage` arguments.
+- `infinite recursion`: use `super`, not `self`, in the overlay.
+- `cannot coerce X to string`: check the value's type and string context.
+
+For a package-only build, use an explicit `callPackage` expression rather than `nix build -f` for derivations with arguments:
 
 ```bash
-# Build single package in isolation
-# NOTE: nix build -f pkgs/<name>.nix only works for argument-free packages.
-# For callPackage-style packages (with lib, stdenv, etc.) use:
-nix build --impure --expr 'let pkgs = import <nixpkgs> {}; in pkgs.callPackage ./pkgs/<name>.nix {}'
-
-# Interactive build env
-nix develop .#<derivation>
+nix build --impure --expr \
+  'let pkgs = import <nixpkgs> {}; in pkgs.callPackage ./pkgs/<name>.nix {}'
 ```
 
-Common build errors:
-- Missing library → add to `buildInputs`
-- Missing build tool → add to `nativeBuildInputs`
-- Prebuilt binary RPATH issues:
-  ```nix
-  nativeBuildInputs = [patchelf autoPatchelfHook];
-  buildInputs = [stdenv.cc.cc.lib zlib];
-  ```
+Missing libraries belong in `buildInputs`; missing build tools belong in `nativeBuildInputs`. For an ELF whose RPATH is broken after fixup, use [references/elf-rpath.md](references/elf-rpath.md) rather than adding arbitrary `LD_LIBRARY_PATH`.
 
-## Using Unstable Packages
+## Unstable packages
+
+Use an explicitly provided unstable package set in modules:
 
 ```nix
-# In a module
 {pkgs-unstable, ...}: {
   home.packages = [pkgs-unstable.some-package];
 }
 ```
 
-## Checklist for New Package
+## Completion checklist
 
-- [ ] `nix build -f pkgs/<name>.nix` succeeds
-- [ ] Overlay entry in `modules/overlays/pkgs.nix`
-- [ ] Added to `home.packages` or `environment.systemPackages`
-- [ ] `sudo nixos-rebuild build --flake .#framework` succeeds
-- [ ] `meta.mainProgram` set for executables
-- [ ] License set (`lib.licenses.unfree` for proprietary)
+- [ ] Source layout, link dependencies, and license were inspected.
+- [ ] `pkgs/<name>.nix` has a real hash and `meta.mainProgram` where applicable.
+- [ ] Overlay entry points to the package.
+- [ ] Package is present in `home.packages` or `environment.systemPackages`.
+- [ ] Prebuilt-specific handling follows the applicable reference.
