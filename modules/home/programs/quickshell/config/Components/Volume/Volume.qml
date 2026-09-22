@@ -13,9 +13,9 @@ BarButton {
     readonly property bool muted: ready ? (sink.audio?.muted ?? false) : false
     readonly property int percentage: Math.round(volume * 100)
 
-    text: !ready || muted ? "\uf026" : volume < 0.5 ? "\uf027" : "\uf028"
+    text: !ready || muted ? "󰖁" : volume < 0.5 ? "\uf027" : "\uf028"
     tooltipText: !ready ? "Audio sink unavailable" : muted ? "Volume: muted" : `Volume: ${percentage}%`
-    foreground: !ready ? Theme.muted : muted ? Theme.warning : Theme.foreground
+    foreground: !ready ? Theme.muted : Theme.foreground
     background: "transparent"
     borderColor: "transparent"
     interactive: ready
