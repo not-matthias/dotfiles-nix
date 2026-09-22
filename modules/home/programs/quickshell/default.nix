@@ -12,7 +12,6 @@
   aiUsage = import ./config/Components/AiUsage/default.nix {inherit pkgs;};
   idleInhibit = import ./config/Components/IdleInhibit/default.nix {inherit pkgs;};
   statusBridge = import ./config/Services/status-bridge.nix {inherit pkgs;};
-  battery = import ./config/Components/Battery/default.nix {inherit pkgs;};
 
   flashgenEnabled = cfg.flashgenWordOfHour.enable;
   flashgenFallback = pkgs.writeShellScriptBin "quickshell-flashgen-disabled" ''
@@ -29,7 +28,6 @@
       aiUsage.codexScript
       aiUsage.antigravityScript
       statusBridge.bridge
-      battery
     ]
     ++ lib.optionals flashgenEnabled [flashgen.script]
     ++ lib.optionals (!flashgenEnabled) [flashgenFallback];
@@ -40,7 +38,6 @@
     codexUsage = "${aiUsage.codexScript}/bin/quickshell-codex-usage";
     antigravityUsage = "${aiUsage.antigravityScript}/bin/quickshell-antigravity-usage";
     statusBridge = "${statusBridge.bridge}/bin/quickshell-status-bridge";
-    batteryStatus = "${battery}/bin/quickshell-battery-status";
     pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
     dunstctl = "${pkgs.dunst}/bin/dunstctl";
     niri = "${pkgs.niri}/bin/niri";
@@ -57,7 +54,6 @@
         readonly property string codexUsage: ${builtins.toJSON commands.codexUsage}
         readonly property string antigravityUsage: ${builtins.toJSON commands.antigravityUsage}
         readonly property string statusBridge: ${builtins.toJSON commands.statusBridge}
-        readonly property string batteryStatus: ${builtins.toJSON commands.batteryStatus}
         readonly property string pavucontrol: ${builtins.toJSON commands.pavucontrol}
         readonly property string dunstctl: ${builtins.toJSON commands.dunstctl}
         readonly property string niri: ${builtins.toJSON commands.niri}
