@@ -10,6 +10,7 @@ Reduce startup context without losing useful procedures. Audit and propose by de
 ## Choose the procedure
 
 - For merging, generalizing, or retiring skills, read [Merge review](references/merge-review.md).
+- For an approved bulk merge, follow the [bulk merge procedure](references/merge-review.md#bulk-merges).
 - For missing skills, wrong versions, hidden entries, or dotfiles-nix wiring, read [Discovery](references/discovery.md).
 - Only when project-local relocation is requested, read [Relocation](references/relocation.md).
 

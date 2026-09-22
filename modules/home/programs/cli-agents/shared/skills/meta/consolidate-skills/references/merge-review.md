@@ -56,6 +56,22 @@ For each conflict:
 
 The newest file is not automatically authoritative. Do not silently combine incompatible commands or select whichever wording sounds more confident.
 
+## Bulk merges
+
+Use after the source set and destinations are approved. Small merges can run inline; parallelize only independent destinations.
+
+1. **Freeze the scope.** Record one destination per approved source. Count previously merged sources separately. Report unresolved sources as blocked; do not present a completed subset as the whole merge.
+
+2. **Separate relocation from prose edits.** Preserve complete directories, file modes, symlinks, nested layouts, and source attribution/license metadata. Record exact substitutions for moved links. Rewrite only approved retiring roots: map bare `skill://old` to `skill://new/references/old/guide.md`, and `skill://old/<suffix>` to `skill://new/references/old/<suffix>`, retaining fragments and selectors. Preserve retained external dependencies and verify them separately. Keep a backup manifest so expected content can be derived independently of writer output.
+
+3. **Assign ownership before dispatch.** Give each destination one writer and shared caller edits one owner. Check available tools first. One integration owner controls registration and retirement. For an existing survivor, preserve its current description and body exactly, then append unique new routes; never replace prior routes. For a parent-only registration API, workers return metadata and body separately; the body has no frontmatter.
+
+4. **Resolve routing conflicts.** Treat classifier judgments as review evidence, not deletion authority. Inspect uncertain placements and rare-case routing failures. Express conflicting variants as mutually exclusive conditions in the router; separate files alone do not resolve ambiguity. Do not turn restrictions from a past task into general policy.
+
+5. **Verify independently.** Save expected post-transform hashes before retirement. Compare actual paths, transformed-content hashes, modes, and symlinks with backup-derived expectations, applying only declared rewrites. Require exact source-to-destination coverage, not matching totals alone. Check caller substitutions and resolve both skill URIs and relative links, distinguishing real links from code examples. Parse URI root segments when checking retired names, then verify retained external dependencies separately. Worker reports do not replace these checks.
+
+6. **Retire in two stages.** Register replacements and verify their routes and updated callers before removing originals. Immediately before retirement, confirm the originals still match their backups; stop for any changed source rather than deleting new work. After retirement, verify replacement files remain, old entry points are absent, and no callers reference retired names. For approved exclusions that must remain recoverable, use the [archive procedure](skill://archive-single-use-managed-skills) rather than deleting them.
+
 ## Suggest canonical dotfiles-nix destinations
 Keep managed consolidations in managed storage by default. Repository targets are separate suggestions requiring explicit approval; project-specific knowledge stays global unless scope changes are requested.
 
