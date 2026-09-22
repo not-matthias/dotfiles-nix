@@ -38,11 +38,8 @@ Item {
     Timer {
         interval: 250
         repeat: true
-        running: root.popupVisible && root.player !== null && root.player.positionSupported
-        onTriggered: {
-            root.player.positionChanged();
-            root.refreshPosition();
-        }
+        running: root.popupVisible && root.player !== null && root.player.positionSupported && root.player.isPlaying
+        onTriggered: root.refreshPosition()
     }
 
     Rectangle {
