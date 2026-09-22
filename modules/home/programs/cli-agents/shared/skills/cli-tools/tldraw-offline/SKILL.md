@@ -1,182 +1,116 @@
 ---
 name: tldraw-offline
-description: Operate the user's tldraw offline canvas app, including open .tldraw or .tldr files. Use whenever a task involves inspecting, editing, arranging, connecting, linting, or scripting a tldraw Desktop canvas.
+description: "Operate the user's tldraw offline canvas and open .tldraw/.tldr files: inspect shapes, make bound diagrams, arrange or script durable behavior, lint/screenshot the result, and persist requested edits."
 ---
 
 # tldraw canvas operator
 
-Use this skill for tasks involving open tldraw Desktop files. The desktop app exposes a local HTTP server that can list documents, inspect canvas state, capture screenshots, execute JavaScript against a live editor, and expose live script files for durable behavior.
+Use this skill for an open tldraw Desktop document when the task involves inspecting, editing, arranging, connecting, linting, scripting, or saving a canvas.
 
-## Server
+## Operating boundary
 
-The default server is `http://localhost:7236`. If that port is not active, read the `port` from `$HOME/.config/tldraw/server.json`.
+- Inspect the target document, shapes, bindings, and viewport before mutating anything. Separate read-only inspection from `/exec` mutation and from on-disk save.
+- Static drawing edits (moving, arranging, labeling, styling) use `/api/doc/:id/exec`. Durable behavior (clickable UI, animations, reactive layouts, run-on-open logic) uses `/script-workspace` and direct edits under `script/**`.
+- Never delete unknown shapes, all page contents, or an entire document. Restrict deletion to ids established for the requested panel/keep-set and to arrows whose bindings are part of that known set.
+- Never edit an open `.tldraw` archive, `db.sqlite`, `db.sqlite-wal`, `db.sqlite-shm`, `metadata.json`, `.lock`, or `.script-workspace/**` directly.
+- For diagram layout, use [diagram-layout.md](references/diagram-layout.md). For generic appearance and comparisons, use [diagram-style.md](references/diagram-style.md). For status-DAG/work dashboards, use [status-dag.md](references/status-dag.md). For requested on-disk persistence, use [save-to-disk.md](references/save-to-disk.md).
 
-A clean quit removes `server.json`; the next launch rewrites it. It also records `pid` and `startedAt`, so if the file is present but requests to its `port` fail, treat it as stale (the app quit uncleanly) — the app is not running.
+## Server and authentication
 
-Every request except `GET /` and `/readme` needs the per-launch `token` from that same `server.json`, sent as `-H "authorization: Bearer <token>"`.
+The default server is `http://localhost:7236`. If that port is inactive, read `port` and the per-launch `token` from `$HOME/.config/tldraw/server.json`. A clean quit removes that file; it also records `pid` and `startedAt`. If the file exists but requests to its port fail, treat it as stale: the app is not running.
 
-**If the server's base URL and bearer token are already in your context** — an optional `SubagentStart` hook (`inject-server-context.sh`, shipped alongside this file) can pre-inject them; it is **not** auto-wired, so by default assume neither is in hand — use those literal values directly, or just call the `tq` helper (below). The rest of this section is the fallback for when neither is in hand.
-
-**Each Bash tool call runs in a fresh shell — exported env vars do NOT persist between calls.** A `TLDRAW_TOKEN` you `export` in one call is empty in the next, so the request sends `authorization: Bearer` with no token and 401s. "Export once and reuse" does not work here — re-establish the port and token on every call. Read them together at the top of each call (both stay fixed for the app's lifetime, so re-reading is cheap):
+Every request except `GET /` and `/readme` needs `authorization: Bearer <token>`. Read the current port and token together before issuing requests:
 
 ```bash
-PORT=$(jq -r .port "$HOME/.config/tldraw/server.json"); TOKEN=$(jq -r .token "$HOME/.config/tldraw/server.json")
-# use as:  http://localhost:$PORT/...   -H "authorization: Bearer $TOKEN"
+PORT=$(jq -r .port "$HOME/.config/tldraw/server.json")
+TOKEN=$(jq -r .token "$HOME/.config/tldraw/server.json")
 ```
 
-### Helper: `tq`
+For Claude subagents, the optional [context-injection hook](inject-server-context.sh) can supply the URL and token at `SubagentStart`. It is not automatically enabled; registration details are in the script header. Other agents use `tq` or `server.json`.
 
-A ready-made helper ships next to this SKILL.md as `tq`. Resolve it relative to the directory containing the loaded `SKILL.md`; never assume a client-specific installation path:
+The `tq` helper ships beside this file. Resolve it relative to the directory containing the loaded `SKILL.md`; do not assume a client installation path:
 
 ```bash
-SKILL_DIR=/path/to/this/skill   # the directory containing this SKILL.md
+SKILL_DIR=/path/to/this/skill
 sh "$SKILL_DIR/tq" POST /api/search '{"code":"return await api.getDocs()"}'
 sh "$SKILL_DIR/tq" POST /api/doc/DOC_ID/exec 'return editor.getCurrentPageShapes().length'
-sh "$SKILL_DIR/tq" GET  /api/doc/DOC_ID/script-status
+sh "$SKILL_DIR/tq" GET /api/doc/DOC_ID/script-status
 ```
 
-`tq` re-reads the port and token from `server.json` itself on every call, so you never handle the token or the fresh-shell env problem. A body starting with `{` is sent as JSON; anything else as raw `text/plain`. If `tq` is missing, fall back to raw `curl` with the `PORT`/`TOKEN` reads shown above. The raw-`curl` examples below stay in explicit form so each request is visible; translate any to `sh "$SKILL_DIR/tq" <METHOD> <path> [body]`.
+`tq` re-reads `server.json` per call. A body beginning with `{` is sent as JSON; other bodies are sent as raw `text/plain`. If it is unavailable, use raw `curl` with the port/token reads above. `GET /readme` is the public fallback for undocumented endpoint details.
+
+## Discover, inspect, then mutate
+
+Core endpoints:
+
+- `POST /api/search`: execute JavaScript with an `api` object to discover docs, read shapes/bindings, capture screenshots, and query the editor API.
+- `POST /api/doc/:id/exec`: execute JavaScript with a live `editor` scoped to one document.
+- `POST /api/doc/:id/script-workspace`: expose live script paths for durable document-script and asset edits.
+- `GET /api/doc/:id/script-status`: inspect watcher state and `errorLogPath`.
+
+The code-taking POST endpoints accept raw JavaScript (`content-type: text/plain`) or `{"code":"..."}` JSON and wrap it in an async function, so top-level `await` works. Begin with the target document and its current records:
 
 ```bash
-curl -s http://localhost:7236/readme
-```
-
-## Core endpoints
-
-- `POST /api/search`: run JavaScript with an `api` object. Use this to discover docs, read shapes and bindings, capture screenshots, and query the editor API reference.
-- `POST /api/doc/:id/exec`: run JavaScript with a live tldraw `editor` scoped to one document. Use this for saved canvas edits.
-- `POST /api/doc/:id/script-workspace`: expose live script paths for direct durable document-script and asset edits.
-- `GET /api/doc/:id/script-status`: inspect watcher state for `script/**` edits and find `errorLogPath`.
-
-The code-taking POST endpoints accept raw JavaScript as the request body (`content-type: text/plain`) or a JSON body `{"code": "..."}`, and wrap the code in an async function so top-level `await` works. Prefer raw bodies for shell use.
-
-## Use this first
-
-Most tasks do not require searching `api.members`. Start with these calls and search the full Editor API only if a snippet fails or you truly need an unknown method. The object is `api`, not `spec`. Each block below is shown as raw `curl` so the request is visible; `sh "$SKILL_DIR/tq" <METHOD> <path> [body]` is the shorter equivalent that handles the port and token for you.
-
-```bash
-# Fresh shell per call: re-read port + token first (or use the values already in your context).
-PORT=$(jq -r .port "$HOME/.config/tldraw/server.json"); TOKEN=$(jq -r .token "$HOME/.config/tldraw/server.json")
-
-# Pick the target doc by focused window or filename.
 curl -s -X POST http://localhost:$PORT/api/search \
   -H 'content-type: application/json' \
   -H "authorization: Bearer $TOKEN" \
-  -d '{"code":"return await api.getDocs({ name: \"NAME\" })"}'
+  -d '{"code":"return await api.getDocs()"}'
 
-# Read the current page's shapes with ids, bounds, text, and metadata.
 curl -s -X POST http://localhost:$PORT/api/search \
   -H 'content-type: application/json' \
   -H "authorization: Bearer $TOKEN" \
   -d '{"code":"const doc = await api.getFocusedDoc(); const page = doc ? await api.getShapes(doc.id) : null; return { doc, shapes: page?.shapes.map(s => ({ id: s.id, type: s.type, x: s.x, y: s.y, props: s.props, meta: s.meta })) ?? [] }"}'
 
-# Read bindings only for connection-dependent behavior.
 curl -s -X POST http://localhost:$PORT/api/search \
   -H 'content-type: application/json' \
   -H "authorization: Bearer $TOKEN" \
   -d '{"code":"const doc = await api.getFocusedDoc(); return doc ? await api.getBindings(doc.id) : []"}'
 ```
 
-## Reference recipes
+Do not write to an id absent from `getDocs()`. If an edit is requested, post a script to `/exec`; use records to verify once afterward, and take a screenshot when placement or UI chrome is visually uncertain.
 
-`api.recipes` (via `/api/search`) is an object keyed by recipe `id`; read one in full with `api.recipes['<id>']`. Query it when a task matches one of the worked recipes:
+## Shape records and imports
 
-- `stack-existing-boxes` — Stack existing boxes
-- `add-durable-behavior-with-a-document-script` — Add durable behavior with a document script
-- `editable-furniture-with-anchored-internals` — Editable furniture with anchored internals
-- `clickable-card-or-button-ui` — Clickable card or button UI
-- `connection-dependent-behavior` — Connection-dependent behavior
-- `animation-simulation-loop` — Animation / simulation loop
-- `custom-shape-config-js` — Custom shape (config.js)
-- `custom-overlay-config-js` — Custom overlay (config.js)
-
-Fetch `/readme` when an endpoint fails or you need API details not covered here.
-
-## Durable UI Behavior
-
-For durable UI behavior, open `/script-workspace`, write `script/main.js`, check `script-status`, then verify behavior once. `script-status` returns a derived `state` field — treat `state: "applied"` as success; `"pending"` means the watcher has not caught up yet (retry once), and `"error"` means the apply failed (read `lastApplyError` / `errorLogPath`). Branch on `state` rather than comparing the raw digests yourself. The `/script-workspace` response reports `isDefaultScript` (true while `script/main.js` is still the untouched starter template, pre-created when absent) — when `isDefaultScript` is false there is a preexisting script to extend, not clobber. Read `mainJsPath` to see the current contents before editing (and read it once first if your file tools refuse to write a file they have not read). Do not spend the run searching for pointer/click APIs — read the clickable-UI recipe from `api.recipes` first.
-
-## Shape format
-
-`api.getShapes()`, `/exec`, and document scripts all use raw tldraw SDK records. Create shapes with normal tldraw partials. Prefer importing primitives from `'tldraw'` when the host import map is active — in an `/exec` snippet use `await import('tldraw')` (a snippet can't use a static `import`); a document script can use a top-level `import { createShapeId } from 'tldraw'`. The `helpers` bag carries only editor-bound conveniences (not SDK primitives) — import primitives from `'tldraw'` directly. Read `api.imports` (from `/api/search`) for the full list of importable symbols:
+`api.getShapes()`, `/exec`, and document scripts use raw tldraw SDK records. Create shapes with normal tldraw partials. In `/exec`, import primitives dynamically; document scripts may use top-level imports. The `helpers` bag contains editor-bound conveniences, not SDK primitives. Read `api.imports` through `/api/search` when an import is unknown:
 
 ```js
 const { createShapeId, toRichText } = await import('tldraw')
 editor.createShape({
-	id: createShapeId('box1'),
-	type: 'geo',
-	x: 100,
-	y: 100,
-	props: { geo: 'rectangle', w: 300, h: 200, richText: toRichText('Label') },
+  id: createShapeId('box1'),
+  type: 'geo',
+  x: 100,
+  y: 100,
+  props: { geo: 'rectangle', w: 300, h: 200, richText: toRichText('Label') },
 })
 ```
 
-Use `api.getShapes(doc.id)` to inspect existing raw shape records before mutating them.
+For meaningful connections, use bound arrows via `helpers.createArrowBetweenShapes`; the arrow-label second pass and layout arithmetic are in [diagram-layout.md](references/diagram-layout.md).
 
-## Screenshots
-
-`api.getScreenshot(docId, opts?)` captures a JPEG to a temp file and returns `{ filePath, width, height, pageName, viewport, bounds, captureMode }` — a path, not image data, so open the file yourself to look at it. `opts.size` is `'small' | 'medium' | 'large' | 'full'` (default `'small'`). `opts.mode` is `'canvas'` (default — just the shapes, framed to their bounds) or `'window'` (the whole app window: canvas plus UI chrome); use `'window'` to see UI a script's `components` override draws outside the canvas. `opts.bounds` (`{ x, y, w, h }` in page coordinates) applies to `'canvas'` mode only. Prefer reading records with `api.getShapes()`; screenshot only when visual placement is uncertain or the user asks for visual proof.
-
-## Diagram connections
-
-- Create every meaningful connection with `helpers.createArrowBetweenShapes(fromId, toId, options)` so both endpoints have real bindings.
-- Never create a raw arrow shape for a meaningful connection. Raw unbound arrows are only appropriate for explicitly decorative marks.
-- Run `helpers.getLints()` before reporting a diagram complete and address every actionable result. Fetch `/readme` for the helper recipe and the opt-out for intentional decorative arrows.
-
-## Workflow
-
-1. Restate the intended outcome in concrete canvas terms.
-2. Choose durability:
-   - Static drawing edits such as moving, arranging, labeling, or styling shapes use `/exec`.
-   - Durable behavior such as clickable UI, animations, reactive layouts, or "run on open" logic uses `/script-workspace` and direct filesystem edits under `script/**`. Read the worked recipes from `api.recipes` (via `/api/search`) before building durable behavior.
-3. Verify once with records from `api.getShapes()`, `api.getBindings()`, `api.getScriptStatus()`, or a screenshot when visual placement is uncertain.
-5. Stop after one successful verification unless the user explicitly asks for debugging.
-
-Never edit `.tldraw` archive files directly while they are open, and never edit `db.sqlite`, `db.sqlite-wal`, `db.sqlite-shm`, `metadata.json`, `.lock`, or `.script-workspace/**`.
-
-## Durable script pattern: editable furniture, anchored internals
-
-Use this when a document script draws a board that users should rearrange or restyle while script-owned animation/game pieces still follow it.
-
-- Create user-facing furniture with stable ids and `helpers.createShapeIfMissing` / `helpers.createShapesIfMissing`; never delete and redraw it on rerun.
-- Pick one visible anchor per interactive system, such as a track or table felt.
-- Use `helpers.onShapeTranslate(anchorId, ({ dx, dy }) => ... , { signal })` to respond only to that anchor.
-- Move script-owned internals with `helpers.translateShapes(..., dx, dy)` (it runs without recording undo history); wrap other script-owned writes in `editor.run(fn, { history: 'ignore' })`.
-- Avoid broad `store.listen` / `afterChange` layout handlers that react to every shape; they can treat the script's own writes as new user edits and recurse.
-
-## Editor customization: custom shapes, tools, and overlays (`config.js`)
-
-Custom shape types, tools, overlays, or UI components need a `script/config.js` next to `main.js` (create it through `/script-workspace`, same as `main.js`) — a `main.js`-only script cannot register them. Its default export runs BEFORE the editor mounts, receives `{ config }` (the app's default `TldrawConfig`), and returns it after mutating or spreading it. The passed `config` carries `shapeUtils`, `bindingUtils`, `assetUtils`, `overlayUtils`, `tools` (arrays of constructors), `components` (a `TLComponents` map), and `options`; optional `getShapeVisibility(shape, editor)`, `assetUrls`, and `initialState`. Push your constructors onto the arrays — a util/tool whose static `type`/`id` matches a stock one replaces it. Custom shapes subclass `ShapeUtil` and custom overlays subclass `OverlayUtil` (both from `'tldraw'`); define them in a sibling file and `import` them, since `config.js` and `main.js` are separate module graphs.
-
-Read the worked `custom-shape` and `custom-overlay` recipes from `api.recipes` for the full `ShapeUtil` / `OverlayUtil` skeletons before writing either. Saving `config.js` (or a file it imports) rebuilds the store and editor — document, camera, and selection are preserved but undo history resets — whereas saving `main.js` never remounts. Keep run-on-mount logic in `main.js`; `config.js` only builds the config. Types live in `.script-workspace/script-context.d.ts` (`ConfigScriptContext`, `TldrawConfig`).
-
-## Fast path for static edits
-
-Shown as raw `curl`; `sh "$SKILL_DIR/tq" <METHOD> <path> [body]` is the shorter equivalent that handles the port and token for you.
+For a static edit, post the snippet as raw `text/plain` and then inspect the resulting records:
 
 ```bash
-# Fresh shell per call: re-read port + token (or use the values already in your context).
-PORT=$(jq -r .port "$HOME/.config/tldraw/server.json"); TOKEN=$(jq -r .token "$HOME/.config/tldraw/server.json")
-
-# Discover docs.
-curl -s -X POST http://localhost:$PORT/api/search \
-  -H 'content-type: application/json' \
+curl -s -X POST "http://localhost:$PORT/api/doc/DOC_ID/exec" \
+  -H 'content-type: text/plain' \
   -H "authorization: Bearer $TOKEN" \
-  -d '{"code":"return await api.getDocs()"}'
-
-# Read shapes for a doc.
-curl -s -X POST http://localhost:$PORT/api/search \
-  -H 'content-type: application/json' \
-  -H "authorization: Bearer $TOKEN" \
-  -d '{"code":"const [doc] = await api.getDocs(); return await api.getShapes(doc.id)"}'
-
-# Mutate with /exec, then verify once with api.getShapes().
-curl -s -X POST http://localhost:$PORT/api/doc/DOC_ID/exec \
-  -H 'content-type: application/json' \
-  -H "authorization: Bearer $TOKEN" \
-  -d '{"code":"const { createShapeId, toRichText } = await import(\"tldraw\"); const id = createShapeId(\"r1\"); editor.createShape({ id, type: \"geo\", x: 100, y: 100, props: { geo: \"rectangle\", w: 200, h: 100, richText: toRichText(\"Hello\") } }); return { created: [id] }"}'
+  --data-binary @/tmp/tld.js
 ```
 
-## Reporting
+The target id must be one returned by `api.getDocs()`; layout-specific id encoding is documented in [diagram-layout.md](references/diagram-layout.md).
 
-Keep summaries tight. Include the doc id/name, changed shape ids or script path, and the one verification result. If something fails, quote the server error, digest mismatch, or the relevant `.script-workspace/error.log` line.
+## Screenshots, lints, and reporting
+
+`api.getScreenshot(docId, opts?)` returns `{ filePath, width, height, pageName, viewport, bounds, captureMode }`; it writes a JPEG to a temporary path. `opts.size` is `small | medium | large | full`; `opts.mode` is `canvas` (shapes framed to bounds) or `window` (the whole app window, including UI drawn by a script's `components` override). `opts.bounds` applies only to canvas mode; passing it with another mode can silently fall back to a window capture. Prefer shape records; screenshot when the user asks for visual proof or placement is uncertain.
+
+For diagrams, return `helpers.getLints()` and address actionable results before reporting. Lint-clean does not guarantee an arrow label is not wrapped; inspect a full-canvas screenshot as described in the layout reference.
+
+Keep the final summary tight: document id/name, changed shape ids or script path, and the one verification result. If something fails, quote the server error, digest mismatch, or relevant `.script-workspace/error.log` line.
+
+## Durable scripts and configuration
+
+For durable behavior, open `/script-workspace`, inspect the existing `mainJsPath`, write `script/main.js`, check `/script-status`, and verify once. `state: "applied"` is success; `"pending"` means retry once; `"error"` means read `lastApplyError` or `errorLogPath`. `isDefaultScript: true` means the untouched starter exists; when false, extend the existing script instead of clobbering it. Keep run-on-mount logic in `main.js`. Read the clickable-UI recipe before inventing pointer/click APIs; other useful recipes include `stack-existing-boxes`, `add-durable-behavior-with-a-document-script`, `editable-furniture-with-anchored-internals`, `clickable-card-or-button-ui`, `connection-dependent-behavior`, `animation-simulation-loop`, `custom-shape-config-js`, and `custom-overlay-config-js`.
+
+For durable furniture, use stable ids and `helpers.createShapeIfMissing`/`createShapesIfMissing`; never delete and redraw user-facing shapes on rerun. Use one visible anchor, `helpers.onShapeTranslate(anchorId, callback, { signal })`, and `helpers.translateShapes` for script-owned internals. Wrap other script-owned writes in `editor.run(fn, { history: 'ignore' })`. Avoid broad `store.listen`/`afterChange` handlers that react to the script's own writes and recurse.
+
+Custom shape types, tools, overlays, or UI components require a sibling `script/config.js` created through `/script-workspace`; `main.js` alone cannot register them. Its default export runs before mount with `{ config }`, whose arrays include `shapeUtils`, `bindingUtils`, `assetUtils`, `overlayUtils`, `tools`, and `components`; optional fields include `getShapeVisibility`, `assetUrls`, `initialState`, and `options`. Push constructors onto those arrays; a util/tool whose static `type`/`id` matches a stock one replaces it. Define custom `ShapeUtil`/`OverlayUtil` classes in sibling modules, and read the `custom-shape` and `custom-overlay` recipes from `api.recipes` before implementing one. Types live in `.script-workspace/script-context.d.ts`. Saving `config.js` or an imported config file remounts the store/editor (document, camera, and selection survive; undo history resets); saving `main.js` does not.
+
+When a durable script or config edit is complete, use the requested OS-level save procedure in [save-to-disk.md](references/save-to-disk.md) if the `.tldr` archive must contain it.
