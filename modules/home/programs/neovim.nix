@@ -1068,6 +1068,7 @@
             preset = "super-tab";
             "<CR>" = ["accept" "fallback"];
           };
+          completion.menu.auto_show = false;
           sources = {
             default = [
               "lsp"
