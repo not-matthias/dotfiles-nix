@@ -5,7 +5,6 @@
   ...
 }: let
   cfg = config.programs.quickshellBar;
-  niriState = import ./config/Services/niri-state.nix {inherit pkgs;};
   flashgen = import ./config/Components/Flashgen/default.nix {
     inherit pkgs;
     cfg = cfg.flashgenWordOfHour;
@@ -26,7 +25,6 @@
 
   producerPackages =
     [
-      niriState
       aiUsage.claudeScript
       aiUsage.codexScript
       aiUsage.antigravityScript
@@ -38,7 +36,6 @@
     ++ lib.optionals (!flashgenEnabled) [flashgenFallback];
 
   commands = {
-    niriState = "${niriState}/bin/quickshell-niri-state";
     flashgen = flashgenCommand;
     claudeUsage = "${aiUsage.claudeScript}/bin/quickshell-claude-usage";
     codexUsage = "${aiUsage.codexScript}/bin/quickshell-codex-usage";
@@ -57,7 +54,6 @@
     import QtQml
 
     QtObject {
-        readonly property string niriState: ${builtins.toJSON commands.niriState}
         readonly property string flashgen: ${builtins.toJSON commands.flashgen}
         readonly property string claudeUsage: ${builtins.toJSON commands.claudeUsage}
         readonly property string codexUsage: ${builtins.toJSON commands.codexUsage}
