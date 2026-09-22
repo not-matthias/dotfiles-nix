@@ -4,6 +4,8 @@
   fetchurl,
   autoPatchelfHook,
   makeWrapper,
+  alsa-lib,
+  libpulseaudio,
 }:
 # Standalone `bun build --compile` binary that bundles its own Bun runtime,
 # so it sidesteps the nixpkgs Bun version (the npm/source install of `omp`
@@ -34,9 +36,11 @@ stdenv.mkDerivation rec {
   # ONNX inference workers load prebuilt native addons from the user cache.
   # Their dependencies are not covered by the bundled binary's RPATH, so OMP
   # needs the Nix C++ library path when it constructs those worker environments.
+  # Audio backends are loaded dynamically at runtime.
   postFixup = ''
     wrapProgram "$out/bin/omp" \
-      --set-default OMP_NATIVE_LIBRARY_PATH "${lib.makeLibraryPath [stdenv.cc.cc.lib]}"
+      --set-default OMP_NATIVE_LIBRARY_PATH "${lib.makeLibraryPath [stdenv.cc.cc.lib]}" \
+      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [alsa-lib libpulseaudio]}"
   '';
 
   meta = {
