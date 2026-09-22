@@ -413,7 +413,7 @@ in {
               }
               {
                 temp = 65;
-                speed = 25;
+                speed = 35;
               }
               {
                 temp = 75;
@@ -421,11 +421,11 @@ in {
               }
               {
                 temp = 80;
-                speed = 60;
+                speed = 45;
               }
               {
-                temp = 85;
-                speed = 100;
+                temp = 90;
+                speed = 50;
               }
             ];
           };
