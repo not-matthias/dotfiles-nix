@@ -1,12 +1,13 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import qs.Services
 import qs.Shared
 
 BarButton {
     id: root
 
-    property var status: poll.value || poll.fallback
+    readonly property var status: Flashgen.status || Flashgen.fallback
     readonly property string statusText: status.text || ""
     readonly property string statusTooltip: status.tooltip || ""
     readonly property string statusClass: status.class || ""
@@ -19,19 +20,6 @@ BarButton {
     borderColor: Theme.accent
     interactive: statusText.length > 0
 
-    JsonPoll {
-        id: poll
-
-        command: Commands.flashgen
-        interval: 3600000
-        fallback: ({
-                text: "",
-                tooltip: "",
-                class: ""
-            })
-        Component.onCompleted: refresh()
-    }
-
     Process {
         id: openProcess
         command: [Commands.flashgen, "--open"]
@@ -39,7 +27,7 @@ BarButton {
 
     onClicked: function (button) {
         if (button === Qt.LeftButton)
-            poll.refresh();
+            Flashgen.refresh();
         else if (button === Qt.RightButton && !openProcess.running)
             openProcess.running = true;
     }
