@@ -54,6 +54,7 @@ in {
       radius2
       plannotator
       tldraw-offline
+      openclaw
       # unstable.antigravity-fhs
 
       # Install desktop apps rather than websites
