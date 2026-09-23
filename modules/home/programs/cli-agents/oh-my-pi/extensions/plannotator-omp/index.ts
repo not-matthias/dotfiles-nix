@@ -63,6 +63,13 @@ Your turn should only end by asking a question or calling plannotator_submit_pla
 
 const PLANNOTATOR_RUN_ERROR = "Failed to run plannotator. Is it installed and on PATH?";
 
+const PLAN_SUBMIT_DEVICE_URI = "xd://plannotator_submit_plan";
+
+// Toggling off leaves the model's own plan-mode turns and blocked-write results
+// in history, which keep steering it unless the end of plan mode is stated.
+const PLAN_MODE_OFF_NOTICE = `[PLANNOTATOR - PLAN MODE OFF]
+Plannotator plan mode has ended. Disregard all earlier Plannotator planning or execution instructions from this session: the planning restrictions (markdown-only writes, plan submission for review) no longer apply. Full tool access is restored — respond and use tools normally. If the user wants planning again, they will re-enable plan mode.`;
+
 /** Run the plannotator CLI, returning stdout. Rejects on spawn failure. */
 function runPlannotator(args: string[], stdin?: string): Promise<string> {
   const { promise, resolve: settle, reject } = Promise.withResolvers<string>();
@@ -101,6 +108,7 @@ export default function plannotator(pi: ExtensionAPI): void {
   let phase: Phase = "idle";
   let lastSubmittedPath: string | null = null;
   let lastAssistantText = "";
+  let idleNoticePending = false;
 
   // ── Flag ──────────────────────────────────────────────────────────
 
@@ -117,6 +125,7 @@ export default function plannotator(pi: ExtensionAPI): void {
     handler: async (_args, ctx) => {
       if (phase === "idle") {
         phase = "planning";
+        idleNoticePending = false;
         ctx.ui.setStatus("plannotator", ctx.ui.theme.fg("warning", "\u23F8 plan"));
         ctx.ui.notify(
           "Plannotator: planning mode enabled. Writes restricted to .md files.",
@@ -124,6 +133,7 @@ export default function plannotator(pi: ExtensionAPI): void {
         );
       } else {
         phase = "idle";
+        idleNoticePending = true;
         lastSubmittedPath = null;
         lastAssistantText = "";
         ctx.ui.setStatus("plannotator", undefined);
@@ -347,6 +357,8 @@ export default function plannotator(pi: ExtensionAPI): void {
     if (event.toolName !== "write" && event.toolName !== "edit") return;
 
     const inputPath = event.input?.path;
+    // omp invokes custom tools by writing JSON to their xd:// device path.
+    if (inputPath === PLAN_SUBMIT_DEVICE_URI) return;
     if (typeof inputPath !== "string" || !isMarkdownInCwd(inputPath, ctx.cwd)) {
       const verb = event.toolName === "write" ? "writes" : "edits";
       return {
@@ -359,6 +371,16 @@ export default function plannotator(pi: ExtensionAPI): void {
   // ── Phase prompts ─────────────────────────────────────────────────
 
   pi.on("before_agent_start", async () => {
+    if (phase === "idle" && idleNoticePending) {
+      idleNoticePending = false;
+      return {
+        message: {
+          customType: "plannotator-context",
+          content: PLAN_MODE_OFF_NOTICE,
+          display: false,
+        },
+      };
+    }
     if (phase === "planning") {
       return {
         message: {
