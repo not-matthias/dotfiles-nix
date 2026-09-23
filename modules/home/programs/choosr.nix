@@ -27,6 +27,14 @@ in {
         enabled = true
 
         [[rule]]
+        name = "Claude"
+        condition_type = "regexp"
+        value = "(?i)^(?:[^/]+\\.)?claude\\.ai(?:[/:?#]|$)"
+        action_type = "open_browser"
+        browser = "Google Chrome Work"
+        enabled = true
+
+        [[rule]]
         name = "Default"
         action_type = "open_browser"
         browser = "Helium"
