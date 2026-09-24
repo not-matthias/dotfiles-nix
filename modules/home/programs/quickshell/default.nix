@@ -106,6 +106,7 @@ in {
         target = "graphical-session.target";
       };
     };
+    xdg.configFile."quickshell/bar".force = true;
 
     systemd.user.services.quickshell-idle-inhibit = idleInhibit.service;
   };
