@@ -1,6 +1,6 @@
 ---
 name: review
-description: Review a diff, PR, or commit against my personal code-style opinions and common LLM-generated-code failures. Use when asked to "review", "review this PR/diff/commit", or give a quick opinionated pass before merging. For deep correctness/security hunting use bug-finder; for comment slop use deslop.
+description: Review a diff, PR, or commit for correctness and maintainability using code-style guidance. Use when asked to "review", "review this PR/diff/commit", or give a focused pass before merging. Reviews are read-only unless fixes are explicitly requested. For comment cleanup use deslop.
 ---
 
 <!--
@@ -12,7 +12,8 @@ Sources:
 
 # Review
 
-Review only what the patch introduces. Read full files around each hunk. Skip lock files, generated code, snapshots, build output.
+Review only what the patch introduces. Read full files around each hunk. Skip lock files, generated code, snapshots, build output. 
+Load [Code Style](skill://code-style) if needed and follow its applicability and precedence rules.
 
 ## Get the diff
 
@@ -26,7 +27,7 @@ Review only what the patch introduces. Read full files around each hunk. Skip lo
 Review alone under ~500 changed lines. Above that, use one reviewer per ~500 lines, capped around 8; past that, suggest splitting the PR.
 
 - Group files by locality (same module/directory, a type and its consumers) so each reviewer sees related code together.
-- Give each reviewer its file list, this skill, and the diff command; only inline the diff when it is small (<50k chars, ≤20 files).
+- Give each reviewer its file list, this skill, `code-style`, and the diff command; only inline the diff when it is small (<50k chars, ≤20 files).
 - Reviewers stay read-only and return findings in the output format below.
 - As lead: drop duplicates and anything you can't confirm by reading the code, then merge into one ranked list.
 
@@ -52,18 +53,9 @@ Review alone under ~500 changed lines. Above that, use one reviewer per ~500 lin
 - New variant/event/message not handled at the consumer (switch, router, match). The consumer is often outside the diff; read it.
 - Mirror tests: tests asserting implementation, mocks echoing, or tautologies.
 
-## My style opinions
-
-- Minimize nesting (max 2-3 levels): early returns, guards, `let else`.
-- Fail loudly; handle only errors that can actually occur.
-- Comments explain WHY or a non-obvious invariant, never WHAT. No task/PR narration, no "removed X" notes.
-- Minimum sufficient change; boring over clever; no needless allocation or copies.
-- Rust: `<name>/mod.rs` with small sibling files; `mod.rs` only declares modules (no `pub use`); prefer methods over free functions; group `impl` blocks by concern.
-- Nix: nested attribute sets over flattened option paths.
-
 ## Output
 
-Findings ordered by priority, max ~10:
+Findings ordered by priority:
 
 - `P0` blocks merge (data loss, security, broken build) · `P1` fix now · `P2` should fix · `P3` nit
 - `[P1] path:line — imperative title` + one line: problem, trigger, fix. Keep the line range small (≤10 lines) and inside the diff.

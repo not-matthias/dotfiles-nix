@@ -56,7 +56,7 @@ Use `--symbol-dir <dir>` for separate debug symbols. For before/after captures, 
 
 ## Analyze JSON profiles offline
 
-Set the path to this skill directory; do not use a machine-specific skill path:
+`scripts/analyze_profile.py` sits next to this `SKILL.md`. Point `SKILL_DIR` at the directory this file was loaded from, and run the script with `--help` rather than reading its source:
 
 ```bash
 SKILL_DIR=/path/to/samply-profiler

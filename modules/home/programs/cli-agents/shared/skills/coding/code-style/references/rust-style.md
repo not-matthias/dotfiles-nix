@@ -1,20 +1,10 @@
 # Personal Rust Style
 
-This file is self-contained. It defines the style choices used by `code-style`; it does not depend on external repositories, example projects, or a particular codebase.
+Use this reference with the generic guidance and authorization boundaries in [Code Style](../SKILL.md). These are personal Rust preferences; local conventions take precedence within correctness and safety constraints.
 
-## Rule labels
+## Linear control flow
 
-- **Auto-apply** — the skill may make this local change after showing its concise patch preview, unless the user asked for review only.
-- **Proposal only** — the skill may identify and outline the improvement, but it must not edit without an explicit request.
-- **Local convention wins** — a target project's established pattern, formatter, lint policy, or instructions override this file.
-
-Every automatic change must still be behavior-preserving, private to the current task, and free of ownership, error, allocation, concurrency, or drop-timing changes.
-
-## Auto-apply rules
-
-### Make the happy path linear
-
-Prefer guards, `?`, and `let else` over nesting when they make the successful path easier to read and preserve exactly the same behavior.
+Prefer `?` and `let else` when they make the successful path easier to read. Use early returns rather than nested `if let` statements.
 
 ```rust
 let Some(config) = load_config()? else {
@@ -26,41 +16,7 @@ run(config)
 
 Use an explicit `match` when each state or dispatch branch has meaningful behavior. Do not flatten branches merely to make them shorter.
 
-### Name a condition with real meaning
-
-Extract a compound condition into a local name when it represents a domain decision rather than a disposable boolean expression.
-
-```rust
-let is_valid_range = start <= end && end <= capacity;
-if !is_valid_range {
-    return Err(Error::InvalidRange);
-}
-```
-
-Choose names that reveal the domain state or reason for a decision. Do not introduce a name for a one-use expression that is already obvious.
-
-### Prefer the direct local expression
-
-Remove a touched, private, one-use wrapper or helper when inlining it leaves a clearer local expression and does not hide a stable domain concept.
-
-Keep duplication when a generic helper would force readers to jump across files or accept vague parameters. Three clear local lines are often better than a speculative abstraction.
-### Remove backwards-compat scaffolding
-
-Delete unused code completely. Do not leave renamed `_vars`, re-exports, or `// removed` comments as compatibility shims when cleaning up.
-
-### Remove comments that only narrate syntax
-
-Delete a nearby comment only when it restates obvious code and carries no invariant, external constraint, safety requirement, or explanation of a rejected alternative.
-
-Keep comments that explain why the code exists or what would make an apparently simpler implementation wrong.
-
-### Preserve project-owned formatting
-
-Use the repository's formatter and checked-in configuration. Do not hand-reformat touched code to match a personal layout preference when the project specifies another one.
-
-## Proposal-only rules
-
-### Use precise failure types at meaningful boundaries
+## Precise failure types
 
 At a library, application, or orchestration boundary, prefer a typed error that preserves actionable failure categories over an unstructured string, boolean, or silently discarded failure.
 
@@ -73,9 +29,7 @@ pub enum LoadError {
 pub fn load(path: &Path) -> Result<Config, LoadError>;
 ```
 
-Do not change `Result`, `Option`, error variants, logging, retry behavior, or public error contracts automatically. A thin low-level wrapper may legitimately use `Option` or status values when that is its established local contract.
-
-### Keep modules focused and interfaces small
+## Focused modules
 
 Group code by a real domain concern. Keep implementation private by default and expose a small public surface. Avoid shallow `Manager`, `Handler`, `Factory`, or one-method trait layers that only move obvious code elsewhere.
 
@@ -86,9 +40,15 @@ parser/
 └── error.rs     # domain error type
 ```
 
-Do not automatically move modules, change visibility, introduce/remove traits, or perform cross-file renames.
+## Tree-like module layout
 
-### Make resource ownership visible
+Use `<name>/mod.rs` with submodules as sibling files in that directory. A flat `<name>.rs` is fine when the module is genuinely tiny. Keep each `.rs` file focused; split related types into sibling files rather than accumulating unrelated structs in one file.
+
+Prefer methods or associated functions when behavior belongs to a type. Group `impl` blocks by concern, such as construction, trait implementations, or public API. Keep `mod.rs` focused on declaring submodules; avoid re-exporting individual items from it.
+
+These are layout preferences, not mandates to split small cohesive modules.
+
+## Resource ownership
 
 A type that owns a resource should make acquisition, cleanup, and lifetime responsibilities clear. Use RAII and `Drop` where cleanup belongs to the owner rather than to an unrelated caller.
 
@@ -104,9 +64,7 @@ impl Drop for LockGuard<'_> {
 }
 ```
 
-Never add, remove, or restructure cleanup automatically: destructor timing and resource ownership are observable behavior.
-
-### Keep unsafe and FFI boundaries narrow
+## Unsafe and FFI boundaries
 
 Put raw-pointer, FFI, and other unsafe operations in the smallest practical block behind a safe interface. Document the invariant that makes the operation sound. Model ABI layout deliberately when an actual ABI boundary requires it.
 
@@ -118,9 +76,7 @@ pub struct PacketHeader {
 }
 ```
 
-Never automatically introduce, remove, expand, or relocate `unsafe`, `repr(C)`, layout assertions, or FFI types.
-
-### Use explicit types for meaningful state and dispatch
+## Explicit state and dispatch
 
 Prefer enums and exhaustive matches when code represents a closed set of domain states, commands, or outcomes.
 
@@ -132,11 +88,9 @@ match state {
 }
 ```
 
-Do not reshape an existing API or persistence/ABI contract merely to replace a flag or string with an enum.
+## Rustdoc contracts
 
-### Document contracts, invariants, and constraints
-
-Add rustdoc to public APIs whose contract is not obvious from a small signature. Comments should explain a safety precondition, external constraint, invariant, or why the tempting alternative is incorrect.
+Add rustdoc to public APIs whose contract is not obvious from a small signature, especially safety preconditions and caller obligations.
 
 ```rust
 /// Releases the reservation before returning.
@@ -145,21 +99,7 @@ Add rustdoc to public APIs whose contract is not obvious from a small signature.
 pub fn release(self) -> Result<(), ReleaseError>;
 ```
 
-Do not bulk-add documentation or write comments that narrate implementation details.
-
-### Test observable behavior
-
-Prefer a focused test that catches a plausible regression in a public behavior, boundary, error case, or state transition. Use real collaborators when practical; avoid mocks of internal call chains. Co-locate focused unit tests and use integration tests for real external contracts.
-
-```rust
-#[test]
-fn rejects_a_range_past_capacity() {
-    assert!(Range::new(3, 11, 10).is_err());
-}
-```
-
-Do not rewrite test contracts, fixtures, or assertions automatically. A test is behavior, not style-only cleanup.
-### Crash rather than corrupt
+## Crash rather than corrupt
 
 When an invariant is violated and continuing risks data corruption, prefer crashing (`assert!`, `unreachable!`, `panic!`) or returning an error over silently continuing in an undefined state. Do not use `if`/`else` for a branch that should never occur.
 
@@ -181,7 +121,7 @@ unreachable!("impossible state: ...");
 
 Use `if`/`else` only when both branches are expected paths. Assert often; never silently swallow an edge case.
 
-### Avoid avoidable copies in byte-oriented work
+## Byte-oriented ownership
 
 When ownership is clear and the domain genuinely transforms caller-owned bytes, prefer an explicit mutable buffer or `&mut [u8]` over needless intermediate copies.
 
@@ -189,33 +129,13 @@ When ownership is clear and the domain genuinely transforms caller-owned bytes, 
 pub fn normalize(bytes: &mut [u8]);
 ```
 
-Do not change allocation, aliasing, mutation, or performance behavior automatically.
-
-### Log context at real operation boundaries
-
-When a project already uses structured logging, log useful context at resource, process, I/O, lifecycle, or platform boundaries. Avoid routine success logs and avoid introducing logging infrastructure for a style pass.
-
-Logging policy is repository-owned; always propose rather than add logs automatically.
-
-## Generic fallback
-
-For non-Rust code, apply only the auto-apply ideas that remain idiomatic and behavior-preserving in that language:
-
-- make a linear happy path visible;
-- name a non-obvious domain condition;
-- remove an obvious narrating comment;
-- prefer a direct local expression over a one-use wrapper.
-
-Do not impose Rust types, ownership, module layout, error conventions, logging, or formatting on another language.
-
 ## Explicit exclusions
 
 The skill does not prescribe:
 
 - a global Rustfmt profile;
-- a particular error crate, logging crate, test framework, or module-file layout;
+- a particular error crate, logging crate, or test framework;
 - `no_std`, async, FFI, platform, kernel, cryptography, or performance patterns;
 - exact test names, assertion macros, or fixture structure;
 - a preference for abstraction or duplication independent of local readability.
 
-When a task exposes a new preference, ask the user to explicitly add it to this ledger rather than treating one code sample as a new rule.

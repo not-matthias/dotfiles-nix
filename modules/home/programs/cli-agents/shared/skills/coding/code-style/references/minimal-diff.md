@@ -38,6 +38,8 @@ Prefer edits that keep behavior scoped, touch fewer lines, and avoid unrelated c
 - Remove dead branches, duplicate lines, and no-longer-needed code when they are directly caused by the change.
 - Prefer fewer moving parts over new wrappers, flags, or one-off helpers.
 - Three clear lines are better than a fresh abstraction used once.
+- Delete obsolete code completely; do not leave renamed `_vars`, re-exports, or removal comments as compatibility scaffolding.
+- Follow the project's logging policy. Where structured logging is established, prefer useful context at operation boundaries over routine success logs; do not introduce logging infrastructure for a style pass.
 
 ### Step 4: Split behavior changes from refactors
 
@@ -65,10 +67,6 @@ If the answer suggests unnecessary churn, reduce the diff.
 - Keep tests scoped to the behavior that changed.
 - Do not expand the task on your own.
 - If a larger refactor is required, say so explicitly instead of smuggling it into a small change.
-
-## Resources
-
-- [minimal-diff-principles.md](minimal-diff-principles.md) - External principles behind this guidance
 
 ## Common Issues
 

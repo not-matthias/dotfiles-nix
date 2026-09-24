@@ -5,114 +5,39 @@ description: "Keep code simple, local, and low-churn when writing, reviewing, or
 
 # Code Style
 
-Always use the cognitive-load and minimal-diff references for applicable code work. Use the personal Rust reference only for an explicit request to apply, review, or refactor toward the user's code style. For another language, follow that language's project conventions and use only the generic guidance.
+## Read the applicable guidance
 
-Read the applicable references if needed before judging a change:
+- For all code work, read [Cognitive load](references/cognitive-load.md) and [Minimal diff](references/minimal-diff.md).
+- Only when explicitly asked to apply or review personal Rust style, also read [Rust preferences](references/rust-style.md). Do not impose them on other languages.
+- For Nix, also read [Nix style](references/nix.md).
+- When writing or reviewing tests, use [Testing](skill://testing).
 
-- `references/rust-style.md` for the standalone personal Rust rule ledger, including rationale, examples, confidence, and application boundaries.
-- `references/cognitive-load.md` for language-independent simplification and maintainability guidance.
-- `references/minimal-diff.md` for keeping changes local, low-churn, and easy to review.
+## Scope and precedence
 
-The cognitive-load and minimal-diff guidance is generally applicable. Personal Rust preferences remain opt-in.
+Correctness, safety, ownership, and required verification constrain every change. Within those constraints, follow the user's task scope and repository instructions, formatter/lint configuration, and nearby conventions before personal preferences. Do not copy an incorrect pattern merely for consistency.
 
-Do not depend on or mention outside repositories when using them.
+Inspect the named or changed code and enough adjacent code to understand its conventions. Keep changes within the requested scope and leave formatting to the project formatter.
 
-## Working contract
+## Unsolicited style changes
 
-### Precedence
+These boundaries govern additional style cleanup, not changes needed to implement an explicitly requested feature, fix, or migration.
 
-Resolve conflicts in this order:
+Auto-apply only local, private, behavior-preserving simplifications. Propose rather than apply additional cleanup that affects:
 
-1. The user's stated behavior and task scope.
-2. Repository instructions, local formatter/lint configuration, and established nearby code.
-3. Correctness, safety, ownership, and required verification.
-4. The personal Rust reference.
-5. Generic fallback preferences.
+- public APIs, visibility, module moves, cross-file contracts, or broad renames;
+- errors, logging, retries, test contracts, or observable behavior;
+- ownership, lifetimes, drop timing, allocation, concurrency, or performance;
+- unsafe code, FFI/ABI layout, or platform and safety invariants.
 
-A local convention wins. Do not call it a violation or migrate it toward the reference. Mention it only when the distinction explains why no patch is appropriate.
+If equivalence is uncertain, leave the cleanup unapplied and explain why. A request for review, proposals, or no edits does not authorize mutations.
 
-### Scope
+## Workflow
 
-- Inspect the request's changed or named code and enough adjacent code to understand local convention.
-- Patch only the code required by the current task. Do not turn a style request into a repository-wide cleanup.
-- Leave formatting to the target project's formatter and checked-in configuration.
-- Use the cognitive-load and minimal-diff references plus the existing `testing` guidance when they apply. This skill selects personal preferences; it does not replace testing workflows.
+1. Establish the local convention and affected behavior.
+2. Apply the relevant guidance within the task's authorization. For an explicit style pass, first show a concise ranked patch preview with the reason for each change.
+3. Exercise the changed path using the narrowest relevant verification.
+4. Report meaningful changes, checks actually run, and recommendations left unapplied. If no material change is warranted, say so.
 
-## Review and apply workflow
+## Maintaining preferences
 
-1. Establish the target's local conventions and the affected public/behavioral boundary.
-2. Compare the touched code with the reference. Ignore rules that are inapplicable, project-local, or contradicted by nearby code.
-3. Classify each finding:
-   - **Auto-apply:** explicitly marked as such in the reference and safe in this context.
-   - **Proposal only:** useful improvement that needs confirmation or carries semantic risk.
-   - **Project-local:** do not promote or act on it.
-4. Before changing files, state a concise ranked patch preview under `Applying` or `Recommended`:
-   - rule area;
-   - why it improves the code;
-   - the smallest intended change.
-5. Unless the user asks for `review-only`, `no edits`, `show the patch`, or equivalent, apply eligible auto-apply changes in the same task.
-6. Run the narrowest relevant verification and report only what actually ran.
-
-## Mutation boundary
-
-Apply a rule only when the change is local, behavior-preserving, non-public, and does not change drop timing, ownership, error behavior, allocation behavior, or concurrency.
-
-Always propose instead of automatically editing when a change affects:
-
-- public APIs, exported names, visibility, or cross-file contracts;
-- `Result`/`Option` semantics, error variants, retry behavior, or logging policy;
-- ownership, lifetimes, `Drop`, allocation, concurrency, or performance-sensitive behavior;
-- `unsafe`, FFI/ABI layout, platform behavior, or safety invariants;
-- test contracts, fixtures, or observable behavior;
-- module moves, broad renames, or anything needing a project-wide migration.
-
-If the evidence or semantic equivalence is uncertain, leave the code unchanged and explain the smallest safe next step.
-
-## Rust priorities
-
-Use the reference to favor:
-
-- linear control flow with guards, `?`, `let else`, and explicit `match` where state or dispatch matters;
-- precise domain errors at meaningful boundaries without erasing existing error semantics;
-- focused private modules and simple public surfaces instead of shallow abstractions;
-- visible resource ownership, narrow unsafe boundaries, and documented invariants;
-- names that expose domain state and non-obvious conditions;
-- comments and rustdoc that explain constraints or invariants rather than narrate syntax;
-- behavior-oriented tests and project-native Rustfmt/Cargo verification.
-
-These are preferences, not license to introduce systems, FFI, or performance ceremony into ordinary Rust.
-
-## Generic fallback
-
-Outside Rust, apply only universal, low-risk improvements when local conventions support them:
-
-- make a linear happy path visible with an equivalent guard or early return;
-- name a complex condition whose meaning is otherwise hidden;
-- remove a nearby comment that merely restates obvious code;
-- avoid a one-use wrapper or abstraction when a local direct expression is clearer.
-
-Do not impose Rust module structure, error types, ownership patterns, logging, or formatting on another language. Treat cross-file renames, API changes, and any behavioral uncertainty as proposals.
-
-## Output
-
-Use this structure when it adds value:
-
-```text
-Applying
-1. [area] smallest change — why
-
-Recommended, not applied
-1. [risk · area] change — why it needs confirmation
-
-Kept local convention
-1. local pattern — why it overrides the reference
-
-Check
-- command or scenario actually run
-```
-
-If no material style change is warranted, say so plainly. Do not manufacture findings to make a style pass look productive.
-
-## Maintaining the reference
-
-Update `references/rust-style.md` only when the user explicitly asks to evolve their style. Keep it self-contained: add the rule, rationale, a generic example when useful, confidence/application boundary, and exceptions. Do not silently learn rules from one task or rely on external project sources.
+Change personal Rust preferences only when explicitly asked. Keep each preference self-contained, with rationale and exceptions where needed. Do not infer a new rule from one code sample.

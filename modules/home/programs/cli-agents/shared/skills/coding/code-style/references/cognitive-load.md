@@ -68,6 +68,8 @@ Avoid:
 - Mixed success, error, retry, and cleanup paths in one block.
 - Boolean negation stacked with nested branches.
 
+Keep nesting to 2-3 levels; avoid 4+ levels.
+
 ### 4. Name complex conditions
 
 Extract complex boolean expressions into named intermediate values.
@@ -143,6 +145,10 @@ Write comments only for:
 - Why the obvious alternative is wrong.
 - A high-level overview when local code cannot show the whole mechanism.
 
+Comments must not narrate the feature, caller, or task that prompted a change. Match the surrounding comment density. Use an ASCII diagram when it makes a mechanism clearer.
+
+Add struct field doc comments only on complex types, not trivial fields.
+
 If better names or structure make the comment unnecessary, change the code instead.
 
 ## Review Checklist
@@ -176,3 +182,7 @@ Avoid these unless the project already depends on them and changing them is out 
 A good change has the same behavior with fewer things to remember.
 
 If simplification and minimal diff conflict, preserve correctness first, then choose the smallest simplification that removes real cognitive load.
+
+Make failures obvious rather than silently ignoring errors or edge cases. Handle cases that can actually occur; do not invent speculative error handling.
+
+Plan enough to remove material uncertainty, then execute the minimum sufficient solution.
