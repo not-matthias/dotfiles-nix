@@ -12,7 +12,13 @@ in {
 
     extensions = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [
+        "findcrypt"
+        "lightkeeper"
+        "wasm"
+        "machinelearning"
+        "sleighdevtools"
+      ];
       description = "List of Ghidra extensions to enable";
       example = ["ret-sync" "findcrypt"];
     };

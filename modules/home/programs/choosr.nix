@@ -14,6 +14,7 @@ in {
   options.programs.choosr.enable = mkEnableOption "Choosr browser routing";
 
   config = mkIf cfg.enable {
+    home.sessionVariables.BROWSER = "choosr";
     home.packages = [pkgs.choosr];
 
     xdg.configFile = {
