@@ -27,13 +27,60 @@ in {
         enabled = true
 
         [[rule]]
+        name = "Greptile"
+        condition_type = "regexp"
+        value = "(?i)^(?:[^/]+\\.)?greptile\\.com(?:[/:?#]|$)"
+        action_type = "open_browser"
+        browser = "Google Chrome Work"
+        enabled = true
+
+        [[rule]]
+        name = "Slack"
+        condition_type = "regexp"
+        value = "(?i)^(?:[^/]+\\.)?slack\\.com(?:[/:?#]|$)"
+        action_type = "open_browser"
+        browser = "Google Chrome Work"
+        enabled = true
+
+        [[rule]]
+        name = "Linear"
+        condition_type = "regexp"
+        value = "(?i)^(?:[^/]+\\.)?linear\\.app(?:[/:?#]|$)"
+        action_type = "open_browser"
+        browser = "Google Chrome Work"
+        enabled = true
+
+        [[rule]]
+        name = "Notion"
+        condition_type = "regexp"
+        value = "(?i)^(?:[^/]+\\.)?notion\\.com(?:[/:?#]|$)"
+        action_type = "open_browser"
+        browser = "Google Chrome Work"
+        enabled = true
+
+        [[rule]]
+        name = "Google Workspace"
+        condition_type = "regexp"
+        value = "(?i)^(?:mail|calendar|meet|drive|docs|sheets|slides)\\.google\\.com(?:[/:?#]|$)"
+        action_type = "open_browser"
+        browser = "Google Chrome Work"
+        enabled = true
+
+        [[rule]]
+        name = "Chromatic"
+        condition_type = "regexp"
+        value = "(?i)^(?:[^/]+\\.)?chromatic\\.com(?:[/:?#]|$)"
+        action_type = "open_browser"
+        browser = "Google Chrome Work"
+        enabled = true
+
+        [[rule]]
         name = "Claude"
         condition_type = "regexp"
         value = "(?i)^(?:[^/]+\\.)?claude\\.ai(?:[/:?#]|$)"
         action_type = "open_browser"
         browser = "Google Chrome Work"
         enabled = true
-
         [[rule]]
         name = "Default"
         action_type = "open_browser"
