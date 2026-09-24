@@ -7,7 +7,7 @@ description: "Keep code simple, local, and low-churn when writing, reviewing, or
 
 Always use the cognitive-load and minimal-diff references for applicable code work. Use the personal Rust reference only for an explicit request to apply, review, or refactor toward the user's code style. For another language, follow that language's project conventions and use only the generic guidance.
 
-Read the applicable references before judging a change:
+Read the applicable references if needed before judging a change:
 
 - `references/rust-style.md` for the standalone personal Rust rule ledger, including rationale, examples, confidence, and application boundaries.
 - `references/cognitive-load.md` for language-independent simplification and maintainability guidance.
