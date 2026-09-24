@@ -26,7 +26,7 @@
   "skipDangerousModePermissionPrompt": true,
   "enabledPlugins": {
     "codspeed-internal@codspeed-internal-marketplace": true,
-    "skill-creator@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": false,
     "ponytail@ponytail": true,
     "worktrunk@worktrunk": true
   },

@@ -195,4 +195,4 @@ Reviewed in [[Meeting Notes 2024-01-10#Decisions]].
 - [Callouts](https://help.obsidian.md/callouts)
 - [Properties](https://help.obsidian.md/properties)
 
-<!-- Original source: https://github.com/kepano/obsidian-skills/blob/main/skills/obsidian-markdown/SKILL.md -->
+<!-- Original source: https://github.com/kepano/obsidian-skills/blob/3ccff5338ea700537839b21900aa5358a0402c98/skills/obsidian-markdown/SKILL.md -->
