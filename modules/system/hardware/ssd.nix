@@ -5,9 +5,7 @@
 }: let
   cfg = config.hardware.ssd;
 in {
-  options.hardware.ssd = {
-    enable = lib.mkEnableOption "SSD Configuration";
-  };
+  options.hardware.ssd.enable = lib.mkEnableOption "SSD Configuration";
 
   config = lib.mkIf cfg.enable {
     # https://wiki.archlinux.org/title/Solid_state_drive#TRIM

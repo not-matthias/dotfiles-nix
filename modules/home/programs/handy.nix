@@ -5,9 +5,7 @@
   pkgs,
   ...
 }: {
-  options.programs.handy = {
-    enable = lib.mkEnableOption "Handy hand-tracking application";
-  };
+  options.programs.handy.enable = lib.mkEnableOption "Handy hand-tracking application";
 
   config = lib.mkIf config.programs.handy.enable (
     {

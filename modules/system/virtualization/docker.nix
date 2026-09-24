@@ -12,11 +12,9 @@
   cfg = config.virtualisation.docker;
 in {
   config = lib.mkIf cfg.enable {
-    virtualisation = {
-      docker = {
-        # enable = true;
-        autoPrune.enable = true;
-      };
+    virtualisation.docker = {
+      # enable = true;
+      autoPrune.enable = true;
     };
 
     users.groups.docker.members = ["${user}"];

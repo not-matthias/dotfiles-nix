@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   # https://devenv.sh/packages/
-  packages = [pkgs.treefmt pkgs.mcp-nixos];
+  packages = [pkgs.treefmt pkgs.mcp-nixos pkgs.ast-grep];
 
   # https://devenv.sh/languages/
   languages.nix.enable = true;
@@ -12,6 +12,12 @@
     deadnix = {
       enable = true;
       settings.edit = true;
+    };
+    nix-single-attribute = {
+      enable = true;
+      name = "Nix single-attribute sets";
+      entry = "${pkgs.ast-grep}/bin/ast-grep scan --rule lint/rules/nix-single-attribute.yml";
+      files = "\\.nix$";
     };
   };
 

@@ -21,9 +21,7 @@ in {
       };
     };
 
-    users.groups.slskd-access = {
-      members = ["not-matthias" "slskd"];
-    };
+    users.groups.slskd-access.members = ["not-matthias" "slskd"];
 
     systemd.tmpfiles.rules = [
       "d /var/lib/slskd/downloads 0775 slskd slskd-access - -"

@@ -12,23 +12,17 @@ with lib; let
     programSkills = config.programs.cli-agents.programSkills;
   };
 in {
-  options.programs.cli-agents.codex = {
-    enable = mkEnableOption "Codex CLI agent";
-  };
+  options.programs.cli-agents.codex.enable = mkEnableOption "Codex CLI agent";
 
   config = mkIf cfg.enable {
     home.packages = [
       unstable.codex
     ];
 
-    programs.fish.shellAbbrs = {
-      "cx" = "bunx @openai/codex@latest --yolo";
-    };
+    programs.fish.shellAbbrs."cx" = "bunx @openai/codex@latest --yolo";
 
     home.file = {
-      ".codex/AGENTS.md" = {
-        source = ../shared/AGENTS.md;
-      };
+      ".codex/AGENTS.md".source = ../shared/AGENTS.md;
       ".codex/skills" = {
         source = agentSkillsFlat;
         recursive = true;

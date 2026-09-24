@@ -69,62 +69,60 @@ in {
       requires = ["init-twenty-network.service"];
     };
 
-    virtualisation.oci-containers = {
-      containers = {
-        twenty_db = {
-          autoStart = true;
-          image = "postgres:16.15-alpine";
-          volumes = ["${dataDir}/db:/var/lib/postgresql/data"];
-          environment = {
-            POSTGRES_USER = "postgres";
-            POSTGRES_PASSWORD = "postgres";
+    virtualisation.oci-containers.containers = {
+      twenty_db = {
+        autoStart = true;
+        image = "postgres:16.15-alpine";
+        volumes = ["${dataDir}/db:/var/lib/postgresql/data"];
+        environment = {
+          POSTGRES_USER = "postgres";
+          POSTGRES_PASSWORD = "postgres";
+        };
+        extraOptions = ["--network=${network}"];
+      };
+
+      twenty_server = {
+        autoStart = true;
+        image = "twentycrm/twenty:${cfg.version}";
+        ports = [
+          "3625:3000"
+        ];
+        volumes = [
+          "${dataDir}/storage:/app/packages/twenty-server/.local-storage"
+        ];
+        environment = serverEnv;
+        extraOptions = [
+          "--network=${network}"
+          "--add-host=host.docker.internal:host-gateway"
+        ];
+        dependsOn = [
+          "twenty_db"
+        ];
+      };
+
+      twenty_worker = {
+        autoStart = true;
+        image = "twentycrm/twenty:${cfg.version}";
+        volumes = [
+          "${dataDir}/storage:/app/packages/twenty-server/.local-storage"
+        ];
+        cmd = [
+          "yarn"
+          "worker:prod"
+        ];
+        environment =
+          serverEnv
+          // {
+            DISABLE_DB_MIGRATIONS = "true";
           };
-          extraOptions = ["--network=${network}"];
-        };
-
-        twenty_server = {
-          autoStart = true;
-          image = "twentycrm/twenty:${cfg.version}";
-          ports = [
-            "3625:3000"
-          ];
-          volumes = [
-            "${dataDir}/storage:/app/packages/twenty-server/.local-storage"
-          ];
-          environment = serverEnv;
-          extraOptions = [
-            "--network=${network}"
-            "--add-host=host.docker.internal:host-gateway"
-          ];
-          dependsOn = [
-            "twenty_db"
-          ];
-        };
-
-        twenty_worker = {
-          autoStart = true;
-          image = "twentycrm/twenty:${cfg.version}";
-          volumes = [
-            "${dataDir}/storage:/app/packages/twenty-server/.local-storage"
-          ];
-          cmd = [
-            "yarn"
-            "worker:prod"
-          ];
-          environment =
-            serverEnv
-            // {
-              DISABLE_DB_MIGRATIONS = "true";
-            };
-          extraOptions = [
-            "--network=${network}"
-            "--add-host=host.docker.internal:host-gateway"
-          ];
-          dependsOn = [
-            "twenty_db"
-            "twenty_server"
-          ];
-        };
+        extraOptions = [
+          "--network=${network}"
+          "--add-host=host.docker.internal:host-gateway"
+        ];
+        dependsOn = [
+          "twenty_db"
+          "twenty_server"
+        ];
       };
     };
 

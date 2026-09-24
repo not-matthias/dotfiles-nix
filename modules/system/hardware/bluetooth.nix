@@ -36,9 +36,7 @@ in {
           # in later on. Defaults to 'true'.
           AutoEnable = true;
         };
-        LE = {
-          EnableAdvMonInterleave = true;
-        };
+        LE.EnableAdvMonInterleave = true;
       };
     };
   };

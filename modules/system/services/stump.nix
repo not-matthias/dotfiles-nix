@@ -16,27 +16,25 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    virtualisation.oci-containers.containers = {
-      stump = {
-        image = "docker.io/aaronleopold/stump:0.1.6";
-        environment = {
-          PUID = "1000";
-          PGID = "1000";
+    virtualisation.oci-containers.containers.stump = {
+      image = "docker.io/aaronleopold/stump:0.1.6";
+      environment = {
+        PUID = "1000";
+        PGID = "1000";
 
-          # https://www.stumpapp.dev/guides/configuration/server-options
-          STUMP_ENABLE_UPLOAD = "true";
-          STUMP_PORT = "10801";
-          STUMP_MAX_FILE_UPLOAD_SIZE = "83886080"; # 80MB
-          STUMP_TRUST_PROXY_HEADERS = "true";
-        };
-        ports = [
-          "10801:10801/tcp"
-        ];
-        volumes = [
-          "/var/lib/stump/config:/config"
-          "${cfg.booksDir}:/data"
-        ];
+        # https://www.stumpapp.dev/guides/configuration/server-options
+        STUMP_ENABLE_UPLOAD = "true";
+        STUMP_PORT = "10801";
+        STUMP_MAX_FILE_UPLOAD_SIZE = "83886080"; # 80MB
+        STUMP_TRUST_PROXY_HEADERS = "true";
       };
+      ports = [
+        "10801:10801/tcp"
+      ];
+      volumes = [
+        "/var/lib/stump/config:/config"
+        "${cfg.booksDir}:/data"
+      ];
     };
 
     services.caddy.virtualHosts."books.${domain}".extraConfig = ''

@@ -6,9 +6,7 @@
 }: let
   cfg = config.hardware.sound;
 in {
-  options.hardware.sound = {
-    enable = lib.mkEnableOption "Enables sound support";
-  };
+  options.hardware.sound.enable = lib.mkEnableOption "Enables sound support";
 
   config = lib.mkIf cfg.enable {
     security.rtkit.enable = true;
@@ -27,21 +25,17 @@ in {
         enable = true;
         extraConfig = {
           "10-bluetooth" = {
-            "wireplumber.settings" = {
-              "bluetooth.autoswitch-to-headset-profile" = false;
-            };
+            "wireplumber.settings"."bluetooth.autoswitch-to-headset-profile" = false;
             "monitor.bluez.rules" = [
               {
                 matches = [
                   {"device.name" = "~bluez_card.*";}
                 ];
-                actions = {
-                  "update-props" = {
-                    "device.profile.switch-on-connect" = true;
-                    # Disable profile auto-reconnect so manual disconnect stays disconnected.
-                    "bluez5.auto-connect" = [];
-                    "bluez5.hw-volume" = ["hfp_hf" "a2dp_sink"];
-                  };
+                actions."update-props" = {
+                  "device.profile.switch-on-connect" = true;
+                  # Disable profile auto-reconnect so manual disconnect stays disconnected.
+                  "bluez5.auto-connect" = [];
+                  "bluez5.hw-volume" = ["hfp_hf" "a2dp_sink"];
                 };
               }
             ];
@@ -54,20 +48,14 @@ in {
           # Use software mixer instead of hardware mixer for ALSA outputs.
           # Prevents L/R channel imbalance when adjusting volume, which is
           # a known issue on some hardware (e.g. Framework laptops).
-          "12-alsa-soft-mixer" = {
-            "monitor.alsa.rules" = [
-              {
-                matches = [
-                  {"node.name" = "~alsa_output.*";}
-                ];
-                actions = {
-                  "update-props" = {
-                    "api.alsa.soft-mixer" = true;
-                  };
-                };
-              }
-            ];
-          };
+          "12-alsa-soft-mixer"."monitor.alsa.rules" = [
+            {
+              matches = [
+                {"node.name" = "~alsa_output.*";}
+              ];
+              actions."update-props"."api.alsa.soft-mixer" = true;
+            }
+          ];
         };
       };
     };

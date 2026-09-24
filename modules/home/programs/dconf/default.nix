@@ -8,9 +8,7 @@
     };
 
     # https://askubuntu.com/questions/1272710/how-do-i-enable-tap-to-click-on-my-ubuntu-20-04
-    "org/gnome/desktop/peripherals/touchpad" = {
-      "tap-to-click" = true;
-    };
+    "org/gnome/desktop/peripherals/touchpad"."tap-to-click" = true;
 
     # Remember mount password
     "org/gnome/shell" = {
@@ -27,16 +25,12 @@
     };
 
     # Screenshot via Ctrl+Alt+s
-    "org/gnome/shell/keybindings" = {
-      "show-screenshot-ui" = ["<Shift><Alt>s"];
-    };
+    "org/gnome/shell/keybindings"."show-screenshot-ui" = ["<Shift><Alt>s"];
 
     # Custom keybinds
-    "org/gnome/settings-daemon/plugins/media-keys" = {
-      custom-keybindings = [
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
-      ];
-    };
+    "org/gnome/settings-daemon/plugins/media-keys".custom-keybindings = [
+      "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+    ];
     "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
       binding = "<Primary><Alt>t";
       command = "ghostty +new-window";
@@ -55,13 +49,9 @@
     };
 
     # Center new windows
-    "org/gnome/mutter" = {
-      center-new-windows = true;
-    };
+    "org/gnome/mutter".center-new-windows = true;
 
     # Evince default view (continuous = single-column scrolling)
-    "org/gnome/evinces" = {
-      default-view = "continuous";
-    };
+    "org/gnome/evinces".default-view = "continuous";
   };
 }

@@ -157,7 +157,7 @@ in {
     # shared lock with Cargo, which cargo-sweep does not take. Persistent=true
     # keeps the weekly cadence; a catch-up run skips if busy at login.
     systemd.user.services.cargo-maintenance = lib.mkIf cfg.maintenance.enable {
-      Unit = {Description = "Cargo maintenance: sweep stale target/ + autoclean ~/.cargo";};
+      Unit.Description = "Cargo maintenance: sweep stale target/ + autoclean ~/.cargo";
       Service = {
         Type = "oneshot";
         ExecCondition = "${pkgs.bash}/bin/sh -c 'if ${pkgs.procps}/bin/pgrep -u ${config.home.username} -x cargo >/dev/null 2>&1 || ${pkgs.procps}/bin/pgrep -u ${config.home.username} -x rustc >/dev/null 2>&1; then echo \"cargo/rustc running, skipping cargo-maintenance\"; exit 1; fi'";
@@ -166,12 +166,12 @@ in {
       };
     };
     systemd.user.timers.cargo-maintenance = lib.mkIf cfg.maintenance.enable {
-      Unit = {Description = "Weekly cargo maintenance";};
+      Unit.Description = "Weekly cargo maintenance";
       Timer = {
         OnCalendar = "weekly";
         Persistent = true;
       };
-      Install = {WantedBy = ["timers.target"];};
+      Install.WantedBy = ["timers.target"];
     };
   };
 }

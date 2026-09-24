@@ -64,11 +64,9 @@ in {
       after = [navidromeCfg.requiredMount];
     };
 
-    services.caddy.virtualHosts."music-proxy.${domain}" = {
-      extraConfig = ''
-        encode zstd gzip
-        reverse_proxy http://127.0.0.1:${toString port}
-      '';
-    };
+    services.caddy.virtualHosts."music-proxy.${domain}".extraConfig = ''
+      encode zstd gzip
+      reverse_proxy http://127.0.0.1:${toString port}
+    '';
   };
 }

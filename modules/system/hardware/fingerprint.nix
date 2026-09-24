@@ -7,9 +7,7 @@
 }: let
   cfg = config.hardware.fingerprint;
 in {
-  options.hardware.fingerprint = {
-    enable = lib.mkEnableOption "Enables fingerprint support";
-  };
+  options.hardware.fingerprint.enable = lib.mkEnableOption "Enables fingerprint support";
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [
@@ -33,12 +31,10 @@ in {
       # Swaylock fingerprint workaround
       # https://github.com/swaywm/swaylock/issues/61#issuecomment-965175390
       # Usage: Press Enter first (with empty password), then scan fingerprint
-      swaylock = {
-        text = ''
-          auth sufficient pam_unix.so try_first_pass likeauth nullok
-          auth sufficient pam_fprintd.so
-        '';
-      };
+      swaylock.text = ''
+        auth sufficient pam_unix.so try_first_pass likeauth nullok
+        auth sufficient pam_fprintd.so
+      '';
     };
   };
 }

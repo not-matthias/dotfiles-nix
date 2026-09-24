@@ -30,9 +30,7 @@
       };
 
       # Git interop settings
-      git = {
-        push-branch-prefix = "push-";
-      };
+      git.push-branch-prefix = "push-";
 
       # Automatically track bookmarks from remotes (replaces deprecated git.auto-local-bookmark)
       remotes.origin.auto-track-bookmarks = "*";

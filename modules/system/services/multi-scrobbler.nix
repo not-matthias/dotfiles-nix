@@ -6,9 +6,7 @@
 }: let
   cfg = config.services.multi-scrobbler;
 in {
-  options.services.multi-scrobbler = {
-    enable = lib.mkEnableOption "Enable multi-scrobbler";
-  };
+  options.services.multi-scrobbler.enable = lib.mkEnableOption "Enable multi-scrobbler";
 
   config = lib.mkIf cfg.enable {
     age.secrets = {
@@ -28,28 +26,26 @@ in {
         group = "root";
       };
     };
-    virtualisation.oci-containers.containers = {
-      multi-scrobbler = {
-        # https://hub.docker.com/r/foxxmd/multi-scrobbler
-        image = "foxxmd/multi-scrobbler:0.16.5";
-        environment = {
-          TZ = "Etc/GMT";
-          MALOJA_URL = "http://desktop.local:42010";
-          SPOTIFY_REDIRECT_URI = "http://127.0.0.1:9078/callback";
-          WS_ENABLE = "true";
-        };
-        environmentFiles = [
-          config.age.secrets.maloja-api-key.path
-          config.age.secrets.spotify-client-id.path
-          config.age.secrets.spotify-client-secret.path
-        ];
-        extraOptions = [
-          "--network=host"
-        ];
-        volumes = [
-          "/var/lib/multi-scrobbler:/config"
-        ];
+    virtualisation.oci-containers.containers.multi-scrobbler = {
+      # https://hub.docker.com/r/foxxmd/multi-scrobbler
+      image = "foxxmd/multi-scrobbler:0.16.5";
+      environment = {
+        TZ = "Etc/GMT";
+        MALOJA_URL = "http://desktop.local:42010";
+        SPOTIFY_REDIRECT_URI = "http://127.0.0.1:9078/callback";
+        WS_ENABLE = "true";
       };
+      environmentFiles = [
+        config.age.secrets.maloja-api-key.path
+        config.age.secrets.spotify-client-id.path
+        config.age.secrets.spotify-client-secret.path
+      ];
+      extraOptions = [
+        "--network=host"
+      ];
+      volumes = [
+        "/var/lib/multi-scrobbler:/config"
+      ];
     };
 
     services.caddy.virtualHosts."multi-scrobbler.${domain}".extraConfig = ''

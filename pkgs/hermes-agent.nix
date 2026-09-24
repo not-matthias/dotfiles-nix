@@ -244,9 +244,7 @@ in
       done
     '';
 
-    passthru = {
-      upstreamSrc = src;
-    };
+    passthru.upstreamSrc = src;
 
     meta = with lib; {
       description = "The self-improving AI agent by Nous Research";

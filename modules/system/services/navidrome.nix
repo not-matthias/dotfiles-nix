@@ -59,12 +59,10 @@ in {
       })
     ];
 
-    services.caddy.virtualHosts."music.${domain}" = {
-      extraConfig = ''
-        encode zstd gzip
-        reverse_proxy http://127.0.0.1:11424
-      '';
-    };
+    services.caddy.virtualHosts."music.${domain}".extraConfig = ''
+      encode zstd gzip
+      reverse_proxy http://127.0.0.1:11424
+    '';
 
     services.restic.paths = ["/var/lib/navidrome"];
     services.restic.excludes = [

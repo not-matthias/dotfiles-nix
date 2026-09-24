@@ -15,18 +15,16 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    virtualisation.oci-containers.containers = {
-      watchyourlan = {
-        volumes = ["/var/lib/watchyourlan:/data/WatchYourLAN"];
-        environment = {
-          IFACES = cfg.ifaces;
-          TZ = config.time.timeZone;
-        };
-        image = "aceberg/watchyourlan:2.1.4";
-        extraOptions = [
-          "--network=host"
-        ];
+    virtualisation.oci-containers.containers.watchyourlan = {
+      volumes = ["/var/lib/watchyourlan:/data/WatchYourLAN"];
+      environment = {
+        IFACES = cfg.ifaces;
+        TZ = config.time.timeZone;
       };
+      image = "aceberg/watchyourlan:2.1.4";
+      extraOptions = [
+        "--network=host"
+      ];
     };
 
     services.caddy.virtualHosts."lan.${domain}".extraConfig = ''

@@ -11,9 +11,7 @@
 }: let
   cfg = config.programs.fcitx5;
 in {
-  options.programs.fcitx5 = {
-    enable = lib.mkEnableOption "Fcitx5 input method";
-  };
+  options.programs.fcitx5.enable = lib.mkEnableOption "Fcitx5 input method";
 
   config = lib.mkIf cfg.enable {
     i18n.inputMethod = {
@@ -30,13 +28,11 @@ in {
       };
     };
 
-    home-manager.users.${user} = {
-      xdg.configFile."autostart/org.fcitx.Fcitx5.desktop".text = ''
-        [Desktop Entry]
-        Type=Application
-        Hidden=true
-      '';
-    };
+    home-manager.users.${user}.xdg.configFile."autostart/org.fcitx.Fcitx5.desktop".text = ''
+      [Desktop Entry]
+      Type=Application
+      Hidden=true
+    '';
 
     # xdg.configFile = {
     #   "fcitx5/conf/classicui.conf" = {

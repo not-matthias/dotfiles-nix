@@ -145,9 +145,7 @@ in {
         Restart = "always";
         RestartSec = "10s";
       };
-      Install = {
-        WantedBy = ["default.target"];
-      };
+      Install.WantedBy = ["default.target"];
     };
   };
 }

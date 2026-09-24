@@ -30,10 +30,8 @@
     };
   };
 
-  services.caddy.virtualHosts."redlib.${domain}" = {
-    extraConfig = ''
-      encode zstd gzip
-      reverse_proxy http://127.0.0.1:10999
-    '';
-  };
+  services.caddy.virtualHosts."redlib.${domain}".extraConfig = ''
+    encode zstd gzip
+    reverse_proxy http://127.0.0.1:10999
+  '';
 }

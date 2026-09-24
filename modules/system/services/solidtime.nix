@@ -93,13 +93,11 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    age.secrets = {
-      solidtime = {
-        file = ../../../secrets/solidtime.age;
-        owner = "root";
-        group = "root";
-        mode = "0600";
-      };
+    age.secrets.solidtime = {
+      file = ../../../secrets/solidtime.age;
+      owner = "root";
+      group = "root";
+      mode = "0600";
     };
 
     services.postgresql = {

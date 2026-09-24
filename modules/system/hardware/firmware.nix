@@ -12,8 +12,6 @@
     extraRemotes = [
       "lvfs-testing"
     ];
-    uefiCapsuleSettings = {
-      DisableCapsuleUpdateOnDisk = true;
-    };
+    uefiCapsuleSettings.DisableCapsuleUpdateOnDisk = true;
   };
 }

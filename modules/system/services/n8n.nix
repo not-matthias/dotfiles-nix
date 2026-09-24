@@ -14,12 +14,10 @@ in {
       };
     };
 
-    services.caddy.virtualHosts."n8n.${domain}" = {
-      extraConfig = ''
-        encode zstd gzip
-        reverse_proxy http://127.0.0.1:5678
-      '';
-    };
+    services.caddy.virtualHosts."n8n.${domain}".extraConfig = ''
+      encode zstd gzip
+      reverse_proxy http://127.0.0.1:5678
+    '';
 
     services.restic.paths = [
       "/var/lib/n8n"

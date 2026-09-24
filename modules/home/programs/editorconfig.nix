@@ -12,13 +12,9 @@
         trim_trailing_whitespace = true;
       };
 
-      "*.md" = {
-        indent_size = 4;
-      };
+      "*.md".indent_size = 4;
 
-      "*.rs" = {
-        indent_size = 4;
-      };
+      "*.rs".indent_size = 4;
     };
   };
 }

@@ -55,9 +55,7 @@ in
     # embedded-postgres ships platform-specific binaries that need patching
     autoPatchelfIgnoreMissingDeps = true;
 
-    env = {
-      ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
-    };
+    env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
 
     # Set before configurePhase because pnpmConfigHook runs install there.
     preConfigure = ''

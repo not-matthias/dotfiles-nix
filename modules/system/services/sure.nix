@@ -57,9 +57,7 @@ in {
         extra_hosts = [
           "host.docker.internal:host-gateway"
         ];
-        depends_on = {
-          db.condition = "service_healthy";
-        };
+        depends_on.db.condition = "service_healthy";
         env_file = [
           "${secretsFile}"
         ];
@@ -85,9 +83,7 @@ in {
         extra_hosts = [
           "host.docker.internal:host-gateway"
         ];
-        depends_on = {
-          db.condition = "service_healthy";
-        };
+        depends_on.db.condition = "service_healthy";
         env_file = [
           "${secretsFile}"
         ];

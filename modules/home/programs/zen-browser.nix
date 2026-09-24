@@ -87,9 +87,7 @@ in {
         SponsoredPocket = false;
         SponsoredTopSites = false;
       };
-      Homepage = {
-        StartPage = "none";
-      };
+      Homepage.StartPage = "none";
       OverrideFirstRunPage = "";
       OverridePostUpdatePage = "";
       EnableTrackingProtection = {

@@ -6,9 +6,7 @@
 }: let
   cfg = config.services.yubikey;
 in {
-  options.services.yubikey = {
-    enable = lib.mkEnableOption "yubikey";
-  };
+  options.services.yubikey.enable = lib.mkEnableOption "yubikey";
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [

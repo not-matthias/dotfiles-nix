@@ -11,9 +11,7 @@ with lib; let
     programSkills = config.programs.cli-agents.programSkills;
   };
 in {
-  options.programs.cli-agents.amp = {
-    enable = mkEnableOption "AMP CLI agent";
-  };
+  options.programs.cli-agents.amp.enable = mkEnableOption "AMP CLI agent";
 
   config = mkIf cfg.enable {
     home.packages = [
@@ -22,9 +20,7 @@ in {
 
     home.file = {
       # Shared instruction files
-      ".amp/AGENTS.md" = {
-        source = ../shared/AGENTS.md;
-      };
+      ".amp/AGENTS.md".source = ../shared/AGENTS.md;
       ".amp/skills" = {
         source = agentSkillsFlat;
         recursive = true;

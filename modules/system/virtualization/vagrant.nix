@@ -9,9 +9,7 @@
 }: let
   cfg = config.virtualization.vagrant;
 in {
-  options.virtualization.vagrant = {
-    enable = lib.mkEnableOption "Enable Vagrant";
-  };
+  options.virtualization.vagrant.enable = lib.mkEnableOption "Enable Vagrant";
 
   config = lib.mkIf cfg.enable {
     users.users.${user} = {

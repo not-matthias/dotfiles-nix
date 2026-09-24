@@ -35,9 +35,7 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixvim = {
-      url = "github:nix-community/nixvim/nixos-26.05";
-    };
+    nixvim.url = "github:nix-community/nixvim/nixos-26.05";
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -119,9 +117,7 @@
       url = "github:chuwy/microscope.hx/7fe4e60f0c4fb715118591c71ed0a82b111f07a8";
       flake = false;
     };
-    oh-my-pi = {
-      url = "github:not-matthias/oh-my-pi/perf/startup-optimizations";
-    };
+    oh-my-pi.url = "github:not-matthias/oh-my-pi/perf/startup-optimizations";
     timeguard = {
       url = "git+ssh://git@github.com/not-matthias/timeguard.git";
       inputs.nixpkgs.follows = "nixpkgs";

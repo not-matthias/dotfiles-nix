@@ -7,9 +7,7 @@
 }: let
   cfg = config.services.postiz;
 in {
-  options.services.postiz = {
-    enable = lib.mkEnableOption "Postiz social media management platform";
-  };
+  options.services.postiz.enable = lib.mkEnableOption "Postiz social media management platform";
 
   config = lib.mkIf cfg.enable {
     services.redis.servers.postiz = {

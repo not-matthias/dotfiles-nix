@@ -7,9 +7,7 @@
 }: let
   cfg = config.virtualisation.qemu;
 in {
-  options.virtualisation.qemu = {
-    enable = lib.mkEnableOption "Enable Qemu";
-  };
+  options.virtualisation.qemu.enable = lib.mkEnableOption "Enable Qemu";
 
   config = lib.mkIf cfg.enable {
     users.groups.libvirtd.members = ["root" "${user}"];
@@ -28,15 +26,13 @@ in {
       spiceUSBRedirection.enable = true; # USB passthrough
     };
 
-    environment = {
-      systemPackages = with pkgs; [
-        virt-manager
-        virt-viewer
-        qemu
-        qemu_kvm
-        gvfs # Used for shared folders between linux and windows
-      ];
-    };
+    environment.systemPackages = with pkgs; [
+      virt-manager
+      virt-viewer
+      qemu
+      qemu_kvm
+      gvfs # Used for shared folders between linux and windows
+    ];
 
     services = {
       # Enable file sharing between OS

@@ -6,12 +6,10 @@
 }: let
   cfg = config.services.wakapi;
 in {
-  options.services.wakapi = {
-    port = lib.mkOption {
-      type = lib.types.port;
-      default = 8004;
-      description = "Port for Wakapi application to listen on internally";
-    };
+  options.services.wakapi.port = lib.mkOption {
+    type = lib.types.port;
+    default = 8004;
+    description = "Port for Wakapi application to listen on internally";
   };
 
   config = lib.mkIf cfg.enable {

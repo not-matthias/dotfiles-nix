@@ -8,17 +8,13 @@
 }: let
   cfg = config.services.lobe-chat;
 in {
-  options.services.lobe-chat = {
-    enable = lib.mkEnableOption "LobeChat AI conversation interface";
-  };
+  options.services.lobe-chat.enable = lib.mkEnableOption "LobeChat AI conversation interface";
 
   config = lib.mkIf cfg.enable {
-    age.secrets = {
-      nextauth-secret = {
-        file = ../../../secrets/nextauth-secret.age;
-        owner = "root";
-        group = "root";
-      };
+    age.secrets.nextauth-secret = {
+      file = ../../../secrets/nextauth-secret.age;
+      owner = "root";
+      group = "root";
     };
 
     services.minio.enable = true;
@@ -39,9 +35,7 @@ in {
         {
           name = "lobe";
           ensureDBOwnership = true;
-          ensureClauses = {
-            superuser = true;
-          };
+          ensureClauses.superuser = true;
         }
       ];
     };
@@ -58,50 +52,48 @@ in {
     #   };
     # };
 
-    virtualisation.oci-containers.containers = {
-      "lobe-chat" = {
-        image = "docker.io/lobehub/lobe-chat-database:1.143.3";
-        environment = {
-          "APP_URL" = "https://lobe-chat.${domain}";
+    virtualisation.oci-containers.containers."lobe-chat" = {
+      image = "docker.io/lobehub/lobe-chat-database:1.143.3";
+      environment = {
+        "APP_URL" = "https://lobe-chat.${domain}";
 
-          "OLLAMA_PROXY_URL" = "http://host.docker.internal:11434";
+        "OLLAMA_PROXY_URL" = "http://host.docker.internal:11434";
 
-          # Postgres related environment variables
-          # Required: Postgres database connection string
-          "DATABASE_URL" = "postgresql://lobe:lobe@127.0.0.1:5432/lobe";
-          # Required: Secret key for encrypting sensitive information. Generate with: openssl rand -base64 32
-          "KEY_VAULTS_SECRET" = "Kix2wcUONd4CX51E/ZPAd36BqM4wzJgKjPtz2sGztqQ=";
+        # Postgres related environment variables
+        # Required: Postgres database connection string
+        "DATABASE_URL" = "postgresql://lobe:lobe@127.0.0.1:5432/lobe";
+        # Required: Secret key for encrypting sensitive information. Generate with: openssl rand -base64 32
+        "KEY_VAULTS_SECRET" = "Kix2wcUONd4CX51E/ZPAd36BqM4wzJgKjPtz2sGztqQ=";
 
-          # S3/MinIO Configuration
-          "S3_ACCESS_KEY_ID" = "minioadmin";
-          "S3_SECRET_ACCESS_KEY" = "minioadmin";
-          "S3_ENDPOINT" = "https://s3.${domain}";
-          "S3_BUCKET" = "lobe";
-          "S3_PUBLIC_DOMAIN" = "https://s3.${domain}";
-          "S3_ENABLE_PATH_STYLE" = "1";
+        # S3/MinIO Configuration
+        "S3_ACCESS_KEY_ID" = "minioadmin";
+        "S3_SECRET_ACCESS_KEY" = "minioadmin";
+        "S3_ENDPOINT" = "https://s3.${domain}";
+        "S3_BUCKET" = "lobe";
+        "S3_PUBLIC_DOMAIN" = "https://s3.${domain}";
+        "S3_ENABLE_PATH_STYLE" = "1";
 
-          # Files/Knowledge Base Configuration
-          "DEFAULT_FILES_CONFIG" = "embedding_model=ollama/nomic-embed-text:latest";
+        # Files/Knowledge Base Configuration
+        "DEFAULT_FILES_CONFIG" = "embedding_model=ollama/nomic-embed-text:latest";
 
-          # Authelia SSO Configuration
-          "NEXT_AUTH_SECRET" = "Vx/ET7i60bdpaVrxj8NStYAZxF0HmtSzNoDbxIrTR+Q=";
-          "NEXT_AUTH_SSO_PROVIDERS" = "authelia";
-          "NEXTAUTH_URL" = "https://lobe-chat.${domain}/api/auth";
+        # Authelia SSO Configuration
+        "NEXT_AUTH_SECRET" = "Vx/ET7i60bdpaVrxj8NStYAZxF0HmtSzNoDbxIrTR+Q=";
+        "NEXT_AUTH_SSO_PROVIDERS" = "authelia";
+        "NEXTAUTH_URL" = "https://lobe-chat.${domain}/api/auth";
 
-          "AUTH_AUTHELIA_SECRET" = "insecure_secret";
-          "AUTH_AUTHELIA_ID" = "lobe-chat";
-          "AUTH_AUTHELIA_ISSUER" = "https://auth.${domain}";
-        };
-        ports = ["3210:3210/tcp"];
-        environmentFiles = [];
-        extraOptions = [
-          "--pull=always"
-          # "--add-host=host.docker.internal:host-gateway"
-
-          # TODO: Can we remove this? -> Fix postgres auth
-          "--network=host"
-        ];
+        "AUTH_AUTHELIA_SECRET" = "insecure_secret";
+        "AUTH_AUTHELIA_ID" = "lobe-chat";
+        "AUTH_AUTHELIA_ISSUER" = "https://auth.${domain}";
       };
+      ports = ["3210:3210/tcp"];
+      environmentFiles = [];
+      extraOptions = [
+        "--pull=always"
+        # "--add-host=host.docker.internal:host-gateway"
+
+        # TODO: Can we remove this? -> Fix postgres auth
+        "--network=host"
+      ];
     };
 
     services.authelia.instances.main.settings.identity_providers.oidc.clients = lib.mkAfter [

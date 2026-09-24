@@ -10,9 +10,7 @@
   };
   cfg = config.programs.minecraft;
 in {
-  options.programs.minecraft = {
-    enable = lib.mkEnableOption "Enable Minecraft";
-  };
+  options.programs.minecraft.enable = lib.mkEnableOption "Enable Minecraft";
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [

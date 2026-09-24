@@ -115,33 +115,15 @@ in {
     # Pi uses ~/.pi/agent/ as its config directory
     home.file =
       {
-        ".pi/agent/AGENTS.md" = {
-          source = ../shared/AGENTS.md;
-        };
-        ".pi/agent/APPEND_SYSTEM.md" = {
-          source = ./APPEND_SYSTEM.md;
-        };
-        ".pi/agent/settings.json" = {
-          source = settingsFile;
-        };
-        ".pi/agent/keybindings.json" = {
-          source = keybindingsFile;
-        };
-        ".pi/agent/claude-bridge.json" = {
-          source = ./claude-bridge.json;
-        };
-        ".pi/agent/verbosity.json" = {
-          source = ./verbosity.json;
-        };
-        ".pi/agent/models.json" = {
-          source = ./models.json;
-        };
-        ".pi/agent/themes/stylix-latte-red.json" = {
-          source = ./themes/stylix-latte-red.json;
-        };
-        ".pi/agent/themes/stylix-mocha-red.json" = {
-          source = ./themes/stylix-mocha-red.json;
-        };
+        ".pi/agent/AGENTS.md".source = ../shared/AGENTS.md;
+        ".pi/agent/APPEND_SYSTEM.md".source = ./APPEND_SYSTEM.md;
+        ".pi/agent/settings.json".source = settingsFile;
+        ".pi/agent/keybindings.json".source = keybindingsFile;
+        ".pi/agent/claude-bridge.json".source = ./claude-bridge.json;
+        ".pi/agent/verbosity.json".source = ./verbosity.json;
+        ".pi/agent/models.json".source = ./models.json;
+        ".pi/agent/themes/stylix-latte-red.json".source = ./themes/stylix-latte-red.json;
+        ".pi/agent/themes/stylix-mocha-red.json".source = ./themes/stylix-mocha-red.json;
         ".pi/agent/skills" = {
           source = agentSkillsFlat;
           recursive = true;
@@ -151,19 +133,13 @@ in {
           recursive = false;
         };
         # Extension config files
-        ".pi/agent/extensions/guardrails.json" = {
-          source = ./extensions/guardrails.json;
-        };
-        ".pi/agent/extensions/toolchain.json" = {
-          source = ./extensions/toolchain.json;
-        };
-        ".pi/agent/extensions/pi-tool-display/config.json" = {
-          text = builtins.toJSON {
-            readOutputMode = "summary";
-            searchOutputMode = "count";
-            bashOutputMode = "opencode";
-            diffViewMode = "auto";
-          };
+        ".pi/agent/extensions/guardrails.json".source = ./extensions/guardrails.json;
+        ".pi/agent/extensions/toolchain.json".source = ./extensions/toolchain.json;
+        ".pi/agent/extensions/pi-tool-display/config.json".text = builtins.toJSON {
+          readOutputMode = "summary";
+          searchOutputMode = "count";
+          bashOutputMode = "opencode";
+          diffViewMode = "auto";
         };
       }
       // extensionFiles

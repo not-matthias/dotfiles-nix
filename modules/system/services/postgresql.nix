@@ -9,9 +9,7 @@ with lib; {
     services.postgresql = {
       package = pkgs.postgresql_16;
       enableTCPIP = mkDefault true;
-      settings = {
-        listen_addresses = mkDefault "*";
-      };
+      settings.listen_addresses = mkDefault "*";
       authentication = mkAfter ''
         # Allow local connections
         local all all               trust

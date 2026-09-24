@@ -7,9 +7,7 @@
 }: let
   cfg = config.programs.idea-copilot;
 in {
-  options.programs.idea-copilot = {
-    enable = lib.mkEnableOption "Enable GitHub Copilot";
-  };
+  options.programs.idea-copilot.enable = lib.mkEnableOption "Enable GitHub Copilot";
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [

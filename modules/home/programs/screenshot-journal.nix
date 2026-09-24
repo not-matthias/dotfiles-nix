@@ -124,9 +124,7 @@ in {
       example = 60;
     };
 
-    deduplication = {
-      enable = mkEnableOption "duplicate screenshot detection and removal";
-    };
+    deduplication.enable = mkEnableOption "duplicate screenshot detection and removal";
   };
 
   config = mkIf cfg.enable {
@@ -139,9 +137,7 @@ in {
     ];
 
     systemd.user.services.screenshot-journal = {
-      Unit = {
-        Description = "Take screenshot journal entry";
-      };
+      Unit.Description = "Take screenshot journal entry";
       Service = {
         Type = "oneshot";
         ExecStart = "${script}/bin/screenshot-journal";
@@ -149,16 +145,12 @@ in {
     };
 
     systemd.user.timers.screenshot-journal = {
-      Unit = {
-        Description = "Capture screenshot journal entry on schedule";
-      };
+      Unit.Description = "Capture screenshot journal entry on schedule";
       Timer = {
         OnCalendar = "${cfg.schedule}";
         Persistent = true;
       };
-      Install = {
-        WantedBy = ["timers.target"];
-      };
+      Install.WantedBy = ["timers.target"];
     };
   };
 }

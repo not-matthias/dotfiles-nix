@@ -25,15 +25,11 @@ with lib; let
     done
   '';
 in {
-  options.programs.low-battery-alert = {
-    enable = mkEnableOption "low battery alert";
-  };
+  options.programs.low-battery-alert.enable = mkEnableOption "low battery alert";
 
   config = mkIf cfg.enable {
     systemd.user.services.low-battery-check = {
-      Unit = {
-        Description = "Check for low battery";
-      };
+      Unit.Description = "Check for low battery";
       Service = {
         Type = "oneshot";
         ExecStart = "''${script}/bin/low-battery-check";
@@ -41,16 +37,12 @@ in {
     };
 
     systemd.user.timers.low-battery-check = {
-      Unit = {
-        Description = "Run low battery check every 5 minutes";
-      };
+      Unit.Description = "Run low battery check every 5 minutes";
       Timer = {
         OnCalendar = "*:0/5";
         Persistent = true;
       };
-      Install = {
-        WantedBy = ["timers.target"];
-      };
+      Install.WantedBy = ["timers.target"];
     };
   };
 }

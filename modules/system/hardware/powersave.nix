@@ -59,9 +59,7 @@
     fi
   '';
 in {
-  options.hardware.powersave = {
-    enable = lib.mkEnableOption "Powersave Configuration";
-  };
+  options.hardware.powersave.enable = lib.mkEnableOption "Powersave Configuration";
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
@@ -134,8 +132,6 @@ in {
       }
     ];
 
-    programs.fish.shellAbbrs = {
-      "cpuf" = "sudo systemctl restart auto-cpufreq.service";
-    };
+    programs.fish.shellAbbrs."cpuf" = "sudo systemctl restart auto-cpufreq.service";
   };
 }

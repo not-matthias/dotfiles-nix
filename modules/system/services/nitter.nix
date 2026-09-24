@@ -38,10 +38,8 @@
 
   age.secrets.nitter-session.file = ../../../secrets/nitter-session.age;
 
-  services.caddy.virtualHosts."nitter.${domain}" = {
-    extraConfig = ''
-      encode zstd gzip
-      reverse_proxy http://127.0.0.1:11000
-    '';
-  };
+  services.caddy.virtualHosts."nitter.${domain}".extraConfig = ''
+    encode zstd gzip
+    reverse_proxy http://127.0.0.1:11000
+  '';
 }

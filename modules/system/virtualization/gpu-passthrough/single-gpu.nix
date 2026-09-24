@@ -112,9 +112,7 @@
     systemctl start display-manager.service
   '';
 in {
-  options.virtualisation.single-gpu-passthrough = {
-    enable = lib.mkEnableOption "Single GPU Passthrough";
-  };
+  options.virtualisation.single-gpu-passthrough.enable = lib.mkEnableOption "Single GPU Passthrough";
 
   config = lib.mkIf cfg.enable {
     systemd.tmpfiles.rules = [

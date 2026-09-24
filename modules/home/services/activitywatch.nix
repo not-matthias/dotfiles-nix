@@ -34,7 +34,7 @@ in {
         Requisite = ["graphical-session.target"];
         PartOf = ["graphical-session.target"];
       };
-      Install = {WantedBy = ["graphical-session.target"];};
+      Install.WantedBy = ["graphical-session.target"];
     };
 
     systemd.user.services.activitywatch-watcher-niri = {
@@ -49,7 +49,7 @@ in {
         Restart = "always";
         RestartSec = 3;
       };
-      Install = {WantedBy = ["graphical-session.target"];};
+      Install.WantedBy = ["graphical-session.target"];
     };
   };
 }

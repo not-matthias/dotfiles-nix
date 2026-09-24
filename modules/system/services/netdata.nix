@@ -45,10 +45,10 @@ in {
           "cgroups" = "yes";
         };
 
-        ml = {"enabled" = "true";};
-        health = {"enabled" = "no";};
-        statsd = {"enabled" = "no";};
-        "plugin:apps" = {"update every" = updateEvery;};
+        ml."enabled" = "true";
+        health."enabled" = "no";
+        statsd."enabled" = "no";
+        "plugin:apps"."update every" = updateEvery;
         "plugin:proc:diskspace" = {
           "update every" = updateEvery;
           "check for new mount points every" = updateEvery;

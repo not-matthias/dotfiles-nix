@@ -6,9 +6,7 @@
 }: let
   cfg = config.services.authelia;
 in {
-  options.services.authelia = {
-    enable = lib.mkEnableOption "Authelia authentication and authorization server";
-  };
+  options.services.authelia.enable = lib.mkEnableOption "Authelia authentication and authorization server";
 
   config = lib.mkIf cfg.enable {
     age.secrets = {
@@ -61,11 +59,7 @@ in {
           format = "text";
           keep_stdout = true;
         };
-        authentication_backend = {
-          file = {
-            path = "/etc/authelia/users.yml";
-          };
-        };
+        authentication_backend.file.path = "/etc/authelia/users.yml";
         access_control.default_policy = "one_factor";
         session = {
           cookies = [
@@ -89,11 +83,7 @@ in {
           minimum_parameter_entropy = 8;
           clients = [];
         };
-        storage = {
-          local = {
-            path = "/var/lib/authelia-main/db.sqlite3";
-          };
-        };
+        storage.local.path = "/var/lib/authelia-main/db.sqlite3";
 
         notifier.filesystem.filename = "/var/lib/authelia-main/notification.txt";
       };

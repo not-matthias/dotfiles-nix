@@ -7,13 +7,11 @@
   cfg = config.services.ollama;
   unstable = pkgs;
 in {
-  options.services.ollama = {
-    useNvidia = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      example = true;
-      description = "Whether to use NVIDIA for inference";
-    };
+  options.services.ollama.useNvidia = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+    example = true;
+    description = "Whether to use NVIDIA for inference";
   };
 
   # Only enable if ollama is enabled

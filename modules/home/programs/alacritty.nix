@@ -37,7 +37,7 @@
             key = "O";
             mods = "Control|Shift";
           };
-          mouse = {enabled = false;};
+          mouse.enabled = false;
         }
       ];
     };

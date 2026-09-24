@@ -26,16 +26,14 @@ in {
       '';
     };
 
-    home-manager.users.${user} = {
-      programs.obs-studio = {
-        enable = true;
-        plugins = with pkgs.obs-studio-plugins; [
-          obs-vaapi
-          obs-vkcapture
-          obs-gstreamer
-          obs-pipewire-audio-capture
-        ];
-      };
+    home-manager.users.${user}.programs.obs-studio = {
+      enable = true;
+      plugins = with pkgs.obs-studio-plugins; [
+        obs-vaapi
+        obs-vkcapture
+        obs-gstreamer
+        obs-pipewire-audio-capture
+      ];
     };
   };
 }

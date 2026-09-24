@@ -5,9 +5,7 @@
 }: let
   cfg = config.hardware.zfs;
 in {
-  options.hardware.zfs = {
-    enable = lib.mkEnableOption "ZFS Configuration";
-  };
+  options.hardware.zfs.enable = lib.mkEnableOption "ZFS Configuration";
 
   config = lib.mkIf cfg.enable {
     # Increase TXG sync interval to reduce CPU overhead from frequent syncs
@@ -18,15 +16,13 @@ in {
     services.zrepl = {
       enable = true;
       settings = {
-        global = {
-          logging = [
-            {
-              type = "syslog";
-              level = "warn";
-              format = "human";
-            }
-          ];
-        };
+        global.logging = [
+          {
+            type = "syslog";
+            level = "warn";
+            format = "human";
+          }
+        ];
 
         jobs = let
           # Test with: `zrepl test filesystems`
@@ -50,34 +46,32 @@ in {
               interval = "6h";
               prefix = "zrepl-";
             };
-            pruning = {
-              keep = [
-                # Keep all manual snapshots
-                {
-                  type = "regex";
-                  regex = "^zrepl-.*$";
-                  negate = true;
-                }
+            pruning.keep = [
+              # Keep all manual snapshots
+              {
+                type = "regex";
+                regex = "^zrepl-.*$";
+                negate = true;
+              }
 
-                # fade-out scheme for snapshots starting with `zrepl-`
-                # - keep all created in the last 6 hours
-                # - then keep 4 each 6 hours apart (1 day)
-                # - then keep 14 each 1 day apart
-                # - then destroy all older snapshots
-                {
-                  type = "grid";
-                  grid = "1x6h(keep=all) | 4x6h | 14x1d";
-                  regex = "^zrepl-.*$";
-                }
+              # fade-out scheme for snapshots starting with `zrepl-`
+              # - keep all created in the last 6 hours
+              # - then keep 4 each 6 hours apart (1 day)
+              # - then keep 14 each 1 day apart
+              # - then destroy all older snapshots
+              {
+                type = "grid";
+                grid = "1x6h(keep=all) | 4x6h | 14x1d";
+                regex = "^zrepl-.*$";
+              }
 
-                # Keep last n snapshots
-                # {
-                #   type = "last_n";
-                #   regex = "^zrepl-.*$";
-                #   count = 10;
-                # }
-              ];
-            };
+              # Keep last n snapshots
+              # {
+              #   type = "last_n";
+              #   regex = "^zrepl-.*$";
+              #   count = 10;
+              # }
+            ];
           }
 
           # Backup job (push to drive)

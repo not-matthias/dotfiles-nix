@@ -1,0 +1,11 @@
+id: nix-single-attribute
+language: Nix
+severity: error
+message: Use a dotted attribute path for a single-attribute set.
+rule:
+  pattern:
+    context: '{ $OUTER = { $INNER = $VALUE; }; }'
+    selector: binding
+    # Exact concrete syntax preserves comments, rec, and additional bindings.
+    strictness: cst
+fix: $OUTER.$INNER = $VALUE;

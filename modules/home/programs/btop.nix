@@ -9,8 +9,6 @@ in {
   programs.btop = {
     enable = true;
     package = lib.mkIf useNvidia (pkgs.btop.override {cudaSupport = true;});
-    settings = {
-      vim_keys = true;
-    };
+    settings.vim_keys = true;
   };
 }

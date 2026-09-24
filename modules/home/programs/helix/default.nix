@@ -90,9 +90,7 @@ in {
             {
               name = "nix";
               auto-format = false;
-              formatter = {
-                command = "alejandra";
-              };
+              formatter.command = "alejandra";
             }
           ];
           language-server = {
@@ -110,9 +108,7 @@ in {
             # The rustup package's `rust-analyzer` proxy wins the profile PATH
             # merge; without the component installed it exits at startup.
             "rust-analyzer".command = lib.getExe pkgs.rust-analyzer;
-            "nil" = {
-              config.nil.nix.flake.autoArchive = true;
-            };
+            "nil".config.nil.nix.flake.autoArchive = true;
             # Request timeout in seconds (default 20). A server that stops
             # answering blocks `:w` for this long, since writes await the
             # formatting response before the save future is queued.
@@ -125,11 +121,11 @@ in {
             in {
               nixpkgs.expr = "import ${flake}.inputs.nixpkgs {}";
               options = {
-                nixos = {expr = hostOptions "pc";};
-                nixos-framework = {expr = hostOptions "framework";};
+                nixos.expr = hostOptions "pc";
+                nixos-framework.expr = hostOptions "framework";
                 # `type.getSubOptions` only sees the shared submodule; the
                 # evaluated per-user tree includes the host's own HM modules.
-                home-manager = {expr = "${hostOptions "pc"}.home-manager.users.valueMeta.attrs.${config.home.username}.configuration.options";};
+                home-manager.expr = "${hostOptions "pc"}.home-manager.users.valueMeta.attrs.${config.home.username}.configuration.options";
               };
             };
           };

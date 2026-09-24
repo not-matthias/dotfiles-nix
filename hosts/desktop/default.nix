@@ -42,9 +42,7 @@
           enable = false;
           envFile = "/run/agenix/pi-mono-env";
         };
-        oh-my-pi = {
-          enable = true;
-        };
+        oh-my-pi.enable = true;
       };
       btop.enable = true;
       #alacritty.enable = true;
@@ -114,15 +112,13 @@
     octo-fiesta.enable = true;
     slskd = {
       enable = false;
-      settings = {
-        shares = {
-          directories = [
-            "/mnt/data/personal/music/library"
-          ];
-          filters = [
-            ".*\\.db$"
-          ];
-        };
+      settings.shares = {
+        directories = [
+          "/mnt/data/personal/music/library"
+        ];
+        filters = [
+          ".*\\.db$"
+        ];
       };
     };
     maloja.enable = true;
@@ -181,10 +177,8 @@
   virtualisation.docker.enable = true;
   hardware.nvidia-container-toolkit.enable = true;
 
-  boot = {
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
   };
 }

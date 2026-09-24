@@ -124,9 +124,7 @@ with lib; let
     echo "Done!"
   '';
 in {
-  options.programs.niri-organize = {
-    enable = mkEnableOption "niri-organize - move workspaces and windows to correct monitors";
-  };
+  options.programs.niri-organize.enable = mkEnableOption "niri-organize - move workspaces and windows to correct monitors";
 
   config = mkIf cfg.enable {
     home.packages = [package];

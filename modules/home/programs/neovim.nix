@@ -353,17 +353,13 @@
         mode = "n";
         key = "<C-/>";
         action = "<Plug>(comment_toggle_linewise_current)";
-        options = {
-          desc = "Toggle line comment";
-        };
+        options.desc = "Toggle line comment";
       }
       {
         mode = "v";
         key = "<C-/>";
         action = "<Plug>(comment_toggle_linewise_visual)";
-        options = {
-          desc = "Toggle block comment";
-        };
+        options.desc = "Toggle block comment";
       }
 
       # ============================================================================
@@ -503,33 +499,25 @@
         mode = "n";
         key = "<space>gb";
         action = "<cmd>GitBlameToggle<cr>";
-        options = {
-          desc = "Toggle git blame";
-        };
+        options.desc = "Toggle git blame";
       }
       {
         mode = "n";
         key = "<space>gl";
         action = "<cmd>LazyGit<cr>";
-        options = {
-          desc = "LazyGit";
-        };
+        options.desc = "LazyGit";
       }
       {
         mode = "n";
         key = "<space>u";
         action = "<cmd>UndotreeToggle<cr>";
-        options = {
-          desc = "Undo tree";
-        };
+        options.desc = "Undo tree";
       }
       {
         mode = "n";
         key = "<space>a";
         action = "<cmd>AerialToggle<cr>";
-        options = {
-          desc = "Symbol outline";
-        };
+        options.desc = "Symbol outline";
       }
       {
         mode = "n";
@@ -687,25 +675,19 @@
         mode = "v";
         key = "<space>/";
         action = "<Plug>(comment_toggle_linewise_visual)";
-        options = {
-          desc = "Toggle comment";
-        };
+        options.desc = "Toggle comment";
       }
       {
         mode = "n";
         key = ";";
         action = ":";
-        options = {
-          desc = "Enter command mode";
-        };
+        options.desc = "Enter command mode";
       }
       {
         mode = "i";
         key = "jk";
         action = "<Esc>";
-        options = {
-          desc = "Exit insert mode";
-        };
+        options.desc = "Exit insert mode";
       }
       {
         mode = "n";
@@ -900,9 +882,7 @@
           layout_config.prompt_position = "top";
           sorting_strategy = "ascending";
         };
-        extensions = {
-          file-browser.enable = true;
-        };
+        extensions.file-browser.enable = true;
       };
 
       # Statusline
@@ -932,9 +912,7 @@
       web-devicons.enable = true;
       tiny-inline-diagnostic = {
         enable = true;
-        settings = {
-          preset = "modern";
-        };
+        settings.preset = "modern";
       };
 
       # Warnings and notifications
@@ -943,15 +921,13 @@
         settings = {
           notify.enabled = true;
           messages.enabled = true;
-          views = {
-            notify = {
-              replace = true;
-              max_height = 2;
-            };
+          views.notify = {
+            replace = true;
+            max_height = 2;
           };
           routes = [
             {
-              filter = {event = "msg_show";};
+              filter.event = "msg_show";
               view = "mini";
             }
           ];
@@ -964,9 +940,7 @@
         settings = {
           disable_netrw = true;
           hijack_netrw = false;
-          hijack_directories = {
-            enable = false;
-          };
+          hijack_directories.enable = false;
           git = {
             enable = true;
             ignore = false;
@@ -979,11 +953,7 @@
             width = 48;
             preserve_window_proportions = true;
           };
-          actions = {
-            open_file = {
-              resize_window = false;
-            };
-          };
+          actions.open_file.resize_window = false;
         };
       };
 
@@ -993,23 +963,19 @@
       # TODO: Allow inline hints + copilot
       rustaceanvim = {
         enable = true;
-        settings.server.default_settings = {
-          rust-analyzer = {
-            cargo = {
-              buildScripts.enable = true;
-              features = "all";
-            };
-
-            files = {
-              excludeDirs = [
-                ".cargo"
-                ".direnv"
-                ".git"
-                "node_modules"
-                "target"
-              ];
-            };
+        settings.server.default_settings.rust-analyzer = {
+          cargo = {
+            buildScripts.enable = true;
+            features = "all";
           };
+
+          files.excludeDirs = [
+            ".cargo"
+            ".direnv"
+            ".git"
+            "node_modules"
+            "target"
+          ];
         };
       };
       # crates.enable = true;
@@ -1096,11 +1062,9 @@
       gitsigns.enable = true;
       neogit = {
         enable = true;
-        settings = {
-          integrations = {
-            diffview = true;
-            telescope = true;
-          };
+        settings.integrations = {
+          diffview = true;
+          telescope = true;
         };
       };
       gitblame = {
@@ -1113,9 +1077,7 @@
       };
 
       # tree-sitter
-      treesitter = {
-        enable = true;
-      };
+      treesitter.enable = true;
     };
     extraPlugins = [pkgs.vimPlugins.lazygit-nvim];
     extraPackages = [pkgs.lazygit];

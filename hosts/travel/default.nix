@@ -75,11 +75,9 @@
         amp.enable = true;
       };
       btop.enable = true;
-      obsidian = {
-        vault-links.personal = {
-          vaultName = "personal-vault-v2";
-          desktopName = "Obsidian - Personal Vault";
-        };
+      obsidian.vault-links.personal = {
+        vaultName = "personal-vault-v2";
+        desktopName = "Obsidian - Personal Vault";
       };
       ghidra = {
         enable = true;
@@ -91,9 +89,7 @@
           "sleighdevtools"
         ];
       };
-      screenshot-journal = {
-        enable = true;
-      };
+      screenshot-journal.enable = true;
 
       gitui.enable = true;
       firefox.enable = false;
@@ -154,15 +150,13 @@
     multi-scrobbler.enable = true;
     system76-scheduler = {
       enable = true;
-      assignments = {
-        nix-builds = {
-          nice = 15;
-          class = "batch";
-          ioClass = "idle";
-          matchers = [
-            "nix-daemon"
-          ];
-        };
+      assignments.nix-builds = {
+        nice = 15;
+        class = "batch";
+        ioClass = "idle";
+        matchers = [
+          "nix-daemon"
+        ];
       };
     };
     safeeyes.enable = true;

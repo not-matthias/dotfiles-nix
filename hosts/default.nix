@@ -110,14 +110,12 @@
                   ;
                 addons = nur.repos.rycee.firefox-addons;
               };
-              users.${user} = {
-                imports = [
-                  ./home.nix
-                  nixvim.homeModules.nixvim
-                  flakes.vicinae.homeManagerModules.default
-                  agenix.homeManagerModules.age
-                ];
-              };
+              users.${user}.imports = [
+                ./home.nix
+                nixvim.homeModules.nixvim
+                flakes.vicinae.homeManagerModules.default
+                agenix.homeManagerModules.age
+              ];
             };
           }
         ];

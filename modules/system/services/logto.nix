@@ -66,22 +66,20 @@ in {
     };
 
     # Logto OCI container
-    virtualisation.oci-containers.containers = {
-      "logto" = {
-        image = "docker.io/svhd/logto:1.43.0";
-        environment = {
-          "TRUST_PROXY_HEADER" = "1";
-          "DB_URL" = "postgresql://logto:${cfg.dbPassword}@localhost:5432/logto";
-          "ENDPOINT" = "https://${cfg.domain}";
-          "ADMIN_ENDPOINT" = "https://${cfg.adminDomain}";
-        };
-        extraOptions = [
-          "--pull=always"
-          "--network=host"
-        ];
-        entrypoint = "/bin/sh";
-        cmd = ["-c" "npm run cli db seed -- --swe && npm start"];
+    virtualisation.oci-containers.containers."logto" = {
+      image = "docker.io/svhd/logto:1.43.0";
+      environment = {
+        "TRUST_PROXY_HEADER" = "1";
+        "DB_URL" = "postgresql://logto:${cfg.dbPassword}@localhost:5432/logto";
+        "ENDPOINT" = "https://${cfg.domain}";
+        "ADMIN_ENDPOINT" = "https://${cfg.adminDomain}";
       };
+      extraOptions = [
+        "--pull=always"
+        "--network=host"
+      ];
+      entrypoint = "/bin/sh";
+      cmd = ["-c" "npm run cli db seed -- --swe && npm start"];
     };
 
     # Ensure PostgreSQL is running before starting Logto

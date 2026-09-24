@@ -71,12 +71,8 @@ in {
                 y = 0;
               };
             };
-            "DP-1" = {
-              variable-refresh-rate = true;
-            };
-            "DP-2" = {
-              variable-refresh-rate = true;
-            };
+            "DP-1".variable-refresh-rate = true;
+            "DP-2".variable-refresh-rate = true;
             "eDP-1" = {
               variable-refresh-rate = true;
               scale = 1.5;
@@ -293,12 +289,8 @@ in {
                 active.color = "#ff6b7a";
                 inactive.color = "#7d0d2d";
               };
-              border = {
-                inactive.color = "#7d0d2d";
-              };
-              shadow = {
-                color = "#7d0d2d70";
-              };
+              border.inactive.color = "#7d0d2d";
+              shadow.color = "#7d0d2d70";
               tab-indicator = {
                 active.color = "#ff6b7a";
                 inactive.color = "#7d0d2d";

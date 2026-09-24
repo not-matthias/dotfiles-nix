@@ -16,11 +16,9 @@
 
   # NOTE: Avoid setting DefaultMemoryMax here — it applies to all systemd
   # services/scopes and kills Electron apps (Chrome, Slack) during memory pressure.
-  systemd.settings = {
-    Manager = {
-      DefaultMemoryAccounting = "yes";
-      DefaultTasksMax = "4096";
-      LogLevel = "notice";
-    };
+  systemd.settings.Manager = {
+    DefaultMemoryAccounting = "yes";
+    DefaultTasksMax = "4096";
+    LogLevel = "notice";
   };
 }

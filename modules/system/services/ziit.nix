@@ -27,13 +27,11 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    age.secrets = {
-      ziit = {
-        file = ../../../secrets/ziit.age;
-        owner = "root";
-        group = "root";
-        mode = "0600";
-      };
+    age.secrets.ziit = {
+      file = ../../../secrets/ziit.age;
+      owner = "root";
+      group = "root";
+      mode = "0600";
     };
 
     services.postgresql = {
@@ -74,35 +72,33 @@ in {
     };
 
     virtualisation.oci-containers.backend = "docker";
-    virtualisation.oci-containers.containers = {
-      "ziit-app" = {
-        image = "ghcr.io/0pandadev/ziit:${cfg.version}";
-        ports = ["${toString cfg.port}:3000"];
-        user = "1000:1000";
-        dependsOn = [];
-        volumes = [
-          "${dataDir}/uploads:/app/uploads"
-          "${dataDir}/data:/ziit/node_modules/.prisma"
-          "${dataDir}/cache:/ziit/.cache"
-        ];
-        environment = {
-          NUXT_DATABASE_URL = "postgresql://ziit@host.docker.internal:${toString config.services.postgresql.settings.port}/ziit";
-          NUXT_BASE_URL = "https://ziit.${domain}";
-          NUXT_DISABLE_REGISTRATION = "false";
-          NUXT_GITHUB_CLIENT_ID = "";
-          NUXT_GITHUB_CLIENT_SECRET = "";
-          NUXT_EPILOGUE_APP_ID = "";
-          NUXT_EPILOGUE_APP_SECRET = "";
-          NODE_ENV = "production";
-        };
-        environmentFiles = [
-          config.age.secrets.ziit.path
-        ];
-        extraOptions = [
-          "--network=${network}"
-          "--add-host=host.docker.internal:host-gateway"
-        ];
+    virtualisation.oci-containers.containers."ziit-app" = {
+      image = "ghcr.io/0pandadev/ziit:${cfg.version}";
+      ports = ["${toString cfg.port}:3000"];
+      user = "1000:1000";
+      dependsOn = [];
+      volumes = [
+        "${dataDir}/uploads:/app/uploads"
+        "${dataDir}/data:/ziit/node_modules/.prisma"
+        "${dataDir}/cache:/ziit/.cache"
+      ];
+      environment = {
+        NUXT_DATABASE_URL = "postgresql://ziit@host.docker.internal:${toString config.services.postgresql.settings.port}/ziit";
+        NUXT_BASE_URL = "https://ziit.${domain}";
+        NUXT_DISABLE_REGISTRATION = "false";
+        NUXT_GITHUB_CLIENT_ID = "";
+        NUXT_GITHUB_CLIENT_SECRET = "";
+        NUXT_EPILOGUE_APP_ID = "";
+        NUXT_EPILOGUE_APP_SECRET = "";
+        NODE_ENV = "production";
       };
+      environmentFiles = [
+        config.age.secrets.ziit.path
+      ];
+      extraOptions = [
+        "--network=${network}"
+        "--add-host=host.docker.internal:host-gateway"
+      ];
     };
 
     services.caddy.virtualHosts."ziit.${domain}".extraConfig = ''

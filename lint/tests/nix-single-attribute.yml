@@ -1,0 +1,23 @@
+id: nix-single-attribute
+valid:
+  - '{ _1password.enable = true; }'
+  - '{ app = { enable = true; package = pkgs.app; }; }'
+  - '{ app = rec { enable = true; }; }'
+  - '{ app = { inherit enable; }; }'
+  - '{ app = { enable = true; inherit package; }; }'
+  - '{ app = {}; }'
+  - '{ app = lib.mkIf enabled { enable = true; }; }'
+  - '{ app = [{ enable = true; }]; }'
+  - '{ app = "{ enable = true; }"; }'
+  - |
+    { app = {
+      # Retain the explanation.
+      enable = true;
+    }; }
+invalid:
+  - '{ _1password = { enable = true; }; }'
+  - '{ app = { enable = false; }; }'
+  - '{ app = { settings.theme = "dark"; }; }'
+  - '{ app = { "quoted-key" = [1 2]; }; }'
+  - '{ app = { settings = { theme = "dark"; size = 12; }; }; }'
+  - 'let app = { enable = true; }; in app'

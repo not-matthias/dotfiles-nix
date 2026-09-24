@@ -7,9 +7,7 @@
 with lib; let
   cfg = config.desktop.gnome;
 in {
-  options.desktop.gnome = {
-    enable = mkEnableOption "Enable GNOME";
-  };
+  options.desktop.gnome.enable = mkEnableOption "Enable GNOME";
 
   config = lib.mkIf cfg.enable {
     services = {
@@ -30,15 +28,13 @@ in {
       ];
     };
 
-    environment = {
-      systemPackages = with pkgs; [
-        xdg-desktop-portal-gnome
-        gnome.gnome-tweaks
-        gnomeExtensions.appindicator
-        gnomeExtensions.pop-shell
-        gnomeExtensions.paperwm
-      ];
-    };
+    environment.systemPackages = with pkgs; [
+      xdg-desktop-portal-gnome
+      gnome.gnome-tweaks
+      gnomeExtensions.appindicator
+      gnomeExtensions.pop-shell
+      gnomeExtensions.paperwm
+    ];
 
     environment.gnome.excludePackages =
       (with pkgs; [

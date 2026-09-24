@@ -10,9 +10,7 @@ in {
   config = lib.mkIf cfg.enable {
     services.actual = {
       package = unstable.actual-server;
-      settings = {
-        port = 5006;
-      };
+      settings.port = 5006;
     };
 
     # Add Caddy reverse proxy configuration for Actual Budget

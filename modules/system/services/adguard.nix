@@ -6,9 +6,7 @@
 }: let
   cfg = config.services.adguardhome;
 in {
-  options.services.adguardhome = {
-    useDns = lib.mkEnableOption "Use adguard dns server";
-  };
+  options.services.adguardhome.useDns = lib.mkEnableOption "Use adguard dns server";
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
@@ -17,17 +15,15 @@ in {
         host = "0.0.0.0"; # Note: don't change to localhost otherwise it won't work (?)
         port = 11429;
         mutableSettings = true;
-        settings = {
-          dns = {
-            bootstrap_dns = [
-              "1.1.1.1"
-              "1.0.0.1"
-            ];
-            upstream_dns = [
-              "1.1.1.1"
-              "1.0.0.1"
-            ];
-          };
+        settings.dns = {
+          bootstrap_dns = [
+            "1.1.1.1"
+            "1.0.0.1"
+          ];
+          upstream_dns = [
+            "1.1.1.1"
+            "1.0.0.1"
+          ];
         };
       };
 

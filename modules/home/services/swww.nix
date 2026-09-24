@@ -7,12 +7,10 @@
 }: let
   cfg = config.services.awww;
 in {
-  options.services.awww = {
-    wallpaper = lib.mkOption {
-      type = lib.types.nullOr lib.types.path;
-      default = null;
-      description = "Path to wallpaper image";
-    };
+  options.services.awww.wallpaper = lib.mkOption {
+    type = lib.types.nullOr lib.types.path;
+    default = null;
+    description = "Path to wallpaper image";
   };
 
   config = lib.mkIf (cfg.enable or false && cfg.wallpaper != null) {

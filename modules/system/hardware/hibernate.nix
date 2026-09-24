@@ -5,9 +5,7 @@
 }: let
   cfg = config.hardware.hibernate;
 in {
-  options.hardware.hibernate = {
-    enable = lib.mkEnableOption "Hibernation tuning";
-  };
+  options.hardware.hibernate.enable = lib.mkEnableOption "Hibernation tuning";
 
   config = lib.mkIf cfg.enable {
     # zram absorbs transient memory-pressure spikes (compressed, RAM-resident)

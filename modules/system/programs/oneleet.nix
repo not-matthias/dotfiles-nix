@@ -24,12 +24,8 @@ with lib; let
 in {
   options.programs.oneleet = {
     enable = mkEnableOption "OneLeet";
-    service = {
-      enable = mkEnableOption "OneLeet daemon system service (oneleet-daemon)";
-    };
-    agent = {
-      enable = mkEnableOption "OneLeet agent user service (oneleet-agent GUI client)";
-    };
+    service.enable = mkEnableOption "OneLeet daemon system service (oneleet-daemon)";
+    agent.enable = mkEnableOption "OneLeet agent user service (oneleet-agent GUI client)";
 
     package = mkOption {
       type = types.package;
@@ -133,14 +129,12 @@ in {
     environment.systemPackages = [cfg.package];
 
     # Create direct executables in /usr/bin
-    system.activationScripts = {
-      createOneLeetLinks = {
-        text = ''
-          mkdir -p /usr/bin
-          ln -sf ${cfg.package}/bin/oneleet-agent /usr/bin/oneleet-agent || true
-        '';
-        deps = [];
-      };
+    system.activationScripts.createOneLeetLinks = {
+      text = ''
+        mkdir -p /usr/bin
+        ln -sf ${cfg.package}/bin/oneleet-agent /usr/bin/oneleet-agent || true
+      '';
+      deps = [];
     };
 
     # Directories the daemon expects (config, logs).

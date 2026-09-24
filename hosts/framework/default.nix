@@ -6,9 +6,7 @@
   flakes,
   ...
 }: let
-  defaultBrowser = {
-    desktop = "helium.desktop";
-  };
+  defaultBrowser.desktop = "helium.desktop";
   setFrameworkMicrophoneVolume = pkgs.writeShellScript "set-framework-microphone-volume" ''
     attempts=0
     while ! ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 0.2 >/dev/null 2>&1; do
@@ -77,9 +75,7 @@ in {
     ];
     xdg.mimeApps = {
       associations.added."text/html" = lib.mkForce defaultBrowser.desktop;
-      defaultApplications = {
-        "text/html" = lib.mkForce defaultBrowser.desktop;
-      };
+      defaultApplications."text/html" = lib.mkForce defaultBrowser.desktop;
     };
 
     programs = {
@@ -142,9 +138,7 @@ in {
       gpg-agent.enable = true;
     };
 
-    systemd.user.services.home-manager = {
-      serviceConfig.TimeoutStartSec = "1min";
-    };
+    systemd.user.services.home-manager.serviceConfig.TimeoutStartSec = "1min";
 
     systemd.user.services.framework-microphone-volume = {
       Unit = {
@@ -157,7 +151,7 @@ in {
         Type = "oneshot";
         ExecStart = setFrameworkMicrophoneVolume;
       };
-      Install = {WantedBy = ["graphical-session.target"];};
+      Install.WantedBy = ["graphical-session.target"];
     };
 
     # Client-only nix settings — these reach ~/.config/nix/nix.conf (via
@@ -453,11 +447,9 @@ in {
   };
 
   age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
-  age.secrets = {
-    pi-mono-env = {
-      file = ../../secrets/pi-mono-env.age;
-      owner = user;
-    };
+  age.secrets.pi-mono-env = {
+    file = ../../secrets/pi-mono-env.age;
+    owner = user;
   };
 
   networking = {

@@ -6,9 +6,7 @@
 }: let
   cfg = config.services.vpn;
 in {
-  options.services.vpn = {
-    enable = lib.mkEnableOption "VPN Configuration";
-  };
+  options.services.vpn.enable = lib.mkEnableOption "VPN Configuration";
 
   config = lib.mkIf cfg.enable {
     # Currently only works with systemd-resolved

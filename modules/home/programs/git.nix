@@ -42,9 +42,7 @@
         oneFixupPerCommit = true;
         maxStack = 50;
       };
-      credential."https://github.com" = {
-        helper = "!${pkgs.gh}/bin/gh auth git-credential";
-      };
+      credential."https://github.com".helper = "!${pkgs.gh}/bin/gh auth git-credential";
       # https://stackoverflow.com/questions/16906161/git-push-hangs-when-pushing-to-github
       http.postBuffer = 524288000;
 

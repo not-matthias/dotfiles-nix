@@ -7,9 +7,7 @@
   cfg = config.services.vikunja-app;
   port = 3456;
 in {
-  options.services.vikunja-app = {
-    enable = lib.mkEnableOption "Enable Vikunja";
-  };
+  options.services.vikunja-app.enable = lib.mkEnableOption "Enable Vikunja";
 
   config = lib.mkIf cfg.enable {
     services.vikunja = {
@@ -18,11 +16,9 @@ in {
       frontendScheme = "https";
       frontendHostname = "vikunja.${domain}";
       database.type = "sqlite";
-      settings = {
-        service = {
-          enableregistration = false;
-          timezone = config.time.timeZone;
-        };
+      settings.service = {
+        enableregistration = false;
+        timezone = config.time.timeZone;
       };
     };
 

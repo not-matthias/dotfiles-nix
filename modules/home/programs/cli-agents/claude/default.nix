@@ -7,9 +7,7 @@
 with lib; let
   cfg = config.programs.cli-agents.claude;
 in {
-  options.programs.cli-agents.claude = {
-    enable = mkEnableOption "Claude Code CLI agent";
-  };
+  options.programs.cli-agents.claude.enable = mkEnableOption "Claude Code CLI agent";
 
   config = mkIf cfg.enable {
     home.packages = [
@@ -29,16 +27,12 @@ in {
     };
 
     home.file = {
-      ".claude/CLAUDE.md" = {
-        source = ../shared/AGENTS.md;
-      };
+      ".claude/CLAUDE.md".source = ../shared/AGENTS.md;
       ".claude/agents" = {
         source = ../shared/sub-agents;
         recursive = true;
       };
-      ".claude/settings.json" = {
-        source = ./settings.json;
-      };
+      ".claude/settings.json".source = ./settings.json;
     };
   };
 }

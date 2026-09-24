@@ -282,7 +282,7 @@ niri msg windows                 # List windows
 - **Shell**: Fish with custom prompt and abbreviations
 - **Terminal**: Alacritty, Kitty with Zellij/Tmux multiplexing
 - **CLI tools**: ripgrep, fd, eza, bat, delta, zoxide (use `j` alias in fish)
-- **Nix configuration preference**: Prefer nested attribute sets throughout Nix code, for example `helix = { enable = true; compat.enable = true; };`, rather than flattening related options.
+- **Nix configuration preference**: Use dotted paths for single-attribute sets, such as `_1password.enable = true;`. Keep nested sets for multiple related fields, such as `helix = { enable = true; compat.enable = true; };`.
 
 ### Self-Hosted Services (Desktop Host)
 Services follow consistent patterns in `modules/system/services/`:
