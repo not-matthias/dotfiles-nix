@@ -19,6 +19,7 @@ in {
     # Basic application binds
     "${mod}+Q".action.spawn = ["ghostty" "+new-window"];
     "${mod}+C".action.close-window = [];
+    "${mod}+Space".action.center-column = [];
     "${mod}+M".action.quit = [];
     "${mod}+E".action.spawn = ["nemo"];
     "${mod}+V".action.toggle-window-floating = [];
