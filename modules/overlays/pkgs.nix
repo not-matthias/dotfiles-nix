@@ -130,5 +130,8 @@
     (_self: super: {
       openclaw = super.callPackage ../../pkgs/openclaw.nix {};
     })
+    (_self: super: {
+      greptile = super.callPackage ../../pkgs/greptile.nix {};
+    })
   ];
 }

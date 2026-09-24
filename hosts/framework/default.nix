@@ -55,6 +55,7 @@ in {
       plannotator
       tldraw-offline
       openclaw
+      greptile
       # unstable.antigravity-fhs
 
       # Install desktop apps rather than websites
