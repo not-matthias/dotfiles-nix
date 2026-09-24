@@ -7,7 +7,7 @@ description: "Keep code simple, local, and low-churn when writing, reviewing, or
 
 ## Read the applicable guidance
 
-- For all code work, read [Cognitive load](references/cognitive-load.md) and [Minimal diff](references/minimal-diff.md).
+- For all code work, read [Cognitive load](references/cognitive-load.md).
 - Only when explicitly asked to apply or review personal Rust style, also read [Rust preferences](references/rust-style.md). Do not impose them on other languages.
 - For Nix, also read [Nix style](references/nix.md).
 - When writing or reviewing tests, use [Testing](skill://testing).
@@ -17,6 +17,14 @@ description: "Keep code simple, local, and low-churn when writing, reviewing, or
 Correctness, safety, ownership, and required verification constrain every change. Within those constraints, follow the user's task scope and repository instructions, formatter/lint configuration, and nearby conventions before personal preferences. Do not copy an incorrect pattern merely for consistency.
 
 Inspect the named or changed code and enough adjacent code to understand its conventions. Keep changes within the requested scope and leave formatting to the project formatter.
+
+## Keep changes focused
+
+- Make the smallest complete change that solves the requested problem.
+  Correctness matters more than minimizing changed lines.
+- Reuse existing patterns and helpers; avoid speculative abstractions.
+- Avoid unrelated cleanup, renaming, reformatting, and file moves.
+- Remove code made obsolete by the change and update all affected callers.
 
 ## Unsolicited style changes
 
@@ -41,3 +49,10 @@ If equivalence is uncertain, leave the cleanup unapplied and explain why. A requ
 ## Maintaining preferences
 
 Change personal Rust preferences only when explicitly asked. Keep each preference self-contained, with rationale and exceptions where needed. Do not infer a new rule from one code sample.
+
+<!--
+Sources for "Keep changes focused":
+- https://github.com/openai/codex/blob/main/AGENTS.md
+- https://google.github.io/eng-practices/review/developer/small-cls.html
+- https://git-scm.com/docs/gitworkflows/2.12.5.html
+-->

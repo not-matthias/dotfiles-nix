@@ -4,65 +4,43 @@ description: >-
   Remove AI-generated slop from the comments and docs a change introduces (task/PR
   narration, comments restating the code, references to things the reader cannot
   see), flag low-value tests it adds, and review changed code for redundancy, dead
-  code, and over-engineering. Operates on the current diff only. Use when the user
+  code, and over-engineering. Only touches changes attributable to the task. Use when the user
   asks to "deslop", "remove AI slop", "simplify", or clean up before a PR.
 ---
 
-Remove AI Slop from the comments/docs this PR adds.
+# Deslop
 
-AI Coding tools love to add comments everywhere that don't belong in production code.
-- comments that mention uncommitted files or private dev-specific content that the team cannot access.
-- narration of the current task/PR/ticket that has nothing to do in production code. During implementation of a ticket, a "V1" can be crystal clear to the developer, but the reviewer or future reader of that code will have no clue what it means.
-- comments that restate the code
-- Explains by comparison to something the reader can't see ("unlike the other X", "same mechanism as Y"). Say the thing directly.
-- Write each comment for a reader who sees only the current code, with no memory of how it got there. If understanding it needs the diff, the ticket, or a past version, it's slop, describe what is in front of the reader now. Rare exception: when the history genuinely changes how you'd treat the code (a non-obvious constraint, a past incident, a reverted approach), keep it but anchor it to a durable reference (ticket ID, PR, or permalink) so the reader can go get that context. If you can't point to one, the history isn't worth a comment.
+Remove redundant prose and unnecessary code without changing behavior.
 
-Remove them, or simplify them like crazy.
+## Scope and safety
 
-Keep only non-obvious why, invariants, gotchas, units/edge cases. When unsure, delete rather than reword. Make the edits and list what you cut, one line each.
+- Establish ownership from the request, conversation, and diff. Review only changes attributable to the task, including its committed changes; staged or dirty content is not automatically yours.
+- Load [Code Style](../code-style/SKILL.md) for simplification guidance and mutation boundaries.
+- Apply local, high-confidence, behavior-preserving improvements unless the user requested review only. Leave uncertain changes unapplied and explain material uncertainty.
+- Do not refactor unrelated surrounding code or add new comments, docstrings, or type annotations.
 
-It doesn't mean you need to delete documentation. Documentation is different from comments!
+## Comments and documentation
 
-It doesn't mean you should blindly shorten/compact comments. Simplifying does not equal compacting. Often, compacting comments creates absolutely unreadable and very hard to understand comments for other readers. Keep comments easy to understand!
-
-## Example: documenting absence
-
-Never document the absence of removed code or configuration. Delete the comment; if a non-obvious constraint matters, describe the current design where it applies.
-
-- **Bad:** `# Deliberately no [package.metadata.dist]: exec-harness is not released separately.`
-- **Better:** No comment.
-- **If needed near `[[bin]]`:** `# Standalone entry point for development and integration tests.`
-
-## Tests
-
-Check the tests this change adds. Coding agents love adding tests to look thorough. The bad ones only pad coverage, break on a refactor that doesn't change behavior (a good test breaks when behavior changes, not when the implementation moves), lean on a pile of mocks, or assert implementation details instead of the observable result. See the `testing` skill for the full criteria.
-
-Mocking a real external boundary (network, a third-party SDK, the clock, secrets) is fine; mocking your own code to assert how it was called pins the test to the implementation. When code is hard to test, prefer going a level higher (an integration test over heavy unit mocks) rather than testing untestable code, and leave real refactors for a separate PR.
-
-When a weak test still covers behavior that matters, warn the developer instead of silently deleting it.
-
-For broader code-simplicity guidance, use the cognitive-load reference in the `code-style` skill.
-Keep the code minimal using the minimal-diff reference in the `code-style` skill.
+- Remove comments that restate code, narrate the task/PR, refer to private development artifacts, or require knowledge of a diff or earlier version. Describe the current mechanism rather than comparing it to something the reader cannot see.
+- Remove comments documenting absent or removed features, such as "no configuration needed anymore." Keep an explanation only when it describes a current constraint.
+- Preserve non-obvious reasons, invariants, external constraints, gotchas, units, and edge cases. Keep history only when it affects how the code should be used, with a durable ticket, PR, or permalink.
+- Do not delete useful documentation or compress clear prose merely to shorten it. When unsure whether a comment matters, leave it unchanged.
 
 ## Code structure
 
-Review the changed code for structural issues and fix them in-place:
+- Check for a simpler approach, duplicate logic, unused imports or variables, dead branches, and commented-out code. Reuse existing helpers and patterns before adding new ones.
+- Remove speculative wrappers, configuration, error handling, and future-proofing only when they add no useful behavior. Keep abstractions that improve organization or maintainability.
+- Prefer explicit, debuggable control flow over dense one-liners or nested ternaries. Use the cognitive-load guidance in `code-style` to judge whether a simplification actually helps.
 
-1. **Simpler approach?** Is there a more straightforward way to achieve the same result? Fewer moving parts, less indirection, fewer abstractions.
-2. **Redundant code?** Are there duplicated blocks, near-identical functions, or copy-pasted logic that should be consolidated?
-3. **Duplicate logic?** Did you introduce something that already exists elsewhere in the codebase? Check for existing helpers, utilities, or patterns before adding new ones.
-4. **Dead code?** Are there unused imports, variables, functions, or commented-out blocks that should be removed?
-5. **Over-engineering?** Did you add abstractions, configurability, error handling, or future-proofing that isn't needed for the current task? Three similar lines of code is better than a premature abstraction. Do not remove helpful abstractions that improve organization and maintainability.
-6. **Clarity over brevity?** Prefer explicit, debuggable code over dense one-liners.
-7. **Readable conditionals?** Avoid nested ternaries when they hurt readability; use clearer conditionals.
+## Tests
 
-## Rules
+When the change adds or modifies tests, load [Testing](skill://testing). Check for implementation-coupled assertions, mirror tests, excessive internal mocking, and cases that add no distinct behavioral coverage.
 
-- Preserve functionality: never change behavior; only simplify structure and readability.
-- Only review files that were changed in this session or are staged in git.
-- Fix issues directly — don't just report them.
-- Only flag high-confidence issues. False positives are worse than missed nits.
-- If no issues are found, briefly confirm the implementation is clean (one sentence).
-- Do NOT add comments, docstrings, or type annotations that weren't there before.
-- Do NOT refactor surrounding code that wasn't part of the original change.
-- If the project has tests, run them after changes. Fix any failures before finishing.
+Mocking external or nondeterministic boundaries is legitimate. Prefer a higher-level behavior test over mocking internal call chains; propose larger redesigns separately.
+
+If a weak test still protects meaningful behavior, flag it rather than silently deleting or weakening it.
+
+## Verification and reporting
+
+- After cleanup edits, run the relevant existing tests or checks. Fix failures caused by the cleanup; report unresolved failures.
+- List meaningful cuts and checks actually run. If nothing warrants a change, say so briefly; do not manufacture findings.

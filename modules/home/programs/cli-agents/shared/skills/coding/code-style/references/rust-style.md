@@ -20,27 +20,16 @@ Use an explicit `match` when each state or dispatch branch has meaningful behavi
 
 At a library, application, or orchestration boundary, prefer a typed error that preserves actionable failure categories over an unstructured string, boolean, or silently discarded failure.
 
-```rust
-pub enum LoadError {
-    MissingConfiguration,
-    InvalidConfiguration { reason: String },
-}
-
-pub fn load(path: &Path) -> Result<Config, LoadError>;
-```
-
-## Focused modules
+## Modules and layout
 
 Group code by a real domain concern. Keep implementation private by default and expose a small public surface. Avoid shallow `Manager`, `Handler`, `Factory`, or one-method trait layers that only move obvious code elsewhere.
 
 ```text
 parser/
-├── mod.rs       # public surface
+├── mod.rs       # submodule declarations
 ├── lexer.rs     # one cohesive concern
 └── error.rs     # domain error type
 ```
-
-## Tree-like module layout
 
 Use `<name>/mod.rs` with submodules as sibling files in that directory. A flat `<name>.rs` is fine when the module is genuinely tiny. Keep each `.rs` file focused; split related types into sibling files rather than accumulating unrelated structs in one file.
 
@@ -68,25 +57,9 @@ impl Drop for LockGuard<'_> {
 
 Put raw-pointer, FFI, and other unsafe operations in the smallest practical block behind a safe interface. Document the invariant that makes the operation sound. Model ABI layout deliberately when an actual ABI boundary requires it.
 
-```rust
-#[repr(C)]
-pub struct PacketHeader {
-    pub length: u32,
-    pub flags: u32,
-}
-```
-
 ## Explicit state and dispatch
 
 Prefer enums and exhaustive matches when code represents a closed set of domain states, commands, or outcomes.
-
-```rust
-match state {
-    State::Ready => start(),
-    State::Running => poll(),
-    State::Stopped => reset(),
-}
-```
 
 ## Rustdoc contracts
 
