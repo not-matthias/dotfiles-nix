@@ -121,7 +121,16 @@ in {
           };
         };
       });
-      default = [];
+      default = [
+        {
+          path = ../../../../../pkgs/herdr-plugins/tab-index-title;
+          enable = true;
+        }
+        {
+          path = ../../../../../pkgs/herdr-plugins/herdr-api;
+          enable = true;
+        }
+      ];
       example = literalExpression ''
         [
           {
@@ -152,7 +161,13 @@ in {
           };
         };
       });
-      default = [];
+      default = [
+        {
+          # v1.6.0
+          source = "AltanS/collie";
+          rev = "2e3df8aa32e5306f8d945d6b3c2c134306976a41";
+        }
+      ];
       description = "Plugins Herdr installs from GitHub and builds locally when the pinned commit is not installed.";
     };
   };
