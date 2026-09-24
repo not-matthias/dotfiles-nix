@@ -2,16 +2,10 @@
   config,
   lib,
   unstable,
-  pkgs,
   ...
 }:
 with lib; let
   cfg = config.programs.cli-agents.claude;
-
-  agentSkillsFlat = import ../shared/skills.nix {
-    inherit lib pkgs;
-    programSkills = config.programs.cli-agents.programSkills;
-  };
 in {
   options.programs.cli-agents.claude = {
     enable = mkEnableOption "Claude Code CLI agent";
@@ -37,10 +31,6 @@ in {
     home.file = {
       ".claude/CLAUDE.md" = {
         source = ../shared/AGENTS.md;
-      };
-      ".claude/skills" = {
-        source = agentSkillsFlat;
-        recursive = true;
       };
       ".claude/agents" = {
         source = ../shared/sub-agents;

@@ -83,7 +83,6 @@ task:
   #   task: "on"
   agentModelOverrides:
     scout: google-antigravity/gemini-3.8-flash
-    librarian: google-antigravity/gemini-3.8-flash
     solver: openai-codex/gpt-6-sol:high
     reviewer: openai-codex/gpt-6-luna:xhigh
     security-reviewer: openai-codex/gpt-6-luna:xhigh
