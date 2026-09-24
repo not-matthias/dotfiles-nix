@@ -23,13 +23,11 @@
 in {
   imports = [
     ./hardware-configuration.nix
-    ./scheduler.nix
     ./work.nix
     ../../modules/system/services/timeguard.nix
   ];
 
   home-manager.users.${user} = {
-    config,
     lib,
     pkgs,
     ...
@@ -42,11 +40,7 @@ in {
       uv
       bun
       nodejs
-      unstable.google-chrome
       notepad-next
-      # mission-center
-      # jujutsu
-      # planify
       unstable.beeper
       flakes.devenv.packages.${pkgs.stdenv.hostPlatform.system}.devenv
 
@@ -55,16 +49,12 @@ in {
       plannotator
       tldraw-offline
       openclaw
-      greptile
       # unstable.antigravity-fhs
 
       # Install desktop apps rather than websites
       feishin
       gh
       gh-dash
-      linear-cli
-      slk
-      harbor
       terminal-browser
       hushmic
       sone
@@ -102,34 +92,11 @@ in {
       };
       low-battery-alert.enable = true;
       niri-organize.enable = true;
-      granted.enable = true;
       nixvim.enable = true;
       helix.enable = true;
       idasql.enable = true;
       cli-agents = {
-        claude.enable = true;
-        codex.enable = true;
-        amp.enable = true;
-        herdr = {
-          enable = true;
-          plugins = [
-            {
-              path = ../../pkgs/herdr-plugins/tab-index-title;
-              enable = true;
-            }
-            {
-              path = ../../pkgs/herdr-plugins/herdr-api;
-              enable = true;
-            }
-          ];
-          github = [
-            {
-              # v1.6.0
-              source = "AltanS/collie";
-              rev = "2e3df8aa32e5306f8d945d6b3c2c134306976a41";
-            }
-          ];
-        };
+        herdr.enable = true;
         pi-mono = {
           enable = true;
           envFile = "/run/agenix/pi-mono-env";
@@ -155,24 +122,12 @@ in {
           pkgs.binja-codemode-mcp
         ];
       };
-      ghidra = {
-        enable = false;
-        extensions = [
-          "findcrypt"
-          "lightkeeper"
-          "wasm"
-          "machinelearning"
-          "sleighdevtools"
-        ];
-      };
       screenshot-journal.enable = false;
 
       gitui.enable = true;
       worktrunk.enable = true;
       helium.enable = true;
-      minecraft.enable = true;
 
-      solidtime-desktop.enable = true;
       discord = {
         enable = true;
         package = pkgs.discord.override {
@@ -181,20 +136,6 @@ in {
         };
       };
     };
-
-    # Herdr's local-plugin links persist in its own state independently of the
-    # Nix module declaration, so an idempotent guard here (matched narrowly by
-    # id, local-link source, and package path) is needed to unlink a plugin
-    # after it stops being declared.
-    home.activation.herdrMirrorCleanup = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      herdr="${lib.getExe config.programs.cli-agents.herdr.package}"
-      if "$herdr" plugin list --json | ${pkgs.jq}/bin/jq -e \
-        '.result.plugins[]? | select(.plugin_id == "mirror" and .source.kind == "local" and (.plugin_root // "" | test("herdr-mirror-plugin")))' \
-        >/dev/null; then
-        $DRY_RUN_CMD "$herdr" plugin unlink mirror \
-          || warnEcho "herdr: could not unlink the removed mirror plugin"
-      fi
-    '';
 
     services = {
       activitywatch.enable = true;
@@ -238,8 +179,6 @@ in {
       ];
     };
   };
-
-  environment.variables.BROWSER = lib.mkForce "choosr";
 
   environment.systemPackages = [
     pkgs.perf
@@ -292,9 +231,14 @@ in {
   };
 
   services = {
-    # solidtime.enable = true;
-    resolved.enable = true; # give Chrome a working local resolver (independent of VPN)
-    upower.enable = true;
+    scx = {
+      enable = true;
+      scheduler = "scx_bpfland";
+      extraArgs = [
+        "--primary-domain"
+        "performance"
+      ];
+    };
     multi-scrobbler.enable = true;
     restic = {
       enable = true;
@@ -356,7 +300,6 @@ in {
       enable = false;
       booksDir = "/home/${user}/Documents/personal/books";
     };
-    rustdesk-client.enable = true;
     # soulsync.enable = true;
     yubikey.enable = true;
     systembus-notify.enable = lib.mkForce true;
@@ -492,20 +435,6 @@ in {
               }
             ];
           };
-          deaf = {
-            fanSpeedUpdateFrequency = 1;
-            movingAverageInterval = 1;
-            speedCurve = [
-              {
-                temp = 0;
-                speed = 100;
-              }
-              {
-                temp = 100;
-                speed = 100;
-              }
-            ];
-          };
         };
       };
     };
@@ -514,10 +443,8 @@ in {
   virtualisation = {
     podman.enable = true;
     docker.enable = true; # Required for work (exec service)
-    docker.package = pkgs.docker_29; # default docker_28 is flagged insecure
+    docker.package = pkgs.docker_29;
   };
-  # Required for desktop accessibility clients.
-  services.gnome.at-spi2-core.enable = true;
 
   desktop = {
     theme = "light";
@@ -573,7 +500,7 @@ in {
       tmpfsSize = "16G";
     };
   };
-  # scx_bpfland (scheduler.nix) already biases CPU toward interactive tasks; nudge
-  # nix builds further down so the desktop stays responsive under heavy build load.
+  # scx_bpfland biases CPU toward interactive tasks; nudge nix builds further
+  # down so the desktop stays responsive under heavy build load.
   systemd.services.nix-daemon.serviceConfig.Nice = 10;
 }

@@ -1,14 +1,20 @@
 {
   pkgs,
+  unstable,
   user,
   ...
 }: {
   home-manager.users.${user} = {...}: {
     home.packages = with pkgs; [
-      # Work
+      unstable.google-chrome
       slack
       awscli2
+      greptile
+      linear-cli
+      slk
     ];
+
+    programs.granted.enable = true;
 
     programs.ssh.settings."codspeeds-mac-mini codspeeds-mac-mini.tail0bdeec.ts.net" = {
       HostName = "codspeeds-mac-mini.tail0bdeec.ts.net";
@@ -47,15 +53,14 @@
   };
 
   # Enables the 1Password CLI
-  programs._1password = {
-    enable = true;
-  };
-
-  # Enables the 1Password desktop app
-  programs._1password-gui = {
-    enable = true;
-    # this makes system auth etc. work properly
-    polkitPolicyOwners = [user];
+  programs = {
+    _1password = {
+      enable = true;
+    };
+    _1password-gui = {
+      enable = true;
+      polkitPolicyOwners = [user]; # this makes system auth etc. work properly
+    };
   };
 
   environment.enableDebugInfo = true;
