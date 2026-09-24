@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  unstable,
   ...
 }:
 with lib; let
@@ -73,7 +74,7 @@ in {
   };
   config = mkIf cfg.enable {
     programs.cli-agents.programSkills.omp-ttsr-rules = ./skills/omp-ttsr-rules;
-    home.packages = [wrappedOmp];
+    home.packages = [wrappedOmp unstable.agent-browser];
     home.file =
       {
         ".omp/agent/skills" = {
