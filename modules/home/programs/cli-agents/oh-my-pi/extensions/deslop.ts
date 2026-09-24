@@ -12,12 +12,19 @@ Do not delegate this pass, create or amend commits, push, update dependencies, o
 
 export default function deslop(pi: ExtensionAPI): void {
 	let pendingSessionId: string | undefined;
+	let wroteFile = false;
 
 	pi.on("message_start", ({ message }, ctx) => {
 		const userInput =
 			(message.role === "user" && message.attribution !== "agent") ||
 			(message.role === "custom" && message.attribution === "user" && message.display !== false);
-		if (userInput) pendingSessionId = ctx.sessionManager.getSessionId();
+		if (!userInput) return;
+		pendingSessionId = ctx.sessionManager.getSessionId();
+		wroteFile = false;
+	});
+
+	pi.on("tool_execution_end", (event) => {
+		if (!event.isError && (event.toolName === "write" || event.toolName === "edit")) wroteFile = true;
 	});
 
 	pi.on("session_switch", () => {
@@ -32,6 +39,7 @@ export default function deslop(pi: ExtensionAPI): void {
 	pi.on("session_stop", (event) => {
 		if (event.signal.aborted || pendingSessionId !== event.session_id) return;
 		pendingSessionId = undefined;
+		if (!wroteFile) return;
 
 		const last = event.last_assistant_message;
 		if (last?.role !== "assistant" || last.stopReason !== "stop") return;
