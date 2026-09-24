@@ -13,7 +13,6 @@
 
     packages = with pkgs; [
       # Rust tools
-      navi
       yazi
       eza
       bottom
@@ -21,7 +20,6 @@
       kalker
       ripgrep
       dust
-      topgrade
       hexyl
       fd
       delta
@@ -33,18 +31,14 @@
       # Useful tools
       python3
 
-      # Productivity
-      calcurse
-      khal
-
       # Others:
-      gping
-      ouch
+      # gping
+      # ouch
       # kooha
       # hyperfine
       # oxipng
       fzf
-      # tokei
+      tokei
       procs
       # alejandra
       # treefmt
