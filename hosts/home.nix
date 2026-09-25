@@ -11,70 +11,72 @@
     username = "${user}";
     homeDirectory = "/home/${user}";
 
-    packages = with pkgs; [
-      # Rust tools
-      yazi
-      eza
-      bottom
-      tealdeer
-      kalker
-      ripgrep
-      dust
-      hexyl
-      fd
-      delta
-      gh
-      any-nix-shell
-      duf
-      wl-clipboard
+    packages = with pkgs;
+      [
+        # Rust tools
+        yazi
+        eza
+        bottom
+        tealdeer
+        kalker
+        ripgrep
+        dust
+        hexyl
+        fd
+        delta
+        gh
+        any-nix-shell
+        duf
+        wl-clipboard
 
-      # Useful tools
-      python3
+        # Useful tools
+        python3
 
-      # Others:
-      # gping
-      # ouch
-      # kooha
-      # hyperfine
-      # oxipng
-      fzf
-      tokei
-      procs
-      # alejandra
-      # treefmt
+        # Others:
+        # gping
+        # ouch
+        # kooha
+        # hyperfine
+        # oxipng
+        fzf
+        tokei
+        procs
+        # alejandra
+        # treefmt
 
-      bun
+        bun
 
-      # User
-      # anki
-      # calibre
-      # zotero
-      # obs-studio
-      # xournalpp
-      # libreoffice
-      # amberol
-      # syncthing
-      # exodus
+        # User
+        # anki
+        # calibre
+        # zotero
+        # obs-studio
+        # xournalpp
+        # libreoffice
+        # amberol
+        # syncthing
+        # exodus
 
-      # Dev
-      # graphviz
-      # bless
-      #
-      # Reverse Engineering / CTF
-      # file
-      # binwalk
-      # gef
-      # gdb
-      # imhex
-      # detect-it-easy
-      # checksec
-      # bytecode-viewer
-      # dex2jar
-      # recaf
-      # binary-ninja
-      # jadx
-      # avalonia-ilspy
-    ];
+        # Dev
+        # graphviz
+        # bless
+        #
+        # Reverse Engineering / CTF
+        # file
+        # binwalk
+        # gef
+        # gdb
+        # imhex
+        # detect-it-easy
+        # checksec
+        # bytecode-viewer
+        # dex2jar
+        # recaf
+        # binary-ninja
+        # jadx
+        # avalonia-ilspy
+      ]
+      ++ lib.optionals pkgs.stdenv.isx86_64 [pkgs.disktree];
   };
 
   programs = {
