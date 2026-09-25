@@ -118,6 +118,24 @@ $ nix registry add nixpkgs-unstable github:NixOS/nixpkgs/nixos-unstable
 $ nix registry list
 ```
 
+### OMP advisor
+
+2026-09-25: OMP installs a global, advisor-only policy at `~/.omp/agent/WATCHDOG.md`.
+Edit `modules/home/programs/cli-agents/oh-my-pi/WATCHDOG.md` for review priorities
+and the adjacent `config.yml` for advisor settings.
+
+- One advisor uses `modelRoles.advisor` with the default read-only tools.
+- At most one non-blocker note is accepted per review update; blockers are exempt.
+  This limits advice volume, not model calls or token usage.
+- The default catch-up mode is `off`, with three immune turns after an interruption.
+- Project `WATCHDOG.md` and `.omp/WATCHDOG.md` files add more specific guidance;
+  they do not replace the global policy. Named profiles use their own agent directory.
+- Start a new session after activation. Use `/advisor status` to inspect the model,
+  usage, and runtime state, or `/advisor off` to disable it for that session.
+
+See the [upstream advisor documentation](https://github.com/can1357/oh-my-pi/blob/main/docs/advisor-watchdog.md)
+for discovery, severity, and optional multi-advisor rosters.
+
 ## Troubleshooting
 
 ### Cached failure of attribute

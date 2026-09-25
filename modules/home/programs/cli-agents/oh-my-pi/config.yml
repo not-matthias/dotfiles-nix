@@ -15,26 +15,25 @@ statusLine:
   separator: ascii
 tui:
   tight: true
-startup:
-  quiet: true
-  setupWizard: false
 display:
   showTokenUsage: true
   cacheMissMarker: true
 
 memory:
   backend: sharpshooter
-mnemopi:
-  enhancedRecall: true
-  polyphonicRecall: true
-  proactiveLinking: true
-  scoping: per-project-tagged
+# Replaced with sharpshooter
+# mnemopi:
+#   enhancedRecall: true
+#   polyphonicRecall: true
+#   proactiveLinking: true
+#   scoping: per-project-tagged
 autolearn:
   enabled: true
   autoContinue: true
 
 advisor:
   enabled: true
+  maxNotesPerUpdate: 1
 github:
   enabled: true
 bash:
@@ -57,11 +56,9 @@ modelRoles:
   default: openai-codex/gpt-6-luna:auto
   tiny: openai-codex/gpt-5.3-codex-spark
   commit: google-antigravity/gemini-3.8-flash
-  # Only use sol with prewalk, otherwise use:
-  # task: openai-codex/gpt-5.6-sol:high
-  task: openai-codex/gpt-6-luna:xhigh
+  task: openai-codex/gpt-6-luna:auto
   smol: google-antigravity/gemini-3.8-flash
-  advisor: google-antigravity/gemini-3.8-flash
+  advisor: openai-codex/gpt-6-luna:auto
   plan: openai-codex/gpt-6-sol:high
   slow: openai-codex/gpt-6-sol:high
 
@@ -74,8 +71,8 @@ task:
   # Temporarily disabled because prewalk doesn't work with GPT+Google due to encrypted
   # reasoning traces that hide the thinking.
   # prewalk: true
-  agentPrewalk:
-    task: google-antigravity/gemini-3.8-flash
+  # agentPrewalk:
+  #   task: google-antigravity/gemini-3.8-flash
 
   # Currently disabled as it increases the context usage quite a lot. I observed up to 50% of total token usage being
   # used up by the advisor. Enable it only if not doing work with lots of subagents.
@@ -90,10 +87,6 @@ task:
   # eager: preferred
 
 providers:
-  openai-codex:
-    # Currently disabled as it makes GPT models fail at editing because the tool documentation isn't emebedded in the system
-    # prompt anymore. This makes models assume it's a patch-based edit tool, when it's actually hashline.
-    # codeMode: auto
   imageOrder:
     - google-antigravity
     - openai-codex
