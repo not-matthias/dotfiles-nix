@@ -35,6 +35,14 @@
       unstable.amdtop
       plannotator
     ];
+    home.file.".plannotator/config.json".text = builtins.toJSON {
+      diffOptions = {
+        expandUnchanged = false;
+        defaultDiffType = "since-base";
+        diffStyle = "split";
+      };
+    };
+
     backhub = {
       enable = true;
       # Provisioned outside this flake; contains only the raw GitHub token.

@@ -67,12 +67,20 @@ in {
       file-roller
       anki
       imhex
-
+      todoist
       # Language servers
       taplo
       nil
       nixd
     ];
+    home.file.".plannotator/config.json".text = builtins.toJSON {
+      diffOptions = {
+        expandUnchanged = false;
+        defaultDiffType = "since-base";
+        diffStyle = "split";
+      };
+    };
+
     xdg.mimeApps = {
       associations.added."text/html" = lib.mkForce defaultBrowser.desktop;
       defaultApplications."text/html" = lib.mkForce defaultBrowser.desktop;
