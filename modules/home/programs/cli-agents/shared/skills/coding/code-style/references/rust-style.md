@@ -1,6 +1,6 @@
-# Personal Rust Style
+# Rust style
 
-Use this reference with the generic guidance and authorization boundaries in [Code Style](../SKILL.md). These are personal Rust preferences; local conventions take precedence within correctness and safety constraints.
+Use this reference with the generic guidance and authorization boundaries in [Code Style](../SKILL.md). Apply these Rust preferences only when the user explicitly asks; local conventions take precedence within correctness and safety constraints.
 
 ## Linear control flow
 

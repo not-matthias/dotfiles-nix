@@ -1,6 +1,6 @@
 ---
 name: code-style
-description: "Keep code simple, local, and low-churn when writing, reviewing, or refactoring. Use for general code work that benefits from lower cognitive load or a minimal diff. Apply Not Matthias's personal Rust preferences only when the user explicitly asks for their code style or a style pass."
+description: "Keep code simple, local, and low-churn when writing, reviewing, or refactoring. Use for general code work that benefits from lower cognitive load or a minimal diff. Apply the user's Rust preferences only when the user explicitly asks for their code style or a style pass."
 ---
 
 # Code Style
@@ -8,7 +8,7 @@ description: "Keep code simple, local, and low-churn when writing, reviewing, or
 ## Read the applicable guidance
 
 - For all code work, read [Cognitive load](references/cognitive-load.md).
-- Only when explicitly asked to apply or review personal Rust style, also read [Rust preferences](references/rust-style.md). Do not impose them on other languages.
+- Only when explicitly asked to apply or review the user's Rust style, also read [Rust preferences](references/rust-style.md). Do not impose them on other languages.
 - For Nix, also read [Nix style](references/nix.md).
 - When writing or reviewing tests, use [Testing](skill://testing).
 
@@ -48,7 +48,7 @@ If equivalence is uncertain, leave the cleanup unapplied and explain why. A requ
 
 ## Maintaining preferences
 
-Change personal Rust preferences only when explicitly asked. Keep each preference self-contained, with rationale and exceptions where needed. Do not infer a new rule from one code sample.
+Change the user's Rust preferences only when explicitly asked. Keep each preference self-contained, with rationale and exceptions where needed. Do not infer a new rule from one code sample.
 
 <!--
 Sources for "Keep changes focused":
