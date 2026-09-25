@@ -6,7 +6,6 @@
 - Building for desktop can cause issues on this machine
 - Pre-commit hooks run automatically on commit (alejandra formatting, shellcheck, deadnix cleanup)
 
-## Development Commands
 
 ### System Building and Management
 
