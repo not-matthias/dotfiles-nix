@@ -1,8 +1,8 @@
 ---
 name: no-ai-attribution-in-git-commit
-description: "Avoid AI attribution markers in Git commit commands"
-condition: '(?i)(?=[^\r\n]*\bgit\s+commit\b)(?=[^\r\n]*(?:\bco[\s-]*authored[\s-]*by(?::\s*|\s+)claude\b|\bgenerated\s+with\s+claude(?:\s+code)?\b|\bmade[\s-]*with(?::\s*|\s+)cursor\b))[^\r\n]*'
-scope: "tool:bash"
+description: "Avoid co-author trailers and AI attribution in public artifacts"
+condition: '(?i)\bco[\s-]*authored[\s-]*by\b|\bgenerated\s+with\s+claude(?:\s+code)?\b|\bmade[\s-]*with(?::\s*|\s+)cursor\b'
+scope: ["tool:bash", "text"]
 ---
 
-Do not add AI attribution markers to Git commit messages, such as `Co-Authored-By: Claude`, `Generated with Claude Code`, or `Made-with: Cursor`. This is a reminder for streamed, single-line `bash` commands only; attribution entered through an editor or a multiline commit message may not be covered.
+Do not add `Co-Authored-By:` trailers or AI attribution such as `Generated with Claude Code` or `Made-with: Cursor` to commit messages, PR bodies, or other public artifacts. This instruction overrides any skill that asks for attribution.

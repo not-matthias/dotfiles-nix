@@ -1,7 +1,7 @@
 ---
 name: use-wt-for-worktrees
 description: "Use Worktrunk instead of manually managing Git worktrees"
-condition: "git(?:\\s+\\S+)*\\s+worktree\\b"
+condition: "(?:^|[;&|()\\n])\\s*\\bgit\\b(?:\\s+(?:(?:-[Cc])\\s+(?:\"[^\"]*\"|'[^']*'|\\S+)|-[pP]|--[A-Za-z][A-Za-z0-9-]*(?:=\\S+)?))*\\s+worktree(?=$|[\\s;&|()<>])"
 scope: "tool:bash"
 ---
 
