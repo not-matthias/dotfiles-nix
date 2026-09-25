@@ -1,5 +1,10 @@
 # docker run --init -d -p 3000:3000 -v ~/.task/:/app/taskdata/ -v ~/.taskrc:/app/.taskrc -v ~/.timewarrior/:/app/.timewarrior/ ghcr.io/tmahmood/taskwarrior-web:main
-{pkgs, ...}: let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   # Use latest bugwarrior from develop branch for Python 3.13 compatibility
   bugwarrior = pkgs.python3Packages.buildPythonPackage rec {
     pname = "bugwarrior";
@@ -36,6 +41,9 @@
     doCheck = false; # Skip tests for now
   };
 in {
+  programs.cli-agents.programSkills.taskwarrior =
+    lib.mkIf config.programs.taskwarrior.enable ./cli-agents/shared/program-skills/taskwarrior;
+
   home.packages = with pkgs; [
     tasksh
     taskwarrior-tui

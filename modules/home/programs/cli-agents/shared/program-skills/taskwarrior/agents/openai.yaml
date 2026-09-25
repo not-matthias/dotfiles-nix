@@ -1,0 +1,4 @@
+interface:
+  display_name: "Taskwarrior"
+  short_description: "Manage concise tasks in confirmed projects"
+  default_prompt: "Organize Taskwarrior tasks with short titles, detailed annotations, and confirmed projects."

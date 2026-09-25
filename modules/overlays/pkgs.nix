@@ -133,5 +133,8 @@
     (_self: super: {
       greptile = super.callPackage ../../pkgs/greptile.nix {};
     })
+    (_self: super: {
+      disktree = super.callPackage ../../pkgs/disktree.nix {};
+    })
   ];
 }
