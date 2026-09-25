@@ -18,6 +18,7 @@ Create a git commit for the current changes using a concise Conventional Commits
 ## Notes
 
 - Body is **strongly encouraged** — always include one unless the change is trivially obvious (e.g., fixing a typo). The body should explain **what** changed, **why** it changed, the approach taken, and any notable decisions. A reader of `git log` should understand the change without looking at the diff.
+- Do NOT include `Co-Authored-By:` trailers or AI attribution (e.g., "Generated with Claude Code" or "Made-with: Cursor") in commit messages.
 - Do NOT include breaking-change markers or footers.
 - Do NOT add sign-offs (no `Signed-off-by`).
 - Only commit; do NOT push.
