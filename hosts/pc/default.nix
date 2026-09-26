@@ -233,6 +233,10 @@
   virtualisation = {
     podman.enable = true;
     qemu.enable = true;
+    single-gpu-passthrough.amd = {
+      enable = true;
+      guest = "strix-halo-gpu-validation";
+    };
   };
   desktop = {
     theme = "dark";
