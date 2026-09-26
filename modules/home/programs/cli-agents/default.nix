@@ -33,6 +33,7 @@ in {
       unstable.gogcli
       jq
       mcporter
+      oracle
     ];
 
     # Exclude shared agent scratch/working files from git by default
