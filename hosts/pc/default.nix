@@ -30,6 +30,7 @@
       evince
       kdePackages.gwenview
       file-roller
+      feishin
       ida-pro
       radius2
       unstable.amdtop

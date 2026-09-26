@@ -40,7 +40,7 @@ in
         src
         ;
       fetcherVersion = 3;
-      hash = "sha256-bmdCQsoW6/+vBclC0LwDztJRG/pdKZWqfYhaNU4to24=";
+      hash = "sha256-dkeWFVmqIuwEaje4tg/IoSzxIMGHW5r8bEOV0tJEUZE=";
     };
 
     env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
