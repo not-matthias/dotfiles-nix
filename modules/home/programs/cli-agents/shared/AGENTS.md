@@ -21,6 +21,8 @@ RFC 2119 terminology applies only to uppercase keywords: MUST, REQUIRED, SHOULD,
 - When you need to ask the user a question, you MUST use an available question tool. Prefer `ask_open_question` when it is available and predefined options would constrain the answer; otherwise use the option-based ask tool. NEVER substitute plain text output for a question tool call.
 - NEVER reply to pull requests/review comments/GitHub issues/etc. unless the user asks you to
 
+- Oracle can provide a second-model review grounded in selected repository files. Use `oracle --dry-run summary --files-report` before a model run, and never attach secrets.
+
 ## Documentation
 
 - Put temporary investigation and design artifacts in `.agents/docs/`, with filenames prefixed by the current date in YYYY-MM-DD format.

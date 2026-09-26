@@ -1,0 +1,28 @@
+# Add an entry when automatic source detection cannot determine the upstream.
+# `version_pattern` is needed only when the package does not declare a literal
+# `pname` and `version` pair. It must capture the version as group 1.
+
+[[package]]
+path = "pkgs/hermes-agent.nix"
+name = "hermes-agent"
+version_pattern = '(?m)^  version = "([^"]+)";$'
+provider = "github-release"
+upstream = "NousResearch/hermes-agent"
+
+[[package]]
+path = "pkgs/amp-cli.nix"
+name = "amp-cli"
+provider = "manual"
+reason = "Amp publishes the CLI through a versioned binary endpoint without a release API."
+
+[[package]]
+path = "pkgs/antigravity.nix"
+name = "antigravity"
+provider = "manual"
+reason = "Google's Antigravity download endpoint does not expose a release API."
+
+[[package]]
+path = "pkgs/binary-ninja.nix"
+name = "binaryninja"
+provider = "manual"
+reason = "Binary Ninja requires an authenticated download and license-compatible update decision."
