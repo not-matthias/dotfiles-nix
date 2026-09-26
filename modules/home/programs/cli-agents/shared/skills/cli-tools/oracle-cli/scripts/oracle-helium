@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+helium=$(command -v helium) || {
+  printf 'Helium is not on PATH\n' >&2
+  exit 1
+}
+cookie_path="${XDG_CONFIG_HOME:-$HOME/.config}/net.imput.helium/Default/Cookies"
+if [[ ! -f $cookie_path ]]; then
+  printf 'Helium cookie database not found: %s\n' "$cookie_path" >&2
+  exit 1
+fi
+
+oracle_args=(
+  --engine browser
+  --browser-cookie-sync
+  --browser-chrome-path "$helium"
+  --browser-cookie-path "$cookie_path"
+)
+
+for arg in "$@"; do
+  if [[ $arg == --dry-run ]]; then
+    exec oracle "${oracle_args[@]}" "$@"
+  fi
+done
+
+if ! command -v secret-tool >/dev/null 2>&1; then
+  printf 'secret-tool is required; run through nix-shell -p libsecret\n' >&2
+  exit 1
+fi
+key=$(secret-tool lookup application chromium)
+if [[ -z $key ]]; then
+  printf 'Chromium keyring entry unavailable\n' >&2
+  exit 1
+fi
+export SWEET_COOKIE_CHROME_SAFE_STORAGE_PASSWORD="$key"
+unset key
+exec oracle "${oracle_args[@]}" "$@"
