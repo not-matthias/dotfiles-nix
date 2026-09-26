@@ -12,7 +12,7 @@ Singleton {
     readonly property var codex: codexState
     readonly property var antigravity: antigravityState
 
-    component Provider: QtObject {
+    component Provider: Scope {
         id: provider
 
         required property string providerName
