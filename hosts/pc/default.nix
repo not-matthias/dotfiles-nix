@@ -103,6 +103,11 @@
               source = "plannotator/herdr-annotate";
               rev = "46cbf5dab1746dfeb46eb160c33990b0e0de15b0";
             }
+            {
+              # v0.1.0
+              source = "devashish2203/herdr-worktrunk";
+              rev = "8ceca541de8fb0d6006727e172534e1e2af17224";
+            }
           ];
         };
         pi-mono.enable = true;

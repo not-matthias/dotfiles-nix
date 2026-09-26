@@ -167,6 +167,11 @@ in {
           source = "AltanS/collie";
           rev = "2e3df8aa32e5306f8d945d6b3c2c134306976a41";
         }
+        {
+          # v0.1.0
+          source = "devashish2203/herdr-worktrunk";
+          rev = "8ceca541de8fb0d6006727e172534e1e2af17224";
+        }
       ];
       description = "Plugins Herdr installs from GitHub and builds locally when the pinned commit is not installed.";
     };
