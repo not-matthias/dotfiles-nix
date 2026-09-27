@@ -7,6 +7,11 @@
 }: let
   cfg = config.services.activitywatch;
 
+  # Both ActivityWatch services share this datastore fix to keep heartbeat IDs consistent.
+  awServerRust = unstable.aw-server-rust.overrideAttrs (old: {
+    patches = (old.patches or []) ++ [./aw-server-rust-heartbeat-id.patch];
+  });
+
   # Tracks physical input instead of the compositor's effective idle state, so
   # an active idle inhibitor cannot report the user as present indefinitely.
   awatcherInputIdle = pkgs.callPackage ../../../pkgs/awatcher {awatcher = unstable.awatcher;};
@@ -17,10 +22,10 @@ in {
     ];
 
     services.activitywatch = {
-      package = unstable.aw-server-rust;
+      package = awServerRust;
       watchers = {
         awatcher.package = awatcherInputIdle;
-        aw-sync.package = unstable.aw-server-rust;
+        aw-sync.package = awServerRust;
         # Reports the currently playing media via MPRIS (Spotify, browsers, ...)
         aw-watcher-media-player.package = pkgs.aw-watcher-media-player;
       };

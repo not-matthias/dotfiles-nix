@@ -1,0 +1,142 @@
+diff --git a/aw-datastore/src/datastore.rs b/aw-datastore/src/datastore.rs
+index c33a3021..253ae3d6 100644
+--- a/aw-datastore/src/datastore.rs
++++ b/aw-datastore/src/datastore.rs
+@@ -551,16 +551,17 @@ impl DatastoreInstance {
+         &mut self,
+         conn: &Connection,
+         bucket_id: &str,
++        event_id: i64,
+         event: &Event,
+     ) -> Result<(), DatastoreError> {
+         let mut bucket = self.get_bucket(bucket_id)?;
+ 
++        // Use event ID directly instead of max(endtime) to avoid mismatch with get_events ordering
+         let mut stmt = match conn.prepare(
+             "
+                 UPDATE events
+                 SET starttime = ?2, endtime = ?3, data = ?4
+-                WHERE bucketrow = ?1
+-                    AND endtime = (SELECT max(endtime) FROM events WHERE bucketrow = ?1)
++                WHERE bucketrow = ?1 AND id = ?5
+             ",
+         ) {
+             Ok(stmt) => stmt,
+@@ -586,7 +587,13 @@ impl DatastoreInstance {
+             &starttime_nanos,
+             &endtime_nanos,
+             &data as &dyn ToSql,
++            &event_id,
+         ]) {
++            Ok(0) => {
++                return Err(DatastoreError::InternalError(format!(
++                    "replace_last_event matched 0 rows for event_id {event_id} - cache/DB inconsistency"
++                )))
++            }
+             Ok(_) => self.update_endtime(&mut bucket, event),
+             Err(err) => {
+                 return Err(DatastoreError::InternalError(format!(
+@@ -626,24 +633,33 @@ impl DatastoreInstance {
+                     Some(last_event) => last_event,
+                     None => {
+                         // There was no last event, insert and return
+-                        self.insert_events(conn, bucket_id, vec![heartbeat.clone()])?;
+-                        return Ok(heartbeat);
++                        let mut inserted = self.insert_events(conn, bucket_id, vec![heartbeat])?;
++                        return Ok(inserted.pop().unwrap());
+                     }
+                 }
+             }
+         };
+         let inserted_heartbeat = match aw_transform::heartbeat(&last_event, &heartbeat, pulsetime) {
+-            Some(merged_heartbeat) => {
++            Some(mut merged_heartbeat) => {
+                 debug!("Merged heartbeat successfully");
+-                self.replace_last_event(conn, bucket_id, &merged_heartbeat)?;
++                // Use the event ID from last_event to ensure we update the correct row
++                let event_id = last_event.id.ok_or_else(|| {
++                    DatastoreError::InternalError("last_event has no ID".to_string())
++                })?;
++                self.replace_last_event(conn, bucket_id, event_id, &merged_heartbeat)?;
++                // Preserve the event ID on the cached heartbeat so subsequent
++                // heartbeats can look it up for replace_last_event
++                merged_heartbeat.id = Some(event_id);
+                 merged_heartbeat
+             }
+             None => {
+                 debug!("Failed to merge heartbeat");
+-                self.insert_events(conn, bucket_id, vec![heartbeat.clone()])?;
+-                heartbeat
++                // insert_events sets the ID on the events in the vec, so use the
++                // returned event (with ID) instead of the original heartbeat
++                let mut inserted = self.insert_events(conn, bucket_id, vec![heartbeat])?;
++                inserted.pop().unwrap()
+             }
+         };
+         last_heartbeat.insert(bucket_id.to_string(), Some(inserted_heartbeat.clone()));
+         Ok(inserted_heartbeat)
+     }
+
+diff --git a/aw-datastore/tests/datastore.rs b/aw-datastore/tests/datastore.rs
+index 1290d697..4ac68b14 100644
+--- a/aw-datastore/tests/datastore.rs
++++ b/aw-datastore/tests/datastore.rs
+@@ -373,6 +373,41 @@ mod datastore_tests {
+         assert_ne!(fetched_events[0].id, e2.id);
+     }
+ 
++    #[test]
++    fn test_event_heartbeat_consecutive_merges() {
++        // Regression test for https://github.com/ActivityWatch/aw-server-rust/issues/559
++        // After insert_heartbeat merges two events, the merged event stored in cache
++        // must retain the DB event ID so subsequent heartbeats can find it for
++        // replace_last_event. Without the ID, every other heartbeat would fail.
++        let ds = Datastore::new_in_memory(false);
++        let bucket = create_test_bucket(&ds);
++
++        let now = Utc::now();
++        let pulsetime = 10.0;
++
++        // Send 5 consecutive heartbeats with the same data, 1 second apart.
++        // They should all merge into a single event with increasing duration.
++        for i in 0..5 {
++            let e = Event {
++                id: None,
++                timestamp: now + Duration::seconds(i),
++                duration: Duration::seconds(0),
++                data: json_map! {"key": json!("value")},
++            };
++            ds.heartbeat(&bucket.id, e, pulsetime).unwrap();
++        }
++
++        let events = ds.get_events(&bucket.id, None, None, None).unwrap();
++        assert_eq!(
++            events.len(),
++            1,
++            "all heartbeats should merge into one event"
++        );
++        assert_eq!(events[0].timestamp, now);
++        assert_eq!(events[0].duration, Duration::seconds(4));
++        assert!(events[0].id.is_some(), "event should have a DB id");
++    }
++
+     #[test]
+     fn test_event_replace() {
+         // Setup datastore
+
+diff --git a/aw-server/tests/api.rs b/aw-server/tests/api.rs
+index 5dcc2e48..c5da04b0 100644
+--- a/aw-server/tests/api.rs
++++ b/aw-server/tests/api.rs
+@@ -227,9 +227,10 @@ mod api_tests {
+             )
+             .dispatch();
+         assert_eq!(res.status(), rocket::http::Status::Ok);
++        // After the fix for #559, the heartbeat response includes the DB event ID
+         assert_eq!(
+             res.into_string().unwrap(),
+-            r#"{"id":null,"timestamp":"2018-01-01T01:01:01Z","duration":2.0,"data":{}}"#
++            r#"{"id":1,"timestamp":"2018-01-01T01:01:01Z","duration":2.0,"data":{}}"#
+         );
+ 
+         // Get heartbeat event
