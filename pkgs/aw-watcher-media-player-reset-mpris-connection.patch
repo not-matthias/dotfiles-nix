@@ -1,0 +1,22 @@
+Drop the polling MPRIS connection after each media query.
+
+`mpris` subscribes to player signals on each PlayerFinder connection, while this
+polling path never consumes its event queue. A new finder per request bounds
+queued signals to a single poll interval.
+
+--- a/src/platform/linux.rs
++++ b/src/platform/linux.rs
+@@ -17,10 +17,11 @@ impl CrossMediaPlayer for MediaPlayer {
+         let (tx, rx) = mpsc::channel();
+         let (resp_tx, resp_rx) = mpsc::channel();
+ 
+         let handler = thread::spawn(move || {
+-            let player_finder = PlayerFinder::new().expect("MPRIS is unavailable");
+-
+             while let Ok(()) = rx.recv() {
++                // Drop this subscribed connection at the end of the poll. This consumer doesn't
++                // process the MPRIS event queue.
++                let player_finder = PlayerFinder::new().expect("MPRIS is unavailable");
+                 resp_tx
+                     .send(mediadata(&player_finder))
+                     .expect("Failed to send media data");

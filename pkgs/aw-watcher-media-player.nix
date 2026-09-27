@@ -18,6 +18,7 @@ rustPlatform.buildRustPackage rec {
   };
 
   cargoHash = "sha256-057Yjxac7BDb+7nohj51biUPHT1LN9iICihzp5cziWA=";
+  patches = [./aw-watcher-media-player-reset-mpris-connection.patch];
 
   nativeBuildInputs = [pkg-config];
   buildInputs = [dbus openssl];
