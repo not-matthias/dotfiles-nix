@@ -1,4 +1,4 @@
-setupVersion: 1
+setupVersion: 2
 personality: pragmatic
 steeringMode: all
 includeModelInPrompt: false
@@ -54,13 +54,14 @@ dev:
 
 modelRoles:
   default: openai-codex/gpt-6-luna:auto
-  tiny: openai-codex/gpt-5.3-codex-spark
+  tiny: "local/lfm2.5-230m,openai-codex/gpt-5.3-codex-spark"
   commit: google-antigravity/gemini-3.8-flash
   task: openai-codex/gpt-6-luna:auto
   smol: google-antigravity/gemini-3.8-flash
   advisor: openai-codex/gpt-6-luna:auto
   plan: openai-codex/gpt-6-sol:high
   slow: openai-codex/gpt-6-sol:high
+  image: openai-codex/gpt-image-1
 
 task:
   isolation:
@@ -86,13 +87,6 @@ task:
   # Currently disabled, as it can increase the cost. Use orchestrate or workflowz instead
   # eager: preferred
 
-providers:
-  imageOrder:
-    - google-antigravity
-    - openai-codex
-    - anthropic
-  tinyModel: lfm2.5-230m
-
 retry:
   usageAwareFallback: false
   fallbackChains:
@@ -109,3 +103,11 @@ retry:
       - google-antigravity/gemini-3.8-flash
     anthropic/claude-haiku-4-5:
       - openai-codex/gpt-5.6-luna
+    image:
+      - openai/gpt-image-1
+      - google-antigravity/gemini-3-pro-image
+      - xai/grok-imagine-image
+      - xai-oauth/grok-imagine-image
+      - openrouter/google/gemini-3-pro-image-preview
+      - google/gemini-3-pro-image-preview
+      - deepinfra/black-forest-labs/FLUX-2-pro
