@@ -53,12 +53,12 @@ dev:
   autoqaConsent: denied
 
 modelRoles:
-  default: openai-codex/gpt-6-luna:auto
+  default: openai-codex/gpt-6-sol:auto
   tiny: "local/lfm2.5-230m,openai-codex/gpt-5.3-codex-spark"
   commit: google-antigravity/gemini-3.8-flash
-  task: openai-codex/gpt-6-luna:auto
+  task: openai-codex/gpt-6-sol:auto
   smol: google-antigravity/gemini-3.8-flash
-  advisor: openai-codex/gpt-6-luna:auto
+  advisor: openai-codex/gpt-6-luna:xhigh
   plan: openai-codex/gpt-6-sol:high
   slow: openai-codex/gpt-6-sol:high
   image: openai-codex/gpt-image-1
