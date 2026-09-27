@@ -5,7 +5,7 @@ description: Use for Oracle CLI second-model reviews, prompt/file bundling, brow
 
 # Oracle CLI
 
-Oracle CLI bundles a prompt and selected project files for a second-model review. It is separate from the `omp-oracle` extension. Treat responses as advice and verify them against the project; never attach secrets, cookie databases, private keys, or `.env` files.
+Oracle CLI bundles a prompt and selected project files for a second-model review. Treat responses as advice and verify them against the project; never attach secrets, cookie databases, private keys, or `.env` files.
 
 ## Consult workflow
 

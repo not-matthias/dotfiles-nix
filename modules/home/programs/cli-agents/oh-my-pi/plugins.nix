@@ -6,10 +6,6 @@
   lib,
 }: let
   plugins = {
-    "omp-oracle" = {
-      version = "0.3.2";
-      source = pkgs.callPackage ../../../../../pkgs/pi-mono/packages/omp-oracle.nix {};
-    };
     "pi-autoresearch" = {
       version = "1.6.2";
       source = pkgs.fetchzip {
