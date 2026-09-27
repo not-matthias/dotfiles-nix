@@ -131,7 +131,7 @@
       helix-file-watcher = super.callPackage ../../pkgs/helix-file-watcher.nix {};
     })
     (_self: super: {
-      openclaw = super.callPackage ../../pkgs/openclaw.nix {};
+      openclaw-desktop = super.callPackage ../../pkgs/openclaw.nix {};
     })
     (_self: super: {
       greptile = super.callPackage ../../pkgs/greptile.nix {};

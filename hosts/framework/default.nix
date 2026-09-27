@@ -46,7 +46,6 @@ in {
       radius2
       plannotator
       tldraw-offline
-      openclaw
       # unstable.antigravity-fhs
 
       # Install desktop apps rather than websites
@@ -222,6 +221,7 @@ in {
       ];
     };
     sccache.enable = true;
+    openclaw.enable = true;
     obs.enable = true;
     nix-index.enable = true;
     oneleet = {

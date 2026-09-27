@@ -3,7 +3,7 @@
   fetchurl,
   lib,
 }: let
-  pname = "openclaw";
+  pname = "openclaw-desktop";
   version = "2026.9.5";
   src = fetchurl {
     url = "https://github.com/openclaw/openclaw/releases/download/v${version}/OpenClaw-${version}-amd64.AppImage";
@@ -16,14 +16,14 @@ in
 
     extraInstallCommands = ''
       install -Dm444 ${appimageContents}/usr/share/applications/OpenClaw.desktop \
-        "$out/share/applications/openclaw.desktop"
-      substituteInPlace "$out/share/applications/openclaw.desktop" \
-        --replace-fail "Exec=openclaw-desktop" "Exec=$out/bin/openclaw"
+        "$out/share/applications/openclaw-desktop.desktop"
+      substituteInPlace "$out/share/applications/openclaw-desktop.desktop" \
+        --replace-fail "Exec=openclaw-desktop" "Exec=$out/bin/openclaw-desktop"
 
       for size in 16x16 32x32 64x64 128x128 256x256 256x256@2 512x512; do
         icon="${appimageContents}/usr/share/icons/hicolor/$size/apps/openclaw-desktop.png"
         [ -f "$icon" ] && install -Dm444 "$icon" \
-          "$out/share/icons/hicolor/$size/apps/openclaw.png"
+          "$out/share/icons/hicolor/$size/apps/openclaw-desktop.png"
       done
     '';
 

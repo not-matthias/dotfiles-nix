@@ -4,6 +4,7 @@
   ./fcitx5.nix
   ./nix-ld.nix
   ./obs.nix
+  ./openclaw.nix
   ./oneleet.nix
   ./sccache.nix
   ./determinate.nix
