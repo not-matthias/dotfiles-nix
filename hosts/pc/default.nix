@@ -24,6 +24,7 @@
   }: {
     imports = [
       flakes.backhub.homeManagerModules.default
+      flakes.taskwarrior-web.homeManagerModules.default
     ];
     home.stateVersion = "26.05";
     home.packages = with pkgs; [
@@ -137,6 +138,7 @@
 
     services = {
       activitywatch.enable = true;
+      taskwarrior-web.enable = true;
       gpg-agent.enable = true;
     };
 
