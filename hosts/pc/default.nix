@@ -108,6 +108,11 @@
               source = "devashish2203/herdr-worktrunk";
               rev = "8ceca541de8fb0d6006727e172534e1e2af17224";
             }
+            {
+              # v0.2.0, main (no release tags upstream)
+              source = "ntindle/herdr-resurrect";
+              rev = "5afa6755d4f35c62c7522ba4fd04922d1ac69602";
+            }
           ];
         };
         pi-mono.enable = true;
