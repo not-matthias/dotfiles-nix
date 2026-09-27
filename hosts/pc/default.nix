@@ -61,6 +61,7 @@
     };
 
     programs = {
+      ida-pro.enable = true;
       lmstudio = {
         enable = true;
         rocm.enable = true;
