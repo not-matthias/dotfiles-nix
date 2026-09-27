@@ -5,50 +5,45 @@
   options,
   pkgs,
   ...
-}: {
-  # https://github.com/tars0x9752/home/blob/main/modules/neovim/default.nix
-  # https://github.com/notusknot/dotfiles-nix/blob/main/modules/nvim/default.nix
+}: let
+  palettes = import ../../system/desktop/palettes.nix;
+  catppuccinColors = palette: {
+    base = "#${palette.base00}";
+    mantle = "#${palette.base01}";
+    crust = "#${palette.base00}";
+    surface0 = "#${palette.base02}";
+    surface1 = "#${palette.base03}";
+    surface2 = "#${palette.base04}";
+    text = "#${palette.base05}";
+    rosewater = "#${palette.base06}";
+    lavender = "#${palette.base07}";
+    red = "#${palette.base08}";
+    maroon = "#${palette.base08}";
+    peach = "#${palette.base09}";
+    yellow = "#${palette.base0A}";
+    green = "#${palette.base0B}";
+    teal = "#${palette.base0C}";
+    sky = "#${palette.base0C}";
+    blue = "#${palette.base0D}";
+    sapphire = "#${palette.base0D}";
+    mauve = "#${palette.base0E}";
+    pink = "#${palette.base0E}";
+    flamingo = "#${palette.base0F}";
+  };
+in {
   programs.nixvim = {
     defaultEditor = true;
     colorschemes.catppuccin = {
       enable = true;
-      settings = let
+      settings = {
         flavour =
           if (config.stylix.polarity or "light") == "dark"
           then "mocha"
           else "latte";
-      in {
-        inherit flavour;
-        color_overrides =
-          if builtins.hasAttr "stylix" options
-          then let
-            color = config.lib.stylix.colors.withHashtag;
-          in {
-            ${flavour} = {
-              base = color.base00;
-              mantle = color.base01;
-              surface0 = color.base02;
-              surface1 = color.base03;
-              surface2 = color.base04;
-              text = color.base05;
-              rosewater = color.base06;
-              lavender = color.base07;
-              red = color.base08;
-              peach = color.base09;
-              yellow = color.base0A;
-              green = color.base0B;
-              teal = color.base0C;
-              blue = color.base0D;
-              mauve = color.base0E;
-              flamingo = color.base0F;
-              crust = color.base11;
-              maroon = color.base12;
-              sky = color.base15;
-              sapphire = color.base16;
-              pink = color.base17;
-            };
-          }
-          else {};
+        color_overrides = {
+          latte = catppuccinColors palettes.light;
+          mocha = catppuccinColors palettes.dark;
+        };
       };
     };
     clipboard = {
@@ -719,6 +714,23 @@
       vim.cmd([[
         cnoreabbrev <expr> q getcmdtype() ==# ':' && getcmdline() ==# 'q' ? 'qa' : 'q'
       ]])
+      local function sync_theme()
+        local mode = vim.trim(vim.fn.system({"desktop-theme", "get"}))
+        if vim.v.shell_error ~= 0 or (mode ~= "light" and mode ~= "dark") then
+          return
+        end
+        local theme = mode == "dark" and "catppuccin-mocha" or "catppuccin-latte"
+        if vim.g.colors_name ~= theme then
+          vim.cmd.colorscheme(theme)
+        end
+      end
+      if #vim.api.nvim_list_uis() > 0 then
+        sync_theme()
+        vim._desktop_theme_timer = vim.uv.new_timer()
+        vim._desktop_theme_timer:start(2000, 2000, function()
+          vim.schedule(sync_theme)
+        end)
+      end
       vim.api.nvim_create_autocmd("VimEnter", {
         callback = function()
           if #vim.api.nvim_list_uis() == 0 then

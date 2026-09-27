@@ -1,8 +1,4 @@
-{
-  pkgs,
-  unstable,
-  ...
-}: {
+{unstable, ...}: {
   programs.lazygit = {
     enable = true;
     # `gui.sidePanels` only exists from 0.63 onwards; stable ships 0.61.
@@ -11,7 +7,7 @@
       git.diffRenderers = [
         {
           colorArg = "always";
-          command = "${pkgs.delta}/bin/delta --paging=never";
+          command = "desktop-delta --paging=never";
         }
       ];
       # Default grouping with commits and branches swapped, so commits lands on

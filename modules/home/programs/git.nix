@@ -1,10 +1,12 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: let
+  desktopDelta = pkgs.writeShellScriptBin "desktop-delta" ''
+    mode=$(desktop-theme get)
+    exec ${pkgs.delta}/bin/delta "--$mode" "$@"
+  '';
+in {
   home.packages = with pkgs; [
     git-absorb
+    desktopDelta
   ];
 
   programs.git = {
@@ -45,6 +47,7 @@
       credential."https://github.com".helper = "!${pkgs.gh}/bin/gh auth git-credential";
       # https://stackoverflow.com/questions/16906161/git-push-hangs-when-pushing-to-github
       http.postBuffer = 524288000;
+      core.pager = "${desktopDelta}/bin/desktop-delta";
 
       # Sign by default
       commit.gpgsign = true;
@@ -67,14 +70,9 @@
       "profile.json.gz"
     ];
   };
-
   programs.delta = {
     enable = true;
-    enableGitIntegration = true;
-    # Delta probes the terminal background to pick a theme, but that probe is
-    # skipped whenever stdout is a pipe (lazygit, jj), leaving it on its dark
-    # default. Pin the polarity so piped callers match the rest of the UI.
-    options.light = (config.stylix.polarity or "light") != "dark";
+    enableGitIntegration = false;
   };
 
   programs.fish = {
@@ -104,6 +102,7 @@
       "gbc" = "git branch --show-current | wl-copy";
     };
     functions = {
+      delta = ''${desktopDelta}/bin/desktop-delta $argv'';
       # Git helper functions with fzf
       _ensure_git_repo = ''
         function _ensure_git_repo -d "Check if we're in a git repository"

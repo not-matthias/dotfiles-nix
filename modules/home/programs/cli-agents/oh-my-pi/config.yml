@@ -6,6 +6,7 @@ textVerbosity: low
 extendedContext: false
 symbolPreset: ascii
 theme:
+  light: light
   dark: graphite
 
 composer:

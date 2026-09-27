@@ -19,7 +19,7 @@
       ui = {
         default-command = "log";
         diff-editor = ":builtin";
-        pager = "${pkgs.delta}/bin/delta";
+        pager = "desktop-delta";
       };
 
       # Sign commits by default

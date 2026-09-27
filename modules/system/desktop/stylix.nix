@@ -4,43 +4,7 @@
   pkgs,
   ...
 }: let
-  catppuccinLatteRed = {
-    base00 = "eff1f5"; # base
-    base01 = "e6e9ef"; # mantle
-    base02 = "ccd0da"; # surface0
-    base03 = "9ca0b0"; # surface1 (darkened for contrast)
-    base04 = "8c8fa1"; # surface2 (darkened for contrast)
-    base05 = "4c4f69"; # text
-    base06 = "dc8a78"; # rosewater
-    base07 = "7287fd"; # lavender
-    base08 = "d20f39"; # red
-    base09 = "fe640b"; # peach
-    base0A = "df8e1d"; # yellow
-    base0B = "40a02b"; # green
-    base0C = "179299"; # teal
-    base0D = "d20f39"; # red (used for blue)
-    base0E = "d20f39"; # red (used for mauve)
-    base0F = "d20f39"; # red (used for pink)
-  };
-  # deadnix: skip
-  catppuccinMochaRed = {
-    base00 = "0f1115"; # base
-    base01 = "151922"; # mantle
-    base02 = "1d2330"; # surface0
-    base03 = "303846"; # surface1
-    base04 = "4a5568"; # surface2
-    base05 = "f0f3f6"; # text
-    base06 = "ffd8d8"; # rosewater
-    base07 = "ff8f9a"; # lavender
-    base08 = "ff6b7a"; # red
-    base09 = "ff9f68"; # peach
-    base0A = "f2c866"; # yellow
-    base0B = "8bd5a8"; # green
-    base0C = "72d6c9"; # teal
-    base0D = "82aaff"; # blue
-    base0E = "c099ff"; # mauve
-    base0F = "f29ac2"; # pink
-  };
+  palettes = import ./palettes.nix;
 in {
   options.desktop.theme = lib.mkOption {
     type = lib.types.enum ["light" "dark"];
@@ -54,10 +18,7 @@ in {
     homeManagerIntegration.autoImport = true;
     homeManagerIntegration.followSystem = true;
 
-    base16Scheme =
-      if config.desktop.theme == "dark"
-      then catppuccinMochaRed
-      else catppuccinLatteRed;
+    base16Scheme = palettes.${config.desktop.theme};
 
     polarity = config.desktop.theme;
 

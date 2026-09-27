@@ -190,7 +190,7 @@ in {
         "zen.theme.gradient" = false;
         "zen.theme.acrylic-elements" = false;
 
-        "zen.theme.use-system-colors" = false;
+        "zen.theme.use-system-colors" = true;
         "zen.watermark.enabled" = false;
 
         # Disable sidebar animation in compact view

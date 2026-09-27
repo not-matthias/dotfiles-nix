@@ -1,4 +1,7 @@
 {
+  "window.autoDetectColorScheme": true,
+  "workbench.preferredLightColorTheme": "Default Light Modern",
+  "workbench.preferredDarkColorTheme": "Default Dark Modern",
   "window.titleBarStyle": "custom",
   "window.menuBarVisibility": "compact",
   "workbench.iconTheme": "vscode-jetbrains-icon-theme-2023-auto",

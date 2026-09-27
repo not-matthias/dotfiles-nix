@@ -58,6 +58,58 @@ Once `home-manager` is on your `PATH` (after the first activation), subsequent u
 home-manager switch --flake .#not-matthias@jetson
 ```
 
+
+### Runtime desktop theme
+
+The graphical session provides a light/dark application-theme toggle in the
+Quickshell bar. The same selection is available from the command line:
+
+```bash
+desktop-theme get [--json]
+desktop-theme set light
+desktop-theme set dark
+desktop-theme toggle
+desktop-theme restore
+```
+
+The selected mode is saved in `$XDG_STATE_HOME/desktop-theme/mode` (or
+`~/.local/state/desktop-theme/mode`) and restored when the graphical session
+starts. `desktop.theme` is the default until a selection is saved. A Home
+Manager activation updates the prebuilt themes and reapplies the saved mode
+when a graphical session is active; switching does not rebuild Nix.
+
+Native appearance switching comes first: GSettings sets the GTK theme, icons,
+and system light/dark preference, which the GTK portal exposes to applications
+that follow the system. Ghostty uses its native light/dark theme pair. Helix
+uses the terminal's light/dark appearance (with the build-time palette as a
+fallback when the terminal cannot report it); open Helix sessions can update
+when the terminal reports a change. Firefox and Zen follow the system preference
+when enabled; Vicinae switches between paired custom themes. VS Code, Zed,
+Claude Code, Pi, and Oh My Pi use paired themes or system/terminal appearance.
+Quickshell displays the saved mode but keeps its fixed dark styling.
+
+For applications without native switching, one mutable
+`$XDG_CONFIG_HOME/desktop-theme/current` symlink (under `~/.config` by
+default) selects the Dunst color drop-in, Swaylock config, Qt/Kvantum
+settings, and Btop theme. Qt uses the red Catppuccin Kvantum themes;
+Btop uses its bundled Adwaita light/dark themes instead of a custom
+Catppuccin palette. Switching does not restart applications. Dunst reloads
+when running; new Swaylock sessions and reopened Qt and Btop applications
+use the selected theme.
+
+Neovim polls the saved mode and updates open windows. Bat detects the
+terminal's light/dark appearance natively when launched; without a terminal
+to probe, it may use its default theme. Glow chooses the mode when launched;
+Delta-backed Git, Jujutsu, and Lazygit output uses it too. Fish, Starship,
+GitUI, Lazygit, Zellij, and other ANSI-based terminal applications inherit
+Ghostty's active palette.
+
+The toggle does not restart stateful applications, including open Claude Code
+sessions. Spotify's Nix-built Spicetify theme remains at the palette used by
+its last Home Manager/Nix build; Discord's in-app appearance is not Nix-managed
+here. Niri's configured focus accents remain fixed.
+
+
 ## Usage
 
 ### Updating the system
