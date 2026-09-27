@@ -119,7 +119,7 @@
     };
     oh-my-pi.url = "github:not-matthias/oh-my-pi/perf/startup-optimizations";
     taskwarrior-web = {
-      url = "git+https://github.com/not-matthias/taskwarrior-web.git?ref=feat/nix-home-manager";
+      url = "git+https://github.com/not-matthias/taskwarrior-web.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     timeguard = {

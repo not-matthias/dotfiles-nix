@@ -1909,16 +1909,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1790527300,
-        "narHash": "sha256-cc9jWxcI1Dnz4OXYQN4UDBnNKMRozOuJEf6TrHfHiA8=",
-        "ref": "feat/nix-home-manager",
-        "rev": "bd9b95a57f97d54246e9de6459cfd2c104b18d60",
-        "revCount": 79,
+        "lastModified": 1790531175,
+        "narHash": "sha256-zKqR2KCCUZ8MVN7DUFavodotd6RqjMKd+/GEJElinKQ=",
+        "ref": "refs/heads/main",
+        "rev": "a8b11f063b2f5e1d7a3e622154b16e807c08b7a2",
+        "revCount": 77,
         "type": "git",
         "url": "https://github.com/not-matthias/taskwarrior-web.git"
       },
       "original": {
-        "ref": "feat/nix-home-manager",
         "type": "git",
         "url": "https://github.com/not-matthias/taskwarrior-web.git"
       }
