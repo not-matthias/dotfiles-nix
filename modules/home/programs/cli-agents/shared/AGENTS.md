@@ -22,6 +22,7 @@ RFC 2119 terminology applies only to uppercase keywords: MUST, REQUIRED, SHOULD,
 - NEVER reply to pull requests/review comments/GitHub issues/etc. unless the user asks you to
 
 - Oracle can provide a second-model review grounded in selected repository files. Use `oracle --dry-run summary --files-report` before a model run, and never attach secrets.
+- For binary analysis, prefer the built-in `read` and `ida` tools when available. Use IDA Nexus when the task needs an IDB already open in the IDA GUI or shared with another client.
 
 ## Documentation
 
