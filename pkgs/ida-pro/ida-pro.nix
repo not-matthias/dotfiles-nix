@@ -199,6 +199,8 @@ in
             runHook postInstall
     '';
 
+    passthru.pythonForIDA = pythonForIDA;
+
     meta = with lib; {
       description = "The world's smartest and most feature-full disassembler";
       homepage = "https://hex-rays.com/ida-pro/";

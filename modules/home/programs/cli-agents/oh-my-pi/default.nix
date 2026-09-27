@@ -31,9 +31,10 @@ with lib; let
 
   # skills.customDirectories is derived from config.home.homeDirectory, so it
   # is merged into the hand-written config instead of being duplicated there.
-  derivedConfig = pkgs.writeText "omp-config-derived.yml" (builtins.toJSON {
-    skills.customDirectories = ["${config.home.homeDirectory}/.omp/agent/skills"];
-  });
+  derivedConfig = pkgs.writeText "omp-config-derived.yml" (builtins.toJSON (recursiveUpdate {
+      skills.customDirectories = ["${config.home.homeDirectory}/.omp/agent/skills"];
+    }
+    cfg.settings));
   ompConfig = pkgs.runCommand "omp-config.yml" {nativeBuildInputs = [pkgs.yq-go];} ''
     yq -P eval-all 'select(fi == 0) * select(fi == 1)' ${./config.yml} ${derivedConfig} > $out
   '';
@@ -70,6 +71,11 @@ in {
       type = types.nullOr types.str;
       default = null;
       description = "Path to an environment file sourced before launching omp (e.g. an agenix secret)";
+    };
+    settings = mkOption {
+      type = types.attrsOf types.anything;
+      default = {};
+      description = "Settings merged into the OMP configuration.";
     };
   };
   config = mkIf cfg.enable {

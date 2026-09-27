@@ -33,7 +33,6 @@ autolearn:
 
 advisor:
   enabled: true
-  maxNotesPerUpdate: 1
 github:
   enabled: true
 bash:
@@ -43,6 +42,15 @@ completion:
   notify: "off"
 codexResets:
   autoRedeem: "no"
+claudeResets:
+  autoRedeem: "no"
+ida:
+  enabled: true
+astGrep:
+  enabled: true
+tools:
+  speculativeExecution:
+    enabled: true
 secrets:
   enabled: true
 compaction:
