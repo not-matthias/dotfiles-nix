@@ -9,7 +9,6 @@
   forEach = xs: f: lib.concatMapStringsSep "\n" f xs;
   nodedev = address: "pci_" + builtins.replaceStrings [":" "."] ["_" "_"] address;
   preflight = ''
-        configured_iommu_group=""
         for address in ${lib.concatMapStringsSep " " lib.escapeShellArg devices}; do
           iommu_group_link="/sys/bus/pci/devices/$address/iommu_group"
           if [ ! -e "$iommu_group_link" ]; then
@@ -20,37 +19,28 @@
             printf 'single-gpu-passthrough: cannot resolve IOMMU group for PCI device %s\n' "$address" >&2
             exit 1
           fi
-          if [ -z "$configured_iommu_group" ]; then
-            configured_iommu_group="$iommu_group_path"
-          elif [ "$configured_iommu_group" != "$iommu_group_path" ]; then
-            printf 'single-gpu-passthrough: configured PCI devices do not share an IOMMU group\n' >&2
+          if [ ! -d "$iommu_group_path/devices" ]; then
+            printf 'single-gpu-passthrough: IOMMU group device list is unavailable\n' >&2
             exit 1
           fi
-        done
-
-        if [ -z "$configured_iommu_group" ] || [ ! -d "$configured_iommu_group/devices" ]; then
-          printf 'single-gpu-passthrough: IOMMU group device list is unavailable\n' >&2
-          exit 1
-        fi
-        for address in ${lib.concatMapStringsSep " " lib.escapeShellArg devices}; do
-          if [ ! -e "$configured_iommu_group/devices/$address" ]; then
+          if [ ! -e "$iommu_group_path/devices/$address" ]; then
             printf 'single-gpu-passthrough: PCI device %s is missing from its IOMMU group device list\n' "$address" >&2
             exit 1
           fi
-        done
-        for member_path in "$configured_iommu_group"/devices/*; do
-          if [ ! -e "$member_path" ]; then
-            printf 'single-gpu-passthrough: IOMMU group contains an unavailable device entry\n' >&2
-            exit 1
-          fi
-          member_address="''${member_path##*/}"
-          case "$member_address" in
-    ${forEach devices (address: "        ${lib.escapeShellArg address}) ;;")}
-            *)
-              printf 'single-gpu-passthrough: IOMMU group contains unconfigured PCI device %s\n' "$member_address" >&2
+          for member_path in "$iommu_group_path"/devices/*; do
+            if [ ! -e "$member_path" ]; then
+              printf 'single-gpu-passthrough: IOMMU group contains an unavailable device entry\n' >&2
               exit 1
-              ;;
-          esac
+            fi
+            member_address="''${member_path##*/}"
+            case "$member_address" in
+    ${forEach devices (address: "          ${lib.escapeShellArg address}) ;;")}
+              *)
+                printf 'single-gpu-passthrough: IOMMU group contains unconfigured PCI device %s\n' "$member_address" >&2
+                exit 1
+                ;;
+            esac
+          done
         done
   '';
   detach = ''

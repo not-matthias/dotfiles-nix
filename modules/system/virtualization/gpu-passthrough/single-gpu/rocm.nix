@@ -16,7 +16,7 @@ in {
     devices = lib.mkOption {
       type = lib.types.nonEmptyListOf (lib.types.strMatching "[0-9a-f]{4}:[0-9a-f]{2}:[0-9a-f]{2}\\.[0-7]");
       default = ["0000:c2:00.0" "0000:c2:00.1"];
-      description = "PCI addresses of all devices in the GPU's IOMMU group.";
+      description = "PCI addresses of every device in each IOMMU group being passed through.";
     };
     services = lib.mkOption {
       type = lib.types.listOf lib.types.str;

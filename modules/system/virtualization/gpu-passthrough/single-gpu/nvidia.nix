@@ -21,7 +21,7 @@ in {
         "0000:26:00.2"
         "0000:26:00.3"
       ];
-      description = "PCI addresses of all devices in the GPU's IOMMU group.";
+      description = "PCI addresses of every device in each IOMMU group being passed through.";
     };
     services = lib.mkOption {
       type = lib.types.listOf lib.types.str;
