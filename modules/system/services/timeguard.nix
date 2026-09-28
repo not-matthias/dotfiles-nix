@@ -1,9 +1,14 @@
 {
   config,
+  lib,
   flakes,
   ...
 }: {
   imports = [flakes.timeguard.nixosModules.default];
+
+  environment = lib.mkIf config.services.timeguard.enable {
+    systemPackages = [config.services.timeguard.package];
+  };
 
   age.secrets.timeguard-rules = {
     file = ../../../secrets/timeguard-rules.age;
