@@ -24,6 +24,16 @@ CASES = [
      "crates/memtrack/src/ebpf/c/utils/pressure.bpf.h && "
      "git commit --fixup=c0235673 2>&1 | tail -3 && git push 2>&1 | tail -3"),
     ("message_option", False, "tool", "bash", 'git commit -m "fix: correct behavior"'),
+    ("stdin_conventional_message", False, "tool", "bash",
+     "git add packages/api/tests/e2e/integrations.spec.ts && git commit -q -F - <<'EOF'\n"
+     "test(e2e): check memory flamegraphs in the integrations report\n"
+     "\nRun the flamegraph mode checks on each memory benchmark's Memory Profile tab.\n"
+     "EOF\n"
+     "git log --oneline -1 && git push -q -u origin HEAD"),
+    ("stdin_nonconventional_message", True, "tool", "bash",
+     "git commit -q -F - <<'EOF'\n"
+     "check memory flamegraphs in the integrations report\n"
+     "EOF"),
     ("non_commit", False, "tool", "bash", "git status"),
     ("wrong_source", False, "text", "bash", "git commit"),
     ("wrong_tool", False, "tool", "edit", "git commit"),
