@@ -220,7 +220,6 @@ in {
       ];
     };
     sccache.enable = true;
-    openclaw.enable = true;
     obs.enable = true;
     nix-index.enable = true;
     oneleet = {
