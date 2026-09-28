@@ -41,4 +41,5 @@ in {
   "wakapi-salt.age".publicKeys = systems;
 
   "pi-mono-env.age".publicKeys = systems;
+  "taskchampion-sync.age".publicKeys = systems;
 }

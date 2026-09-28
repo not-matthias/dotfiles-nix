@@ -40,6 +40,7 @@
   ./niri-organize.nix
   ./rust.nix
   ./starship.nix
+  ./taskwarrior.nix
   ./vicinae.nix
   # ./wofi.nix
   ./zellij.nix

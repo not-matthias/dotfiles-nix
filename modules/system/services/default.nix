@@ -51,6 +51,7 @@
   ./tandoor.nix
   ./stump.nix
   ./traggo.nix
+  ./taskwarrior-sync.nix
   ./twenty.nix
   ./vaultwarden.nix
   ./vikunja.nix

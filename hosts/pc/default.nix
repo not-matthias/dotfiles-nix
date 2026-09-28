@@ -11,6 +11,9 @@
     ./hardware-configuration.nix
     nixos-hardware.nixosModules.framework-desktop-amd-ai-max-300-series
   ];
+
+  services.caddy.enable = true;
+  services.taskwarrior-sync.enable = true;
   zramSwap = {
     enable = true;
     algorithm = "zstd";
@@ -24,8 +27,8 @@
   }: {
     imports = [
       flakes.backhub.homeManagerModules.default
-      flakes.taskwarrior-web.homeManagerModules.default
     ];
+    programs.taskwarrior.enable = true;
     home.stateVersion = "26.05";
     home.packages = with pkgs; [
       evince
@@ -138,7 +141,6 @@
 
     services = {
       activitywatch.enable = true;
-      taskwarrior-web.enable = true;
       gpg-agent.enable = true;
     };
 
@@ -213,6 +215,7 @@
     };
     octo-fiesta.enable = true;
     systembus-notify.enable = lib.mkForce true;
+    vpn.enable = true;
   };
 
   hardware = {

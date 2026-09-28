@@ -24,7 +24,7 @@
     environmentFile = config.age.secrets.duckdns.path;
     package = unstable.caddy.withPlugins {
       plugins = ["github.com/caddy-dns/duckdns@v0.5.0"];
-      hash = "sha256-4TbgFecnVvdJ3fbbLR46Dhx5m0rPPryXQX9x8tr1tAY=";
+      hash = "sha256-1nx8y8vrE3MubRMqviM5mYqCK3d0SLkXI0Ts8eWBmdc=";
     };
 
     virtualHosts."*.${domain}".extraConfig = ''

@@ -24,15 +24,14 @@ in {
     ./work.nix
     ../../modules/system/services/timeguard.nix
   ];
+  services.taskwarrior-sync.client.enable = true;
 
   home-manager.users.${user} = {
     lib,
     pkgs,
     ...
   }: {
-    imports = [
-      ../../modules/home/programs/taskwarrior.nix
-    ];
+    programs.taskwarrior.enable = true;
     home.stateVersion = "22.05";
     home.packages = with pkgs; [
       uv

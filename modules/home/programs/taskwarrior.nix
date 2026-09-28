@@ -1,178 +1,97 @@
-# docker run --init -d -p 3000:3000 -v ~/.task/:/app/taskdata/ -v ~/.taskrc:/app/.taskrc -v ~/.timewarrior/:/app/.timewarrior/ ghcr.io/tmahmood/taskwarrior-web:main
 {
   config,
   lib,
+  flakes,
   pkgs,
+  domain,
+  osConfig,
   ...
-}: let
-  # Use latest bugwarrior from develop branch for Python 3.13 compatibility
-  bugwarrior = pkgs.python3Packages.buildPythonPackage rec {
-    pname = "bugwarrior";
-    version = "develop";
-    format = "pyproject";
+}: {
+  imports = [flakes.taskwarrior-web.homeManagerModules.default];
 
-    src = pkgs.fetchFromGitHub {
-      owner = "ralphbean";
-      repo = "bugwarrior";
-      rev = "develop";
-      sha256 = "sha256-0W4ZSy0lcOK8h44SUckgrnLQP9Ce/3C+qtj+VV43LUs=";
-    };
+  config = lib.mkIf config.programs.taskwarrior.enable {
+    services.taskwarrior-web.enable = osConfig.networking.hostName == "pc";
+    systemd.user.services.taskwarrior-web.Service.Environment =
+      lib.mkIf (osConfig.networking.hostName == "pc")
+      (lib.mkAfter [
+        "ORIGIN=https://todo.${domain}"
+        "TASKWARRIOR_WEB_ALLOWED_HOST=todo.${domain}"
+      ]);
+    programs.cli-agents.programSkills.taskwarrior = ./cli-agents/shared/program-skills/taskwarrior;
 
-    nativeBuildInputs = with pkgs.python3Packages; [
-      setuptools
-      wheel
+    home.packages = with pkgs; [
+      tasksh
+      taskwarrior-tui
+      timewarrior
+      timew-sync-client
     ];
 
-    propagatedBuildInputs = with pkgs.python3Packages; [
-      click
-      dogpile-cache
-      jinja2
-      filelock
-      lockfile
-      pydantic
-      python-dateutil
-      pytz
-      requests
-      six
-      taskw
-      tomli
-    ];
+    programs.taskwarrior = {
+      package = pkgs.taskwarrior3;
+      config = {
+        sync.server.url = "http://100.65.237.101:10222";
+        sync.server.client_id = "7af28379-c8aa-468e-8b9a-949021609eb7";
 
-    doCheck = false; # Skip tests for now
-  };
-in {
-  programs.cli-agents.programSkills.taskwarrior =
-    lib.mkIf config.programs.taskwarrior.enable ./cli-agents/shared/program-skills/taskwarrior;
+        # General configuration
+        data.location = "~/.task";
+        confirmation = false;
+        report.next.filter = "status:pending -WAITING";
+        report.next.columns = "id,start.age,depends,priority,project,tag,recur,scheduled.countdown,due.relative,until.remaining,description,urgency";
+        report.next.labels = "ID,Active,Deps,P,Project,Tag,Recur,S,Due,Until,Description,Urg";
 
-  home.packages = with pkgs; [
-    tasksh
-    taskwarrior-tui
-    timewarrior
-    timew-sync-client
-    bugwarrior
-  ];
+        # Urgency configuration
+        urgency.uda.priority.H.coefficient = 6.0;
+        urgency.uda.priority.M.coefficient = 3.9;
+        urgency.uda.priority.L.coefficient = 1.8;
 
-  programs.taskwarrior = {
-    enable = true;
-    package = pkgs.taskwarrior3;
-    config = {
-      # Sync configuration
-      taskd = {
-        server = "taskwarrior.inthe.am:53589";
-        credentials = "inthe_am/not-matthias/[UUID]";
-        certificate = "~/.task/ca.cert.pem";
-        key = "~/.task/private.key.pem";
-        ca = "~/.task/ca.cert.pem";
+        # Timewarrior integration
+        alias.start = "execute timew start";
+        alias.stop = "execute timew stop";
+
+        # Syncall integration UDAs
+        uda.gcalid.type = "string";
+        uda.gcalid.label = "Google Calendar ID";
+        uda.gtasksid.type = "string";
+        uda.gtasksid.label = "Google Tasks ID";
+        uda.notionid.type = "string";
+        uda.notionid.label = "Notion ID";
       };
-
-      # General configuration
-      data.location = "~/.task";
-      confirmation = false;
-      report.next.filter = "status:pending -WAITING";
-      report.next.columns = "id,start.age,depends,priority,project,tag,recur,scheduled.countdown,due.relative,until.remaining,description,urgency";
-      report.next.labels = "ID,Active,Deps,P,Project,Tag,Recur,S,Due,Until,Description,Urg";
-
-      # UDA (User Defined Attributes)
-      uda.reviewed.type = "date";
-      uda.reviewed.label = "Reviewed";
-      report._reviewed.description = "Tasksh review report.  Adjust the filter to your needs.";
-      report._reviewed.columns = "uuid";
-      report._reviewed.sort = "reviewed+,modified+";
-      report._reviewed.filter = "( reviewed.none: or reviewed.before:now-6days ) and ( +PENDING or +WAITING )";
-
-      # Urgency configuration
-      urgency.user.project.Work.coefficient = 6.0;
-      urgency.user.project.Personal.coefficient = 3.0;
-      urgency.uda.priority.H.coefficient = 6.0;
-      urgency.uda.priority.M.coefficient = 3.9;
-      urgency.uda.priority.L.coefficient = 1.8;
-
-      # Project contexts for quick switching
-      context.fitness.read = "project:fitness";
-      context.fitness.write = "project:fitness";
-      context.life.read = "project:life";
-      context.life.write = "project:life";
-      context.home-server.read = "project:home-server";
-      context.home-server.write = "project:home-server";
-      context.dotfiles.read = "project:dotfiles";
-      context.dotfiles.write = "project:dotfiles";
-      context.work.read = "project:work";
-      context.work.write = "project:work";
-      context.learning.read = "project:learning";
-      context.learning.write = "project:learning";
-
-      # Timewarrior integration
-      alias.start = "execute timew start";
-      alias.stop = "execute timew stop";
-
-      # Custom reports for better project management
-      report.fitness.description = "Fitness related tasks";
-      report.fitness.columns = "id,start.age,priority,description,urgency";
-      report.fitness.labels = "ID,Active,P,Description,Urg";
-      report.fitness.sort = "urgency-";
-      report.fitness.filter = "project:fitness status:pending";
-
-      report.projects.description = "Task count by project";
-      report.projects.columns = "project,count";
-      report.projects.labels = "Project,Count";
-      report.projects.sort = "count-";
-      report.projects.filter = "status:pending";
-
-      # Todoist sync settings (for bugwarrior)
-      uda.todoistid.type = "numeric";
-      uda.todoistid.label = "Todoist ID";
-
-      # Syncall integration UDAs
-      uda.gcalid.type = "string";
-      uda.gcalid.label = "Google Calendar ID";
-      uda.gtasksid.type = "string";
-      uda.gtasksid.label = "Google Tasks ID";
-      uda.notionid.type = "string";
-      uda.notionid.label = "Notion ID";
-
-      # Linear-specific UDAs (for future Linear sync integration)
-      uda.linearid.type = "string";
-      uda.linearid.label = "Linear Issue ID";
-      uda.linearurl.type = "string";
-      uda.linearurl.label = "Linear Issue URL";
+      extraConfig = "include /run/agenix/taskchampion-sync";
     };
-  };
 
-  programs.fish.shellAbbrs = {
-    # Task management
-    "t" = "task";
-    "ta" = "task add";
-    "tl" = "task list";
-    "tn" = "task next";
-    "td" = "task done";
-    "tm" = "task modify";
-    "ts" = "task summary";
-    "tp" = "task projects";
+    programs.fish.shellAbbrs = {
+      # Task management
+      "t" = "task";
+      "ta" = "task add";
+      "tl" = "task list";
+      "tn" = "task next";
+      "td" = "task done";
+      "tm" = "task modify";
+      "ts" = "task summary";
+      "tp" = "task projects";
 
-    # Context switching
-    "tcf" = "task context fitness";
-    "tcl" = "task context life";
-    "tch" = "task context home-server";
-    "tcd" = "task context dotfiles";
-    "tcw" = "task context work";
-    "tcle" = "task context learning";
-    "tcn" = "task context none";
-    "tcx" = "task context list";
+      # Context switching
+      "tcf" = "task context fitness";
+      "tcl" = "task context life";
+      "tch" = "task context home-server";
+      "tcd" = "task context dotfiles";
+      "tcw" = "task context work";
+      "tcle" = "task context learning";
+      "tcn" = "task context none";
+      "tcx" = "task context list";
 
-    # Timewarrior
-    "tw" = "timew";
-    "tws" = "timew start";
-    "twst" = "timew stop";
-    "twsu" = "timew summary";
-    "twl" = "timew";
+      # Timewarrior
+      "tw" = "timew";
+      "tws" = "timew start";
+      "twst" = "timew stop";
+      "twsu" = "timew summary";
+      "twl" = "timew";
 
-    # Bugwarrior sync
-    "bw" = "bugwarrior-pull";
-
-    # Syncall integrations
-    "sg" = "tw_gtasks_sync"; # Google Tasks sync
-    "sc" = "tw_gcal_sync"; # Google Calendar sync
-    "sn" = "tw_notion_sync"; # Notion sync
-    "sa" = "syncall"; # Main syncall command
+      # Syncall integrations
+      "sg" = "tw_gtasks_sync"; # Google Tasks sync
+      "sc" = "tw_gcal_sync"; # Google Calendar sync
+      "sn" = "tw_notion_sync"; # Notion sync
+      "sa" = "syncall"; # Main syncall command
+    };
   };
 }
