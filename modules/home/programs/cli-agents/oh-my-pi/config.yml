@@ -61,14 +61,14 @@ dev:
   autoqaConsent: denied
 
 modelRoles:
-  default: openai-codex/gpt-6-sol:auto
+  default: openai-codex/gpt-6.1-sol:auto
   tiny: "local/lfm2.5-230m,openai-codex/gpt-5.3-codex-spark"
   commit: google-antigravity/gemini-3.8-flash
-  task: openai-codex/gpt-6-sol:auto
+  task: openai-codex/gpt-6.1-sol:auto
   smol: google-antigravity/gemini-3.8-flash
   advisor: openai-codex/gpt-6-luna:xhigh
-  plan: openai-codex/gpt-6-sol:high
-  slow: openai-codex/gpt-6-sol:high
+  plan: openai-codex/gpt-6.1-sol:high
+  slow: openai-codex/gpt-6.1-sol:high
   image: openai-codex/gpt-image-1
 
 task:
@@ -89,7 +89,7 @@ task:
   #   task: "on"
   agentModelOverrides:
     scout: google-antigravity/gemini-3.8-flash
-    solver: openai-codex/gpt-6-sol:high
+    solver: openai-codex/gpt-6.1-sol:high
     reviewer: openai-codex/gpt-6-luna:xhigh
     security-reviewer: openai-codex/gpt-6-luna:xhigh
   # Currently disabled, as it can increase the cost. Use orchestrate or workflowz instead
@@ -101,13 +101,13 @@ retry:
     google-antigravity/gemini-3.8-flash:
       - openai-codex/gpt-5.6-luna
       - anthropic/claude-sonnet-5
-    openai-codex/gpt-5.6-sol:
+    openai-codex/gpt-6.1-sol:
       - anthropic/claude-fable-5
       - google-antigravity/gemini-3.8-flash
     openai-codex/gpt-5.6-terra:
       - anthropic/claude-opus-5
     anthropic/claude-fable-5:
-      - openai-codex/gpt-5.6-sol
+      - openai-codex/gpt-6.1-sol
       - google-antigravity/gemini-3.8-flash
     anthropic/claude-haiku-4-5:
       - openai-codex/gpt-5.6-luna
