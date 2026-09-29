@@ -99,7 +99,7 @@ retry:
   usageAwareFallback: false
   fallbackChains:
     google-antigravity/gemini-3.8-flash:
-      - openai-codex/gpt-5.6-luna
+      - openai-codex/gpt-6-luna
       - anthropic/claude-sonnet-5
     openai-codex/gpt-6.1-sol:
       - anthropic/claude-fable-5
@@ -110,7 +110,7 @@ retry:
       - openai-codex/gpt-6.1-sol
       - google-antigravity/gemini-3.8-flash
     anthropic/claude-haiku-4-5:
-      - openai-codex/gpt-5.6-luna
+      - openai-codex/gpt-6-luna
     image:
       - openai/gpt-image-1
       - google-antigravity/gemini-3-pro-image
