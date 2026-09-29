@@ -11,6 +11,7 @@ import qs.Components.Media
 import qs.Components.SystemTray
 import qs.Components.Volume
 import qs.Components.Workspaces
+import qs.Components.ThemeMode
 import qs.Shared
 
 Item {
@@ -57,6 +58,9 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         spacing: 4
 
+        ThemeMode {
+            anchors.verticalCenter: parent.verticalCenter
+        }
         Flashgen {}
         AiUsage {}
 

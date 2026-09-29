@@ -3,6 +3,7 @@
   ./dconf
   ./gtk.nix
 
+  ./desktop-theme.nix
   ./alacritty.nix
   ./atuin.nix
   ./bat.nix

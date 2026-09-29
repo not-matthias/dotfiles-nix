@@ -3,18 +3,79 @@
   flakes,
   pkgs,
   unstable,
-  lib,
   options,
+  lib,
   ...
 }: let
-  catppuccinVariant =
-    if (config.stylix.polarity or "light") == "dark"
-    then "mocha"
-    else "latte";
-  glowStyle =
-    if catppuccinVariant == "mocha"
-    then "dark"
-    else "light";
+  palettes = import ../../../system/desktop/palettes.nix;
+  helixTheme = palette:
+    pkgs.writeText "helix-runtime-theme.toml" ''
+      "ui.background" = { fg = "base05", bg = "base00" }
+      "ui.text" = "base05"
+      "ui.text.focus" = { fg = "base05", modifiers = ["bold"] }
+      "ui.cursor" = { fg = "base00", bg = "base05" }
+      "ui.cursor.primary" = { fg = "base00", bg = "base05" }
+      "ui.selection" = { bg = "base02" }
+      "ui.selection.primary" = { bg = "base02" }
+      "ui.linenr" = "base03"
+      "ui.linenr.selected" = { fg = "base04", modifiers = ["bold"] }
+      "ui.statusline" = { fg = "base05", bg = "base01" }
+      "ui.statusline.inactive" = { fg = "base03", bg = "base00" }
+      "ui.popup" = { fg = "base05", bg = "base01" }
+      "ui.menu" = { fg = "base05", bg = "base01" }
+      "ui.menu.selected" = { fg = "base00", bg = "base0D" }
+      "ui.window" = { fg = "base03", bg = "base00" }
+      "ui.virtual" = "base03"
+      "ui.cursorline.primary" = { bg = "base01" }
+      "ui.highlight" = { bg = "base02" }
+      error = "base08"
+      warning = "base0A"
+      info = "base0D"
+      hint = "base0C"
+      comment = { fg = "base03", modifiers = ["italic"] }
+      constant = "base09"
+      string = "base0B"
+      variable = "base05"
+      "variable.builtin" = "base0C"
+      type = "base0A"
+      constructor = "base0A"
+      function = "base0D"
+      keyword = "base0E"
+      operator = "base0C"
+      namespace = "base0A"
+      tag = "base08"
+      attribute = "base0A"
+      punctuation = "base05"
+      "markup.heading" = { fg = "base0D", modifiers = ["bold"] }
+      "markup.list" = "base08"
+      "markup.bold" = { modifiers = ["bold"] }
+      "markup.italic" = { modifiers = ["italic"] }
+      "markup.link.url" = { fg = "base0C", modifiers = ["underlined"] }
+      "markup.link.text" = "base08"
+      "markup.raw" = "base0B"
+      "diff.plus" = "base0B"
+      "diff.minus" = "base08"
+      "diff.delta" = "base0A"
+      [palette]
+      base00 = "#${palette.base00}"
+      base01 = "#${palette.base01}"
+      base02 = "#${palette.base02}"
+      base03 = "#${palette.base03}"
+      base04 = "#${palette.base04}"
+      base05 = "#${palette.base05}"
+      base06 = "#${palette.base06}"
+      base07 = "#${palette.base07}"
+      base08 = "#${palette.base08}"
+      base09 = "#${palette.base09}"
+      base0A = "#${palette.base0A}"
+      base0B = "#${palette.base0B}"
+      base0C = "#${palette.base0C}"
+      base0D = "#${palette.base0D}"
+      base0E = "#${palette.base0E}"
+      base0F = "#${palette.base0F}"
+
+    '';
+  initialMode = config.stylix.polarity or "light";
   steelPtySource = pkgs.applyPatches {
     name = "steel-pty-source";
     src = flakes.steel-pty;
@@ -38,10 +99,13 @@
 in {
   config =
     (lib.optionalAttrs (options ? stylix) {
-      stylix.targets.helix.enable = true;
+      stylix.targets.helix.enable = false;
     })
     // {
       programs.fish.shellAbbrs.h = "hx .";
+      programs.fish.functions.helix = ''
+        hx $argv
+      '';
       programs.helix = {
         enable = true;
         # nixpkgs' steelix expression replaces `patches` on the unwrapped derivation,
@@ -131,6 +195,11 @@ in {
           };
         };
         settings = {
+          theme = {
+            dark = "desktop-dark";
+            light = "desktop-light";
+            fallback = "desktop-${initialMode}";
+          };
           editor = {
             clipboard-provider = "termcode";
             bufferline = "multiple";
@@ -222,7 +291,7 @@ in {
             ];
             space.m = [
               ":write"
-              ":insert-output glow --pager --width 120 --style=${glowStyle} '%{buffer_name}' </dev/tty >/dev/tty 2>&1"
+              ":insert-output glow --pager --width 120 --style=$(desktop-theme get) '%{buffer_name}' </dev/tty >/dev/tty 2>&1"
               '':sh printf "\x1b[?1049h\x1b[?2004h" > /dev/tty''
               ":redraw"
             ];
@@ -286,6 +355,10 @@ in {
             };
           };
         };
+      };
+      xdg.configFile = {
+        "helix/themes/desktop-light.toml".source = helixTheme palettes.light;
+        "helix/themes/desktop-dark.toml".source = helixTheme palettes.dark;
       };
 
       # Steel plugins (loaded via init.scm on steelix startup)

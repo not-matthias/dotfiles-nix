@@ -20,7 +20,7 @@
   "buffer_font_family": "JetBrains Mono Nerd Font",
   "buffer_font_size": 16.0,
   "theme": {
-    "mode": "light",
+    "mode": "system",
     "light": "Fleet Light",
     "dark": "Ayu Dark"
   },

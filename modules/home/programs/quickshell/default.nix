@@ -32,6 +32,7 @@
     ++ lib.optionals flashgenEnabled [flashgen.script]
     ++ lib.optionals (!flashgenEnabled) [flashgenFallback];
 
+  defaultTheme = config.stylix.polarity or "light";
   commands = {
     flashgen = flashgenCommand;
     claudeUsage = "${aiUsage.claudeScript}/bin/quickshell-claude-usage";
@@ -42,6 +43,8 @@
     dunstctl = "${pkgs.dunst}/bin/dunstctl";
     niri = "${pkgs.niri}/bin/niri";
     systemctl = "${pkgs.systemd}/bin/systemctl";
+    desktopTheme = "${config.home.profileDirectory}/bin/desktop-theme";
+    defaultTheme = defaultTheme;
   };
   commandsFile = pkgs.writeText "quickshell-commands.qml" ''
     pragma Singleton
@@ -58,6 +61,8 @@
         readonly property string dunstctl: ${builtins.toJSON commands.dunstctl}
         readonly property string niri: ${builtins.toJSON commands.niri}
         readonly property string systemctl: ${builtins.toJSON commands.systemctl}
+        readonly property string desktopTheme: ${builtins.toJSON commands.desktopTheme}
+        readonly property string defaultTheme: ${builtins.toJSON commands.defaultTheme}
     }
   '';
   quickshellConfig = pkgs.runCommandLocal "quickshell-config" {} ''

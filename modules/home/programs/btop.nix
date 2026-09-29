@@ -9,6 +9,10 @@ in {
   programs.btop = {
     enable = true;
     package = lib.mkIf useNvidia (pkgs.btop.override {cudaSupport = true;});
-    settings.vim_keys = true;
+    settings = {
+      color_theme = "desktop-current";
+      save_config_on_exit = false;
+      vim_keys = true;
+    };
   };
 }
