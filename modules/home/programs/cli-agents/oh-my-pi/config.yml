@@ -31,6 +31,8 @@ memory:
 #   polyphonicRecall: true
 #   proactiveLinking: true
 #   scoping: per-project-tagged
+sharpshooter:
+  model: openai-codex/gpt-6-luna
 autolearn:
   enabled: true
   autoContinue: true
@@ -69,7 +71,7 @@ modelRoles:
   tiny: "openai-codex/gpt-5.3-codex-spark"
   commit: google-antigravity/gemini-3.8-flash
   task: openai-codex/gpt-6.1-sol:auto
-  smol: google-antigravity/gemini-3.8-flash
+  smol: openai-codex/gpt-6-luna
   advisor: openai-codex/gpt-6-luna:xhigh
   plan: openai-codex/gpt-6.1-sol:high
   slow: openai-codex/gpt-6.1-sol:high
