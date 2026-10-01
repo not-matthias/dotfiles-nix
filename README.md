@@ -58,6 +58,18 @@ Once `home-manager` is on your `PATH` (after the first activation), subsequent u
 home-manager switch --flake .#not-matthias@jetson
 ```
 
+### Tern local release (2026-10-01)
+
+Framework installs Tern 0.2.2 with a Home Manager desktop entry. Import the
+closed-beta release archive before building:
+
+```bash
+nix-store --add-fixed sha256 ~/Downloads/Tern-0.2.2-linux-x86_64.tar.gz
+```
+
+The package preserves the bundled fonts and supplies its runtime libraries.
+Sign-in requires a Stencil closed-beta account.
+
 ## Usage
 
 ### Updating the system

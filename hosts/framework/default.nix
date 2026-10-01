@@ -52,6 +52,7 @@ in {
       gh
       gh-dash
       terminal-browser
+      tern
       hushmic
       sone
 
@@ -77,6 +78,14 @@ in {
         defaultDiffType = "since-base";
         diffStyle = "split";
       };
+    };
+
+    xdg.desktopEntries.tern = {
+      name = "Tern";
+      comment = "Native terminal with persistent sessions";
+      exec = "tern";
+      terminal = false;
+      categories = ["System" "TerminalEmulator"];
     };
 
     xdg.mimeApps = {

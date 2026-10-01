@@ -139,5 +139,8 @@
     (_self: super: {
       disktree = super.callPackage ../../pkgs/disktree.nix {};
     })
+    (_self: super: {
+      tern = super.callPackage ../../pkgs/tern.nix {};
+    })
   ];
 }
