@@ -8,7 +8,7 @@
   cfg = config.services.taskwarrior-sync;
 in {
   options.services.taskwarrior-sync = {
-    enable = lib.mkEnableOption "Taskchampion sync server and todo proxy";
+    enable = lib.mkEnableOption "Taskchampion sync server and HTTPS proxy";
     client.enable = lib.mkEnableOption "Taskchampion sync client secret";
   };
 
@@ -28,18 +28,8 @@ in {
       };
 
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [443];
-      networking.hosts."127.0.0.1" = ["todo.${domain}"];
+      networking.hosts."127.0.0.1" = ["todo-sync.${domain}"];
 
-      services.caddy.virtualHosts."todo.${domain}" = {
-        listenAddresses = ["127.0.0.1"];
-        extraConfig = ''
-          tls {
-            dns duckdns {env.DUCKDNS_TOKEN}
-          }
-          encode zstd gzip
-          reverse_proxy http://127.0.0.1:3000
-        '';
-      };
       services.caddy.virtualHosts."todo-sync.${domain}".extraConfig = ''
         encode zstd gzip
         reverse_proxy http://127.0.0.1:10222

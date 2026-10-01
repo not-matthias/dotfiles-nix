@@ -12,8 +12,6 @@
     nixos-hardware.nixosModules.framework-desktop-amd-ai-max-300-series
   ];
 
-  services.caddy.enable = true;
-  services.taskwarrior-sync.enable = true;
   zramSwap = {
     enable = true;
     algorithm = "zstd";
@@ -28,7 +26,6 @@
     imports = [
       flakes.backhub.homeManagerModules.default
     ];
-    programs.taskwarrior.enable = true;
     home.stateVersion = "26.05";
     home.packages = with pkgs; [
       evince
@@ -65,6 +62,7 @@
     };
 
     programs = {
+      taskwarrior.enable = true;
       ida-pro.enable = true;
       lmstudio = {
         enable = true;
@@ -222,6 +220,11 @@
     bluetooth.enable = true;
     sound.enable = true;
     ssd.enable = true;
+  };
+
+  services = {
+    caddy.enable = true;
+    taskwarrior-sync.enable = true;
   };
   services.openssh = {
     enable = true;

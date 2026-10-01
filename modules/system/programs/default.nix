@@ -7,5 +7,6 @@
   ./openclaw.nix
   ./oneleet.nix
   ./sccache.nix
+  ../../home/programs/taskwarrior.nix
   ./determinate.nix
 ]
