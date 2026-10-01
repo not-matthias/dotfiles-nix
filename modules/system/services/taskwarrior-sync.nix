@@ -22,12 +22,12 @@ in {
     (lib.mkIf cfg.enable {
       services.taskchampion-sync-server = {
         enable = true;
-        host = "0.0.0.0";
+        host = "127.0.0.1";
         port = 10222;
         allowClientIds = ["7af28379-c8aa-468e-8b9a-949021609eb7"];
       };
 
-      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [10222];
+      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [443];
       networking.hosts."127.0.0.1" = ["todo.${domain}"];
 
       services.caddy.virtualHosts."todo.${domain}" = {
@@ -40,6 +40,10 @@ in {
           reverse_proxy http://127.0.0.1:3000
         '';
       };
+      services.caddy.virtualHosts."todo-sync.${domain}".extraConfig = ''
+        encode zstd gzip
+        reverse_proxy http://127.0.0.1:10222
+      '';
     })
   ];
 }

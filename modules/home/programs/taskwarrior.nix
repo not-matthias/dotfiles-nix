@@ -29,7 +29,7 @@
     programs.taskwarrior = {
       package = pkgs.taskwarrior3;
       config = {
-        sync.server.url = "http://100.65.237.101:10222";
+        sync.server.url = "https://todo-sync.pcnm.duckdns.org";
         sync.server.client_id = "7af28379-c8aa-468e-8b9a-949021609eb7";
 
         # General configuration

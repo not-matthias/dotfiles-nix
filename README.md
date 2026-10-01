@@ -123,6 +123,13 @@ To encrypt a new file:
 cat file.txt | agenix -e file.age
 ```
 
+### Taskwarrior sync
+
+2026-09-29: `pc` serves TaskChampion at `https://todo-sync.pcnm.duckdns.org`
+through Caddy on the tailnet. The sync daemon listens only on loopback; Taskwarrior
+clients use HTTPS and the shared encryption secret managed by agenix. Check the
+endpoint with `curl https://todo-sync.pcnm.duckdns.org/` while connected to Tailscale.
+
 ### Adding extra registries
 
 ```
