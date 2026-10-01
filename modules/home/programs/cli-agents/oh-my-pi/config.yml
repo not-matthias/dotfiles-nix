@@ -19,6 +19,10 @@ display:
   showTokenUsage: true
   cacheMissMarker: true
 
+ttsr:
+  disabledRules:
+    - rust-tests-release-mode
+
 memory:
   backend: sharpshooter
 # Replaced with sharpshooter
