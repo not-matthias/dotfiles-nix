@@ -214,6 +214,8 @@ export default function plannotator(pi: ExtensionAPI): void {
   pi.registerTool({
     name: "plannotator_submit_plan",
     label: "Submit Plan",
+    // Pi otherwise runs edits and submission in parallel, which can review a stale plan.
+    executionMode: "sequential",
     description:
       "Submit your plan for user review. Call this while in plan mode, after writing your plan to a markdown file. " +
       "The user reviews it in the browser and can approve, deny with feedback, or annotate it. " +
