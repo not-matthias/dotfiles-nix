@@ -1021,7 +1021,7 @@
             html = ["prettier"];
             json = ["prettier"];
             yaml = ["prettier"];
-            markdown = ["prettier"];
+            markdown = [];
             typst = ["typstyle"];
           };
         };
