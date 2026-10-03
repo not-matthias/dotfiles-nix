@@ -118,6 +118,10 @@
       flake = false;
     };
     oh-my-pi.url = "github:not-matthias/oh-my-pi/perf/startup-optimizations";
+    omp-autoresearch = {
+      url = "git+ssh://git@github.com/not-matthias/omp-autoresearch.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     taskwarrior-web = {
       url = "git+https://github.com/not-matthias/taskwarrior-web.git";
       inputs.nixpkgs.follows = "nixpkgs";

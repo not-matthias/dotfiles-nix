@@ -3,6 +3,7 @@
   lib,
   pkgs,
   unstable,
+  flakes,
   ...
 }:
 with lib; let
@@ -63,7 +64,7 @@ with lib; let
   '';
   compileExtension = args: pkgs.callPackage ../../../../../pkgs/pi-mono/extensions/compile-extension.nix args;
   plannotatorExt = compileExtension {src = ./extensions/plannotator-omp;};
-  pluginFiles = import ./plugins.nix {inherit pkgs lib;};
+  pluginFiles = import ./plugins.nix {inherit pkgs lib flakes;};
 in {
   options.programs.cli-agents.oh-my-pi = {
     enable = mkEnableOption "oh-my-pi (omp) CLI agent";

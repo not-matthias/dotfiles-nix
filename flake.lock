@@ -1512,6 +1512,26 @@
         "type": "github"
       }
     },
+    "omp-autoresearch": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791034555,
+        "narHash": "sha256-zB+apMwRmpqqbyFJxqHjoBWN4smQDbQGv8f1VStAen0=",
+        "ref": "refs/heads/main",
+        "rev": "924842ad145b523eb1be530540350adc6e3729c5",
+        "revCount": 14,
+        "type": "git",
+        "url": "ssh://git@github.com/not-matthias/omp-autoresearch.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/not-matthias/omp-autoresearch.git"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -1537,6 +1557,7 @@
         "notifyhx": "notifyhx",
         "nurpkgs": "nurpkgs",
         "oh-my-pi": "oh-my-pi",
+        "omp-autoresearch": "omp-autoresearch",
         "spicetify-nix": "spicetify-nix",
         "steel-pty": "steel-pty",
         "stylix": "stylix",

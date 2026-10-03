@@ -22,7 +22,7 @@ with lib; let
     "docs-rs"
     "rtk-rewrite"
   ];
-  activePackages = removeAttrs packages ["pi-autoresearch"];
+  activePackages = packages;
 
   # Generate home.file entries for a single extension's resources.
   # Each resource type (extensions, skills, themes, prompts) gets symlinked

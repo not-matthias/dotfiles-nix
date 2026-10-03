@@ -4,14 +4,11 @@
 {
   pkgs,
   lib,
+  flakes,
 }: let
   plugins = {
-    "pi-autoresearch" = {
-      version = "1.6.2";
-      source = pkgs.fetchzip {
-        url = "https://registry.npmjs.org/pi-autoresearch/-/pi-autoresearch-1.6.2.tgz";
-        hash = "sha256-2xZpgtkCz9ITeU5/71nhiB2qnOEKvlxNxmDfCg2isXE=";
-      };
+    "omp-autoresearch" = {
+      source = flakes.omp-autoresearch.packages.${pkgs.stdenv.hostPlatform.system}.omp-autoresearch;
     };
   };
 in
@@ -25,10 +22,13 @@ in
     # omp-plugins.lock.json is intentionally NOT managed: it is runtime enable
     # state that omp rewrites on every plugin install/enable — a store-backed
     # symlink here makes every marketplace install fail with EACCES.
+    # Specifiers point at the store paths the symlinks above already resolve to.
+    # `npm:<name>` would make any later `omp plugin install` fail on a package
+    # that was never published to the registry.
     ".local/share/omp/plugins/package.json".text = builtins.toJSON {
       name = "omp-plugins";
       private = true;
-      dependencies = lib.mapAttrs (name: _: "npm:${name}") plugins;
+      dependencies = lib.mapAttrs (_: p: "file:${p.source}") plugins;
     };
   }
   plugins
