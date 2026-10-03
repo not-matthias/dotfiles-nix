@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plain prose"
+  short_description: "Write direct prose without LLM tells"
+  default_prompt: "Use $plain-prose to revise this text into direct, concrete prose without LLM tells."
