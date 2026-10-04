@@ -7,16 +7,16 @@
   makeWrapper,
   git,
 }: let
-  version = "0.27.22";
+  version = "0.27.25";
 
   platforms = {
     x86_64-linux = {
       path = "linux-x64";
-      hash = "sha256-MNHRY5sdyy5XaVsrGKYeKeOYrQr0td8XmBoMoCS/w7M=";
+      hash = "sha256-ABr3dS+FQgJFifr8RK7DvifHMTOiw33zjwtZHCwUXdg=";
     };
     aarch64-linux = {
       path = "linux-arm64";
-      hash = "sha256-uWMtcrDNw6J+RYo9CIaHBNkXBWIB4Mn/B+2o88FO/DY=";
+      hash = "sha256-79ppKHm2gL+kzgSQcRme7F2t349pIcJiX6iKxWDLSJk=";
     };
   };
 

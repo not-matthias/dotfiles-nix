@@ -143,6 +143,11 @@ $ nix registry add nixpkgs-unstable github:NixOS/nixpkgs/nixos-unstable
 $ nix registry list
 ```
 
+### CLI releases
+
+2026-10-04: Updated OMP to 18.6.1, Plannotator to 0.27.25, and Herdr to 0.9.3
+for upstream fixes to agent tools, review rendering, and terminal input.
+
 ### OMP advisor
 
 2026-09-25: OMP installs a global, advisor-only policy at `~/.omp/agent/WATCHDOG.md`.
