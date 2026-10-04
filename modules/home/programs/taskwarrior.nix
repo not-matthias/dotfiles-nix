@@ -18,7 +18,21 @@
         imports = [flakes.taskwarrior-web.homeManagerModules.default];
 
         config = lib.mkIf config.programs.taskwarrior.enable {
-          services.taskwarrior-web.enable = osConfig.networking.hostName == "pc";
+          services.taskwarrior-web = {
+            enable = osConfig.networking.hostName == "pc";
+            package = let
+              system = pkgs.stdenv.hostPlatform.system;
+              webPackage = flakes.taskwarrior-web.packages.${system}.default;
+              bun2nix = flakes.taskwarrior-web.inputs.bun2nix.packages.${system}.default;
+              # Generate from the pinned lockfile; upstream's bun.nix can lag behind it.
+              bunNix = pkgs.runCommand "taskwarrior-web-bun.nix" {nativeBuildInputs = [bun2nix];} ''
+                bun2nix --lock-file ${webPackage.src}/bun.lock --output-file "$out"
+              '';
+            in
+              webPackage.overrideAttrs {
+                bunDeps = bun2nix.fetchBunDeps {inherit bunNix;};
+              };
+          };
           systemd.user.services.taskwarrior-web.Service.Environment =
             lib.mkIf (osConfig.networking.hostName == "pc")
             (lib.mkAfter [
