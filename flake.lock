@@ -1519,11 +1519,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791034555,
-        "narHash": "sha256-zB+apMwRmpqqbyFJxqHjoBWN4smQDbQGv8f1VStAen0=",
+        "lastModified": 1791070653,
+        "narHash": "sha256-2CiFOIEOUHHXc8w6ece717S4TwExWlvJStvZVyZFi9Y=",
         "ref": "refs/heads/main",
-        "rev": "924842ad145b523eb1be530540350adc6e3729c5",
-        "revCount": 14,
+        "rev": "05bc4db13b629b7d8debc6841d66208bc28494bb",
+        "revCount": 16,
         "type": "git",
         "url": "ssh://git@github.com/not-matthias/omp-autoresearch.git"
       },
