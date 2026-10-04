@@ -108,6 +108,8 @@ in {
     };
     xdg.configFile."quickshell/bar".force = true;
 
+    # Stop with the session before its Wayland socket disappears.
+    systemd.user.services.quickshell.Unit.PartOf = [config.programs.quickshell.systemd.target];
     systemd.user.services.quickshell-idle-inhibit = idleInhibit.service;
   };
 }

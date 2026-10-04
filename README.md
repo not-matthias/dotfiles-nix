@@ -72,6 +72,12 @@ Sign-in requires a Stencil closed-beta account.
 
 ## Usage
 
+### Niri status bar (2026-10-03)
+
+Quickshell starts with `graphical-session.target` and stops with it through
+`PartOf`. This prevents restart loops against a closed Wayland socket during
+logout or compositor restarts. Niri startup does not restart the bar separately.
+
 ### Updating the system
 
 To update your system, first update the flake inputs:
