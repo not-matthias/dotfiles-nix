@@ -108,6 +108,7 @@ in {
       libinput.enable = true;
       dbus.enable = true;
       gvfs.enable = true;
+      upower.enable = true;
       gnome = {
         sushi.enable = true;
         gnome-keyring.enable = true;

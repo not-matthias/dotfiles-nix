@@ -92,6 +92,13 @@ Then, rebuild the system with the new inputs:
 sudo nixos-rebuild switch --flake .#<hostname>
 ```
 
+### Niri battery widget (2026-10-04)
+
+The Quickshell battery widget uses UPower. The Niri module enables
+`services.upower.enable`; rebuild and activate the system after changing it.
+If the widget is missing, check `systemctl status upower` and
+`journalctl --user -u quickshell`.
+
 ### Garbage Collection
 
 To free up disk space, you can run the garbage collector:

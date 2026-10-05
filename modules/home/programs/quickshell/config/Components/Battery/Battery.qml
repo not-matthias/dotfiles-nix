@@ -7,7 +7,7 @@ BarButton {
 
     readonly property var battery: UPower.displayDevice
     readonly property bool available: battery.ready && battery.isLaptopBattery && battery.isPresent
-    readonly property int percentage: available ? Math.round(battery.percentage) : 0
+    readonly property int percentage: available ? Math.round(battery.percentage * 100) : 0
     readonly property string batteryState: available ? UPowerDeviceState.toString(battery.state) : "Unknown"
     readonly property string batteryClass: {
         if (!available)
