@@ -18,4 +18,8 @@
   };
 
   services.timeguard.rulesFile = config.age.secrets.timeguard-rules.path;
+  services.timeguard.settings.pause_budget = {
+    daily = "30m";
+    weekly = "2h";
+  };
 }
