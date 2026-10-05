@@ -35,16 +35,7 @@
       ida-pro
       radius2
       unstable.amdtop
-      plannotator
     ];
-    home.file.".plannotator/config.json".text = builtins.toJSON {
-      diffOptions = {
-        expandUnchanged = false;
-        defaultDiffType = "since-base";
-        diffStyle = "split";
-      };
-    };
-
     backhub = {
       enable = true;
       # Provisioned outside this flake; contains only the raw GitHub token.
@@ -63,6 +54,7 @@
 
     programs = {
       taskwarrior.enable = true;
+      plannotator.enable = true;
       ida-pro.enable = true;
       lmstudio = {
         enable = true;

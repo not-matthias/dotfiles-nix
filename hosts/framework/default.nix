@@ -43,7 +43,6 @@ in {
 
       vmprotect
       radius2
-      plannotator
       tldraw-offline
       # unstable.antigravity-fhs
 
@@ -71,14 +70,6 @@ in {
       nil
       nixd
     ];
-    home.file.".plannotator/config.json".text = builtins.toJSON {
-      diffOptions = {
-        expandUnchanged = false;
-        defaultDiffType = "since-base";
-        diffStyle = "split";
-      };
-    };
-
     xdg.mimeApps = {
       associations.added."text/html" = lib.mkForce defaultBrowser.desktop;
       defaultApplications."text/html" = lib.mkForce defaultBrowser.desktop;
@@ -87,6 +78,7 @@ in {
     programs = {
       ghostty.enable = true;
       tern.enable = true;
+      plannotator.enable = true;
       handy.enable = true;
       choosr.enable = true;
       rust = {

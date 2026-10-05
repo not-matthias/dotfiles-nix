@@ -19,6 +19,7 @@
   ./firefox.nix
   ./ghostty.nix
   ./tern.nix
+  ./plannotator.nix
   ./gh.nix
   ./zen-browser.nix
   ./chromium.nix

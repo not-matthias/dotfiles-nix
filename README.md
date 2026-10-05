@@ -80,6 +80,12 @@ tern plugin install github.com/gabrielmoreira/herdr-tern-plugin
 
 Open Tern's command palette and choose **Open Herdr Session**.
 
+### Plannotator (2026-10-05)
+
+Framework and PC enable `programs.plannotator.enable` to install Plannotator and
+manage `~/.plannotator/config.json`. Both use split diffs against the base and
+keep unchanged sections collapsed.
+
 ## Usage
 
 ### Niri status bar (2026-10-03)
