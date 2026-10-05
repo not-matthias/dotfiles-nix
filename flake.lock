@@ -1889,11 +1889,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790073328,
-        "narHash": "sha256-qL6j6hTkMFQkd+aenlSxeWPCNlLChVSYvh6CO5KEPdQ=",
+        "lastModified": 1790892047,
+        "narHash": "sha256-5ukmbPOFD95uMzLhMzv3cDcNZbFuoFBzzXdhf4ScF+w=",
         "ref": "refs/heads/main",
-        "rev": "3a307883299db65860f98cadb2324bf04ae4ca0b",
-        "revCount": 13,
+        "rev": "43a341451fdae812d9e3edac3873e7b8e3c7253b",
+        "revCount": 20,
         "type": "git",
         "url": "ssh://git@github.com/not-matthias/timeguard.git"
       },
