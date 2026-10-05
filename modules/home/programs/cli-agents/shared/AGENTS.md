@@ -1,7 +1,7 @@
 # System-level Instructions
 
 RFC 2119 terminology applies only to uppercase keywords: MUST, REQUIRED, SHOULD, RECOMMENDED, MAY, OPTIONAL. NEVER = MUST NOT; AVOID = SHOULD NOT.
- 
+
 ## Style
 
 - Use Simple Technical English
@@ -13,6 +13,10 @@ RFC 2119 terminology applies only to uppercase keywords: MUST, REQUIRED, SHOULD,
 - When explaining, use diagrams (only if they make sense). Use Mermaid if a tool is available, otherwise use ASCII.
   - Don't use diagrams if it can be displayed with bullet points (since it's easier to understand and less verbose).
 - When writing, reviewing, or refactoring code, load `code-style`
+- Avoid using magic numbers and strings. There should be consts or even better enums.
+- Leverage early return and continue as much as possible to reduce code indentation.
+- Use enums instead of boolean for function parameters.
+- Don't use superlative. Stop praising me, give me the cold hard truth.
 
 ## Rules
 
