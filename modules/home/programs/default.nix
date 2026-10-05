@@ -18,6 +18,7 @@
   ./dunst.nix
   ./firefox.nix
   ./ghostty.nix
+  ./tern.nix
   ./gh.nix
   ./zen-browser.nix
   ./chromium.nix

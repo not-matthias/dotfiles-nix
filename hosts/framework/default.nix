@@ -52,7 +52,6 @@ in {
       gh
       gh-dash
       terminal-browser
-      tern
       hushmic
       sone
 
@@ -80,14 +79,6 @@ in {
       };
     };
 
-    xdg.desktopEntries.tern = {
-      name = "Tern";
-      comment = "Native terminal with persistent sessions";
-      exec = "tern";
-      terminal = false;
-      categories = ["System" "TerminalEmulator"];
-    };
-
     xdg.mimeApps = {
       associations.added."text/html" = lib.mkForce defaultBrowser.desktop;
       defaultApplications."text/html" = lib.mkForce defaultBrowser.desktop;
@@ -95,6 +86,7 @@ in {
 
     programs = {
       ghostty.enable = true;
+      tern.enable = true;
       handy.enable = true;
       choosr.enable = true;
       rust = {

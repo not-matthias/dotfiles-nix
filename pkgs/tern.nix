@@ -9,15 +9,17 @@
   libxkbcommon,
   libGL,
   vulkan-loader,
+  webkitgtk_4_1,
+  glib-networking,
 }:
 stdenv.mkDerivation rec {
   pname = "tern";
-  version = "0.2.6";
+  version = "0.4.5";
 
   src = requireFile {
     name = "Tern-${version}-linux-x86_64.tar.gz";
-    url = "https://build.stencil.so/d/tern/20261001-202121-0e1ce50/Tern-${version}-linux-x86_64.tar.gz";
-    hash = "sha256-ixVSy3r9AdyZOgT93e0RkAVXB1eJST5euOb64rb5do4=";
+    url = "https://build.stencil.so/tern";
+    hash = "sha256-+TU0GutIi4QGCsLC1syAB/IcdRe1orFfo+dMr+qmq/0=";
   };
 
   nativeBuildInputs = [autoPatchelfHook makeWrapper];
@@ -27,6 +29,7 @@ stdenv.mkDerivation rec {
     (lib.getLib libxkbcommon)
     (lib.getLib libGL)
     (lib.getLib vulkan-loader)
+    (lib.getLib webkitgtk_4_1)
   ];
   dontBuild = true;
   dontStrip = true;
@@ -34,8 +37,9 @@ stdenv.mkDerivation rec {
   installPhase = ''
     runHook preInstall
     mkdir -p "$out/libexec/tern"
-    cp -r tern assets "$out/libexec/tern/"
-    makeWrapper "$out/libexec/tern/tern" "$out/bin/tern"
+    cp tern "$out/libexec/tern/"
+    makeWrapper "$out/libexec/tern/tern" "$out/bin/tern" \
+      --prefix GIO_EXTRA_MODULES : "${lib.getLib glib-networking}/lib/gio/modules"
     runHook postInstall
   '';
 

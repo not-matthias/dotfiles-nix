@@ -58,17 +58,27 @@ Once `home-manager` is on your `PATH` (after the first activation), subsequent u
 home-manager switch --flake .#not-matthias@jetson
 ```
 
-### Tern local release (2026-10-01)
+### Tern local release (2026-10-05)
 
-Framework installs Tern 0.2.2 with a Home Manager desktop entry. Import the
-closed-beta release archive before building:
+Framework enables `programs.tern.enable`, which installs Tern 0.4.5 and its Home
+Manager desktop entry. Download the closed-beta release from
+https://build.stencil.so/tern and import it before building:
 
 ```bash
-nix-store --add-fixed sha256 ~/Downloads/Tern-0.2.2-linux-x86_64.tar.gz
+nix-store --add-fixed sha256 ~/Downloads/Tern-0.4.5-linux-x86_64.tar.gz
+sudo nixos-rebuild switch --flake .#framework
 ```
 
-The package preserves the bundled fonts and supplies its runtime libraries.
-Sign-in requires a Stencil closed-beta account.
+The package supplies its runtime libraries. Sign-in requires a Stencil
+closed-beta account.
+
+Install the Herdr plugin with Git and Herdr available on Tern's PATH:
+
+```bash
+tern plugin install github.com/gabrielmoreira/herdr-tern-plugin
+```
+
+Open Tern's command palette and choose **Open Herdr Session**.
 
 ## Usage
 
