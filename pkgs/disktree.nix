@@ -11,12 +11,12 @@
 }:
 stdenvNoCC.mkDerivation rec {
   pname = "disktree";
-  version = "0.9.1";
+  version = "0.11.0";
   src = fetchurl {
-    url = "https://github.com/tobi/disktree/releases/download/v0.9.1/disktree-0.9.1-x86_64-linux.tar.gz";
-    hash = "sha256-j8F+mCYE4T9z4TyGT50/xvzIIM36tGn0UokWfucGK6c=";
+    url = "https://github.com/tobi/disktree/releases/download/v${version}/disktree-${version}-x86_64-linux.tar.gz";
+    hash = "sha256-fnWvoig8i0+SkNUurb/ADZ8UwTrtLSJMzfD3gm/MBbI=";
   };
-  sourceRoot = "disktree-0.9.1-x86_64-linux";
+  sourceRoot = "disktree-${version}-x86_64-linux";
   nativeBuildInputs = [autoPatchelfHook];
   buildInputs = [libxkbcommon libxcb wayland vulkan-loader stdenv.cc.cc.lib];
   runtimeDependencies = [wayland vulkan-loader];
