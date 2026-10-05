@@ -9,10 +9,11 @@ Keep it compact. A long description doesn't get read. Include only what the revi
 
 ## Content
 
-- Open with one line saying what the PR does and why.
+- Open with a one-line `**TLDR:**`: the problem and the fix, in plain terms, with the main caveat (e.g. platform scope) in parentheses. It replaces a separate summary line; don't state the same thing twice.
 - Then short bullets: each change with its measured effect. Explain a mechanism only when the reviewer needs it to judge whether the change is correct.
 - Call out what needs care: behavior changes, risks, dependencies on unmerged work.
-- Add evidence only when it proves something: a screenshot for a visible UI change, before/after numbers, a link to the failing run, issue or dependent PR. Link inline where it's relevant.
+- For visible UI changes, include screenshots in the PR description. Use before/after images when they help reviewers compare the result.
+- Add other evidence only when it proves something: before/after numbers, a link to the failing run, issue or dependent PR. Link inline where it's relevant.
 - Report only numbers measured on the final code, and name the input. Leave out estimates, superseded figures and anything CI already shows.
 - End with the issue reference, if there is one.
 
@@ -29,7 +30,7 @@ When the PR changes (rebase, new commits, scope change), rewrite the body so it 
 ## Example
 
 ```markdown
-Keeps log ingestion under the worker's memory limit on large uploads.
+**TLDR:** Large uploads pushed log ingestion past the worker's memory limit. The parser now streams records and the indexer batches writes.
 
 **Parser**
 - Stream records instead of loading the whole file.
