@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Orchestrator"
+  short_description: "Coordinate agents, reviews, pushes, and PR merges"
+  default_prompt: "Use $agent-orchestrator to coordinate the agents in this Herdr session, push their changes, and merge their verified PRs."
