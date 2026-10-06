@@ -1869,11 +1869,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791042982,
-        "narHash": "sha256-n9/V8260bP4UB3DaRy4GjXV1TSF7mXs4TaZ/sc5adyc=",
+        "lastModified": 1791228324,
+        "narHash": "sha256-zcEaXA/sJsbn2ch2HqSi1emCCQIV9JiIYoxXb5v26qI=",
         "ref": "refs/heads/main",
-        "rev": "cc07b2ed25efdca5c3428be1261a5c1987b99798",
-        "revCount": 88,
+        "rev": "9b7e35d89992eedb6ad657760cb4535880c7c039",
+        "revCount": 176,
         "type": "git",
         "url": "https://github.com/not-matthias/taskwarrior-web.git"
       },
