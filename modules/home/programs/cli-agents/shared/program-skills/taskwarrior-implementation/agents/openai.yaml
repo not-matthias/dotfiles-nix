@@ -1,0 +1,4 @@
+interface:
+  display_name: "Taskwarrior Implementation"
+  short_description: "Implement ready tasks; skip Triage and Backlog"
+  default_prompt: "Use $taskwarrior-implementation to implement ready project tasks, skipping Triage and Backlog."

@@ -40,6 +40,7 @@
               "TASKWARRIOR_WEB_ALLOWED_HOST=todo.${domain}"
             ]);
           programs.cli-agents.programSkills.taskwarrior = ./cli-agents/shared/program-skills/taskwarrior;
+          programs.cli-agents.programSkills.taskwarrior-implementation = ./cli-agents/shared/program-skills/taskwarrior-implementation;
 
           home.packages = with pkgs; [
             tasksh
