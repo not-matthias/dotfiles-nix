@@ -1,0 +1,125 @@
+diff --git a/src/browser/actions/assistantResponse.ts b/src/browser/actions/assistantResponse.ts
+index 4a5c3e9..1a618b9 100644
+--- a/src/browser/actions/assistantResponse.ts
++++ b/src/browser/actions/assistantResponse.ts
+@@ -782,6 +782,18 @@ function buildStopButtonVisibilityPredicateJs(fnName: string): string {
+ 
+ export const buildStopButtonVisibilityExpressionForTest = buildStopButtonVisibilityExpression;
+ 
++function buildSiblingCopyButtonLookup(): string {
++  return `const findSiblingCopyButton = (turn) => {
++    if (!turn?.matches?.('div[data-chatgpt-search-unit-key$=":assistant"]')) return null;
++    for (let scope = turn.parentElement; scope && scope !== document.body; scope = scope.parentElement) {
++      if (scope.querySelectorAll('div[data-chatgpt-search-unit-key$=":assistant"]').length !== 1) break;
++      const button = scope.querySelector('.turn-action-controls button[aria-label="Copy"]');
++      if (button) return button;
++    }
++    return null;
++  };`;
++}
++
+ function buildCompletionVisibilityExpression(
+   meta: { turnId?: string | null; messageId?: string | null },
+   minTurnIndex?: number,
+@@ -793,6 +805,7 @@ function buildCompletionVisibilityExpression(
+       ? Math.floor(minTurnIndex)
+       : -1;
+   return `(() => {
++    ${buildSiblingCopyButtonLookup()}
+     const EXPECTED_MESSAGE_ID = ${expectedMessageId};
+     const EXPECTED_TURN_ID = ${expectedTurnId};
+     const MIN_TURN_INDEX = ${minTurnLiteral};
+@@ -839,6 +852,7 @@ function buildCompletionVisibilityExpression(
+       return false;
+     }
+ 
++    if (findSiblingCopyButton(lastAssistantTurn)) return true;
+     if (lastAssistantTurn.querySelector('${FINISHED_ACTIONS_SELECTOR}')) return true;
+     const markdowns = lastAssistantTurn.querySelectorAll('.markdown');
+     return Array.from(markdowns).some((node) => (node.textContent || '').trim() === 'Done');
+@@ -1006,6 +1020,7 @@ function buildResponseObserverExpression(
+       ? JSON.stringify(expectedConversationId.trim())
+       : "null";
+   return `(() => {
++    ${buildSiblingCopyButtonLookup()}
+     ${buildClickDispatcher()}
+     const SELECTORS = ${selectorsLiteral};
+     const STOP_SELECTOR = ${JSON.stringify(STOP_CONTROL_SELECTOR)};
+@@ -1137,6 +1152,7 @@ function buildResponseObserverExpression(
+       if (!lastAssistantTurn) return false;
+       // Check for action buttons in this specific turn
+       if (lastAssistantTurn.querySelector(FINISHED_SELECTOR)) return true;
++      if (findSiblingCopyButton(lastAssistantTurn)) return true;
+       // Check for "Done" text in this turn's markdown
+       const markdowns = lastAssistantTurn.querySelectorAll('.markdown');
+       return Array.from(markdowns).some((n) => (n.textContent || '').trim() === 'Done');
+@@ -1483,6 +1499,7 @@ function buildMarkdownFallbackExtractor(minTurnLiteral?: string): string {
+ 
+ function buildCopyExpression(meta: { messageId?: string | null; turnId?: string | null }): string {
+   return `(() => {
++    ${buildSiblingCopyButtonLookup()}
+     ${buildClickDispatcher()}
+     const BUTTON_SELECTOR = '${COPY_BUTTON_SELECTOR}';
+     const TIMEOUT_MS = 10000;
+@@ -1525,6 +1542,8 @@ function buildCopyExpression(meta: { messageId?: string | null; turnId?: string
+         if (button) {
+           return button;
+         }
++        const siblingButton = findSiblingCopyButton(turn);
++        if (siblingButton) return siblingButton;
+       }
+       const all = Array.from(document.querySelectorAll(BUTTON_SELECTOR));
+       for (let i = all.length - 1; i >= 0; i -= 1) {
+diff --git a/src/browser/constants.ts b/src/browser/constants.ts
+index 1b5f63f..53461dd 100644
+--- a/src/browser/constants.ts
++++ b/src/browser/constants.ts
+@@ -32,15 +32,17 @@ export const ANSWER_SELECTORS = [
+   '[data-turn="assistant"] .markdown',
+   '[data-message-author-role="assistant"]',
+   '[data-turn="assistant"]',
++  '[data-markdown-text-style="assistant-message"]',
+ ];
+ 
+ export const CONVERSATION_TURN_SELECTOR =
+   'article[data-testid^="conversation-turn"], div[data-testid^="conversation-turn"], section[data-testid^="conversation-turn"], ' +
+   "article[data-message-author-role], div[data-message-author-role], section[data-message-author-role], " +
+-  "article[data-turn], div[data-turn], section[data-turn]";
++  "article[data-turn], div[data-turn], section[data-turn], " +
++  'div[data-chatgpt-search-unit-key$=":user"], div[data-chatgpt-search-unit-key$=":assistant"]';
+ export const CONVERSATION_TURN_CONTAINER_SELECTOR = '[data-testid^="conversation-turn"]';
+ export const ASSISTANT_ROLE_SELECTOR =
+-  '[data-message-author-role="assistant"], [data-turn="assistant"]';
++  '[data-message-author-role="assistant"], [data-turn="assistant"], [data-markdown-text-style="assistant-message"]';
+ export const CLOUDFLARE_SCRIPT_SELECTOR = 'script[src*="/challenge-platform/"]';
+ export const CLOUDFLARE_TITLE = "just a moment";
+ export const PROMPT_PRIMARY_SELECTOR = "#prompt-textarea";
+diff --git a/src/browser/liveTabs.ts b/src/browser/liveTabs.ts
+index ce05865..b170ba5 100644
+--- a/src/browser/liveTabs.ts
++++ b/src/browser/liveTabs.ts
+@@ -212,11 +212,11 @@ function buildTabInspectionExpression(): string {
+         return Boolean(turn.querySelector(ASSISTANT_ROLE_SELECTOR));
+       });
+       const fallbackUserTurns = Array.from(
+-        document.querySelectorAll('[data-message-author-role="user"], [data-turn="user"]'),
++        document.querySelectorAll('[data-message-author-role="user"], [data-turn="user"], div[data-chatgpt-search-unit-key$=":user"]'),
+       );
+       const userTurns = turns.filter((turn) => {
+         const role = normalize(turn.getAttribute('data-message-author-role') || turn.getAttribute('data-turn')).toLowerCase();
+-        if (role === 'user') return true;
++        if (role === 'user' || turn.matches('div[data-chatgpt-search-unit-key$=":user"]')) return true;
+         return Boolean(
+           turn.querySelector('[data-message-author-role="user"], [data-turn="user"]'),
+         );
+@@ -271,8 +271,8 @@ function buildTabInspectionExpression(): string {
+       const assistantCount = new Set(assistantOwners).size;
+       const lastAssistantText = normalize(lastAssistantNode?.textContent);
+       const lastUserText = normalize(lastUserTurn?.textContent);
+-      const lastUserMessage = lastUserTurn?.matches?.('[data-message-author-role="user"]')
+-        ? lastUserTurn : lastUserTurn?.querySelector?.('[data-message-author-role="user"]');
++      const lastUserMessage = lastUserTurn?.matches?.('[data-message-author-role="user"], div[data-chatgpt-search-unit-key$=":user"]')
++        ? lastUserTurn : lastUserTurn?.querySelector?.('[data-message-author-role="user"], div[data-chatgpt-search-unit-key$=":user"]');
+       const userContent = lastUserMessage?.querySelectorAll?.('[class~="whitespace-pre-wrap"]');
+       const authenticated = !loginButtonExists && (promptReady || sendExists || stopExists || assistantCount > 0);
+       return {

@@ -1,0 +1,89 @@
+diff --git a/src/browser/actions/modelSelection.ts b/src/browser/actions/modelSelection.ts
+index 2249710..cc30747 100644
+--- a/src/browser/actions/modelSelection.ts
++++ b/src/browser/actions/modelSelection.ts
+@@ -573,9 +573,15 @@ function buildModelSelectionExpression(
+           menu?.querySelector?.(INTELLIGENCE_PICKER_SELECTOR) ||
+           menu?.querySelector?.(ADVANCED_VIEW_SELECTOR),
+       );
+-    const findUnifiedPickerMenu = () =>
+-      Array.from(document.querySelectorAll(${menuContainerLiteral})).find(isUnifiedPickerMenu) ??
+-      null;
++    const findUnifiedPickerMenu = () => {
++      const menus = Array.from(document.querySelectorAll(${menuContainerLiteral}));
++      const legacy = menus.find(isUnifiedPickerMenu);
++      if (legacy) return legacy;
++      const buttonId = findModelButton()?.id;
++      return buttonId
++        ? menus.find((menu) => menu.getAttribute('aria-labelledby') === buttonId && isVisibleElement(menu)) ?? null
++        : null;
++    };
+     const findAdvancedToggle = (menu) => {
+       for (const item of (menu || document).querySelectorAll('[role="menuitem"]')) {
+         if (!isVisibleElement(item)) continue;
+@@ -622,12 +628,15 @@ function buildModelSelectionExpression(
+       return normalizedTokens.some((token) => token && label.includes(token));
+     };
+     const findCheckedAdvancedModelRadio = (menu = null) => {
+-      const scope = menu || findUnifiedPickerMenu() || document;
+-      return (
+-        scope?.querySelector?.(
+-          '[data-testid="composer-model-picker-slider-advanced-view"] [role="menuitemradio"][aria-checked="true"]',
+-        ) ?? null
++      const scope = menu || findUnifiedPickerMenu();
++      const advanced = scope?.querySelector?.(
++        '[data-testid="composer-model-picker-slider-advanced-view"] [role="menuitemradio"][aria-checked="true"]',
+       );
++      if (advanced) return advanced;
++      const buttonId = findModelButton()?.id;
++      return buttonId && scope?.getAttribute?.('aria-labelledby') === buttonId
++        ? scope.querySelector('[role="menuitemradio"][aria-checked="true"]')
++        : null;
+     };
+     const getAdvancedModelLabel = () => {
+       const opener = findModelSubmenuOpener(findUnifiedPickerMenu());
+@@ -673,6 +682,16 @@ function buildModelSelectionExpression(
+       if (advancedModelSignalMatchesTarget()) {
+         return getAdvancedModelLabel();
+       }
++      const checkedRadio = findCheckedAdvancedModelRadio();
++      if (checkedRadio && desiredVersion && !wantsPro && !wantsThinking && !wantsInstant) {
++        const label = (checkedRadio.textContent ?? '').trim();
++        if (
++          versionFromLabel(label) === desiredVersion &&
++          (!desiredModelVariant || normalizeText(label).split(' ').includes(desiredModelVariant))
++        ) {
++          return label;
++        }
++      }
+       const composerLabel = getComposerModelLabel();
+       const normalizedComposerLabel = normalizeText(composerLabel);
+       if (
+@@ -805,6 +824,14 @@ function buildModelSelectionExpression(
+       return COMPOSER_SIGNAL_INCLUDES.some((token) => token && signal.includes(token));
+     };
+     const activeSelectionMatchesTarget = () => {
++      const checkedRadio = findCheckedAdvancedModelRadio();
++      if (checkedRadio && desiredVersion && !wantsPro && !wantsThinking && !wantsInstant) {
++        const label = normalizeText(checkedRadio.textContent ?? '');
++        return (
++          versionFromLabel(label) === desiredVersion &&
++          (!desiredModelVariant || label.split(' ').includes(desiredModelVariant))
++        );
++      }
+       if (targetIsLatest) {
+         const checkedAdvancedRadio = findCheckedAdvancedModelRadio();
+         if (checkedAdvancedRadio) {
+diff --git a/src/browser/constants.ts b/src/browser/constants.ts
+index 1b5f63f..b586939 100644
+--- a/src/browser/constants.ts
++++ b/src/browser/constants.ts
+@@ -91,7 +91,7 @@ export const SEND_BUTTON_SELECTORS = [
+ ];
+ export const SEND_BUTTON_SELECTOR = SEND_BUTTON_SELECTORS[0];
+ export const MODEL_BUTTON_SELECTOR =
+-  '[data-testid="model-switcher-dropdown-button"], button.__composer-pill[aria-haspopup="menu"]';
++  '[data-testid="model-switcher-dropdown-button"], button.__composer-pill[aria-haspopup="menu"], button[aria-label="Select ChatGPT model"][aria-haspopup="menu"]';
+ export const COMPOSER_MODEL_SIGNAL_SELECTOR = '[data-testid="composer-footer-actions"]';
+ export const COPY_BUTTON_SELECTOR = 'button[data-testid="copy-turn-action-button"]';
+ // Action buttons that only appear once a turn has finished rendering.

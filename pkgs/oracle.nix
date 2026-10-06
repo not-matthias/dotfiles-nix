@@ -22,6 +22,10 @@
 in
   stdenv.mkDerivation {
     inherit pname version src;
+    patches = [
+      ./oracle-chatgpt-turns.patch
+      ./oracle-model-picker.patch
+    ];
 
     pnpmDeps = fetchPnpmDeps {
       inherit pname version src pnpm;

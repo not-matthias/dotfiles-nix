@@ -14,7 +14,7 @@ responses as advisory and verify them against the codebase and tests.
 
 1. Pick the smallest file set that still contains the truth.
 2. Preview the bundle with `--dry-run` and `--files-report`.
-3. Use browser mode for GPT-5.6; use API only when explicitly intended.
+3. Use browser mode for a signed-in ChatGPT session; require verified picker evidence before claiming a specific model.
 4. If a run detaches or times out, reattach to the stored session instead of
    starting a duplicate.
 
@@ -24,8 +24,8 @@ responses as advisory and verify them against the codebase and tests.
   - `oracle --help --verbose`
 - Preview without calling a model:
   - `oracle --dry-run summary --files-report -p "<task>" --file "src/**" --file "!**/*.test.*"`
-- Browser run:
-  - `oracle --engine browser --browser-manual-login --model gpt-5.6-sol --browser-thinking-time extra-high -p "<task>" --file "src/**"`
+- Browser run with verified model selection:
+  - `oracle --engine browser --browser-manual-login --browser-model-strategy select --model gpt-5.6-sol --timeout 180 -p "<task>" --file "src/**"`
 - Manual paste fallback:
   - `oracle --render-markdown --copy-markdown -p "<task>" --file "src/**"`
 - Inspect sessions:
@@ -45,10 +45,10 @@ comma-separated entries.
 
 ## Engines and safety
 
-- Auto-selection uses API when `OPENAI_API_KEY` is set and browser otherwise.
+- Explicitly select browser mode so an API key cannot silently select paid API mode.
 - Browser mode requires a signed-in Chrome or Chromium session.
 - API runs require explicit user consent because they may incur usage costs.
-- Pin the model and set a timeout for automation.
+- Check the run's model-selection evidence for `verified=yes` before attributing an answer to the requested model. `--model` alone does not pin the browser model when `modelStrategy` is `ignore` or `current`; use `--browser-model-strategy current` only when the selected model does not matter.
 - Sessions are stored under `~/.oracle/sessions`; override with
   `ORACLE_HOME_DIR` when needed.
 
