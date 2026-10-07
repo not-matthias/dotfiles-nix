@@ -1263,6 +1263,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_11": {
+      "locked": {
+        "lastModified": 1791179034,
+        "narHash": "sha256-Ni0LBydzaCi8oek12r4mVreuFHqYlM1eTD6SfiENKfw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "494ce7fd23ff6a5dff39e1fb11e9b6f2ac74bf25",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "494ce7fd23ff6a5dff39e1fb11e9b6f2ac74bf25",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1772624091,
@@ -1407,6 +1423,23 @@
         "owner": "nix-community",
         "ref": "nixos-26.05",
         "repo": "nixvim",
+        "type": "github"
+      }
+    },
+    "nixvirt": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1748140003,
+        "narHash": "sha256-DNBZmuk1YRM2PmwbHzVdXumRjCUzQkMarg4iI/37rOQ=",
+        "owner": "AshleyYakeley",
+        "repo": "NixVirt",
+        "rev": "5dfe108fd859b122f9a96981cb6bc12297653d6c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AshleyYakeley",
+        "repo": "NixVirt",
+        "rev": "5dfe108fd859b122f9a96981cb6bc12297653d6c",
         "type": "github"
       }
     },
@@ -1566,6 +1599,7 @@
         "vicinae": "vicinae",
         "vimhx": "vimhx",
         "wakatimehx": "wakatimehx",
+        "win11-kvm": "win11-kvm",
         "worktrunk": "worktrunk",
         "zen-browser": "zen-browser",
         "zenmode": "zenmode"
@@ -2083,6 +2117,26 @@
         "owner": "Xerxes-2",
         "repo": "wakatime.hx",
         "type": "github"
+      }
+    },
+    "win11-kvm": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_11",
+        "nixvirt": "nixvirt"
+      },
+      "locked": {
+        "lastModified": 1791403633,
+        "narHash": "sha256-LZLQ+3I+Pn82ilUQ1Lf/FWnae47iuS26jR5txxgHGQM=",
+        "ref": "fix/rdtsc-accumulated-clock",
+        "rev": "2d68680d3f367935748bd242f977b489cbee1a82",
+        "revCount": 31,
+        "type": "git",
+        "url": "ssh://git@github.com/not-matthias/win11-kvm.git"
+      },
+      "original": {
+        "ref": "fix/rdtsc-accumulated-clock",
+        "type": "git",
+        "url": "ssh://git@github.com/not-matthias/win11-kvm.git"
       }
     },
     "worktrunk": {
