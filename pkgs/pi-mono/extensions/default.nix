@@ -68,70 +68,54 @@ in {
           "
           cp ${./tasks-package-lock.json} $out/package-lock.json
         '';
-        npmDepsHash = "sha256-i2qivh0IwDqlLDas0B7+ea2hvBgSTp96jZKLRfCKewM=";
+        npmDepsHash = "sha256-oLSobEGr+rWWJP0MwrJ7XF8RbrsGRNZrJdDcolKHsx8=";
       };
     };
     resources.extensions = ".";
   };
 
   subagents = {
-    src = compileExtension {
-      src = withRuntimeDeps {
-        src = pkgs.runCommand "pi-subagents-safe-defaults" {} ''
-          mkdir -p $out
-          cp -R ${call (import ./subagents.nix)}/. $out/
-          chmod -R u+w $out
-          cp ${./subagents-package-lock.json} $out/package-lock.json
-          ${pkgs.nodejs_22}/bin/node -e "
-            const fs = require('fs');
-            const path = process.env.out + '/package.json';
-            const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
-            delete pkg.peerDependencies;
-            delete pkg.devDependencies;
-            for (const k of Object.keys(pkg.dependencies || {})) {
-              if (k.startsWith('@earendil-works/') || k.startsWith('@mariozechner/')) delete pkg.dependencies[k];
-            }
-            fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
-          "
-          ${pkgs.nodejs_22}/bin/node -e '
-            const fs = require("fs");
-            const scopeFile = process.env.out + "/src/agents/agent-scope.ts";
-            const scopeSource = fs.readFileSync(scopeFile, "utf8");
-            const scoped = scopeSource.replace("return \"both\";", "return \"user\";");
-            if (scopeSource === scoped) throw new Error("Failed to patch default subagent scope");
-            fs.writeFileSync(scopeFile, scoped);
+    src = withRuntimeDeps {
+      src = pkgs.runCommand "pi-subagents-safe-defaults" {} ''
+        mkdir -p $out
+        cp -R ${call (import ./subagents.nix)}/. $out/
+        chmod -R u+w $out
+        cp ${./subagents-package-lock.json} $out/package-lock.json
+        ${pkgs.nodejs_22}/bin/node -e "
+          const fs = require('fs');
+          const path = process.env.out + '/package.json';
+          const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+          delete pkg.peerDependencies;
+          delete pkg.devDependencies;
+          for (const k of Object.keys(pkg.dependencies || {})) {
+            if (k.startsWith('@earendil-works/') || k.startsWith('@mariozechner/')) delete pkg.dependencies[k];
+          }
+          fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
+        "
+        ${pkgs.nodejs_22}/bin/node -e '
+          const fs = require("fs");
+          const scopeFile = process.env.out + "/src/agents/agent-scope.ts";
+          const scopeSource = fs.readFileSync(scopeFile, "utf8");
+          const scoped = scopeSource.replace("return \"both\";", "return \"user\";");
+          if (scopeSource === scoped) throw new Error("Failed to patch default subagent scope");
+          fs.writeFileSync(scopeFile, scoped);
 
-            const typesFile = process.env.out + "/src/shared/types.ts";
-            const typesSource = fs.readFileSync(typesFile, "utf8");
-            const start = typesSource.indexOf("const configuredTempRoot =");
-            const end = typesSource.indexOf("export const RESULTS_DIR", start);
-            if (start === -1 || end === -1) throw new Error("Failed to locate subagent temp directory");
-            const tempNew = [
-              "const configuredTempRoot = process.env.PI_SUBAGENTS_TEMP_ROOT?.trim();",
-              "export const TEMP_ROOT_DIR = configuredTempRoot",
-              "\t? path.resolve(configuredTempRoot)",
-              "\t: path.join(os.homedir(), \".cache\", \"pi-subagents\", resolveTempScopeId());",
-            ].join("\n") + "\n";
-            fs.writeFileSync(typesFile, typesSource.slice(0, start) + tempNew + typesSource.slice(end));
-          '
+          const typesFile = process.env.out + "/src/shared/types.ts";
+          const typesSource = fs.readFileSync(typesFile, "utf8");
+          const start = typesSource.indexOf("const configuredTempRoot =");
+          const end = typesSource.indexOf("export const RESULTS_DIR", start);
+          if (start === -1 || end === -1) throw new Error("Failed to locate subagent temp directory");
+          const tempNew = [
+            "const configuredTempRoot = process.env.PI_SUBAGENTS_TEMP_ROOT?.trim();",
+            "export const TEMP_ROOT_DIR = configuredTempRoot",
+            "\t? path.resolve(configuredTempRoot)",
+            "\t: path.join(os.homedir(), \".cache\", \"pi-subagents\", resolveTempScopeId());",
+          ].join("\n") + "\n";
+          fs.writeFileSync(typesFile, typesSource.slice(0, start) + tempNew + typesSource.slice(end));
+        '
 
-          # The esbuild bundle (src/extension/index.js) resolves runtime-loaded
-          # files relative to import.meta.url, which points at the bundle instead
-          # of the original module locations. Provide shims at the bundle-relative
-          # paths that forward to the real files.
-          mkdir -p $out/extension
-          cat > $out/src/extension/subagent-prompt-runtime.ts <<'EOF'
-          export { default } from "../runs/shared/subagent-prompt-runtime.ts";
-          EOF
-          cat > $out/extension/fanout-child.ts <<'EOF'
-          export { default } from "../src/extension/fanout-child.ts";
-          EOF
-          cat > $out/src/extension/subagent-runner.ts <<'EOF'
-          import "../runs/background/subagent-runner.ts";
-          EOF
-        '';
-        npmDepsHash = "sha256-YZpXAkW7nOx5SEIh86lpPMXSwkxF5cl2oDTucq9zsH0=";
-      };
+      '';
+      npmDepsHash = "sha256-LIcoCygSTzCMB3Ko7ngClQQydL7rZyyOOpzfUUw+iVs=";
     };
     resources.extensions = ".";
   };
@@ -159,7 +143,7 @@ in {
             fs.writeFileSync(file, lines.join("\n"));
           '
         '';
-        pnpmDepsHash = "sha256-dUdN/1UjmzyCENKRWS42JXD8PngQcXriisK8pdpfLl8=";
+        pnpmDepsHash = "sha256-0x43EoqAr4Wrsq2yKDZSlB15XQxmmMeRZ+/8+NF3JhQ=";
       };
     };
     resources.extensions = ".";
@@ -168,7 +152,7 @@ in {
   # toolchain = {
   #   src = withRuntimeDeps {
   #     src = call (import ./toolchain.nix);
-  #     pnpmDepsHash = "sha256-pug/Ws9rL9wwWZbTYfyDtJZDX70/0XgT7EEcO+1b7s8=";
+  #     pnpmDepsHash = "sha256-QgTwzJYm/401tjvwbFhJn5de4Z8n1IdvjgxR16O8+pY=";
   #   };
   #   resources.extensions = ".";
   # };
@@ -176,7 +160,7 @@ in {
   # processes = {
   #   src = withRuntimeDeps {
   #     src = call (import ./processes.nix);
-  #     pnpmDepsHash = "sha256-oX8+q3eeCVLAYMztIzsrlvK1LAp8ifMF+jnfc94RhCs=";
+  #     pnpmDepsHash = "sha256-dkmNCaQoFT8pumP+YWIIfry7lzo/LvuT7lTC/Nhm4to=";
   #   };
   #   resources.extensions = ".";
   # };
@@ -190,13 +174,10 @@ in {
   # };
 
   # "pi-memory" = {
-  #   src = withRuntimeDeps {
-  #     src = pkgs.runCommand "pi-memory-extension-src" {} ''
-  #       mkdir -p $out
-  #       cp -R ${call (import ./pi-memory.nix)}/extensions/pi-memory/. $out/
-  #     '';
-  #     npmDepsHash = "sha256-MoFbg8vpEmwAx1o9vzqut2VNEts22pqaOpsLYE/MnZ8=";
-  #   };
+  #   src = pkgs.runCommand "pi-memory-extension-src" {} ''
+  #     mkdir -p $out
+  #     cp -R ${call (import ./pi-memory.nix)}/extensions/pi-memory/. $out/
+  #   '';
   #   resources.extensions = ".";
   #   resources.skills = "skills";
   # };
@@ -232,7 +213,7 @@ in {
   #       "
   #       cp ${./pi-fff-package-lock.json} $out/package-lock.json
   #     '';
-  #     npmDepsHash = "sha256-NAIOKRHXr9YZYQq03wMF7UxZd3Y1HNBBhexEWW/3tcM=";
+  #     npmDepsHash = "sha256-8gvfGiobL7688NypbTjrmJPNbnnK+hBAfZG6wjGtl7c=";
   #   };
   #   resources.extensions = ".";
   # };
@@ -288,7 +269,7 @@ in {
   # "pi-diff-review" = {
   #   src = withRuntimeDeps {
   #     src = call (import ./pi-diff-review.nix);
-  #     npmDepsHash = "sha256-4BeJ4Tjjpk30xBs/GZ4J3+w3WRHNTAfRk75VUf8Ee3U=";
+  #     npmDepsHash = "sha256-RTf5dzTj6IHEA7xUeRjHtdixRGVYgstao0LfIBT7Tio=";
   #   };
   #   resources.extensions = ".";
   # };
@@ -304,7 +285,7 @@ in {
   #   src = compileExtension {
   #     src = withRuntimeDeps {
   #       src = pkgs.callPackage ./pi-claude-bridge.nix {};
-  #       npmDepsHash = "sha256-MGx+F48b0UAfxQT0WPzlZBX3jZ/O5xamdv3gy/DzikU=";
+  #       npmDepsHash = "sha256-NxFVTxJPfX8YJ7biO4OyQ5wWtFoLJIEJ1jC0cSU5H24=";
   #     };
   #   };
   #   resources.extensions = ".";
@@ -325,8 +306,20 @@ in {
 
   # "pi-codex-conversion" = {
   #   src = withRuntimeDeps {
-  #     src = call (import ./pi-codex-conversion.nix);
-  #     npmDepsHash = "sha256-pZEujjYmjfW8dEp6AQIvKJcMJGWdqHkLONFVWXc9/po=";
+  #     src = pkgs.runCommand "pi-codex-conversion-with-lock" {} ''
+  #       cp -R ${pkgs.callPackage ./pi-codex-conversion.nix {}} $out
+  #       chmod -R u+w $out
+  #       ${pkgs.nodejs_22}/bin/node -e "
+  #         const fs = require('fs');
+  #         const path = '$out/package.json';
+  #         const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+  #         delete pkg.peerDependencies;
+  #         delete pkg.devDependencies;
+  #         fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
+  #       "
+  #       cp ${./pi-codex-conversion-package-lock.json} $out/package-lock.json
+  #     '';
+  #     npmDepsHash = "sha256-xhlCQyvO5+XZcTRS+kmYOibLT8VV4WS1yYqKyeenUdU=";
   #   };
   #   resources.extensions = ".";
   # };
@@ -348,7 +341,7 @@ in {
   #         "
   #         cp ${./pi-token-usage-package-lock.json} $out/package-lock.json
   #       '';
-  #       npmDepsHash = "sha256-wUGcqe71RCNDuTDqrd11L1o4PGVkFRwwM4sZsWBG9jY=";
+  #       npmDepsHash = "sha256-F3ag99p9Pcoepe6dd1pkzqwMXpgHqkd6Leei8oyEtos=";
   #     };
   #   };
   #   resources.extensions = ".";
@@ -376,22 +369,19 @@ in {
   # };
 
   # "pi-better-messages-cache" = {
-  #   src = withRuntimeDeps {
-  #     src = pkgs.runCommand "pi-better-messages-cache-src" {} ''
-  #       mkdir -p $out
-  #       cp -R ${call (import ./pi-better-messages-cache.nix)}/. $out/
-  #       chmod -R u+w $out
-  #       ${pkgs.nodejs_22}/bin/node -e "
-  #         const fs = require('fs');
-  #         const path = '$out/package.json';
-  #         const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
-  #         delete pkg.peerDependencies;
-  #         delete pkg.devDependencies;
-  #         fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
-  #       "
-  #     '';
-  #     npmDepsHash = "sha256-BSm67qBoeendegdcpQeQMJs7kNlc9MISbkQBJfq2Low=";
-  #   };
+  #   src = pkgs.runCommand "pi-better-messages-cache-src" {} ''
+  #     mkdir -p $out
+  #     cp -R ${call (import ./pi-better-messages-cache.nix)}/. $out/
+  #     chmod -R u+w $out
+  #     ${pkgs.nodejs_22}/bin/node -e "
+  #       const fs = require('fs');
+  #       const path = '$out/package.json';
+  #       const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+  #       delete pkg.peerDependencies;
+  #       delete pkg.devDependencies;
+  #       fs.writeFileSync(path, JSON.stringify(pkg, null, 2));
+  #     "
+  #   '';
   #   resources.extensions = ".";
   # };
 

@@ -12,18 +12,25 @@ buildNpmPackage rec {
   src = fetchFromGitHub {
     owner = "algal";
     repo = "pi-openai-server-compaction";
-    rev = "fcc4cd34f714df1667dcdde59b681fc9cf656a7c";
-    hash = "sha256-1f3gHfN3q7yGHAROuP+PKGv4jjENa8wEKSyAyL0SKoM=";
+    rev = "8a3de2f3b0c178fdd6f73f2f94172dfc3943e466";
+    hash = "sha256-HFzG+GMriPhoMinjji+3sklQ7Nq0yRHCz/t9Re/TksU=";
   };
 
-  npmDepsHash = "sha256-x0HU4SkQQqfcW2/Yh2oP27YUyVfv2Xx7quS87FOyHwA=";
+  npmDepsHash = "sha256-en4VPyOa58VkgZIP2nn+7YLWb0gASqntnabgYbGaJVQ=";
 
   postPatch = ''
     cp ${./pi-openai-server-compaction-package-lock.json} package-lock.json
+    ${nodejs_22}/bin/node -e "
+      const fs = require('fs');
+      const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+      delete pkg.devDependencies;
+      delete pkg.peerDependencies;
+      fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
+    "
   '';
 
   dontNpmBuild = true;
-  npmInstallFlags = ["--omit=dev" "--ignore-scripts"];
+  npmInstallFlags = ["--omit=dev" "--omit=peer" "--ignore-scripts"];
 
   installPhase = ''
     runHook preInstall

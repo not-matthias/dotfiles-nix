@@ -6,11 +6,11 @@
   nodejs_22,
 }: let
   pname = "pi-web-access";
-  version = "0.27.0";
+  version = "0.37.0";
 
   rawSrc = fetchzip {
     url = "https://registry.npmjs.org/${pname}/-/${pname}-${version}.tgz";
-    hash = "sha256-UOPe4ykhfpTFIEMMl6Uk4aWAD8IyRTHsz82q4zuT5U0=";
+    hash = "sha256-+IX2vuh0HYiIzlAhh9hg4jDSJwZRHAhClmOunVUOsLs=";
   };
 
   patchedSrc = runCommand "${pname}-src" {} ''
@@ -63,7 +63,7 @@ in
     npmDeps = fetchNpmDeps {
       name = "${pname}-${version}-npm-deps";
       src = patchedSrc;
-      hash = "sha256-O2oiQilBt4Nj/mj4zWB8Kb4ftGSJ2w7aSwjQQ250Qhc=";
+      hash = "sha256-wLWsQTpc0BxLuxmD6w9McdBEAwbZb5NTldiqV/eEnCc=";
     };
 
     dontNpmBuild = true;

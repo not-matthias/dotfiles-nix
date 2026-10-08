@@ -1,33 +1,33 @@
 {
   buildNpmPackage,
-  fetchFromGitHub,
+  fetchzip,
   nodejs_22,
 }:
 buildNpmPackage rec {
   pname = "pi-diff";
-  version = "0.1.6";
+  version = "0.9.2";
 
   nodejs = nodejs_22;
 
-  src = fetchFromGitHub {
-    owner = "heyhuynhgiabuu";
-    repo = "pi-diff";
-    rev = "fbb209e1bc27054b3e21a76fa3af24f5570d7845";
-    hash = "sha256-LDqMKl5ErwFOBVd+Q7xPgaU4C0oXVL+l/XypQXnknu4=";
+  src = fetchzip {
+    url = "https://registry.npmjs.org/@heyhuynhgiabuu/${pname}/-/${pname}-${version}.tgz";
+    hash = "sha256-RxmzzWmFlcyUsox7b/Mj/VRJJgA7dcvn99iSpKm7ZN8=";
   };
 
-  npmDepsHash = "sha256-JuonDFNrq3bWJZEXJAXOM1VEW+5c1/W6KQC5O8adn3o=";
+  npmDepsHash = "sha256-YNDPxCxUJ8GDWafcYNMNVxPstI5UWxR8UEX9jpIXzZU=";
 
   postPatch = ''
+    cp ${./pi-diff-package-lock.json} package-lock.json
     ${nodejs_22}/bin/node -e "
       const pkg = JSON.parse(require('fs').readFileSync('package.json', 'utf8'));
       delete pkg.devDependencies;
+      delete pkg.peerDependencies;
       require('fs').writeFileSync('package.json', JSON.stringify(pkg, null, 2));
     "
   '';
 
   dontNpmBuild = true;
-  npmInstallFlags = ["--omit=dev" "--ignore-scripts"];
+  npmInstallFlags = ["--omit=dev" "--omit=peer" "--ignore-scripts"];
 
   installPhase = ''
     runHook preInstall

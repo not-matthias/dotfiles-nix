@@ -6,6 +6,7 @@
 in {
   pi-web-access = compileExtension {
     src = pkgs.callPackage ./pi-web-access.nix {};
+    entrypoints = ["index.ts"];
   };
   tintinweb-pi-subagents = compileExtension {
     src = pkgs.callPackage ./tintinweb-pi-subagents.nix {};

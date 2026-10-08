@@ -1,12 +1,5 @@
 # Pre-compile a pi extension's TypeScript entrypoints to JavaScript using esbuild.
-# This eliminates jiti transpilation at runtime, significantly improving startup time.
-#
-# Usage:
-#   compileExtension { src = <extension-source>; }
-#   compileExtension { src = <extension-source>; entrypoints = ["./src/index.ts"]; }
-#
-# If entrypoints is omitted, they are auto-detected from package.json's
-# omp.extensions (or legacy pi.extensions) field, falling back to index.ts at root.
+# Runtime-loaded helper modules retain their original paths for Pi's Jiti loader.
 {
   stdenvNoCC,
   esbuild,
@@ -25,112 +18,82 @@ stdenvNoCC.mkDerivation {
   buildPhase = ''
     runHook preBuild
 
-    # Detect entrypoints from package.json or use provided ones
-    entrypoints=""
-    if [ -n "${toString entrypoints}" ]; then
-      entrypoints="${builtins.concatStringsSep " " (
-      if entrypoints != null
-      then entrypoints
-      else []
-    )}"
-    else
-      if [ -f package.json ]; then
-        entrypoints=$(${nodejs_22}/bin/node -e '
-          const pkg = JSON.parse(require("fs").readFileSync("package.json", "utf8"));
-          const entries = pkg.omp?.extensions || pkg.pi?.extensions || [];
-          const tsEntries = entries.filter(e => e.endsWith(".ts"));
-          if (tsEntries.length > 0) {
-            console.log(tsEntries.join(" "));
-          } else if (require("fs").existsSync("index.ts")) {
-            console.log("./index.ts");
+    entrypoints=$(${nodejs_22}/bin/node <<'EOF'
+      const fs = require("fs");
+      const path = require("path");
+      const pkg = fs.existsSync("package.json")
+        ? JSON.parse(fs.readFileSync("package.json", "utf8"))
+        : { private: true, type: "module" };
+      const hostPackages = new Set(["typebox", "@sinclair/typebox"]);
+      for (const name of Object.keys(pkg.dependencies || {})) {
+        if (!hostPackages.has(name)) continue;
+        delete pkg.dependencies[name];
+        pkg.peerDependencies = { ...pkg.peerDependencies, [name]: "*" };
+        fs.rmSync(path.join("node_modules", name), { recursive: true, force: true });
+      }
+      const declared = ${builtins.toJSON entrypoints} ?? pkg.pi?.extensions ??
+        (fs.existsSync("index.ts") ? ["./index.ts"] : fs.existsSync("index.js") ? ["./index.js"] : []);
+      const entries = [];
+      const isExtension = name => /\.(ts|js)$/.test(name) && !/\.(d|test|spec)\.ts$/.test(name);
+      for (const entry of declared) {
+        if (!fs.existsSync(entry)) throw new Error(`Declared Pi extension entrypoint not found: ''${entry}`);
+        if (fs.statSync(entry).isDirectory()) {
+          for (const child of fs.readdirSync(entry, { withFileTypes: true })) {
+            const childPath = path.join(entry, child.name);
+            if (child.isFile() && isExtension(child.name)) {
+              entries.push(childPath);
+            } else if (child.isDirectory()) {
+              const index = ["index.ts", "index.js"].map(name => path.join(childPath, name)).find(fs.existsSync);
+              if (index) entries.push(index);
+            }
           }
-        ')
-      elif [ -f index.ts ]; then
-        entrypoints="./index.ts"
-      fi
-    fi
+        } else if (isExtension(entry)) {
+          entries.push(entry);
+        } else {
+          throw new Error(`Unsupported Pi extension entrypoint: ''${entry}`);
+        }
+      }
+      const uniqueEntries = [...new Set(entries)];
+      if (declared.length && !uniqueEntries.length) throw new Error("Declared Pi extension directories contain no entrypoints");
+      if (uniqueEntries.length) {
+        pkg.pi = pkg.pi || {};
+        pkg.pi.extensions = uniqueEntries.map(entry => entry.replace(/\.ts$/, ".js"));
+        fs.writeFileSync("package.json", JSON.stringify(pkg, null, 2));
+      }
+      console.log(uniqueEntries.filter(entry => entry.endsWith(".ts")).join("\n"));
+    EOF
+    )
 
-    if [ -z "$entrypoints" ]; then
-      echo "No TypeScript entrypoints found, skipping compilation"
-    else
-      for entry in $entrypoints; do
-        if [ ! -f "$entry" ]; then
-          echo "WARNING: entrypoint $entry not found, skipping"
-          continue
-        fi
-
-        # Compute output path: replace .ts with .js, put in dist/ relative dir
-        outfile=$(echo "$entry" | sed 's|\.ts$|.js|')
-        outdir=$(dirname "$outfile")
-        mkdir -p "$outdir"
-
-        echo "Compiling $entry -> $outfile"
-        esbuild "$entry" \
-          --bundle \
-          --outfile="$outfile" \
-          --platform=node \
-          --format=esm \
-          --target=node22 \
-          '--external:@earendil-works/*' \
-          '--external:@mariozechner/*' \
-          '--external:@oh-my-pi/*' \
-          '--external:@anthropic-ai/*' \
-          '--external:@sinclair/typebox' \
-          '--external:@sinclair/typebox/*' \
-          '--external:typebox' \
-          '--external:typebox/*' \
-          '--external:diff'
-      done
-    fi
+    while IFS= read -r entry; do
+      [ -n "$entry" ] || continue
+      outfile="''${entry%.ts}.js"
+      mkdir -p "$(dirname "$outfile")"
+      echo "Compiling $entry -> $outfile"
+      esbuild "$entry" \
+        --bundle \
+        --outfile="$outfile" \
+        --platform=node \
+        --format=esm \
+        --target=node22 \
+        '--external:@earendil-works/*' \
+        '--external:@mariozechner/*' \
+        '--external:@oh-my-pi/*' \
+        '--external:@anthropic-ai/*' \
+        '--external:@sinclair/typebox' \
+        '--external:@sinclair/typebox/*' \
+        '--external:typebox' \
+        '--external:typebox/*' \
+        '--external:diff'
+      rm "$entry"
+    done <<< "$entrypoints"
 
     runHook postBuild
   '';
 
   installPhase = ''
     runHook preInstall
-
     mkdir -p $out
     cp -R . $out/
-
-    # Remove .ts source files so pi's auto-discovery loads the compiled .js
-    # instead of jiti-transpiling the .ts at runtime
-    find $out -name '*.ts' -not -path '*/node_modules/*' -delete
-
-    # Patch package.json extension manifest to point to compiled .js files.
-    # Supports the current `omp.extensions` key and the legacy `pi.extensions`
-    # key; patches whichever is present. Auto-discovered extensions (no key)
-    # get an `omp.extensions` entry pointing at the compiled index.js.
-    if [ -f $out/package.json ]; then
-      ${nodejs_22}/bin/node -e '
-        const fs = require("fs");
-        const path = require("path");
-        const pkgPath = process.env.out + "/package.json";
-        const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
-        const mapEntry = e => {
-          const jsPath = e.replace(/\.ts$/, ".js");
-          if (fs.existsSync(path.join(process.env.out, jsPath))) {
-            return jsPath;
-          }
-          return e;
-        };
-        if (pkg.omp?.extensions) {
-          pkg.omp.extensions = pkg.omp.extensions.map(mapEntry);
-          fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
-        } else if (pkg.pi?.extensions) {
-          pkg.pi.extensions = pkg.pi.extensions.map(mapEntry);
-          fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
-        } else {
-          // Auto-discovered extension: if we compiled index.ts, add omp.extensions
-          const indexJs = path.join(process.env.out, "index.js");
-          if (fs.existsSync(indexJs)) {
-            pkg.omp = pkg.omp || {};
-            pkg.omp.extensions = ["./index.js"];
-            fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
-          }
-        }
-      '
-    fi
-
     runHook postInstall
   '';
 }

@@ -6,14 +6,15 @@
   src = fetchFromGitHub {
     owner = "elidickinson";
     repo = "pi-claude-bridge";
-    rev = "9e3fee560fb9577d819052b9a10dbcc2eacd858a";
-    hash = "sha256-L9aczhKDeXbq5CKFLMb68Oa1J0RzjFtPzucma+NBlTk=";
+    rev = "b2e7255ece0b8bfd3a6429fd5c147fd59984c785";
+    hash = "sha256-ri1KD0H5Nbt8lAMHbMLVf7dwaoHNbTJfhEuF4Y8lFF8=";
   };
 in
   # Keep the lockfile limited to dependencies installed in the Nix build.
   runCommand "pi-claude-bridge-patched" {nativeBuildInputs = [python3];} ''
     cp -r ${src} $out
     chmod -R u+w $out
+    cp ${./pi-claude-bridge-package-lock.json} $out/package-lock.json
     python3 - "$out" <<'PY'
     import json, pathlib, sys
 
@@ -41,23 +42,16 @@ in
         zod['resolved'] = 'https://registry.npmjs.org/zod/-/zod-' + zod['version'] + '.tgz'
         zod['integrity'] = 'sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=='
 
-    lock.write_text(json.dumps(data, indent=2))
+    lock.write_text(json.dumps(data, indent=2) + "\n")
     index = out / 'src/index.ts'
     source = index.read_text()
-    source = source.replace(
-        'const DIAG_LOG_PATH = join(homedir(), ".pi", "agent", "claude-bridge-diag.log");\n',
-        'const DIAG_LOG_PATH = join(homedir(), ".pi", "agent", "claude-bridge-diag.log");\nconst CLAUDE_CODE_EXECUTABLE = process.env.CLAUDE_CODE_EXECUTABLE?.trim() || undefined;\n',
-    )
-    source = source.replace(
-        '\t\textraArgs,\n',
-        '\t\textraArgs,\n\t\t...(CLAUDE_CODE_EXECUTABLE ? { pathToClaudeCodeExecutable: CLAUDE_CODE_EXECUTABLE } : {}),\n',
-        1,
-    )
-    source = source.replace(
-        '\t\t\textraArgs,\n',
-        '\t\t\textraArgs,\n\t\t\t...(CLAUDE_CODE_EXECUTABLE ? { pathToClaudeCodeExecutable: CLAUDE_CODE_EXECUTABLE } : {}),\n',
-        1,
-    )
+    compact = 'compactProviderSettings?.pathToClaudeCodeExecutable;'
+    provider = 'providerSettings.pathToClaudeCodeExecutable;'
+    if compact not in source or provider not in source:
+        raise RuntimeError('Failed to locate Claude executable configuration')
+    fallback = ' || process.env.CLAUDE_CODE_EXECUTABLE?.trim() || undefined;'
+    source = source.replace(compact, compact[:-1] + fallback)
+    source = source.replace(provider, provider[:-1] + fallback)
     index.write_text(source)
     PY
   ''

@@ -1,7 +1,7 @@
 {fetchFromGitHub}:
 fetchFromGitHub {
   owner = "mavam";
-  repo = "pi-web-providers";
-  rev = "4f2450563e2e5897871263b93db3066b21be83a8";
-  hash = "sha256-Rwg9m4dwAiTa9QcC2hfiOVGoRzGHr1DDNVblH+uQsug=";
+  repo = "webfox";
+  rev = "2fcc7d99d8e0bdbd644c53cc27a99d7f1f93d010";
+  hash = "sha256-ZOvu6WIzBgDe9DenqWUNSUa+oUC4iWJeerKoEu0f1iY=";
 }

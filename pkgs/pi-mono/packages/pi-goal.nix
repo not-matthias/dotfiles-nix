@@ -5,7 +5,7 @@
 }:
 stdenvNoCC.mkDerivation rec {
   pname = "pi-goal";
-  version = "0.0.1-unstable-2026-05-03";
+  version = "0.0.2-unstable-2026-05-28";
 
   # Selected implementation:
   # https://github.com/baggiiiie/pi-stuff/blob/main/packages/goal/README.md
@@ -16,8 +16,8 @@ stdenvNoCC.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "baggiiiie";
     repo = "pi-stuff";
-    rev = "7ede521226d332ba87bffc7b0a8b0ea804b81827";
-    hash = "sha256-u/FaJi0c7PxN6XKH29oGolk524WuNx4nzW+YRqaZ3P4=";
+    rev = "ee26e133e0a5c55a6cc818b8b012cfabfcf4b0f7";
+    hash = "sha256-3uMwZ0uyoWIOiHedynzzpJsywE5TjNOgp0B4dl7TKR4=";
   };
 
   dontBuild = true;
