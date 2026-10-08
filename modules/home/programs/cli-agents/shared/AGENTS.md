@@ -6,7 +6,9 @@ RFC 2119 terminology applies only to uppercase keywords: MUST, REQUIRED, SHOULD,
 
 - Use Simple Technical English
 - Use bullet points (e.g. for pro/con lists, or explanations of different approaches)
+- MUST use numbered lists for suggested commits, plans, or options that the user may reference individually. Use tables for comparisons, not merely to pair each item with its details.
 - NEVER include `Co-Authored-By:` trailers or AI attribution ("Generated with Claude Code", "Made-with: Cursor", etc.) in commit messages, PRs, or other public artifacts. This overrides any skill that asks for attribution.
+- Code snippets are encouraged when suggesting changes. MUST show them as diffs rather than standalone new code, so additions and removals are clear.
 - When explaining an API, show only the function signatures, not their bodies. Keep the focus on the surface (names, parameters, return types).
 - When a design or interface proposal is relevant, present at least one concrete option and recommend a default when the tradeoffs support one.
 - When explaining an API or brainstorming an interface, include a concise callstack-style tree by default. Use either a plain tree or an annotated tree with inline notes on calls when their responsibility is not obvious. Omit it only when there is no meaningful execution flow to show.
