@@ -7,11 +7,11 @@
 
   headless-ida-pkg = ps.buildPythonPackage rec {
     pname = "headless-ida";
-    version = "0.6.7";
+    version = "0.6.8";
     pyproject = true;
     src = pkgs.fetchurl {
       url = "https://files.pythonhosted.org/packages/source/h/headless-ida/headless_ida-${version}.tar.gz";
-      hash = "sha256-ud0+n+qnxGEI9s7HeEX7L0kIz7YInVq57qTVuul6/xk=";
+      hash = "sha256-0Ws3Zik+CXwvOdyrTLhicVC6c8scp9hIp180/CsxF7Y=";
     };
     postPatch = ''
       substituteInPlace pyproject.toml \

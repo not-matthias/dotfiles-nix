@@ -1,10 +1,9 @@
 diff --git a/src/browser/actions/modelSelection.ts b/src/browser/actions/modelSelection.ts
-index 2249710..cc30747 100644
 --- a/src/browser/actions/modelSelection.ts
 +++ b/src/browser/actions/modelSelection.ts
-@@ -573,9 +573,15 @@ function buildModelSelectionExpression(
-           menu?.querySelector?.(INTELLIGENCE_PICKER_SELECTOR) ||
-           menu?.querySelector?.(ADVANCED_VIEW_SELECTOR),
+@@ -581,9 +581,15 @@
+           (menu?.querySelector?.('[data-model-picker-view]') &&
+             menu?.getAttribute?.('aria-labelledby') === findModelButton()?.id),
        );
 -    const findUnifiedPickerMenu = () =>
 -      Array.from(document.querySelectorAll(${menuContainerLiteral})).find(isUnifiedPickerMenu) ??
@@ -19,21 +18,25 @@ index 2249710..cc30747 100644
 +        : null;
 +    };
      const findAdvancedToggle = (menu) => {
-       for (const item of (menu || document).querySelectorAll('[role="menuitem"]')) {
-         if (!isVisibleElement(item)) continue;
-@@ -622,12 +628,15 @@ function buildModelSelectionExpression(
+       const semanticToggle = menu?.querySelector?.('[data-model-picker-view-toggle="true"]');
+       if (semanticToggle && isVisibleElement(semanticToggle)) return semanticToggle;
+@@ -632,16 +638,19 @@
        return normalizedTokens.some((token) => token && label.includes(token));
      };
      const findCheckedAdvancedModelRadio = (menu = null) => {
 -      const scope = menu || findUnifiedPickerMenu() || document;
 -      return (
--        scope?.querySelector?.(
--          '[data-testid="composer-model-picker-slider-advanced-view"] [role="menuitemradio"][aria-checked="true"]',
--        ) ?? null
 +      const scope = menu || findUnifiedPickerMenu();
-+      const advanced = scope?.querySelector?.(
-+        '[data-testid="composer-model-picker-slider-advanced-view"] [role="menuitemradio"][aria-checked="true"]',
-       );
++      const advanced =
+         scope?.querySelector?.(
+           '[data-testid="composer-model-picker-slider-advanced-view"] [role="menuitemradio"][aria-checked="true"]',
+         ) ??
+         scope?.querySelector?.(
+           '[data-model-picker-view] [role="menuitemradio"][aria-checked="true"]',
+-        ) ??
+-        null
+-      );
++        );
 +      if (advanced) return advanced;
 +      const buttonId = findModelButton()?.id;
 +      return buttonId && scope?.getAttribute?.('aria-labelledby') === buttonId
@@ -42,7 +45,7 @@ index 2249710..cc30747 100644
      };
      const getAdvancedModelLabel = () => {
        const opener = findModelSubmenuOpener(findUnifiedPickerMenu());
-@@ -673,6 +682,16 @@ function buildModelSelectionExpression(
+@@ -687,6 +696,16 @@
        if (advancedModelSignalMatchesTarget()) {
          return getAdvancedModelLabel();
        }
@@ -59,7 +62,7 @@ index 2249710..cc30747 100644
        const composerLabel = getComposerModelLabel();
        const normalizedComposerLabel = normalizeText(composerLabel);
        if (
-@@ -805,6 +824,14 @@ function buildModelSelectionExpression(
+@@ -819,6 +838,14 @@
        return COMPOSER_SIGNAL_INCLUDES.some((token) => token && signal.includes(token));
      };
      const activeSelectionMatchesTarget = () => {
@@ -74,16 +77,3 @@ index 2249710..cc30747 100644
        if (targetIsLatest) {
          const checkedAdvancedRadio = findCheckedAdvancedModelRadio();
          if (checkedAdvancedRadio) {
-diff --git a/src/browser/constants.ts b/src/browser/constants.ts
-index 1b5f63f..b586939 100644
---- a/src/browser/constants.ts
-+++ b/src/browser/constants.ts
-@@ -91,7 +91,7 @@ export const SEND_BUTTON_SELECTORS = [
- ];
- export const SEND_BUTTON_SELECTOR = SEND_BUTTON_SELECTORS[0];
- export const MODEL_BUTTON_SELECTOR =
--  '[data-testid="model-switcher-dropdown-button"], button.__composer-pill[aria-haspopup="menu"]';
-+  '[data-testid="model-switcher-dropdown-button"], button.__composer-pill[aria-haspopup="menu"], button[aria-label="Select ChatGPT model"][aria-haspopup="menu"]';
- export const COMPOSER_MODEL_SIGNAL_SELECTOR = '[data-testid="composer-footer-actions"]';
- export const COPY_BUTTON_SELECTOR = 'button[data-testid="copy-turn-action-button"]';
- // Action buttons that only appear once a turn has finished rendering.

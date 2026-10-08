@@ -12,12 +12,12 @@
   makeWrapper,
 }: let
   pname = "oracle";
-  version = "0.21.3";
+  version = "0.21.4";
   src = fetchFromGitHub {
     owner = "steipete";
     repo = "oracle";
     tag = "v${version}";
-    hash = "sha256-tlkKKtmrEHcCKRBrFC6LzQgqab7wk+25MEgwz8pu4b4=";
+    hash = "sha256-ESOGM8c7xuIt2gbVNXiGHDG7Wp5RHci5OI2elB3brBI=";
   };
 in
   stdenv.mkDerivation {
@@ -29,8 +29,8 @@ in
 
     pnpmDeps = fetchPnpmDeps {
       inherit pname version src pnpm;
-      fetcherVersion = 3;
-      hash = "sha256-W5ztl3Ks5mvIT8ykm4H6ENtss+6Ad23n8FUdGVmw21c=";
+      fetcherVersion = 4;
+      hash = "sha256-BOolt+JY/DQA5tbCzvo3fOORGLkW12MDsnD35HC2SMc=";
     };
 
     nativeBuildInputs = [

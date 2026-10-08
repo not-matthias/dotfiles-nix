@@ -5,13 +5,13 @@
 }:
 pkgs.stdenv.mkDerivation {
   pname = "ida-theme-explorer";
-  version = "1.0.2";
+  version = "1.0.3";
 
   src = pkgs.fetchFromGitHub {
     owner = "kevinmuoz";
     repo = "ida-theme-explorer";
-    rev = "v1.0.2";
-    hash = "sha256-jLtX1l7GhXaiNlOiehgFYI4VQ2SgA5QaKVQu1wfvb9w=";
+    rev = "v1.0.3";
+    hash = "sha256-8GIJGNadGhAb5RjdmPgkO6RJ97txV0/660SqWNKwMXQ=";
   };
 
   dontBuild = true;

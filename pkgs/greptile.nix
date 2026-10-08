@@ -7,11 +7,11 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "greptile";
-  version = "3.5.4";
+  version = "3.6.1";
 
   src = fetchurl {
     url = "https://registry.npmjs.org/greptile/-/greptile-${finalAttrs.version}.tgz";
-    hash = "sha512-3n+jLOT9WB+8zv2XdTEAXPzMGWH0ybwVdJZrr1/b8UKGpi7u3vq5dVBwp3MCaNgzkaIVgzqfXKXZDp1iBVmjrw==";
+    hash = "sha512-tx+rb9mInOkBta59H/uyaPmOve13vK5F02FB+orF/eLIJMf7+yIr9fYiz6PD/bn6HfmxEyrrwpvrj89PrVAATQ==";
   };
 
   nativeBuildInputs = [makeWrapper];
