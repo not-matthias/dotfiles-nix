@@ -24,6 +24,7 @@ in {
     ./work.nix
     ../../modules/system/services/timeguard.nix
   ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   services.taskwarrior-sync.client.enable = true;
 
   home-manager.users.${user} = {
