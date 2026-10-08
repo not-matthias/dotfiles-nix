@@ -66,7 +66,7 @@
     # devenv 2.0+ removed devenv-tasks (uses `devenv tasks` subcommand), resolving
     # the recompilation issue that motivated the old v1.7 pin.
     # See: https://github.com/cachix/devenv/issues/1865
-    devenv.url = "github:cachix/devenv/v2.2.2";
+    devenv.url = "github:cachix/devenv/v2.4.0";
 
     auto-cpufreq = {
       url = "github:AdnanHodzic/auto-cpufreq";
@@ -78,7 +78,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hunk = {
-      url = "github:modem-dev/hunk/v0.22.0";
+      url = "github:modem-dev/hunk/v0.23.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     worktrunk = {
