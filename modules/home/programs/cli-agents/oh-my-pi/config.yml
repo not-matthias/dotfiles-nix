@@ -68,7 +68,7 @@ dev:
 
 modelRoles:
   default: openai-codex/gpt-6.1-sol:auto
-  tiny: "openai-codex/gpt-5.3-codex-spark"
+  tiny: openai-codex/gpt-6-luna
   commit: google-antigravity/gemini-3.8-flash
   task: openai-codex/gpt-6.1-sol:auto
   smol: openai-codex/gpt-6-luna
