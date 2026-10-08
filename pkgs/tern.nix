@@ -14,12 +14,12 @@
 }:
 stdenv.mkDerivation rec {
   pname = "tern";
-  version = "0.4.5";
+  version = "0.6.2";
 
   src = requireFile {
     name = "Tern-${version}-linux-x86_64.tar.gz";
     url = "https://build.stencil.so/tern";
-    hash = "sha256-+TU0GutIi4QGCsLC1syAB/IcdRe1orFfo+dMr+qmq/0=";
+    hash = "sha256-SLlYBqviEef1EdkJ0hq9mF9k/a20+c3dBqrDCvAAPJc=";
   };
 
   nativeBuildInputs = [autoPatchelfHook makeWrapper];
