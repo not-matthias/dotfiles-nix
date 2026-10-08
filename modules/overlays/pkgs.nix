@@ -142,5 +142,8 @@
     (_self: super: {
       tern = super.callPackage ../../pkgs/tern.nix {};
     })
+    (_self: super: {
+      herdr-gpui = super.callPackage ../../pkgs/herdr-gpui.nix {};
+    })
   ];
 }

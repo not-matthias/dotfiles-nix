@@ -86,6 +86,15 @@ Framework and PC enable `programs.plannotator.enable` to install Plannotator 0.2
 and manage `~/.plannotator/config.json`. Both use split diffs against the base and
 keep unchanged sections collapsed.
 
+### Herdr GPUI (2026-10-07)
+
+Framework enables `programs.herdr-gpui.enable` to install Herdr GPUI 20261007.3
+from the pinned upstream Linux release and manage its desktop entry.
+Launch **Herdr GPUI** from the application launcher or run `herdr-gpui`.
+The Home Manager desktop entry uses the packaged icon, and the package supplies
+its Wayland and Vulkan runtime libraries. It connects to the separately installed
+Herdr daemon; updates are managed through Nix.
+
 ## Usage
 
 ### Niri status bar (2026-10-03)
