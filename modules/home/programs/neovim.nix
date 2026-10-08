@@ -716,6 +716,9 @@
       nvimRuntime = true;
     };
     extraConfigLua = ''
+      -- Keep file-write confirmations out of Noice while retaining error messages.
+      vim.opt.shortmess:append("W")
+
       vim.cmd([[
         cnoreabbrev <expr> q getcmdtype() ==# ':' && getcmdline() ==# 'q' ? 'qa' : 'q'
       ]])
