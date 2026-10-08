@@ -97,6 +97,17 @@ Herdr daemon; updates are managed through Nix.
 
 ## Usage
 
+### Timeguard recovery (2026-10-09)
+
+When Timeguard is enabled, `timeguard-guard.target` starts at boot and uses
+`Upholds=timeguard.service` to bring it back after a stop. Both units refuse manual
+stops. Budgeted pauses leave the daemon running and remain available.
+This adds friction, not protection against unrestricted root access.
+
+Existing runtime drop-ins can override stop protection. Before activating this
+configuration, remove `/run/systemd/system/timeguard.service.d/stop-override.conf`
+if present, then reload systemd. Start `timeguard-guard.target` after activation.
+
 ### Niri status bar (2026-10-03)
 
 Quickshell starts with `graphical-session.target` and stops with it through

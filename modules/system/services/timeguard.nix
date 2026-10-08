@@ -22,4 +22,16 @@
     daily = "30m";
     weekly = "2h";
   };
+
+  systemd = lib.mkIf config.services.timeguard.enable {
+    services.timeguard.unitConfig.RefuseManualStop = true;
+    targets.timeguard-guard = {
+      description = "Keep Timeguard running";
+      wantedBy = ["multi-user.target"];
+      unitConfig = {
+        Upholds = "timeguard.service";
+        RefuseManualStop = true;
+      };
+    };
+  };
 }
