@@ -1,8 +1,13 @@
 # https://tailscale.com/download/linux/nixos
-{unstable, ...}: {
+{
+  unstable,
+  user,
+  ...
+}: {
   services.tailscale = {
     enable = true;
     package = unstable.tailscale;
+    extraSetFlags = ["--operator=${user}"];
   };
 
   # Setup MagicDNS
