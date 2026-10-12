@@ -16,3 +16,7 @@ nix run -f foo.nix
 
 - 2026-10-05: Include WebKitGTK 4.1 and GLib's TLS modules for embedded HTTPS pages.
 - Launch the package's `bin/tern` wrapper; the binary in `libexec/tern` does not set up TLS modules.
+
+## Choosr
+
+- 2026-10-08: Launch browsers through `gio launch` using their desktop files so quoted profile arguments such as `Profile 1` remain intact.

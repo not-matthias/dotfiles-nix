@@ -27,6 +27,8 @@ rustPlatform.buildRustPackage {
 
   cargoHash = "sha256-t2/9aIrQy8BYYjNhY204wPz42kj8ok/bp7FU28CPbqM=";
 
+  patches = [./choosr-desktop-launch.patch];
+
   nativeBuildInputs = [
     pkg-config
     makeWrapper
