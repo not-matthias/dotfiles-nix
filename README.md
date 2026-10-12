@@ -69,6 +69,21 @@ Activate with `sudo nixos-rebuild switch --flake .#framework`, then launch
 TradingView and select **Sign in with browser**. Grant access in the browser
 and allow it to open TradingView to complete sign-in.
 
+### Grok Bot (2026-10-11)
+
+Framework installs the official Linux Grok Bot through
+[llm-agents.nix](https://github.com/numtide/llm-agents.nix/tree/main/packages/grok-bot).
+Home Manager sets the `grokbot://` and `sand://` login callback handlers.
+Update the pinned package and activate it with:
+
+```bash
+nix flake update llm-agents
+sudo nixos-rebuild switch --flake .#framework
+```
+
+The upstream package disables Chromium's sandbox to work around renderer crashes.
+Sign-in requires an eligible [Grok or Cursor plan](https://x.ai/bot).
+
 ### Tern local release (2026-10-05)
 
 Framework enables `programs.tern.enable`, which installs Tern 0.4.5 and its Home
