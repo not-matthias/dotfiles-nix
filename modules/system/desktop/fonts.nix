@@ -10,6 +10,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     fonts.packages = with pkgs; [
+      nerd-fonts.jetbrains-mono
       # Chinese, Japanese, Korean fonts
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif

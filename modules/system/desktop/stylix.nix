@@ -88,8 +88,8 @@ in {
         name = "IBM Plex Serif";
       };
       monospace = {
-        package = pkgs.nerd-fonts.jetbrains-mono;
-        name = "JetBrains Mono Nerd Font";
+        package = pkgs.paper-mono;
+        name = "Paper Mono";
       };
       emoji = {
         package = pkgs.noto-fonts-color-emoji;

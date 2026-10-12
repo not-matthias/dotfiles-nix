@@ -1,6 +1,7 @@
 {...}: {
   nixpkgs.overlays = [
     (_self: super: {
+      paper-mono = super.callPackage ../../pkgs/paper-mono.nix {};
       binary-ninja = super.callPackage ../../pkgs/binary-ninja.nix {};
     })
     (_self: super: {
