@@ -232,6 +232,18 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2yZENvNlZ8XQxcPVG8CrSEaUmvthPwheHRruEKqnzP not-matthias@raspi"
   ];
 
+  security.sudo.extraRules = [
+    {
+      users = [user];
+      commands = [
+        {
+          command = "ALL";
+          options = ["NOPASSWD"];
+        }
+      ];
+    }
+  ];
+
   virtualisation = {
     podman.enable = true;
     qemu.enable = true;
