@@ -129,6 +129,15 @@ The Home Manager desktop entry uses the packaged icon, and the package supplies
 its Wayland and Vulkan runtime libraries. It connects to the separately installed
 Herdr daemon; updates are managed through Nix.
 
+### Google Drive (2026-10-07)
+
+The PC Home Manager configuration enables `programs.rclone.enable` in `hosts/pc/default.nix`.
+Create a personal [Google OAuth client](https://rclone.org/drive/#making-your-own-client-id),
+then run `rclone config` and create a Google Drive remote named `gdrive`.
+Credentials stay in the writable `~/.config/rclone/rclone.conf`, outside Git and
+the Nix store. Use `rclone copy /path/to/files gdrive:Uploads --progress` for uploads
+and `rclone check /path/to/files gdrive:Uploads --one-way` to verify them.
+
 ## Usage
 
 ### Timeguard recovery (2026-10-09)

@@ -54,6 +54,7 @@
 
     programs = {
       taskwarrior.enable = true;
+      rclone.enable = true;
       plannotator.enable = true;
       ida-pro.enable = true;
       lmstudio = {
