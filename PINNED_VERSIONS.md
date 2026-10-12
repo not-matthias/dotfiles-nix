@@ -40,7 +40,7 @@ Sources are `pkgs/<name>.nix` unless noted.
 | paperclip | `2026.626.0` |
 | Pi coding agent | `1.1.0` (`pkgs/pi-mono/default.nix`) |
 | Pi session manager | `0.4.9` (`pkgs/pi-session-manager.nix`) |
-| plannotator | `0.28.8` |
+| plannotator | `0.28.17` |
 | qmd | `2.8.3` |
 | radius2 | `1.2.0` |
 | rtk | `0.49.0` |
