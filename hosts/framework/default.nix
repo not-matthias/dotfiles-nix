@@ -42,6 +42,7 @@ in {
       unstable.beeper
       flakes.devenv.packages.${pkgs.stdenv.hostPlatform.system}.devenv
       flakes.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.grok-bot
+      rustdesk
 
       vmprotect
       radius2
