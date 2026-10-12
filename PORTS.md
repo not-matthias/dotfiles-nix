@@ -24,6 +24,7 @@
 9091 = authelia
 8123 = home-assistant
 24→5006 = actual-budget
+18789 = openclaw gateway
 
 https://jellyfin.org/docs/general/networking/
 8096 = jellyfin http

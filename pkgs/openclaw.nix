@@ -4,10 +4,10 @@
   lib,
 }: let
   pname = "openclaw-desktop";
-  version = "2026.9.5";
+  version = "2026.9.9";
   src = fetchurl {
     url = "https://github.com/openclaw/openclaw/releases/download/v${version}/OpenClaw-${version}-amd64.AppImage";
-    hash = "sha256-pu+PG/0O3S0C7Hpbh4YdRzMo2Hdk9sjdc5ZkxUgy/Jw=";
+    hash = "sha256-ocg1gymWj3yf3i0ApooipI2k3rUt9g4+rtrrNWZWSsY=";
   };
   appimageContents = appimageTools.extractType2 {inherit pname version src;};
 in

@@ -168,6 +168,7 @@
       ];
     };
     sccache.enable = true;
+    openclaw.enable = true;
     nix-index.enable = true;
     pay-respects.enable = true;
   };
