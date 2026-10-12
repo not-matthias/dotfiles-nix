@@ -58,6 +58,14 @@ Once `home-manager` is on your `PATH` (after the first activation), subsequent u
 home-manager switch --flake .#not-matthias@jetson
 ```
 
+### Timeguard rules (2026-10-12)
+
+Timeguard reads encrypted rules from `secrets/timeguard-rules.age`. Scheduled
+rules use `[[rule.schedule.window]]` for `days`, `start`, and `end`; `mode`
+belongs under `[rule.schedule]`. Validate decrypted rules with
+`timeguard check --config /etc/timeguard/config.toml --rules-file <rules.toml>`
+before re-encrypting and activating.
+
 ### TradingView Desktop (2026-10-12)
 
 Framework enables `programs.tradingview.enable` from
