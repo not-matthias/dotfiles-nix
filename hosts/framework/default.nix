@@ -83,6 +83,7 @@ in {
       plannotator.enable = true;
       handy.enable = true;
       choosr.enable = true;
+      tradingview.enable = true;
       rust = {
         enable = true;
         maintenance.enable = true;

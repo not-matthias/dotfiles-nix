@@ -58,6 +58,17 @@ Once `home-manager` is on your `PATH` (after the first activation), subsequent u
 home-manager switch --flake .#not-matthias@jetson
 ```
 
+### TradingView Desktop (2026-10-12)
+
+Framework enables `programs.tradingview.enable` from
+`modules/home/programs/tradingview.nix`. It installs TradingView from the pinned
+unstable input and registers its desktop entry and `tradingview://` login handler
+through Home Manager.
+
+Activate with `sudo nixos-rebuild switch --flake .#framework`, then launch
+TradingView and select **Sign in with browser**. Grant access in the browser
+and allow it to open TradingView to complete sign-in.
+
 ### Tern local release (2026-10-05)
 
 Framework enables `programs.tern.enable`, which installs Tern 0.4.5 and its Home

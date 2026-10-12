@@ -54,6 +54,7 @@
   ./webapps.nix
   ./obsidian.nix
   ./solidtime-desktop.nix
+  ./tradingview.nix
   ./spicetify.nix
   ./ssh.nix
   ./vscode
