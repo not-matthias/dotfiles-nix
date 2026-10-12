@@ -222,6 +222,8 @@ $ nix registry list
 
 ### CLI releases
 
+2026-10-12: Updated OMP to 18.10.2 from the latest upstream release.
+
 2026-10-07: Updated OMP to 18.8.3 from the latest upstream release.
 
 2026-10-04: Updated OMP to 18.6.1, Plannotator to 0.27.25, and Herdr to 0.9.3
