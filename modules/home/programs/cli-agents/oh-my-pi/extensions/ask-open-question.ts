@@ -7,7 +7,7 @@ export default function askOpenQuestionExtension(pi: ExtensionAPI): void {
 		name: "ask_open_question",
 		label: "Open Question",
 		description:
-			"Ask the interactive user one open-ended question and return their free-form answer. Use this only when predefined options would constrain the answer; use ask for 2-5 materially different choices.",
+			"Interactive sessions only. Ask one open-ended question when predefined options would constrain the answer; use ask for 2-5 materially different choices. In headless contexts, route necessary questions to an interactive parent or report the blocker.",
 		strict: true,
 		loadMode: "essential",
 		approval: "read",
@@ -17,8 +17,9 @@ export default function askOpenQuestionExtension(pi: ExtensionAPI): void {
 
 		async execute(_toolCallId, { question }, signal, _onUpdate, context) {
 			if (!context.hasUI) {
-				context.abort();
-				throw new Error("ask_open_question requires interactive mode");
+				throw new Error(
+					"Interactive input is unavailable. Route this question to an interactive parent or report the blocker; do not invent an answer.",
+				);
 			}
 			if (active) throw new Error("ask_open_question is already waiting for an answer");
 
