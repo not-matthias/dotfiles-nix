@@ -1,0 +1,209 @@
+--- a/MPRISSource.ts
++++ b/MPRISSource.ts
+@@ -1,7 +1,7 @@
+ import type { Interfaces as Notifications } from '@dbus-types/notifications'
+ import dayjs from "dayjs";
+ import type { DBusInterface} from 'dbus-ts';
+-import { sessionBus, Connection, type ConnectOpts } from 'dbus-ts';
++import { sessionBus, type MessageBus } from 'dbus-ts';
+ import type EventEmitter from "events";
+ import type {PlayObject, PlayObjectMinimal} from "../../core/Atomic.ts";
+ import type {FormatPlayObjectOptions, InternalConfig} from "../common/infrastructure/Atomic.ts";
+@@ -18,9 +18,6 @@
+ import { findCauseByMessage } from "../utils/ErrorUtils.ts";
+ import type {RecentlyPlayedOptions} from "./AbstractSource.ts";
+ import MemorySource from "./MemorySource.ts";
+-import type { Readable, Writable } from 'stream';
+-import net from 'net';
+-import pEvent from 'p-event';
+ import { baseFormatPlayObj } from '../utils/PlayTransformUtils.ts';
+ import { artistNamesToCredits } from '../../core/StringUtils.ts';
+ 
+@@ -100,38 +97,28 @@
+     protected async doCheckConnection(): Promise<true | string | undefined> {
+         // test if we can get DBus
+         try {
+-            await this.getDBus();
+-            return true;
++            const bus = await sessionBus<Notifications>();
++            try {
++                await this.getDBus(bus);
++                return true;
++            } finally {
++                bus.connection.end();
++            }
+         } catch (e) {
+             throw new Error('Could not get DBus interface from operating system', {cause: e});
+         }
+     }
+ 
+-    protected getDBus = async () => {
+-        const conn = new Connection(createStream({}));
+-        try {
+-            const res = await Promise.race([
+-                pEvent(conn, 'error'),
+-                conn.init()
+-            ])
+-            if(res instanceof Error) {
+-                throw res;
+-            }
+-        } catch (e) {
+-            throw new Error('Failed to connected to session bus', {cause: e});
+-        }
+-
+-        try {
+-            const promise = sessionBus<Notifications>();
+-            const busNew = await sessionBus<Notifications>();
+-            return await busNew.getInterface('org.freedesktop.DBus', '/org/freedesktop/DBus', 'org.freedesktop.DBus');
++    protected getDBus = async (bus: MessageBus<Notifications>) => {
++        try {
++            return await bus.getInterface('org.freedesktop.DBus', '/org/freedesktop/DBus', 'org.freedesktop.DBus');
+         } catch (e) {
+             throw new Error('Failed to get DBus interface', {cause: e});
+         } 
+     }
+ 
+-    protected listNew = async () => {
+-        const iface = await this.getDBus();
++    protected listNew = async (bus: MessageBus<Notifications>) => {
++        const iface = await this.getDBus(bus);
+         const names = (await iface.ListNames())[0];
+         return names.filter((n) => n.includes('org.mpris.MediaPlayer2'))
+     }
+@@ -140,42 +127,44 @@
+ 
+         const busNew = await sessionBus<Notifications>();
+ 
+-        const playerInfos: PlayerInfo[] = [];
+-
+-        const newList = await this.listNew();
+-
+-        for (const playerName of newList) {
+-            const plainPlayerName = playerName.replace('org.mpris.MediaPlayer2.', '');
+-            try {
+-                const props = await busNew.getInterface(playerName, MPRIS_PATH, MPRIS_IFACE);
+-                // may not always have position available! can fallback to undefined for this
+-                let pos: number | undefined;
++        try {
++            const playerInfos: PlayerInfo[] = [];
++            const newList = await this.listNew(busNew);
++
++            for (const playerName of newList) {
++                const plainPlayerName = playerName.replace('org.mpris.MediaPlayer2.', '');
+                 try {
+-                    pos = await this.getPlayerPosition(props);
++                    const props = await busNew.getInterface(playerName, MPRIS_PATH, MPRIS_IFACE);
++                    // may not always have position available! can fallback to undefined for this
++                    let pos: number | undefined;
++                    try {
++                        pos = await this.getPlayerPosition(props);
++                    } catch (e) {
++                        // only log if the error is not related to position not being supported since this is a potentially expected result
++                        if(!findCauseByMessage(e, 'Position is not supported')) {
++                            this.logger.warn(new Error(`Could not get Position info for player ${plainPlayerName}`, {cause: e}));
++                        }
++                    }
++                    const status = await this.getPlayerStatus(props);
++                    if (status === PLAYBACK_STATUS_STOPPED && activeOnly) {
++                        continue;
++                    }
++                    const metadata = await this.getPlayerMetadata(props);
++                    playerInfos.push({
++                        name: plainPlayerName,
++                        status,
++                        position: pos,
++                        metadata
++                    });
+                 } catch (e) {
+-                    // only log if the error is not related to position not being supported since this is a potentially expected result
+-                    if(!findCauseByMessage(e, 'Position is not supported')) {
+-                        this.logger.warn(new Error(`Could not get Position info for player ${plainPlayerName}`, {cause: e}));
+-                    }
++                    this.logger.warn(new Error(`Could not parse D-bus info for player ${plainPlayerName}`, {cause: convertDBusExceptionToError(e)}));
+                 }
+-                const status = await this.getPlayerStatus(props);
+-                if (status === PLAYBACK_STATUS_STOPPED && activeOnly) {
+-                    continue;
+-                }
+-                const metadata = await this.getPlayerMetadata(props);
+-                playerInfos.push({
+-                    name: plainPlayerName,
+-                    status,
+-                    position: pos,
+-                    metadata
+-                });
+-            } catch (e) {
+-                this.logger.warn(new Error(`Could not parse D-bus info for player ${plainPlayerName}`, {cause: convertDBusExceptionToError(e)}));
+-            }
+-
+-        }
+-
+-        return playerInfos;
++            }
++
++            return playerInfos;
++        } finally {
++            busNew.connection.end();
++        }
+     }
+ 
+     protected getPlayerPosition = async (props: DBusInterface): Promise<number> => {
+@@ -265,57 +254,3 @@
+     }
+     return err;
+ }
+-
+-// unfortunately had to recreate this function from dbus-ts/Connection
+-// in order to be able to create the Connection class without immediate init
+-// so we can catch errors
+-const createStream = (opts: ConnectOpts): Readable&Writable => {
+-    if (typeof opts !== 'object') {
+-        opts = {};
+-    }
+-    if ("stream" in opts) {
+-        return opts.stream;
+-    }
+-    if ("socket" in opts) {
+-        return net.createConnection(opts.socket);
+-    }
+-    if ("port" in opts) {
+-        return net.createConnection(opts.port, opts.host);
+-    }
+-
+-    const busAddress = opts.busAddress || process.env.DBUS_SESSION_BUS_ADDRESS;
+-    if (!busAddress) throw new Error('unknown bus address');
+-
+-    const addresses = busAddress.split(';');
+-    for (let i = 0; i < addresses.length; ++i) {
+-        const address = addresses[i];
+-        const familyParams = address.split(':');
+-        const family = familyParams[0];
+-        const params: any = {};
+-        familyParams[1].split(',').map(function(p) {
+-            const keyVal = p.split('=');
+-            params[keyVal[0]] = keyVal[1];
+-        });
+-
+-        try {
+-            switch (family.toLowerCase()) {
+-                case 'tcp':
+-                    return net.createConnection(params.port, (params.host || 'localhost'));
+-                case 'unix':
+-                    if (params.socket) return net.createConnection(params.socket);
+-                    if (params.path) return net.createConnection(params.path);
+-                    throw new Error(
+-                        "not enough parameters for 'unix' connection - you need to specify 'socket' or 'path' parameter"
+-                    );
+-                default:
+-                    throw new Error('unknown address type:' + family);
+-            }
+-        } catch (e) {
+-            if (i < addresses.length - 1) {
+-                console.warn(e.message);
+-            } else {
+-                throw e;
+-            }
+-        }
+-    }
+-}
+\ No newline at end of file
