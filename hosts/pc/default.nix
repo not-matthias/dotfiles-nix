@@ -195,6 +195,7 @@
       localBackup.enable = true;
       remoteBackup.enable = false;
     };
+    audiomuse-ai.enable = true;
     navidrome = {
       enable = true;
       musicFolder = "/home/${user}/Music";

@@ -203,6 +203,14 @@ in {
                 siteMonitor = "https://music.${domain}";
               };
             })
+            (includeService "audiomuse-ai" {
+              "AudioMuse-AI" = {
+                description = "Sonic music analysis";
+                icon = "navidrome";
+                href = "https://audiomuse.${domain}";
+                siteMonitor = "https://audiomuse.${domain}";
+              };
+            })
             (includeService "octo-fiesta" {
               "Octo Fiesta" = {
                 description = "Subsonic Proxy";

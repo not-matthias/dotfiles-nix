@@ -2,6 +2,7 @@
   ./actual.nix
   ./adguard.nix
   ./audiobookshelf.nix
+  ./audiomuse-ai.nix
   ./authelia.nix
   ./caddy.nix
   ./calibre-web.nix

@@ -285,6 +285,7 @@ in {
       };
     };
     safeeyes.enable = true;
+    audiomuse-ai.enable = true;
     navidrome = {
       enable = true;
       musicFolder = "/home/${user}/Music";

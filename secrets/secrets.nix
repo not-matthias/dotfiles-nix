@@ -39,6 +39,7 @@ in {
   "ziit.age".publicKeys = systems;
   "timeguard-rules.age".publicKeys = systems;
   "wakapi-salt.age".publicKeys = systems;
+  "audiomuse-ai-env.age".publicKeys = systems;
 
   "pi-mono-env.age".publicKeys = systems;
   "taskchampion-sync.age".publicKeys = systems;
