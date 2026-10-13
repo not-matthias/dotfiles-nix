@@ -79,7 +79,13 @@ CASES = [
         'git commit -m "Generated with Claude Code"',
     ),
     ("made_with", True, "tool", "bash", 'gh pr create --body "Made-with: Cursor"'),
-    ("text_trailer", True, "text", None, "Co-Authored-By: Claude"),
+    (
+        "quoted_existing_trailer",
+        False,
+        "text",
+        None,
+        "The existing commit contains `Co-Authored-By: Claude`; remove it before publishing.",
+    ),
     ("clean_commit", False, "tool", "bash", 'git commit -m "fix: repair"'),
     ("clean_fixup", False, "tool", "bash", "git commit --fixup=abc123"),
     (
