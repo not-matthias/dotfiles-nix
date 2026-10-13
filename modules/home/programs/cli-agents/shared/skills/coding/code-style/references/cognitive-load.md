@@ -18,6 +18,8 @@ Keep decisions near the data they depend on. Avoid scattering state transitions 
 
 Use precise names for domain state, conditions, mappings, sentinels, and non-obvious values. Avoid context-dependent flags and hidden defaults that merely make call sites look simpler.
 
+Declare a constant in the narrowest scope that uses it. A constant used by one function belongs inside that function, so readers see its value next to its only use and know nothing else depends on it. Keep it at module level only for a strong reason, e.g. other code or tests use it, or the language cannot declare it locally.
+
 ## Make control flow easy to follow
 
 - Prefer guards, early returns, and one visible happy path. Separate invalid input and exceptional states from normal work.
