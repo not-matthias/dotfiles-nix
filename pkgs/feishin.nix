@@ -5,7 +5,7 @@
   stdenv,
   buildNpmPackage,
   fetchFromGitHub,
-  electron_39,
+  electron_43,
   pnpmConfigHook,
   pnpm,
   fetchPnpmDeps,
@@ -14,16 +14,16 @@
   makeDesktopItem,
 }: let
   pname = "feishin";
-  version = "1.8.0";
+  version = "1.17.0";
 
   src = fetchFromGitHub {
     owner = "jeffvli";
     repo = "feishin";
     tag = "v${version}";
-    hash = "sha256-sd6j3gPtNFN1hMiOMIiTICNH8mYJvO9FSXPqUFotis8=";
+    hash = "sha256-1ZIw5XiN+2EhpHmdvN0HxgMSvn4QvN9B+ZJ3RlPXhLw=";
   };
 
-  electron = electron_39;
+  electron = electron_43;
 in
   buildNpmPackage {
     inherit pname version;
@@ -40,7 +40,7 @@ in
         src
         ;
       fetcherVersion = 3;
-      hash = "sha256-dkeWFVmqIuwEaje4tg/IoSzxIMGHW5r8bEOV0tJEUZE=";
+      hash = "sha256-AaZTCuqG4kIiz1pHFaXMAoTj4NDX7gAZY0RfStLT5QY=";
     };
 
     env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
@@ -50,21 +50,15 @@ in
       ++ lib.optionals (stdenv.hostPlatform.isLinux) [copyDesktopItems]
       ++ lib.optionals stdenv.hostPlatform.isDarwin [darwin.autoSignDarwinBinariesHook];
 
-    postPatch =
-      ''
-        # release/app dependencies are installed on preConfigure
-        substituteInPlace package.json \
-          --replace-fail '"postinstall": "electron-builder install-app-deps",' ""
+    postPatch = ''
+      # release/app dependencies are installed on preConfigure
+      substituteInPlace package.json \
+        --replace-fail '"postinstall": "install-electron && electron-builder install-app-deps",' ""
 
-        # Don't check for updates.
-        substituteInPlace src/main/index.ts \
-          --replace-fail "autoUpdater.checkForUpdatesAndNotify();" ""
-      ''
-      + lib.optionalString stdenv.hostPlatform.isLinux ''
-        # https://github.com/electron/electron/issues/31121
-        substituteInPlace src/main/index.ts \
-          --replace-fail "process.resourcesPath" "'$out/share/feishin/resources'"
-      '';
+      # Don't check for updates.
+      substituteInPlace src/main/index.ts \
+        --replace-fail "autoUpdater.checkForUpdatesAndNotify();" ""
+    '';
 
     postBuild =
       lib.optionalString stdenv.hostPlatform.isDarwin ''
