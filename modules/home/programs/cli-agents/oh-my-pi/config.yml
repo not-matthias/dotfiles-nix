@@ -83,11 +83,8 @@ task:
   showResolvedModelBadge: true
   enableLsp: true
   maxEffort: xhigh
-  # Temporarily disabled because prewalk doesn't work with GPT+Google due to encrypted
-  # reasoning traces that hide the thinking.
-  # prewalk: true
-  # agentPrewalk:
-  #   task: google-antigravity/gemini-3.8-flash
+  # Plan with the task model, then hand implementation to the smol role.
+  prewalk: true
 
   # Currently disabled as it increases the context usage quite a lot. I observed up to 50% of total token usage being
   # used up by the advisor. Enable it only if not doing work with lots of subagents.
