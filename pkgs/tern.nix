@@ -6,6 +6,7 @@
   makeWrapper,
   openssl,
   wayland,
+  pipewire,
   libxkbcommon,
   libGL,
   vulkan-loader,
@@ -26,6 +27,7 @@ stdenv.mkDerivation rec {
   buildInputs = [openssl stdenv.cc.cc.lib];
   runtimeDependencies = [
     (lib.getLib wayland)
+    (lib.getLib pipewire)
     (lib.getLib libxkbcommon)
     (lib.getLib libGL)
     (lib.getLib vulkan-loader)

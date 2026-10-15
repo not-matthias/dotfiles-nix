@@ -103,8 +103,9 @@ nix-store --add-fixed sha256 ~/Downloads/Tern-0.8.3-linux-x86_64.tar.gz
 sudo nixos-rebuild switch --flake .#framework
 ```
 
-The package supplies its runtime libraries. Sign-in requires a Stencil
-closed-beta account.
+The package supplies its runtime libraries, including PipeWire for Wayland screen
+sharing. Restart Tern after rebuilding to load updated libraries. Sign-in requires
+a Stencil closed-beta account.
 
 Install the Herdr plugin with Git and Herdr available on Tern's PATH:
 
