@@ -28,6 +28,7 @@ in {
   services.taskwarrior-sync.client.enable = true;
 
   home-manager.users.${user} = {
+    config,
     lib,
     pkgs,
     ...
@@ -47,6 +48,7 @@ in {
       vmprotect
       radius2
       tldraw-offline
+      knife
       # unstable.antigravity-fhs
 
       # Install desktop apps rather than websites
@@ -98,6 +100,7 @@ in {
       helix.enable = true;
       idasql.enable = true;
       cli-agents = {
+        programSkills.knife = lib.mkIf (lib.elem pkgs.knife config.home.packages) ../../modules/home/programs/cli-agents/shared/program-skills/knife;
         herdr.enable = true;
         pi-mono = {
           enable = true;

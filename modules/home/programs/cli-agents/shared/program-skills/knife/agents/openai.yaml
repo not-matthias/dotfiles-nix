@@ -1,0 +1,4 @@
+interface:
+  display_name: "Knife"
+  short_description: "Static binary triage and analysis with Knife"
+  default_prompt: "Use $knife to inspect this binary and report evidence-backed findings."
