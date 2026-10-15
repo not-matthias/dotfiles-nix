@@ -76,6 +76,14 @@ in {
         enabled = true
 
         [[rule]]
+        name = "Pydantic"
+        condition_type = "regexp"
+        value = "(?i)^(?:[^/]+\\.)?pydantic\\.dev(?:[/:?#]|$)"
+        action_type = "open_browser"
+        browser = "Google Chrome Work"
+        enabled = true
+
+        [[rule]]
         name = "Claude"
         condition_type = "regexp"
         value = "(?i)^(?:[^/]+\\.)?claude\\.ai(?:[/:?#]|$)"
