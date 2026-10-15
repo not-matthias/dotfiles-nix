@@ -92,14 +92,14 @@ sudo nixos-rebuild switch --flake .#framework
 The upstream package disables Chromium's sandbox to work around renderer crashes.
 Sign-in requires an eligible [Grok or Cursor plan](https://x.ai/bot).
 
-### Tern local release (2026-10-05)
+### Tern local release (2026-10-15)
 
-Framework enables `programs.tern.enable`, which installs Tern 0.4.5 and its Home
+Framework enables `programs.tern.enable`, which installs Tern 0.8.3 and its Home
 Manager desktop entry. Download the closed-beta release from
 https://build.stencil.so/tern and import it before building:
 
 ```bash
-nix-store --add-fixed sha256 ~/Downloads/Tern-0.4.5-linux-x86_64.tar.gz
+nix-store --add-fixed sha256 ~/Downloads/Tern-0.8.3-linux-x86_64.tar.gz
 sudo nixos-rebuild switch --flake .#framework
 ```
 
