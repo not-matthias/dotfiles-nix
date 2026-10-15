@@ -107,6 +107,10 @@ The package supplies its runtime libraries, including PipeWire for Wayland scree
 sharing. Restart Tern after rebuilding to load updated libraries. Sign-in requires
 a Stencil closed-beta account.
 
+Profiling uses a package-local `perf` wrapper with a 4 MiB buffer per CPU.
+This prevents raised `kernel.perf_event_mlock_kb` limits from selecting oversized
+buffers.
+
 Install the Herdr plugin with Git and Herdr available on Tern's PATH:
 
 ```bash
