@@ -18,10 +18,6 @@
   };
 
   services.timeguard.rulesFile = config.age.secrets.timeguard-rules.path;
-  services.timeguard.settings.pause_budget = {
-    daily = "30m";
-    weekly = "2h";
-  };
 
   systemd = lib.mkIf config.services.timeguard.enable {
     services.timeguard.unitConfig.RefuseManualStop = true;
