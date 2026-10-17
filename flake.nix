@@ -131,7 +131,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     self-bot = {
-      url = "git+ssh://git@github.com/not-matthias/self-bot.git?rev=56a807e9ddc0baa09ba0f22a5e74026421641450";
+      url = "git+ssh://git@github.com/not-matthias/self-bot.git?rev=d4f54162a4be0a76cff9750e807357acadc24443";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     timeguard = {
