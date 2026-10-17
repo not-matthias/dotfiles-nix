@@ -1757,16 +1757,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1792251356,
-        "narHash": "sha256-MPxatk5q0ZlBwLJUtwmbi0mPzxk34zz+Y+ZC/ZGd6hs=",
+        "lastModified": 1792252162,
+        "narHash": "sha256-R54JvDqax5insvR16ZyZ2TTlIpOZes69gDjtqF9i21E=",
         "ref": "refs/heads/main",
-        "rev": "19fbf40889ee056a5884d23f5875bf9a86679323",
-        "revCount": 65,
+        "rev": "be9454e53f6560d3590b1fb2197e231cf778da5a",
+        "revCount": 66,
         "type": "git",
         "url": "ssh://git@github.com/not-matthias/self-bot.git"
       },
       "original": {
-        "rev": "19fbf40889ee056a5884d23f5875bf9a86679323",
+        "rev": "be9454e53f6560d3590b1fb2197e231cf778da5a",
         "type": "git",
         "url": "ssh://git@github.com/not-matthias/self-bot.git"
       }
