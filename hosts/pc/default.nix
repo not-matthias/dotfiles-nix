@@ -220,6 +220,7 @@
   services = {
     caddy.enable = true;
     taskwarrior-sync.enable = true;
+    self-bot.enable = true;
   };
   services.openssh = {
     enable = true;

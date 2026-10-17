@@ -130,6 +130,10 @@
       url = "git+https://github.com/not-matthias/taskwarrior-web.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    self-bot = {
+      url = "git+ssh://git@github.com/not-matthias/self-bot.git?rev=56a807e9ddc0baa09ba0f22a5e74026421641450";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     timeguard = {
       url = "git+ssh://git@github.com/not-matthias/timeguard.git";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -154,6 +158,13 @@
   } @ flakes: let
     user = "not-matthias";
   in {
+    packages = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux"] (system: {
+      self-bot = flakes.self-bot.packages.${system}.default;
+    });
+    apps = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux"] (system: {
+      self-bot = flakes.self-bot.apps.${system}.default;
+    });
+
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
