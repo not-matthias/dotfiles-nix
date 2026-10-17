@@ -21,9 +21,9 @@
           repeat = false;
         };
 
-        spawn-at-startup = [
-          {command = ["uwsm" "app" "--" "handy"];}
-        ];
+        # spawn-at-startup = [
+        #   {command = ["uwsm" "app" "--" "handy"];}
+        # ];
       };
     }
   );
