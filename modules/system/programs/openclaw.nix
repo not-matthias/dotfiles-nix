@@ -18,7 +18,8 @@ in {
     systemd.tmpfiles.rules = ["d /home/${user}/.openclaw 0700 ${user} users -"];
 
     virtualisation.oci-containers.containers.openclaw-gateway = {
-      image = "ghcr.io/openclaw/openclaw@sha256:7f10d5cc975a90b65192eaa099454fe33ce8ce2390806c61c65cd868e9ef730d";
+      # OpenClaw 2026.10.4 (2026-10-17); keep in sync with pkgs/openclaw.nix.
+      image = "ghcr.io/openclaw/openclaw@sha256:614004ec2cf2e6095124ea544dc8d950c49306aef445a1fc300b88717e24261a";
       volumes = ["/home/${user}/.openclaw:/home/${user}/.openclaw"];
       environment = {
         HOME = "/home/${user}";
