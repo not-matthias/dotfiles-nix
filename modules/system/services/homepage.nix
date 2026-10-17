@@ -43,6 +43,14 @@ in {
       services = [
         {
           "Services" = lib.flatten [
+            (includeService "self-bot" {
+              "self-bot" = {
+                description = "Task-to-PR controller";
+                icon = "mdi-robot";
+                href = "https://self-bot.${domain}";
+                siteMonitor = "https://self-bot.${domain}";
+              };
+            })
             (includeService "adguardhome" {
               "AdGuard Home" = {
                 description = "AdGuard Home";

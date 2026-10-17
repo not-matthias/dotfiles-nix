@@ -131,7 +131,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     self-bot = {
-      url = "git+ssh://git@github.com/not-matthias/self-bot.git?rev=d4f54162a4be0a76cff9750e807357acadc24443";
+      url = "git+ssh://git@github.com/not-matthias/self-bot.git?rev=19fbf40889ee056a5884d23f5875bf9a86679323";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     timeguard = {
@@ -158,13 +158,6 @@
   } @ flakes: let
     user = "not-matthias";
   in {
-    packages = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux"] (system: {
-      self-bot = flakes.self-bot.packages.${system}.default;
-    });
-    apps = nixpkgs.lib.genAttrs ["x86_64-linux" "aarch64-linux"] (system: {
-      self-bot = flakes.self-bot.apps.${system}.default;
-    });
-
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;

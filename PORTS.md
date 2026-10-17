@@ -25,6 +25,7 @@
 8123 = home-assistant
 24→5006 = actual-budget
 18789 = openclaw gateway
+4310 = self-bot
 
 https://jellyfin.org/docs/general/networking/
 8096 = jellyfin http
