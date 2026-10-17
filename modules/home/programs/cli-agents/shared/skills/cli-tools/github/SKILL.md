@@ -1,6 +1,6 @@
 ---
 name: github
-description: "Use whenever working with GitHub — PRs, issues, CI runs, review comments, unresolved threads, code search, or any `gh` CLI / GraphQL query."
+description: "Use whenever working with GitHub — PRs, issues, CI runs, review comments, unresolved threads, code search, embedding screenshots/images in issues or PRs, or any `gh` CLI / GraphQL query."
 ---
 
 <!-- Source: https://github.com/mitsuhiko/agent-stuff/blob/main/skills/github/SKILL.md -->
@@ -97,6 +97,29 @@ The `gh api` command is useful for accessing data not available through other su
 Get PR with specific fields:
 ```bash
 gh api repos/owner/repo/pulls/55 --jq '.title, .state, .user.login'
+```
+
+## Attaching Screenshots
+
+Upload images and videos with `--attach` on `gh issue create|edit|comment` and `gh pr create|edit|comment`. gh stores them as GitHub attachments (`github.com/user-attachments/...`). Never commit screenshots to the repo or an `assets` branch.
+
+Reference the local path in a body file, then attach the same path; gh rewrites the reference in place:
+```markdown
+![Login error](.agents/login.png)
+```
+```bash
+gh pr create --title "..." --body-file .agents/body.md --attach .agents/login.png
+```
+
+- Use the exact same path string in the body and in `--attach`; otherwise gh appends a second copy at the end.
+- Without a body flag, `gh pr edit 55 --attach x.png` appends to the existing body.
+- Alt text for appended files: `--attach './x.png#Alt text'`. Referenced files keep their Markdown alt text.
+- Videos render as a player only when `![](path)` is alone in its paragraph.
+- Write the body with a file tool, not a Python string in omp eval: eval rewrites lines starting with `!`.
+
+Verify the images render (the issues endpoint works for PRs too):
+```bash
+gh api repos/owner/repo/issues/55 -H "Accept: application/vnd.github.html+json" --jq .body_html | grep -o '<img' | wc -l
 ```
 
 ## JSON Output
