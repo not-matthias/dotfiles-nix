@@ -25,10 +25,17 @@ BarButton {
         command: [Commands.flashgen, "--open"]
     }
 
+    Process {
+        id: speakProcess
+        command: [Commands.flashgen, "--speak"]
+    }
+
     onClicked: function (button) {
         if (button === Qt.LeftButton)
             Flashgen.refresh();
         else if (button === Qt.RightButton && !openProcess.running)
             openProcess.running = true;
+        else if (button === Qt.MiddleButton && !speakProcess.running)
+            speakProcess.running = true;
     }
 }

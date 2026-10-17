@@ -132,6 +132,13 @@ in {
       gitui.enable = true;
       worktrunk.enable = true;
       helium.enable = true;
+      quickshellBar.flashgenWordOfHour = {
+        hskVersion = 2;
+        tts = {
+          enable = true;
+          autoSpeak = true;
+        };
+      };
 
       discord = {
         enable = true;
@@ -242,6 +249,7 @@ in {
         "performance"
       ];
     };
+    kokoro.enable = true;
     multi-scrobbler.enable = true;
     restic = {
       enable = true;

@@ -90,6 +90,40 @@ in {
         default = 3;
         description = "HSK version to read from the Flashgen database.";
       };
+
+      tts = {
+        enable = lib.mkEnableOption "Kokoro speech for the Flashgen word of the hour";
+
+        endpoint = lib.mkOption {
+          type = lib.types.str;
+          default = "http://127.0.0.1:8880";
+          description = "Kokoro-FastAPI base URL.";
+        };
+
+        chineseVoice = lib.mkOption {
+          type = lib.types.str;
+          default = "zf_xiaobei";
+          description = "Kokoro voice for the Chinese sentence.";
+        };
+
+        englishVoice = lib.mkOption {
+          type = lib.types.str;
+          default = "af_heart";
+          description = "Kokoro voice for the English translation.";
+        };
+
+        speed = lib.mkOption {
+          type = lib.types.float;
+          default = 0.9;
+          description = "Kokoro playback speed multiplier.";
+        };
+
+        autoSpeak = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "Speak the new word on the hourly notification unless dunst is paused.";
+        };
+      };
     };
   };
 

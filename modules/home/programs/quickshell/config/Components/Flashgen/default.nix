@@ -2,14 +2,26 @@
   pkgs,
   cfg,
 }: let
+  ttsEnabled =
+    if cfg.tts.enable
+    then "1"
+    else "0";
+  autoSpeak =
+    if cfg.tts.autoSpeak
+    then "1"
+    else "0";
   script = pkgs.writeShellApplication {
     name = "flashgen-word-of-hour";
     runtimeInputs = [
       pkgs.coreutils
+      pkgs.curl
+      pkgs.dunst
       pkgs.jq
-      pkgs.sqlite
-      pkgs.xdg-utils
       pkgs.libnotify
+      pkgs.pipewire
+      pkgs.sqlite
+      pkgs.util-linux
+      pkgs.xdg-utils
     ];
     text = ''
                   emit() {
@@ -22,11 +34,78 @@
                   DB_PATH="''${FLASHGEN_DB_PATH:-${cfg.dbPath}}"
                   HSK_LEVEL="''${FLASHGEN_HSK_LEVEL:-${toString cfg.hskLevel}}"
                   HSK_VERSION="''${FLASHGEN_HSK_VERSION:-${toString cfg.hskVersion}}"
+                  TTS_ENABLED=${ttsEnabled}
+                  TTS_AUTO_SPEAK=${autoSpeak}
+                  TTS_ENDPOINT="''${FLASHGEN_TTS_ENDPOINT:-${cfg.tts.endpoint}}"
+                  TTS_VOICE_ZH=${pkgs.lib.escapeShellArg cfg.tts.chineseVoice}
+                  TTS_VOICE_EN=${pkgs.lib.escapeShellArg cfg.tts.englishVoice}
+                  TTS_SPEED=${toString cfg.tts.speed}
+                  TTS_TIMEOUT_SECONDS=20
+                  TTS_SENTENCE_GAP_SECONDS=0.4
                   STATE_HOME="''${XDG_STATE_HOME:-$HOME/.local/state}"
                   STATE_DIR="$STATE_HOME/flashgen"
                   STATE_FILE="$STATE_DIR/word-of-hour.state"
+                  TTS_CACHE_DIR="''${XDG_CACHE_HOME:-$HOME/.cache}/flashgen/tts"
                   hour_key=$(($(date +%s) / 3600))
                   action="''${1:-}"
+
+                  # Synthesizes $2 with voice $3 / language $4 into $1 unless cached. Returns non-zero when Kokoro is unreachable.
+                  synthesize() {
+                    local out="$1" text="$2" voice="$3" lang="$4"
+                    [ -s "$out" ] && return 0
+                    mkdir -p "$TTS_CACHE_DIR"
+                    local body
+                    body="$(jq -cn --arg input "$text" --arg voice "$voice" --arg lang "$lang" --argjson speed "$TTS_SPEED" \
+                      '{model: "kokoro", input: $input, voice: $voice, lang_code: $lang, response_format: "wav", speed: $speed}')"
+                    curl --fail --silent --max-time "$TTS_TIMEOUT_SECONDS" \
+                      -H 'Content-Type: application/json' -d "$body" \
+                      -o "$out.tmp" "$TTS_ENDPOINT/v1/audio/speech" || { rm -f "$out.tmp"; return 1; }
+                    mv "$out.tmp" "$out"
+                  }
+
+                  # Speaks the Chinese sentence and its English translation for the stored word of the hour.
+                  speak_current() {
+                    [ "$TTS_ENABLED" = 1 ] || return 0
+                    local word_id="" zh="" en=""
+                    if [ -r "$STATE_FILE" ]; then
+                      IFS=$'\t' read -r _ word_id _ < "$STATE_FILE" || true
+                    fi
+                    case "$word_id" in
+                      ""|*[!0-9]*) return 0 ;;
+                    esac
+                    IFS=$'\t' read -r zh _ en <<< "$(sqlite3 -separator $'\t' "$DB_PATH" "SELECT chinese, pinyin, english FROM sentences WHERE word_id = $word_id AND length(trim(chinese)) > 0 ORDER BY id LIMIT 1;")"
+                    if [ -z "$zh" ]; then
+                      zh="$(sqlite3 "$DB_PATH" "SELECT simplified FROM words WHERE id = $word_id;")"
+                      en="$(sqlite3 "$DB_PATH" "SELECT definition FROM definitions WHERE word_id = $word_id AND length(trim(definition)) > 0 LIMIT 1;")"
+                    fi
+                    [ -z "$zh" ] && return 0
+                    local zh_wav="$TTS_CACHE_DIR/$word_id-zh.wav" en_wav="$TTS_CACHE_DIR/$word_id-en.wav"
+                    synthesize "$zh_wav" "$zh" "$TTS_VOICE_ZH" z || return 0
+                    if [ -n "$en" ]; then
+                      synthesize "$en_wav" "$en" "$TTS_VOICE_EN" a || en_wav=""
+                    else
+                      en_wav=""
+                    fi
+                    pw-play "$zh_wav"
+                    [ -n "$en_wav" ] || return 0
+                    sleep "$TTS_SENTENCE_GAP_SECONDS"
+                    pw-play "$en_wav"
+                  }
+
+                  # Detached hourly notification: optional auto speech plus a Play action for replay.
+                  if [ "$action" = "--announce" ]; then
+                    if [ "$TTS_ENABLED" != 1 ]; then
+                      notify-send -a Flashgen "$FLASHGEN_NOTIFY_TITLE" "$FLASHGEN_NOTIFY_BODY"
+                      exit 0
+                    fi
+                    if [ "$TTS_AUTO_SPEAK" = 1 ] && [ "$(dunstctl is-paused)" != true ]; then
+                      speak_current &
+                    fi
+                    chosen="$(notify-send -a Flashgen -A play=Play "$FLASHGEN_NOTIFY_TITLE" "$FLASHGEN_NOTIFY_BODY")"
+                    wait
+                    [ "$chosen" = play ] && speak_current
+                    exit 0
+                  fi
 
                   if [ "$action" = "--open" ]; then
                     if [ -e "$DB_PATH" ]; then
@@ -74,10 +153,17 @@
                     exit 0
                   fi
 
-                  if [ -n "$action" ]; then
-                    emit "" "Unknown Flashgen action: $action" "unavailable"
-                    exit 0
-                  fi
+                  case "$action" in
+                    "") ;;
+                    --speak)
+                      speak_current
+                      exit 0
+                      ;;
+                    *)
+                      emit "" "Unknown Flashgen action: $action" "unavailable"
+                      exit 0
+                      ;;
+                  esac
 
                   stored_hour=""
                   last_word_id=""
@@ -161,7 +247,8 @@
                   fi
 
                   if [ "$should_notify" -eq 1 ]; then
-                    notify-send -a Flashgen "$simplified" "$notify_body" || true
+                    FLASHGEN_NOTIFY_TITLE="$simplified" FLASHGEN_NOTIFY_BODY="$notify_body" \
+                      setsid -f "$0" --announce >/dev/null 2>&1 </dev/null || true
                   fi
 
                   emit "$display_text" "$tooltip" "word"
