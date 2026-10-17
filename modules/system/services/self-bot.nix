@@ -26,6 +26,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     users.users.${user}.linger = true;
+    networking.firewall.interfaces.tailscale0.allowedTCPPorts = [443];
     networking.hosts."127.0.0.1" = ["self-bot.${domain}"];
 
     services.caddy.virtualHosts."self-bot.${domain}".extraConfig = ''
