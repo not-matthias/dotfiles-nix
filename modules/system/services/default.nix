@@ -43,6 +43,7 @@
   ./rss.nix
   ./scrutiny.nix
   ./security.nix
+  ./self-bot.nix
   ./slskd.nix
   ./soulsync.nix
   ./solidtime.nix
