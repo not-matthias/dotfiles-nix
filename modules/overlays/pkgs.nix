@@ -1,5 +1,8 @@
-{...}: {
+{unstable, ...}: {
   nixpkgs.overlays = [
+    (_self: _super: {
+      pnpm_10 = unstable.pnpm_10;
+    })
     (_self: super: {
       paper-mono = super.callPackage ../../pkgs/paper-mono.nix {};
       binary-ninja = super.callPackage ../../pkgs/binary-ninja.nix {};

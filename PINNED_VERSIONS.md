@@ -220,6 +220,7 @@ Source: `flake.nix`. Resolved revisions for all flake inputs are recorded separa
 
 - Release/channel selections: nixpkgs `26.05-chilled/0.1`, Home Manager and Stylix `release-26.05`, Nixvim `nixos-26.05`, and nixpkgs `nixos-unstable`.
 - Major-version selections: Docker 29, Garage 2, PostgreSQL 16, and Taskwarrior 3. Minor versions come from nixpkgs.
+- 2026-10-18: The package overlay selects `pnpm_10` from the locked nixpkgs-unstable input (`10.34.5`) to use its security fixes while keeping pnpm 10 compatibility.
 - Octo-fiesta uses floating container tag `dev` in `modules/system/services/octo-fiesta.nix`.
 - The disabled Discord overlay uses a floating `latest` tarball URL with a fixed content hash in `modules/overlays/discord.nix`; no release version is identified.
 - Floating source selectors in `flake.nix`: nixos-hardware `master`, nix-webapps `tlater/idiomatic-flake`, hera `main`, determinate `*`, and Oh My Pi `perf/startup-optimizations`.
