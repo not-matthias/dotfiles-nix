@@ -14,6 +14,7 @@
   niri,
   ...
 }: let
+  pcDomain = "pcnm.duckdns.org";
   nixosBox = arch: base: name: domain: let
     system = arch;
 
@@ -78,6 +79,7 @@
           flakes
           user
           domain
+          pcDomain
           nixvim
           stable
           unstable
@@ -126,7 +128,7 @@ in {
   framework = nixosBox "x86_64-linux" nixpkgs "framework" "laptopnm.duckdns.org";
   raspi = nixosBox "aarch64-linux" nixpkgs "raspi" "raspi.ide-snares.ts.net";
   travel = nixosBox "x86_64-linux" nixpkgs "travel" "laptop.local";
-  pc = nixosBox "x86_64-linux" nixpkgs "pc" "pcnm.duckdns.org";
+  pc = nixosBox "x86_64-linux" nixpkgs "pc" pcDomain;
 
   # Old configs:
   # laptop = nixosBox "aarch64" nixpkgs "laptop" "localhost";

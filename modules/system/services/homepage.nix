@@ -1,5 +1,6 @@
 {
   domain,
+  pcDomain,
   config,
   lib,
   ...
@@ -43,6 +44,14 @@ in {
       services = [
         {
           "Services" = lib.flatten [
+            {
+              "self-bot" = {
+                description = "Task-to-PR controller on PC";
+                icon = "mdi-robot";
+                href = "https://self-bot.${pcDomain}";
+                siteMonitor = "https://self-bot.${pcDomain}";
+              };
+            }
             (includeService "adguardhome" {
               "AdGuard Home" = {
                 description = "AdGuard Home";

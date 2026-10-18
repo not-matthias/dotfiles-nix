@@ -130,6 +130,10 @@
       url = "git+https://github.com/not-matthias/taskwarrior-web.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    self-bot = {
+      url = "git+ssh://git@github.com/not-matthias/self-bot.git?rev=be9454e53f6560d3590b1fb2197e231cf778da5a";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     timeguard = {
       url = "git+ssh://git@github.com/not-matthias/timeguard.git";
       inputs.nixpkgs.follows = "nixpkgs";
