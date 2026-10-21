@@ -37,6 +37,9 @@ autolearn:
   enabled: true
   autoContinue: true
 
+prewalk:
+  auto: "on"
+
 advisor:
   enabled: true
 github:
@@ -71,7 +74,7 @@ modelRoles:
   tiny: openai-codex/gpt-6-luna
   commit: google-antigravity/gemini-3.8-flash
   task: openai-codex/gpt-6.1-sol:auto
-  smol: openai-codex/gpt-6-luna
+  smol: openai-codex/gpt-6-luna:xhigh
   advisor: openai-codex/gpt-6-luna:xhigh
   plan: openai-codex/gpt-6.1-sol:high
   slow: openai-codex/gpt-6.1-sol:high
