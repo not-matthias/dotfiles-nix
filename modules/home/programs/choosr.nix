@@ -28,6 +28,14 @@ in {
         enabled = true
 
         [[rule]]
+        name = "CodSpeed"
+        condition_type = "regexp"
+        value = "(?i)^(?:[^/]+\\.)?codspeed\\.io(?:[/:?#]|$)"
+        action_type = "open_browser"
+        browser = "Google Chrome Work"
+        enabled = true
+
+        [[rule]]
         name = "Greptile"
         condition_type = "regexp"
         value = "(?i)^(?:[^/]+\\.)?greptile\\.com(?:[/:?#]|$)"
