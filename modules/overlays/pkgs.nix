@@ -10,6 +10,7 @@
       };
     })
     (_self: super: {
+      kache = super.callPackage ../../pkgs/kache.nix {};
       paper-mono = super.callPackage ../../pkgs/paper-mono.nix {};
       binary-ninja = super.callPackage ../../pkgs/binary-ninja.nix {};
     })

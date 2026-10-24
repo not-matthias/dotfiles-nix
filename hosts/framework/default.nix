@@ -229,7 +229,7 @@ in {
         alsa-lib
       ];
     };
-    sccache.enable = true;
+    kache.enable = true;
     obs.enable = true;
     nix-index.enable = true;
     oneleet = {
