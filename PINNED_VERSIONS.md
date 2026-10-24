@@ -31,7 +31,7 @@ Sources are `pkgs/<name>.nix` unless noted.
 | linear-cli | `3.0.0` |
 | lmstudio | `0.4.24-1` |
 | lobe-chat | `1.114.0` |
-| mcporter | `0.13.13` |
+| mcporter | `0.16.0` |
 | msty | `1.0` (derivation label; URL has no release version) |
 | oh-my-pi | `18.11.1` |
 | openclaw desktop | `2026.9.5` (`pkgs/openclaw.nix`) |
@@ -248,7 +248,7 @@ These revisions supplement the version labels above.
 | `pkgs/ida-pro/ida-mcp.nix` | `a36a51c9d68d7e8822348e057b1e82c633f2b8dd` |
 | `pkgs/ida-pro/ida-nexus.nix` | `abac0b389fe280e66f17f74a17708ee38dc0bb0a` |
 | `pkgs/ida-pro/ida-structor.nix` | `46d744d13a4e631ad79385beaf410f0b842b0802` |
-| `pkgs/mcporter.nix` | `e4cb002200e44460279d414b0d1dec597b978f06` |
+| `pkgs/mcporter.nix` | `9a8ed529e313f452a0ce977894cb63c4620ddd7c` |
 
 ## Pre-update upstream audit
 
