@@ -5,6 +5,9 @@
   stdenv,
   buildNpmPackage,
   fetchFromGitHub,
+  fetchurl,
+  autoPatchelfHook,
+  makeWrapper,
   electron_43,
   pnpmConfigHook,
   pnpm,
@@ -12,6 +15,30 @@
   darwin,
   copyDesktopItems,
   makeDesktopItem,
+  alsa-lib,
+  at-spi2-core,
+  cairo,
+  cups,
+  dbus,
+  expat,
+  fontconfig,
+  glib,
+  gtk3,
+  libGL,
+  libdrm,
+  libx11,
+  libxcomposite,
+  libxdamage,
+  libxext,
+  libxfixes,
+  libxkbcommon,
+  libxrandr,
+  libxcb,
+  mesa,
+  nspr,
+  nss,
+  pango,
+  systemd,
 }: let
   pname = "feishin";
   version = "1.17.0";
@@ -24,8 +51,7 @@
   };
 
   electron = electron_43;
-in
-  buildNpmPackage {
+  sourcePackage = buildNpmPackage {
     inherit pname version;
 
     inherit src;
@@ -119,20 +145,7 @@ in
         runHook postInstall
       '';
 
-    desktopItems = [
-      (makeDesktopItem {
-        name = "feishin";
-        desktopName = "Feishin";
-        comment = "Full-featured Subsonic/Jellyfin compatible desktop music player";
-        icon = "feishin";
-        exec = "feishin %u";
-        categories = [
-          "Audio"
-          "AudioVideo"
-        ];
-        mimeTypes = ["x-scheme-handler/feishin"];
-      })
-    ];
+    inherit desktopItems;
 
     meta = {
       description = "Full-featured Subsonic/Jellyfin compatible desktop music player";
@@ -147,4 +160,106 @@ in
         jlbribeiro
       ];
     };
-  }
+  };
+  desktopItems = [
+    (makeDesktopItem {
+      name = "feishin";
+      desktopName = "Feishin";
+      comment = "Full-featured Subsonic/Jellyfin compatible desktop music player";
+      icon = "feishin";
+      exec = "feishin %u";
+      categories = [
+        "Audio"
+        "AudioVideo"
+      ];
+      mimeTypes = ["x-scheme-handler/feishin"];
+    })
+  ];
+  runtimeLibs = [
+    stdenv.cc.cc.lib
+    alsa-lib
+    at-spi2-core
+    cairo
+    cups
+    dbus
+    expat
+    fontconfig
+    glib
+    gtk3
+    libGL
+    libdrm
+    libx11
+    libxcomposite
+    libxdamage
+    libxext
+    libxfixes
+    libxcb
+    libxkbcommon
+    libxrandr
+    mesa
+    nspr
+    nss
+    pango
+    systemd
+  ];
+
+  # The ARM64 artifact ships x86-64 abstract-socket bindings.node, so retain the source fallback.
+  binaryPackage = stdenv.mkDerivation {
+    inherit pname version;
+
+    src = fetchurl {
+      url = "https://github.com/jeffvli/feishin/releases/download/v${version}/Feishin-linux-x64.tar.xz";
+      hash = "sha256-dfX5vRPpxxd4dQdUQLFuthdpJdqzvw0VUiDrROT37oI=";
+    };
+    sourceRoot = "Feishin-linux-x64";
+
+    dontBuild = true;
+    dontConfigure = true;
+    dontStrip = true;
+
+    nativeBuildInputs = [
+      autoPatchelfHook
+      copyDesktopItems
+      makeWrapper
+    ];
+    buildInputs = runtimeLibs;
+
+    installPhase = ''
+      runHook preInstall
+      mkdir -p "$out/share/feishin" "$out/bin"
+      cp -a ./. "$out/share/feishin/"
+
+      makeWrapper "$out/share/feishin/feishin" "$out/bin/feishin" \
+        --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \
+        --prefix LD_LIBRARY_PATH : "$out/share/feishin:${lib.makeLibraryPath runtimeLibs}" \
+        --set ELECTRON_FORCE_IS_PACKAGED 1 \
+        --set DISABLE_AUTO_UPDATES 1
+
+      for size in 32 64 128 256 512 1024; do
+        mkdir -p "$out/share/icons/hicolor/''${size}x''${size}/apps"
+        ln -s "$out/share/feishin/resources/assets/icons/''${size}x''${size}.png" \
+          "$out/share/icons/hicolor/''${size}x''${size}/apps/feishin.png"
+      done
+      runHook postInstall
+    '';
+
+    inherit desktopItems;
+
+    meta = {
+      description = "Full-featured Subsonic/Jellyfin compatible desktop music player";
+      homepage = "https://github.com/jeffvli/feishin";
+      changelog = "https://github.com/jeffvli/feishin/releases/tag/v${version}";
+      sourceProvenance = with lib.sourceTypes; [binaryNativeCode];
+      license = lib.licenses.gpl3Plus;
+      platforms = ["x86_64-linux"];
+      mainProgram = "feishin";
+      maintainers = with lib.maintainers; [
+        onny
+        jlbribeiro
+      ];
+    };
+  };
+in
+  if stdenv.hostPlatform.system == "x86_64-linux"
+  then binaryPackage
+  else sourcePackage
