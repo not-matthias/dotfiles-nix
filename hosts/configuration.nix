@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   flakes,
   user,
@@ -43,6 +44,13 @@
     fish.enable = true;
     dconf.enable = true;
     command-not-found.enable = false;
+  };
+
+  # Helium uses Chromium's policy directory. Recommended policies remain editable.
+  environment.etc."chromium/policies/recommended/helium-startup.json" = lib.mkIf config.home-manager.users.${user}.programs.helium.enable {
+    text = builtins.toJSON {
+      RestoreOnStartup = 1; # Continue where you left off.
+    };
   };
   security.sudo.wheelNeedsPassword = true;
 

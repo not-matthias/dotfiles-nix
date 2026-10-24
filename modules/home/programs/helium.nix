@@ -5,7 +5,6 @@
     commandLineArgs = [
       "--no-default-browser-check"
       "--disable-breakpad"
-      "--restore-last-session"
       "--enable-features=AcceleratedVideoEncoder,ParallelDownloading,PlatformHEVCDecoderSupport"
     ];
 
@@ -22,6 +21,7 @@
       "dneaehbmnbhcippjikoajpoabadpodje" # Old Reddit Redirect
       "hhinaapppaileiechjoiifaancjggfjm" # Web Scrobbler
       "nglaklhklhcoonedhgnpgddginnjdadi" # ActivityWatch Web Watcher
+      "kkmlkkjojmombglmlpbpapmhcaljjkde" # Zhongwen: Chinese-English Dictionary
     ];
   };
 }
