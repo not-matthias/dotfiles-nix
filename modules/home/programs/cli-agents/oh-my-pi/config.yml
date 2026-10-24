@@ -50,9 +50,9 @@ bash:
 completion:
   notify: "off"
 codexResets:
-  autoRedeem: "no"
+  autoRedeem: "yes"
 claudeResets:
-  autoRedeem: "no"
+  autoRedeem: "yes"
 ida:
   enabled: true
 astGrep:
@@ -125,3 +125,14 @@ retry:
       - openrouter/google/gemini-3-pro-image-preview
       - google/gemini-3-pro-image-preview
       - deepinfra/black-forest-labs/FLUX-2-pro
+
+# Claude marketplace plugins are a foreign user-level source, disabled by
+# default. Enable them only for CodSpeed work checkouts. Paths match the
+# working directory or anything below it; ~/.omp/wt holds omp's own worktrees
+# of those same repos.
+enabledProviders:
+  - paths:
+      - ~/Documents/work/wgit
+      - ~/.omp/wt
+    providers:
+      - claude-plugins

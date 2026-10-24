@@ -243,6 +243,8 @@ $ nix registry list
 
 ### CLI releases
 
+2026-10-22: Updated OMP to 18.12.6 for upstream startup, ACP, and MCP fixes.
+
 2026-10-12: Updated OMP to 18.10.3 from the latest upstream release.
 
 2026-10-07: Updated OMP to 18.8.3 from the latest upstream release.
