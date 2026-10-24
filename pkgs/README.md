@@ -16,6 +16,7 @@ nix run -f foo.nix
 
 - 2026-10-22: Feishin, HushMic, and Navidrome use pinned upstream Linux release binaries. Navidrome retains the module's plugin selection and ffmpeg wrapper.
 - Vicinae uses its upstream Nix build through `vicinae.cachix.org`. The cache and signing key are configured for both flake builds and the Nix daemon.
+- BlueZ uses nixpkgs-unstable's cached 5.87 build, which includes the A2DP sink-priority fix.
 - ActivityWatch's Rust server and sync client use the official 0.14.1 bundle on x86_64 Linux, which includes the heartbeat-ID fix. Other architectures retain the patched source package.
 - Handy and tldraw offline use AppImages. The AppImage extractor runs with shell error checking so a failed extraction cannot be registered as a successful, incomplete store output.
 - Choosr and Steelix retain source builds because their selected packages include local fixes. Replacing them with unpatched binaries would drop those fixes. Feishin also retains source builds outside x86_64 Linux: the upstream ARM64 release includes an x86_64 native module.
