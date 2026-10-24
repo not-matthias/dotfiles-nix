@@ -152,5 +152,8 @@
     (_self: super: {
       herdr-gpui = super.callPackage ../../pkgs/herdr-gpui.nix {};
     })
+    (_self: super: {
+      worktrunk = super.callPackage ../../pkgs/worktrunk.nix {};
+    })
   ];
 }

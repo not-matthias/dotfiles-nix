@@ -7,7 +7,7 @@ plugin marketplace.
 
 - **Upstream:** https://github.com/max-sixty/worktrunk
 - **Pinned commit:** `bc2ec124d6be16b1af1d93c19820417328e071eb`
-  (matches the `worktrunk` flake input in this repo's `flake.lock`)
+  (the installed `wt` binary is pinned separately in `pkgs/worktrunk.nix`)
 - **License:** MIT OR Apache-2.0 — see `LICENSE` in this directory
 - **Source path:** `skills/worktrunk/`. Upstream's
   `reference/README.md` is a symlink to the repository README; it is
@@ -15,12 +15,12 @@ plugin marketplace.
 
 ## Re-syncing
 
-When bumping the `worktrunk` flake input, replace this vendored tree from the
-newly locked revision:
+When bumping `version` in `pkgs/worktrunk.nix`, replace this vendored tree
+from the matching release tag:
 
 ```bash
 DEST=modules/home/programs/cli-agents/shared/skills/cli-tools/worktrunk
-REV=$(jq -r '.nodes.worktrunk.locked.rev' flake.lock)
+REV=v$(rg -oP '^\s*version = "\K[^"]+' pkgs/worktrunk.nix)
 TMP=$(mktemp -d)
 NOTICE="$TMP/NOTICE.md"
 cp "$DEST/NOTICE.md" "$NOTICE"
