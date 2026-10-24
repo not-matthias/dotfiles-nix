@@ -11,6 +11,9 @@
       choosr = super.callPackage ../../pkgs/choosr.nix {};
     })
     (_self: super: {
+      aw-server-rust-bin = super.callPackage ../../pkgs/aw-server-rust.nix {};
+    })
+    (_self: super: {
       aw-watcher-niri = super.callPackage ../../pkgs/aw-watcher-niri {};
     })
     (_self: super: {

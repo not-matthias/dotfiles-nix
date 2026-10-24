@@ -58,6 +58,13 @@ Once `home-manager` is on your `PATH` (after the first activation), subsequent u
 home-manager switch --flake .#not-matthias@jetson
 ```
 
+### ActivityWatch (2026-10-22)
+
+The tray app uses `pkgs.aw-qt` from the stable package set, where `aw-core` has
+its required Peewee 3 dependency. The pinned unstable set supplies Peewee 4,
+which is incompatible with `aw-core` 0.5.17. The Rust server and watchers keep
+their existing package selections.
+
 ### Timeguard rules (2026-10-12)
 
 Timeguard reads encrypted rules from `secrets/timeguard-rules.age`. Scheduled

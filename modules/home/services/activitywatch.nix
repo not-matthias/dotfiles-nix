@@ -7,10 +7,14 @@
 }: let
   cfg = config.services.activitywatch;
 
-  # Both ActivityWatch services share this datastore fix to keep heartbeat IDs consistent.
-  awServerRust = unstable.aw-server-rust.overrideAttrs (old: {
-    patches = (old.patches or []) ++ [./aw-server-rust-heartbeat-id.patch];
-  });
+  # Upstream's standalone server binaries are only available for x86_64 Linux.
+  awServerRust =
+    if pkgs.stdenv.hostPlatform.system == "x86_64-linux"
+    then pkgs.aw-server-rust-bin
+    else
+      unstable.aw-server-rust.overrideAttrs (old: {
+        patches = (old.patches or []) ++ [./aw-server-rust-heartbeat-id.patch];
+      });
 
   # Tracks physical input instead of the compositor's effective idle state, so
   # an active idle inhibitor cannot report the user as present indefinitely.
@@ -18,7 +22,7 @@
 in {
   config = lib.mkIf cfg.enable {
     home.packages = [
-      unstable.aw-qt
+      pkgs.aw-qt
     ];
 
     services.activitywatch = {
