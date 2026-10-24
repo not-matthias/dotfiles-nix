@@ -38,6 +38,11 @@
       feishin = super.callPackage ../../pkgs/feishin.nix {};
     })
     (_self: super: {
+      navidrome = super.callPackage ../../pkgs/navidrome.nix {
+        inherit (unstable) ffmpeg-headless;
+      };
+    })
+    (_self: super: {
       solidtime-desktop = super.callPackage ../../pkgs/solidtime.nix {};
     })
     (_self: super: {

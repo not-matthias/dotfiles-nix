@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  unstable,
+  pkgs,
   domain,
   ...
 }: let
@@ -32,7 +32,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     services.navidrome = {
-      package = unstable.navidrome;
+      package = pkgs.navidrome;
       settings = {
         Port = 11424;
         Address = "0.0.0.0";

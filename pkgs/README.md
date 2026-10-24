@@ -14,7 +14,7 @@ nix run -f foo.nix
 
 ## Binary packages
 
-- 2026-10-22: Feishin and HushMic use pinned upstream Linux release binaries.
+- 2026-10-22: Feishin, HushMic, and Navidrome use pinned upstream Linux release binaries. Navidrome retains the module's plugin selection and ffmpeg wrapper.
 - Choosr and Steelix retain source builds because their selected packages include local fixes. Replacing them with unpatched binaries would drop those fixes. Feishin also retains source builds outside x86_64 Linux: the upstream ARM64 release includes an x86_64 native module.
 
 ## Tern
