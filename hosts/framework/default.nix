@@ -43,9 +43,8 @@ in {
       unstable.beeper
       flakes.devenv.packages.${pkgs.stdenv.hostPlatform.system}.devenv
       flakes.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.grok-bot
-      rustdesk
 
-      vmprotect
+      # vmprotect
       radius2
       tldraw-offline
       knife
@@ -54,8 +53,6 @@ in {
       # Install desktop apps rather than websites
       feishin
       gh
-      gh-dash
-      terminal-browser
       hushmic
       sone
 
@@ -89,7 +86,7 @@ in {
       plannotator.enable = true;
       handy.enable = true;
       choosr.enable = true;
-      tradingview.enable = true;
+      # tradingview.enable = true;
       rust = {
         enable = true;
         maintenance.enable = true;
@@ -97,15 +94,15 @@ in {
       low-battery-alert.enable = true;
       niri-organize.enable = true;
       nixvim.enable = true;
-      helix.enable = true;
+      # helix.enable = true;
       idasql.enable = true;
       cli-agents = {
         programSkills.knife = lib.mkIf (lib.elem pkgs.knife config.home.packages) ../../modules/home/programs/cli-agents/shared/program-skills/knife;
         herdr.enable = true;
-        pi-mono = {
-          enable = true;
-          envFile = "/run/agenix/pi-mono-env";
-        };
+        # pi-mono = {
+        #   enable = true;
+        #   envFile = "/run/agenix/pi-mono-env";
+        # };
         oh-my-pi = {
           enable = true;
           envFile = "/run/agenix/pi-mono-env";
