@@ -81,10 +81,6 @@
       url = "git+https://github.com/heraeyes/platform?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hunk = {
-      url = "github:modem-dev/hunk/v0.23.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     worktrunk = {
       url = "github:max-sixty/worktrunk";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -99,10 +95,6 @@
     };
     wakatimehx = {
       url = "github:Xerxes-2/wakatime.hx";
-      flake = false;
-    };
-    zenmode = {
-      url = "github:notnmeyer/zen-mode.hx";
       flake = false;
     };
     foresthx = {
@@ -121,7 +113,6 @@
       url = "github:chuwy/microscope.hx/7fe4e60f0c4fb715118591c71ed0a82b111f07a8";
       flake = false;
     };
-    oh-my-pi.url = "github:not-matthias/oh-my-pi/perf/startup-optimizations";
     omp-autoresearch = {
       url = "git+ssh://git@github.com/not-matthias/omp-autoresearch.git";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -212,7 +212,6 @@ Source: `flake.nix`. Resolved revisions for all flake inputs are recorded separa
 | Input | Explicit pin |
 |---|---|
 | devenv | `v2.4.0` |
-| hunk | `v0.23.0` |
 | steel-pty | Commit `4d41b6988107` |
 | microscopehx | Commit `7fe4e60f0c4f` |
 
@@ -223,12 +222,12 @@ Source: `flake.nix`. Resolved revisions for all flake inputs are recorded separa
 - 2026-10-18: The package overlay selects `pnpm_10` from the locked nixpkgs-unstable input (`10.34.5`) to use its security fixes while keeping pnpm 10 compatibility.
 - Octo-fiesta uses floating container tag `dev` in `modules/system/services/octo-fiesta.nix`.
 - The disabled Discord overlay uses a floating `latest` tarball URL with a fixed content hash in `modules/overlays/discord.nix`; no release version is identified.
-- Floating source selectors in `flake.nix`: nixos-hardware `master`, nix-webapps `tlater/idiomatic-flake`, hera `main`, determinate `*`, and Oh My Pi `perf/startup-optimizations`.
+- Floating source selectors in `flake.nix`: nixos-hardware `master`, nix-webapps `tlater/idiomatic-flake`, hera `main`, and determinate `*`.
 - The Google fonts overlay uses a `master` archive with a fixed content hash in `hosts/default.nix`.
 - Hushmic's DPDFNet model downloads use Hugging Face `main` URLs with fixed content hashes.
 - `permittedInsecurePackages` entries for Electron and pnpm allow versions; they do not select or pin packages.
 - OpenCode auth plugins use `opencode-antigravity-auth@latest` and `opencode-gemini-auth@latest` in `modules/home/programs/cli-agents/opencode/default.nix`.
-- Helix inputs `vimhx`, `wakatimehx`, `zenmode`, `foresthx`, `notifyhx`, and `glyphhx` use default branches in `flake.nix`; their resolved commits are in `flake.lock`.
+- Helix inputs `vimhx`, `wakatimehx`, `foresthx`, `notifyhx`, and `glyphhx` use default branches in `flake.nix`; their resolved commits are in `flake.lock`.
 
 ## Additional package source commit pins
 
@@ -353,7 +352,6 @@ Commit targets are source updates, not necessarily published releases. Coordinat
 | herdr-annotate | `0.3.0` | Commit `e3ca7e88ada0`, plugin `0.9.0` | [Repository](https://github.com/plannotator/herdr-annotate); no release tags |
 | herdr-resurrect | Commit `5afa6755d4f3` | Commit `109a9376549e` | [Repository](https://github.com/ntindle/herdr-resurrect) |
 | devenv | `2.2.2` | `2.4.0` | [Release](https://github.com/cachix/devenv/releases/tag/v2.4.0) |
-| hunk | `0.22.0` | `0.23.0` | [Release](https://github.com/modem-dev/hunk/releases/tag/v0.23.0) |
 
 ### Containers
 
