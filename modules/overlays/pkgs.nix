@@ -4,6 +4,12 @@
       pnpm_10 = unstable.pnpm_10;
     })
     (_self: super: {
+      # Stop extraction failures from registering truncated AppImages as valid outputs.
+      appimageTools = super.appimageTools.override {
+        pkgs = super // {runtimeShell = "${super.runtimeShell} -e";};
+      };
+    })
+    (_self: super: {
       paper-mono = super.callPackage ../../pkgs/paper-mono.nix {};
       binary-ninja = super.callPackage ../../pkgs/binary-ninja.nix {};
     })
