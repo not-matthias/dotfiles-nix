@@ -4,11 +4,11 @@
     enableNotifications = true;
     # User services inherit a higher oom_score_adj than memory-heavy jobs.
     # Select the largest resident process instead of killing the user bus first.
-    # Protect the compositor and browser; earlyoom matches /proc/PID/comm.
+    # Match /proc/PID/comm, including Nix-wrapped and truncated QEMU names.
     extraArgs = [
       "--sort-by-rss"
       "--ignore"
-      "^(niri|helium)$"
+      "^(niri|helium|[.]?qemu-system-.*)$"
     ];
   };
 
