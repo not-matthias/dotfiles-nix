@@ -1485,6 +1485,7 @@
         "notifyhx": "notifyhx",
         "nurpkgs": "nurpkgs",
         "omp-autoresearch": "omp-autoresearch",
+        "self-bot": "self-bot",
         "spicetify-nix": "spicetify-nix",
         "steel-pty": "steel-pty",
         "stylix": "stylix",
@@ -1533,6 +1534,26 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "type": "github"
+      }
+    },
+    "self-bot": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792924190,
+        "narHash": "sha256-fGiBRqTkHAN0bUmnAmvpUcnnbCh7aHwbMfvvBr+y1MI=",
+        "ref": "refs/heads/main",
+        "rev": "dd36791613a600c4b2905584b91078a94dfb20e2",
+        "revCount": 71,
+        "type": "git",
+        "url": "https://github.com/not-matthias/self-bot.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/not-matthias/self-bot.git"
       }
     },
     "soulver-cpp": {

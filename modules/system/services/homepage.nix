@@ -163,6 +163,14 @@ in {
                 siteMonitor = "https://n8n.${domain}";
               };
             })
+            (includeService "self-bot" {
+              "Self Bot" = {
+                description = "Taskwarrior-to-PR controller";
+                icon = "github";
+                href = "https://self-bot.${domain}";
+                siteMonitor = "https://self-bot.${domain}";
+              };
+            })
             (includeService "nocodb" {
               NocoDB = {
                 description = "NocoDB";

@@ -131,6 +131,7 @@
     };
 
     services = {
+    self-bot.enable = true;
       activitywatch.enable = true;
       gpg-agent.enable = true;
     };

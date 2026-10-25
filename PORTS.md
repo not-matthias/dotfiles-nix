@@ -1,4 +1,5 @@
 5173 = kaneo
+4310 = self-bot (loopback; https://self-bot.pcnm.duckdns.org via Caddy)
 8083 = calibre-web
 3456 = vikunja
 11439 = wordpress
