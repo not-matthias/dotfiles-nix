@@ -65,8 +65,7 @@ in {
         };
         scanPaths = lib.mkOption {
           type = lib.types.listOf lib.types.str;
-          default = ["${config.home.homeDirectory}/Documents/technical/git"];
-          description = "Roots cargo-sweep -r walks for Cargo.toml.";
+          description = "Git repository roots cargo-sweep walks for Cargo.toml. Set per host when Rust maintenance is enabled.";
         };
       };
     };

@@ -89,7 +89,10 @@ in {
       # tradingview.enable = true;
       rust = {
         enable = true;
-        maintenance.enable = true;
+        maintenance = {
+          enable = true;
+          sweep.scanPaths = ["${config.home.homeDirectory}/Documents/technical/git"];
+        };
       };
       low-battery-alert.enable = true;
       niri-organize.enable = true;

@@ -65,7 +65,13 @@
       ghostty.enable = true;
       rust = {
         enable = true;
-        maintenance.enable = true;
+        maintenance = {
+          enable = true;
+          sweep.scanPaths = [
+            "${config.home.homeDirectory}/projects"
+            "${config.home.homeDirectory}/work"
+          ];
+        };
       };
       niri-organize.enable = true;
       helix.enable = true;
