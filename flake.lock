@@ -2087,11 +2087,11 @@
         "nixvirt": "nixvirt"
       },
       "locked": {
-        "lastModified": 1792929419,
-        "narHash": "sha256-AzzrxbtK6vBuDrFW0KKojI6aVzsESgd3xR6lMcIFlRM=",
+        "lastModified": 1792932616,
+        "narHash": "sha256-5HmPAJDD2PGBX257NITjNkuHS8KYVCIxWwGGAWPKTlg=",
         "ref": "feat/vfio-timing-port",
-        "rev": "2ab204c7446a283120f4792885cae425d6ffe7b2",
-        "revCount": 65,
+        "rev": "8011bdc0c1c9d5a6346d5ce21809a42dd7239822",
+        "revCount": 71,
         "type": "git",
         "url": "ssh://git@github.com/not-matthias/win11-kvm.git"
       },
