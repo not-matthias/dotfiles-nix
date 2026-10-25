@@ -131,7 +131,7 @@
       url = "git+ssh://git@github.com/not-matthias/timeguard.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    win11-kvm.url = "git+ssh://git@github.com/not-matthias/win11-kvm.git?ref=fix/rdtsc-accumulated-clock";
+    win11-kvm.url = "git+ssh://git@github.com/not-matthias/win11-kvm.git?ref=feat/vfio-timing-port";
   };
 
   outputs = {

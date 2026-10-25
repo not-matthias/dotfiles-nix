@@ -2087,16 +2087,16 @@
         "nixvirt": "nixvirt"
       },
       "locked": {
-        "lastModified": 1791460651,
-        "narHash": "sha256-FOJ5LkZH9rXtdK/AR5nMDJUxZKcpPTOaIzCtTf2kAU0=",
-        "ref": "fix/rdtsc-accumulated-clock",
-        "rev": "66082466096ce5cb12540dd79d7b957b0b4773f0",
-        "revCount": 34,
+        "lastModified": 1792844832,
+        "narHash": "sha256-PRpnjz1QICW4STb4YCmtcKEoolDhD5XXoBcfhRov644=",
+        "ref": "feat/vfio-timing-port",
+        "rev": "0ba13058f1eae1fdec0b3c6ab89b5da550ce1d7b",
+        "revCount": 63,
         "type": "git",
         "url": "ssh://git@github.com/not-matthias/win11-kvm.git"
       },
       "original": {
-        "ref": "fix/rdtsc-accumulated-clock",
+        "ref": "feat/vfio-timing-port",
         "type": "git",
         "url": "ssh://git@github.com/not-matthias/win11-kvm.git"
       }

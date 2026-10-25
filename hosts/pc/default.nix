@@ -10,6 +10,7 @@
   imports = [
     ./hardware-configuration.nix
     nixos-hardware.nixosModules.framework-desktop-amd-ai-max-300-series
+    flakes.win11-kvm.nixosModules.default
   ];
 
   zramSwap = {
@@ -241,7 +242,6 @@
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDvED6PbgTV9/yjDymEci/ATe6vQDb9c11hqUwNyEStvFmkDr5ili7+2fiUhTrNaefTX5RaDIRaKBu4jl+kjSn5tfv+lvdYbl/UM8yMN8YODcM4JbAUo5cyX76s5BXaBrqQH0TGEXhKlLkVdxCJCBLm9tpakkxgLruj0qEwSoSGruM/QCYgbhXrh9NcEtOBaOBZ39DUhT3MEKgZJBlbqIXqyeHN5L1GLBEgBN73dZhh7fsJdIpfaezqzIeu8FQnAnL94eOFlDx7PXm1Wiacpcb5S7GsIFnd1iEc/TlYyaXKN+12VK2qPe6KMZfF7lBvgnjEU868sHiU8OXpWkYWQ3RJs0uQqSylQum8jsJAOWcygavVRrOO+zDxzNkPXa+7H3Jah9XoywaKjz8rsPTs0qu/AWZG/KyV7EeQu+J6oIOXGv2OBcndRuQTBKIimHCdnGEnpgkAzw9gs14oc0MN97k1izb5zyK6zf4jsD8cHl+64Hevapto28yqcCanQk9p9+M= not-matthias@laptop"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2yZENvNlZ8XQxcPVG8CrSEaUmvthPwheHRruEKqnzP not-matthias@raspi"
   ];
-
   security.sudo.extraRules = [
     {
       users = [user];
@@ -257,11 +257,149 @@
   virtualisation = {
     podman.enable = true;
     qemu.enable = true;
-    single-gpu-passthrough.amd = {
-      enable = true;
-      guest = "strix-halo-gpu-validation";
-    };
   };
+
+  specialisation.windows-vfio.configuration = {config, ...}: {
+    virtualisation.win11-kvm = {
+      enable = true;
+      instrumentation = {
+        enable = true;
+        memflow.enable = true;
+      };
+      domain = {
+        name = "win11";
+        uuid = "e270b36a-1611-4003-9dbc-37a40921b16d";
+      };
+      settings = {
+        memory_mib = 16384;
+        cpu = {
+          sockets = 1;
+          cores = 12;
+          threads = 2;
+          affinity = {
+            vcpus = [4 20 5 21 6 22 7 23 8 24 9 25 10 26 11 27 12 28 13 29 14 30 15 31];
+            emulator = [0 16];
+          };
+        };
+        debug_register_passthrough = true;
+      };
+      identity = {
+        bios = {
+          vendor = "INSYDE Corp.";
+          version = "03.06";
+        };
+        system = {
+          manufacturer = "Framework";
+          product = "Desktop (AMD Ryzen AI Max 300 Series)";
+          version = "A4";
+          serial = "FRAMDACPA460230027";
+          sku = "FRAMDACP04";
+          family = "Desktop";
+        };
+        baseboard = {
+          manufacturer = "Framework";
+          product = "FRANMFCP04";
+          version = "A4";
+          serial = "FRANMFCPA4551200H7";
+        };
+        chassis = {
+          manufacturer = "Framework";
+          version = "A4";
+          serial = "FRAMDACPA460230027";
+        };
+        acpi = {
+          oem_id = "FRMWRK";
+          oem_table_id = "FRANMFCP";
+        };
+        cpu = {
+          manufacturer = "Advanced Micro Devices, Inc.";
+          version = "AMD RYZEN AI MAX+ 395 w/ Radeon 8060S";
+          serial = "AMD FWTR";
+          asset = "AMD FWTS";
+          part = "AMD FWTS";
+        };
+        memory = {
+          manufacturer = "Micron Technology";
+          serial = "000000004D543637";
+          part = "MT62F2G32D4DS-023 WT";
+          bank = "P0 CHANNEL A";
+          loc_pfx = "DIMM";
+          speed = 8000;
+        };
+      };
+      disks = {
+        system = {
+          path = "/var/lib/libvirt/images/win11.qcow2";
+          profile = flakes.win11-kvm.diskProfiles.crucial-mx500-250gb-hpa-128gib;
+          serial = "2621E214B3A0"; # Change here; WWN and SMART-state path follow.
+          # Use the new profile-qualified SMART path; preserve the old state file.
+          boot_order = 1;
+        };
+        data = {
+          path = "/var/lib/libvirt/images/win11-data.qcow2";
+          profile = flakes.win11-kvm.diskProfiles.crucial-mx500-250gb-hpa-200gb;
+          serial = "2644EA0E055D"; # Change here; WWN and SMART-state path follow.
+        };
+      };
+      firmware = {
+        # Keep the existing OVMF pair and NVRAM independent of patched QEMU.
+        code_path = "${pkgs.qemu_kvm}/share/qemu/edk2-x86_64-secure-code.fd";
+        vars_template_path = "${pkgs.qemu_kvm}/share/qemu/edk2-i386-vars.fd";
+        nvram_path = "/var/lib/libvirt/qemu/nvram/win11_VARS.fd";
+        installation_iso = null;
+        secure_boot = true;
+        tpm.type = "none";
+      };
+      passthrough = {
+        gpu = {
+          address = "0000:c2:00.0";
+          rom_path = "/var/lib/libvirt/images/framework-03.06-1002-1586.rom";
+        };
+        audio = {
+          address = "0000:c2:00.1";
+          rom_path = "/var/lib/libvirt/images/framework-03.06-amd-gop.rom";
+        };
+        usb = [
+          {
+            vendor = lib.fromHexString "3434";
+            product = lib.fromHexString "08a0";
+          }
+          {
+            vendor = lib.fromHexString "046d";
+            product = lib.fromHexString "c547";
+          }
+        ];
+      };
+      network = {
+        enable = true;
+        source = "default";
+        model = "e1000e";
+        mac = "02:9a:65:27:4c:b8";
+      };
+      devices = {
+        virtual_display = "none";
+        spice = false;
+        usb_redirection = false;
+        balloon = false;
+      };
+    };
+
+    systemd.services.win11-autostart = {
+      description = "Start Windows 11";
+      wantedBy = ["multi-user.target"];
+      requires = ["win11-kvm-define.service"];
+      after = ["win11-kvm-define.service"];
+      restartIfChanged = false;
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = "${config.virtualisation.libvirtd.package}/bin/virsh --connect qemu:///system start ${config.virtualisation.win11-kvm.domain.name}";
+      };
+    };
+
+    systemd.defaultUnit = lib.mkForce "multi-user.target";
+  };
+
   desktop = {
     theme = "dark";
     niri.enable = true;
