@@ -8,19 +8,28 @@
   ...
 }: let
   kernel = flakes.win11-kvm.packages.${pkgs.stdenv.hostPlatform.system}.kernel;
+  # Initial calibration candidate shared by desktop and VFIO test boots.
+  divisor = 64;
 in {
+  specialisation.windows-vfio.configuration.virtualisation.win11-kvm.settings = {
+    rdtsc_spoofing = true;
+    rdtsc_divisor = divisor;
+    handler_time_compensation = false;
+    cpuid_fastpath = true;
+  };
+
   specialisation.windows-timing.configuration = {config, ...}: {
     boot.kernelPackages = lib.mkOverride 40 (pkgs.linuxPackagesFor kernel);
     boot.kernelParams = [
       # Starting calibration candidate, not a validated Windows latency target.
       "kvm_amd.rdtsc_experiment=1"
-      "kvm_amd.rdtsc_divisor=64"
+      "kvm_amd.rdtsc_divisor=${toString divisor}"
       "kvm_amd.handler_time_compensation=0"
       "kvm_amd.cpuid_fastpath=1"
       "kvm_amd.cpuid_passthrough=0"
       "kvm_amd.experimental_debug_passthrough=0"
     ];
-    system.nixos.tags = ["windows-timing-d64"];
+    system.nixos.tags = ["windows-timing-d${toString divisor}"];
     virtualisation.libvirtd.onBoot = lib.mkForce "ignore";
     assertions = [
       {
