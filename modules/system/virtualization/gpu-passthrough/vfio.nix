@@ -55,7 +55,7 @@ in {
     loadVfioPci = mkOption {
       type = types.bool;
       default = false;
-      description = "Loads the vfio-pci module on boot.";
+      description = "Loads vfio-pci in the initrd before host GPU and audio drivers.";
     };
   };
 
@@ -70,7 +70,7 @@ in {
             "intel_iommu=on"
             "intel_iommu=igfx_off"
           ]
-          else ["amd_iommu=on"]
+          else []
         )
         ++ (optional (builtins.length cfg.devices > 0)
           ("vfio-pci.ids=" + builtins.concatStringsSep "," cfg.devices))
@@ -89,15 +89,7 @@ in {
         (optionals cfg.blacklistNvidia ["nvidia" "nouveau"])
         ++ (optionals cfg.blacklistAMD ["amdgpu" "radeon"]);
 
-      # Load the vfio-pci module on boot
-      kernelModules =
-        if cfg.loadVfioPci
-        then ["vfio_virqfd" "vfio_pci" "vfio_iommu_type1" "vfio"]
-        else [];
-      initrd.availableKernelModules =
-        if cfg.loadVfioPci
-        then ["vfio-pci"]
-        else [];
+      initrd.kernelModules = optionals cfg.loadVfioPci ["vfio_pci" "vfio_iommu_type1" "vfio"];
     };
   };
 }
