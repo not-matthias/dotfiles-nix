@@ -241,14 +241,7 @@ in {
     };
 
     services.caddy.virtualHosts."audiomuse.${domain}".extraConfig = ''
-      encode zstd gzip
-      @trusted remote_ip private_ranges 100.64.0.0/10
-      handle @trusted {
-        reverse_proxy http://127.0.0.1:${toString cfg.port}
-      }
-      handle {
-        respond "Forbidden" 403
-      }
+      reverse_proxy http://127.0.0.1:${toString cfg.port}
     '';
   };
 }
