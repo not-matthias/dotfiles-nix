@@ -31,6 +31,13 @@
             in
               webPackage.overrideAttrs {
                 bunDeps = bun2nix.fetchBunDeps {inherit bunNix;};
+                # Vite's SSR worker needs node:sqlite, which Bun's fake node lacks.
+                # Keep Bun dependency installation and the upstream runtime wrapper unchanged.
+                buildPhase = ''
+                  runHook preBuild
+                  ${pkgs.nodejs}/bin/node node_modules/vite/bin/vite.js build
+                  runHook postBuild
+                '';
               };
           };
           systemd.user.services.taskwarrior-web.Service.Environment =
