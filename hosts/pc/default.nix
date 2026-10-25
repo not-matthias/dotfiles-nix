@@ -131,7 +131,6 @@
     };
 
     services = {
-    self-bot.enable = true;
       activitywatch.enable = true;
       gpg-agent.enable = true;
     };
@@ -175,6 +174,7 @@
   };
 
   services = {
+    self-bot.enable = true;
     kaneo = {
       enable = true;
       publicUrl = "http://pc.ide-snares.ts.net:5173";
