@@ -69,7 +69,7 @@ with lib; let
   linkPlugin = plugin: let
     enabledFlag = optionalString (!plugin.enable) " --disabled";
   in ''
-    $DRY_RUN_CMD ${lib.getExe package} plugin link ${lib.escapeShellArg (toString plugin.path)}${enabledFlag}
+    $DRY_RUN_CMD ${lib.getExe package} plugin link ${lib.escapeShellArg "${plugin.path}"}${enabledFlag}
   '';
 
   installGithubPlugin = plugin: ''
