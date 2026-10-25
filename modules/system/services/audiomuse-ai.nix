@@ -11,6 +11,48 @@
   image = "ghcr.io/neptunehub/audiomuse-ai:3.6.3";
   settingsFile = (pkgs.formats.json {}).generate "audiomuse-ai-settings.json" cfg.settings;
   navidromeConfig = (pkgs.formats.json {}).generate "navidrome.json" config.services.navidrome.settings;
+  navidromeCreateUser = pkgs.writeText "navidrome-create-user.exp" ''
+    # Navidrome's user CLI requires a terminal for password input.
+    # Keep the password off command lines, the environment, and service logs.
+    set timeout 30
+    log_user 0
+    set password [gets stdin]
+    spawn -noecho {*}$argv
+    foreach prompt {
+        {Enter new password (press enter with no password to cancel): }
+        {Confirm new password (press enter with no password to cancel): }
+    } {
+        expect {
+            -exact $prompt { send -- "$password\r" }
+            timeout {
+                puts stderr "Timed out waiting for Navidrome's password prompt"
+                exit 1
+            }
+            eof {
+                puts stderr "Navidrome exited before accepting the password"
+                exit 1
+            }
+        }
+    }
+    unset password
+    expect {
+        eof {}
+        timeout {
+            puts stderr "Timed out creating the Navidrome user"
+            exit 1
+        }
+    }
+    set result [wait]
+    if {[lindex $result 2] != 0} {
+        puts stderr "Failed to wait for Navidrome user creation"
+        exit 1
+    }
+    set status [lindex $result 3]
+    if {$status != 0} {
+        puts stderr "Navidrome user creation failed (exit status $status)"
+    }
+    exit $status
+  '';
   databaseEnvironment = {
     TZ = config.time.timeZone;
     POSTGRES_USER = "audiomuse";
@@ -149,6 +191,27 @@ in {
           ${lib.getExe config.services.navidrome.finalPackage} \
             --configfile ${navidromeConfig} --nobanner "$@"
         }
+        users=$(navidrome user list --format json --loglevel error)
+        if ! ${lib.getExe pkgs.jq} -e \
+          --arg username ${lib.escapeShellArg cfg.settings.NAVIDROME_USER} \
+          'any(.[]; .username == $username)' <<< "$users" > /dev/null; then
+          createArgs=(user create --username ${lib.escapeShellArg cfg.settings.NAVIDROME_USER})
+          if ${lib.getExe pkgs.jq} -e 'length == 0' <<< "$users" > /dev/null; then
+            createArgs+=(--admin)
+          fi
+          ${lib.getExe pkgs.jq} -erRn '
+            [inputs | select(startswith("NAVIDROME_PASSWORD="))
+              | ltrimstr("NAVIDROME_PASSWORD=") | rtrimstr("\r")] as $passwords
+            | if ($passwords | length) != 1 or $passwords[0] == "" then
+                error("Expected one non-empty NAVIDROME_PASSWORD in AudioMuse credential")
+              else
+                $passwords[0]
+              end
+            ' < "$CREDENTIALS_DIRECTORY/audiomuse-ai-env" |
+            ${pkgs.expect}/bin/expect ${navidromeCreateUser} \
+              ${lib.getExe config.services.navidrome.finalPackage} \
+              --configfile ${navidromeConfig} --nobanner "''${createArgs[@]}"
+        fi
         # Navidrome 0.64.2 stores --users values as IDs, not usernames.
         userIds=$(
           navidrome user list --format json --loglevel error |
