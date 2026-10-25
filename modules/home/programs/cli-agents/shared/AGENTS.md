@@ -26,6 +26,7 @@ RFC 2119 terminology applies only to uppercase keywords: MUST, REQUIRED, SHOULD,
 - When writing public artifacts (issues, PRs, commit messages, public docs): NEVER include internal Slack threads, private channel discussions, internal doc links, internal tool or roadmap details, or teammate names. Describe the technical problem generically and cite only public sources; if an internal reference seems necessary, ask the user first.
 - When you need to ask the user a question, you MUST use an available question tool. Prefer `ask_open_question` when it is available and predefined options would constrain the answer; otherwise use the option-based ask tool. NEVER substitute plain text output for a question tool call.
 - NEVER reply to pull requests/review comments/GitHub issues/etc. unless the user asks you to
+- NEVER modify a README unless the user explicitly requests that README change.
 
 - Oracle can provide a second-model review grounded in selected repository files. Use `oracle --dry-run summary --files-report` before a model run, and never attach secrets.
 - For binary analysis, prefer the built-in `read` and `ida` tools when available. Use IDA Nexus when the task needs an IDB already open in the IDA GUI or shared with another client.
