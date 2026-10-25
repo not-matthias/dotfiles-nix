@@ -119,6 +119,10 @@
       url = "git+https://github.com/not-matthias/taskwarrior-web.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    language-study = {
+      url = "git+https://github.com/not-matthias/language-study.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     self-bot = {
       url = "git+https://github.com/not-matthias/self-bot.git";
       inputs.nixpkgs.follows = "nixpkgs";

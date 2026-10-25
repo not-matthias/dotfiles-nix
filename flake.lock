@@ -863,6 +863,108 @@
         "type": "github"
       }
     },
+    "language-study": {
+      "inputs": {
+        "bun2nix": "language-study-bun2nix",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792847030,
+        "narHash": "sha256-FQkPlL89CVnfAAt7p2o7OislXFt91MHnG4XjWyXZp/w=",
+        "ref": "refs/heads/main",
+        "rev": "aa3512a633a827ff1e017e1f2472498e05b8d5da",
+        "revCount": 81,
+        "type": "git",
+        "url": "https://github.com/not-matthias/language-study.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/not-matthias/language-study.git"
+      }
+    },
+    "language-study-bun2nix": {
+      "inputs": {
+        "flake-parts": "language-study-flake-parts_4",
+        "nixpkgs": "language-study-nixpkgs_3",
+        "systems": "systems_6",
+        "treefmt-nix": "language-study-treefmt-nix_2"
+      },
+      "locked": {
+        "lastModified": 1784665499,
+        "narHash": "sha256-9BMxlTxCCDAeoNLtb1a/st7udtTIJep+wpUzquA29VU=",
+        "owner": "nix-community",
+        "repo": "bun2nix",
+        "rev": "0f2a1f0b6f42cebe3b149bf62d38754c5e0e9729",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "bun2nix",
+        "type": "github"
+      }
+    },
+    "language-study-flake-parts_4": {
+      "inputs": {
+        "nixpkgs-lib": [
+          "language-study",
+          "bun2nix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1782949081,
+        "narHash": "sha256-vp6Y/Grm98ESt6ceOkWiHWyZRDV3J1RID4w+6NWK9yA=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "17c9d6cdfc60c64f4ee8d306f9bc0b4ccb51481e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
+    "language-study-nixpkgs_3": {
+      "locked": {
+        "lastModified": 1784497964,
+        "narHash": "sha256-vlHUuqAcbcH2RKmHbPiuQzbv1pnzzavXnI62RD0bqCU=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "241313f4e8e508cb9b13278c2b0fa25b9ca27163",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "language-study-treefmt-nix_2": {
+      "inputs": {
+        "nixpkgs": [
+          "language-study",
+          "bun2nix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1784369104,
+        "narHash": "sha256-47cxbcZODibHv3rELFQ9vZly0vUNkND/atn/U7HLeb0=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "df3c0640565d04a0261253cdd89fce78ec50168a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
     "llm-agents": {
       "inputs": {
         "bun2nix": "bun2nix",
@@ -1474,6 +1576,7 @@
         "helium": "helium",
         "hera": "hera",
         "home-manager": "home-manager",
+        "language-study": "language-study",
         "llm-agents": "llm-agents",
         "microscopehx": "microscopehx",
         "niri": "niri",

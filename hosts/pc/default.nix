@@ -174,6 +174,7 @@
   };
 
   services = {
+    language-study.enable = true;
     self-bot.enable = true;
     kaneo = {
       enable = true;
