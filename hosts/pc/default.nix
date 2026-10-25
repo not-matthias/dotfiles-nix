@@ -39,6 +39,8 @@
     ];
     backhub = {
       enable = true;
+      # Select the host package without the upstream module's deprecated pkgs.system default.
+      package = flakes.backhub.packages.${pkgs.stdenv.hostPlatform.system}.backhub;
       # Provisioned outside this flake; contains only the raw GitHub token.
       secretFile = "/run/secrets/backhub-github-token";
       settings = {
