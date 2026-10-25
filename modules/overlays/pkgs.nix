@@ -4,6 +4,19 @@
       pnpm_10 = unstable.pnpm_10;
     })
     (_self: super: {
+      # 2026-10-24: Backport support for Determinate Nix's extended activity types.
+      nix-output-monitor = super.nix-output-monitor.overrideAttrs (old: {
+        patches = super.lib.unique ((old.patches or [])
+          ++ [
+            (super.fetchurl {
+              url = "https://github.com/maralorn/nix-output-monitor/commit/3c2ae037013e840046ed9785c4da82aa1c628872.patch";
+              hash = "sha256-BOrXCIn1DxhSUEPD7ccHbFn2IKTm2XCW5VQmVgZZ1qo=";
+            })
+          ]);
+        patchFlags = ["-p2"];
+      });
+    })
+    (_self: super: {
       # Stop extraction failures from registering truncated AppImages as valid outputs.
       appimageTools = super.appimageTools.override {
         pkgs = super // {runtimeShell = "${super.runtimeShell} -e";};
