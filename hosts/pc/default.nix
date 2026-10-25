@@ -174,7 +174,7 @@
         stdenv.cc.cc.lib
       ];
     };
-    sccache.enable = true;
+    kache.enable = true;
     openclaw.enable = true;
     nix-index.enable = true;
     pay-respects.enable = true;
