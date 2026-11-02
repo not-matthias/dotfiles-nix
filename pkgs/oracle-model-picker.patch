@@ -62,7 +62,7 @@ diff --git a/src/browser/actions/modelSelection.ts b/src/browser/actions/modelSe
        const composerLabel = getComposerModelLabel();
        const normalizedComposerLabel = normalizeText(composerLabel);
        if (
-@@ -819,6 +838,14 @@
+@@ -823,6 +842,14 @@
        return COMPOSER_SIGNAL_INCLUDES.some((token) => token && signal.includes(token));
      };
      const activeSelectionMatchesTarget = () => {
@@ -74,6 +74,6 @@ diff --git a/src/browser/actions/modelSelection.ts b/src/browser/actions/modelSe
 +          (!desiredModelVariant || label.split(' ').includes(desiredModelVariant))
 +        );
 +      }
-       if (targetIsLatest) {
+       if (targetIsGpt6) {
          const checkedAdvancedRadio = findCheckedAdvancedModelRadio();
          if (checkedAdvancedRadio) {
