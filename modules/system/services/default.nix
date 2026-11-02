@@ -14,6 +14,7 @@
   ./jellyfin.nix
   ./kaneo.nix
   ./journald.nix
+  ./hindsight.nix
   ./karakeep.nix
   ./kokoro.nix
   ./language-study.nix

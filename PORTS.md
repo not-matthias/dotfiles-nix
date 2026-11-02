@@ -41,3 +41,7 @@ docker-compose ports:
 8002 = solidtime
 8003 = ziit
 8004 = wakapi
+8888 = Hindsight API (PC loopback; https://hindsight.pcnm.duckdns.org via tailnet-only Caddy)
+9999 = Hindsight Control Plane (PC loopback; https://hindsight-ui.pcnm.duckdns.org via tailnet-only Caddy)
+
+All Caddy virtual hosts use a shared tailnet-only access policy. Requests from outside `100.64.0.0/10` and `fd7a:115c:a1e0::/48`, including direct LAN and loopback requests, receive `403`. Forwarded client-IP headers do not bypass this policy.

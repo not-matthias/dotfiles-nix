@@ -44,4 +44,6 @@ in {
 
   "pi-mono-env.age".publicKeys = systems;
   "taskchampion-sync.age".publicKeys = systems;
+  "hindsight-server-env.age".publicKeys = systems;
+  "hindsight-client-env.age".publicKeys = systems;
 }

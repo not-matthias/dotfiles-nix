@@ -25,7 +25,16 @@ ttsr:
     - rust-tests-release-mode
 
 memory:
-  backend: sharpshooter
+  backend: hindsight
+hindsight:
+  apiUrl: https://hindsight.pcnm.duckdns.org
+  bankId: omp
+  scoping: per-project-tagged
+  globalScope: true
+  autoRecall: true
+  autoRetain: true
+  retainMode: full-session
+  retainEveryNTurns: 3
 # Replaced with sharpshooter
 # mnemopi:
 #   enhancedRecall: true

@@ -14,6 +14,11 @@
     flakes.win11-kvm.nixosModules.default
   ];
 
+  age.secrets.hindsight-client-env = {
+    file = ../../secrets/hindsight-client-env.age;
+    owner = user;
+  };
+
   zramSwap = {
     enable = true;
     algorithm = "zstd";
@@ -124,7 +129,10 @@
         pi-mono.enable = true;
         oh-my-pi = {
           enable = true;
-          envFile = "/run/agenix/pi-mono-env";
+          envFiles = [
+            "/run/agenix/pi-mono-env"
+            "/run/agenix/hindsight-client-env"
+          ];
         };
       };
       btop.enable = true;
@@ -221,6 +229,7 @@
     octo-fiesta.enable = true;
     systembus-notify.enable = lib.mkForce true;
     vpn.enable = true;
+    hindsight.enable = true;
   };
 
   hardware = {
