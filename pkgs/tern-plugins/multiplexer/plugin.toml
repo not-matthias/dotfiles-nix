@@ -1,0 +1,7 @@
+schema = 1
+id = "multiplexer"
+name = "Multiplexer Shortcuts"
+version = "0.1.0"
+description = "Herdr, tmux and Zellij-style shortcuts for Tern panes, tabs and agents. Herdr: Ctrl+B then 1–9 selects a tab."
+icon = "terminal"
+window = "window.luau"
