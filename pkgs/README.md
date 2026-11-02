@@ -20,6 +20,7 @@ nix run -f foo.nix
 - ActivityWatch's Rust server and sync client use the official 0.14.1 bundle on x86_64 Linux, which includes the heartbeat-ID fix. Other architectures retain the patched source package.
 - Handy and tldraw offline use AppImages. The AppImage extractor runs with shell error checking so a failed extraction cannot be registered as a successful, incomplete store output.
 - Choosr and Steelix retain source builds because their selected packages include local fixes. Replacing them with unpatched binaries would drop those fixes. Feishin also retains source builds outside x86_64 Linux: the upstream ARM64 release includes an x86_64 native module.
+- 2026-10-26: slackcli uses pinned upstream Linux release binaries with patched ELF interpreter, wrapped with xclip and procps in PATH and SLACKCLI_NO_UPDATE_NOTIFIER=1.
 
 ## Tern
 

@@ -180,5 +180,8 @@
     (_self: super: {
       worktrunk = super.callPackage ../../pkgs/worktrunk.nix {};
     })
+    (_self: super: {
+      slackcli = super.callPackage ../../pkgs/slackcli.nix {};
+    })
   ];
 }

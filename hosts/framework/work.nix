@@ -12,6 +12,7 @@
       greptile
       linear-cli
       slk
+      slackcli
     ];
 
     programs.granted.enable = true;
