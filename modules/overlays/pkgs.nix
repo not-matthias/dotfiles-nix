@@ -178,6 +178,10 @@
       tern = super.callPackage ../../pkgs/tern.nix {};
     })
     (_self: super: {
+      herdr-app = super.callPackage ../../pkgs/herdr-app.nix {};
+      herdr-core = super.callPackage ../../pkgs/herdr-core.nix {};
+    })
+    (_self: super: {
       worktrunk = super.callPackage ../../pkgs/worktrunk.nix {};
     })
     (_self: super: {

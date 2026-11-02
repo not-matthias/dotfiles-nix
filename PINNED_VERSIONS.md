@@ -24,6 +24,7 @@ Sources are `pkgs/<name>.nix` unless noted.
 | handy | `0.9.8` |
 | harbor | `0.5.10` |
 | helix-file-watcher | `unstable-2026-08-30`; commit `8cd0726da47b` |
+| herdr-app | `0.1.11` (updated 2026-11-02) |
 | hermes-agent | `0.3.0`; commit `6ebb816e5611` |
 | hushmic | `0.8.1` |
 | jcode | `0.84.0` |
@@ -388,7 +389,7 @@ OpenClaw Gateway has upstream release [2026.9.9](https://github.com/openclaw/ope
 
 ### Pins with no newer stable release or source revision found
 
-- Software: Antigravity, aw-watcher-media-player, Binary Ninja, binja-headless, Choosr, Detect It Easy, disktree, ghidra-cli, helix-file-watcher, Herdr GPUI, Herdr, Oh My Pi, Paper Mono, QMD, Radius2, and Solidtime desktop. Solidtime desktop has a newer beta, excluded from stable targets.
+- Software: Antigravity, aw-watcher-media-player, Binary Ninja, binja-headless, Choosr, Detect It Easy, disktree, ghidra-cli, helix-file-watcher, Herdr, Oh My Pi, Paper Mono, QMD, Radius2, and Solidtime desktop. Solidtime desktop has a newer beta, excluded from stable targets.
 - IDA: SDK source, bitopt, ida-domain, D810, guides, WakaTime, and IDASQL. The SDK tag already matches the pin; D810's older `v0.1` tag is not an upgrade.
 - Pi: agentic-compaction, tintinweb-pi-subagents, askuserquestion, fzf, Gurpartap Mermaid, nupi, curated-themes, diff-review, dynamic-workflows, pane, ptc, subdir-context, verbosity-control, and sub-bar.
 - Other plugins: BleachHack, VS Code JetBrains icon theme, Caddy DuckDNS, steel-pty, and microscopehx.

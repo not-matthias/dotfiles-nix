@@ -81,6 +81,7 @@ in {
 
     programs = {
       ghostty.enable = true;
+      herdr-app.enable = true;
       tern.enable = true;
       plannotator.enable = true;
       handy.enable = true;
