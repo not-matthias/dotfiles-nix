@@ -18,7 +18,6 @@
   ./dunst.nix
   ./firefox.nix
   ./ghostty.nix
-  ./herdr-gpui.nix
   ./tern.nix
   ./plannotator.nix
   ./gh.nix

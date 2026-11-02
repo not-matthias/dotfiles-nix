@@ -24,7 +24,6 @@ Sources are `pkgs/<name>.nix` unless noted.
 | handy | `0.9.8` |
 | harbor | `0.5.10` |
 | helix-file-watcher | `unstable-2026-08-30`; commit `8cd0726da47b` |
-| herdr-gpui | `20261007.3` |
 | hermes-agent | `0.3.0`; commit `6ebb816e5611` |
 | hushmic | `0.8.1` |
 | jcode | `0.84.0` |
