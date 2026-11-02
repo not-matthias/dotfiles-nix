@@ -52,8 +52,9 @@ in {
       ];
       services.hindsight-database-extensions = {
         description = "Create Hindsight PostgreSQL extensions before migrations";
-        requires = ["postgresql.service"];
-        after = ["postgresql.service"];
+        # Database creation runs in postgresql-setup, after PostgreSQL is ready.
+        requires = ["postgresql-setup.service"];
+        after = ["postgresql-setup.service"];
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = true;
