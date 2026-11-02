@@ -10,6 +10,7 @@ theme:
 
 composer:
   shape: pi
+  predictions: true
 statusLine:
   preset: ascii
   separator: ascii

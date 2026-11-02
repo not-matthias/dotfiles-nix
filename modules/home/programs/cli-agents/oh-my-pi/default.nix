@@ -83,6 +83,7 @@ in {
     home.packages = [wrappedOmp];
     home.file =
       {
+        ".omp/agent/keybindings.yml".source = ./keybindings.yml;
         ".omp/agent/skills" = {
           source = agentSkillsFlat;
           recursive = true;

@@ -1,0 +1,2 @@
+tui.editor.cursorRight: [right, ctrl+f, ctrl+e]
+tui.editor.cursorLineEnd: [end]
