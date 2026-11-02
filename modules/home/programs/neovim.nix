@@ -750,6 +750,7 @@
       comment.enable = true;
       todo-comments.enable = true;
       rainbow-delimiters.enable = true;
+      render-markdown.enable = true;
       direnv.enable = true;
       persistence.enable = true;
       # bullets.enable = true;
