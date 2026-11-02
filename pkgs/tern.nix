@@ -27,12 +27,12 @@
 in
   stdenv.mkDerivation rec {
     pname = "tern";
-    version = "0.9.4";
+    version = "0.9.10";
 
     src = requireFile {
       name = "Tern-${version}-linux-x86_64.tar.gz";
       url = "https://build.stencil.so/tern";
-      hash = "sha256-S2ZQXBAgFykOEEM5HcJSImCzpRjVMKIao+ebyhA0cIc=";
+      hash = "sha256-W9eCMo3w7iMw809gxAei8CUrrG6AbmINIrdEvOrUxtU=";
     };
 
     nativeBuildInputs = [autoPatchelfHook makeWrapper];
