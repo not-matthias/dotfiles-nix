@@ -108,7 +108,10 @@ in {
         # };
         oh-my-pi = {
           enable = true;
-          envFile = "/run/agenix/pi-mono-env";
+          envFiles = [
+            "/run/agenix/pi-mono-env"
+            "/run/agenix/hindsight-client-env"
+          ];
         };
       };
       btop.enable = true;
@@ -467,6 +470,10 @@ in {
   age.identityPaths = ["/home/${user}/.ssh/id_rsa"];
   age.secrets.pi-mono-env = {
     file = ../../secrets/pi-mono-env.age;
+    owner = user;
+  };
+  age.secrets.hindsight-client-env = {
+    file = ../../secrets/hindsight-client-env.age;
     owner = user;
   };
 

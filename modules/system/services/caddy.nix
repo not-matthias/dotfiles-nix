@@ -2,53 +2,65 @@
   domain,
   unstable,
   config,
+  lib,
   ...
 }: {
-  # TODO: Turn into options, with tailnetName
-
-  # TODO: https://github.com/frahz/nix-config/blob/9fefb303a64ce1f4169169597c5a1acac3b00d7e/hosts/chibi/services/caddy.nix#L30
-  networking.hosts = {
-    # I'm only ever going to use this on my laptop.
-    "127.0.0.1" = [
-      "laptop.local"
-    ];
-    "100.126.233.5" = [
-      "desktop.local"
-    ];
+  options.services.caddy.virtualHosts = lib.mkOption {
+    type = lib.types.attrsOf (lib.types.submodule {
+      config.extraConfig = lib.mkBefore ''
+        @notTailnet not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
+        respond @notTailnet "Tailnet access only" 403
+      '';
+    });
   };
 
-  # Prevent nginx from being enabled alongside Caddy
-  services.nginx.enable = false;
+  config = {
+    # TODO: Turn into options, with tailnetName
 
-  services.caddy = {
-    environmentFile = config.age.secrets.duckdns.path;
-    package = unstable.caddy.withPlugins {
-      plugins = ["github.com/caddy-dns/duckdns@v0.5.0"];
-      hash = "sha256-hdJoUoWpDZEz367Rwhagz5040TMHBReLY+hhHjMfwgM=";
+    # TODO: https://github.com/frahz/nix-config/blob/9fefb303a64ce1f4169169597c5a1acac3b00d7e/hosts/chibi/services/caddy.nix#L30
+    networking.hosts = {
+      # I'm only ever going to use this on my laptop.
+      "127.0.0.1" = [
+        "laptop.local"
+      ];
+      "100.126.233.5" = [
+        "desktop.local"
+      ];
     };
 
-    virtualHosts."*.${domain}".extraConfig = ''
-      tls {
-          dns duckdns {env.DUCKDNS_TOKEN}
-      }
-    '';
+    # Prevent nginx from being enabled alongside Caddy
+    services.nginx.enable = false;
 
-    virtualHosts."${domain}".extraConfig = ''
-      respond "Hello, world!"
-    '';
-    virtualHosts."${domain}/test".extraConfig = ''
-      respond "Path works!"
-    '';
-    virtualHosts."test.${domain}".extraConfig = ''
-      respond "Subdomains work!"
-    '';
+    services.caddy = {
+      environmentFile = config.age.secrets.duckdns.path;
+      package = unstable.caddy.withPlugins {
+        plugins = ["github.com/caddy-dns/duckdns@v0.5.0"];
+        hash = "sha256-hdJoUoWpDZEz367Rwhagz5040TMHBReLY+hhHjMfwgM=";
+      };
 
-    # Docker services (not yet here)
-    #
-    virtualHosts."immich.${domain}".extraConfig = ''
-      encode zstd gzip
+      virtualHosts."*.${domain}".extraConfig = ''
+        tls {
+            dns duckdns {env.DUCKDNS_TOKEN}
+        }
+      '';
 
-      reverse_proxy http://127.0.0.1:2283
-    '';
+      virtualHosts."${domain}".extraConfig = ''
+        respond "Hello, world!"
+      '';
+      virtualHosts."${domain}/test".extraConfig = ''
+        respond "Path works!"
+      '';
+      virtualHosts."test.${domain}".extraConfig = ''
+        respond "Subdomains work!"
+      '';
+
+      # Docker services (not yet here)
+      #
+      virtualHosts."immich.${domain}".extraConfig = ''
+        encode zstd gzip
+
+        reverse_proxy http://127.0.0.1:2283
+      '';
+    };
   };
 }

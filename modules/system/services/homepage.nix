@@ -195,6 +195,13 @@ in {
                 siteMonitor = "https://chat.${domain}";
               };
             })
+            (includeService "hindsight" {
+              Hindsight = {
+                description = "Private memory service";
+                icon = "mdi-brain";
+                href = "https://hindsight-ui.${domain}";
+              };
+            })
             (includeService "kaneo" {
               Kaneo = {
                 description = "Kaneo";

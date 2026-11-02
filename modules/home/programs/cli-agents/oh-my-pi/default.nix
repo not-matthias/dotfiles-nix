@@ -11,16 +11,21 @@ with lib; let
   sharedExtensions = import ../../../../../pkgs/pi-mono/extensions {inherit pkgs;};
 
   # The released `omp-linux-x64` binary bundles its own Bun runtime, so it does
-  # not hit the nixpkgs Bun version check. Wrap it to optionally source an env
-  # file (e.g. an agenix secret) before launching.
+  # not hit the nixpkgs Bun version check. Wrap it to source runtime env files
+  # (e.g. agenix secrets) before launching, in the order configured.
   ompPkg = pkgs.oh-my-pi;
+  envFilesScript =
+    concatMapStringsSep "\n" (envFile: ''
+      [ -f ${escapeShellArg envFile} ] && set -a && . ${escapeShellArg envFile} && set +a || true
+    '')
+    cfg.envFiles;
   wrappedOmp = pkgs.symlinkJoin {
     name = "oh-my-pi-wrapped";
     paths = [ompPkg];
     nativeBuildInputs = [pkgs.makeWrapper];
-    postBuild = optionalString (cfg.envFile != null) ''
+    postBuild = optionalString (cfg.envFiles != []) ''
       wrapProgram $out/bin/omp \
-        --run '[ -f "${cfg.envFile}" ] && set -a && . "${cfg.envFile}" && set +a; true'
+        --run ${escapeShellArg envFilesScript}
     '';
   };
 
@@ -67,10 +72,10 @@ with lib; let
 in {
   options.programs.cli-agents.oh-my-pi = {
     enable = mkEnableOption "oh-my-pi (omp) CLI agent";
-    envFile = mkOption {
-      type = types.nullOr types.str;
-      default = null;
-      description = "Path to an environment file sourced before launching omp (e.g. an agenix secret)";
+    envFiles = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      description = "Environment files sourced in list order before launching omp, with variables exported; missing files and nonzero source results are ignored so omp still launches.";
     };
     settings = mkOption {
       type = types.attrsOf types.anything;
