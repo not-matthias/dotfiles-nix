@@ -16,7 +16,7 @@ statusLine:
 tui:
   tight: true
 display:
-  showTokenUsage: true
+  # showTokenUsage: true
   cacheMissMarker: true
 
 ttsr:
