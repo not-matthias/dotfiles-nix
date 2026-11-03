@@ -19,12 +19,6 @@
     owner = user;
   };
 
-  zramSwap = {
-    enable = true;
-    algorithm = "zstd";
-    memoryPercent = 25;
-  };
-
   home-manager.users.${user} = {
     config,
     lib,

@@ -14,7 +14,12 @@
 
     tmp.cleanOnBoot = lib.mkDefault true;
   };
-  zramSwap.enable = true;
+  # Shared compressed-swap policy; hosts can override compression and capacity.
+  zramSwap = {
+    enable = true;
+    algorithm = lib.mkDefault "zstd";
+    memoryPercent = lib.mkDefault 25;
+  };
 
   # Logs hardware errors (MCEs, ECC, PCIe AER) so silent reboots from
   # uncorrectable errors leave a trail in `ras-mc-ctl --errors`.
