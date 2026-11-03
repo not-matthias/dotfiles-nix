@@ -116,7 +116,7 @@
       flake = false;
     };
     omp-autoresearch = {
-      url = "git+ssh://git@github.com/not-matthias/omp-autoresearch.git";
+      url = "git+https://github.com/not-matthias/omp-autoresearch.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     taskwarrior-web = {

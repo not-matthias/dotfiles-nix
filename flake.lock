@@ -1554,11 +1554,11 @@
         "rev": "05bc4db13b629b7d8debc6841d66208bc28494bb",
         "revCount": 16,
         "type": "git",
-        "url": "ssh://git@github.com/not-matthias/omp-autoresearch.git"
+        "url": "https://github.com/not-matthias/omp-autoresearch.git"
       },
       "original": {
         "type": "git",
-        "url": "ssh://git@github.com/not-matthias/omp-autoresearch.git"
+        "url": "https://github.com/not-matthias/omp-autoresearch.git"
       }
     },
     "root": {
