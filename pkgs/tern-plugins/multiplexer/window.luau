@@ -55,6 +55,45 @@ local function applyStyle(cx: WindowCx, style: string)
   cx:toast("info", "Multiplexer shortcuts: " .. style)
 end
 
+local function refreshStyle(cx: WindowCx, state)
+  if not profiles.styles[state.style] then
+    return
+  end
+  local desired = table.clone(profiles.styles[state.style])
+  for chord, action in profiles.personal do
+    desired[chord] = action
+  end
+  local bindings = cx.settings:keybinds()
+  local changed = false
+  for chord, installed in state.installed do
+    if not desired[chord] then
+      if sameBinding(bindings[chord], installed) then
+        bindings[chord] = state.before[chord] or nil
+        changed = true
+      end
+      state.installed[chord] = nil
+      state.before[chord] = nil
+    end
+  end
+  for chord, action in desired do
+    local installed = state.installed[chord]
+    if (installed and sameBinding(bindings[chord], installed)) or (not installed and bindings[chord] == nil) then
+      if not installed then
+        state.before[chord] = false
+      end
+      if not sameBinding(bindings[chord], action) then
+        bindings[chord] = action
+        changed = true
+      end
+      state.installed[chord] = action
+    end
+  end
+  if changed then
+    cx.settings:set("keybinds", bindings)
+  end
+  tern.kv.set(STATE_KEY, state)
+end
+
 local function agents(cx: WindowCx): { PaneInfo }
   local native = {}
   for _, agent in cx.agents:list() do
@@ -271,7 +310,10 @@ tern.command({
 -- Entry load also runs after plugin reload, unlike window_start.
 tern.timer(0, function(cx: WindowCx)
   currentPane = cx.session:focused()
-  if not tern.kv.get(STATE_KEY) then
+  local state = tern.kv.get(STATE_KEY)
+  if state then
+    refreshStyle(cx, state)
+  else
     applyStyle(cx, profiles.default)
   end
 end)

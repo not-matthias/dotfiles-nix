@@ -14,6 +14,7 @@
   vulkan-loader,
   webkitgtk_4_1,
   glib-networking,
+  zenity,
 }: let
   # Bound perf's per-CPU buffers independently of the host's perf_event_mlock_kb.
   perfMmapPages = 1024;
@@ -52,9 +53,10 @@ in
       runHook preInstall
       mkdir -p "$out/libexec/tern"
       cp tern "$out/libexec/tern/"
+      # Native close confirmations and file dialogs require a Linux dialog helper.
       makeWrapper "$out/libexec/tern/tern" "$out/bin/tern" \
         --prefix GIO_EXTRA_MODULES : "${lib.getLib glib-networking}/lib/gio/modules" \
-        --prefix PATH : "${lib.makeBinPath [profilingPerf]}"
+        --prefix PATH : "${lib.makeBinPath [profilingPerf zenity]}"
       runHook postInstall
     '';
 
