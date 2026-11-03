@@ -173,6 +173,9 @@
     "**/.npm"
     "**/.next"
     "**/.nuxt"
+    "**/.turbo"
+    "**/.parcel-cache"
+    "**/.svelte-kit"
 
     # Python
     "**/__pycache__"
@@ -185,6 +188,9 @@
     "**/pip-wheel-metadata"
     "**/.pytest_cache"
     "**/.mypy_cache"
+    "**/.ruff_cache"
+    "**/.tox"
+    "**/.nox"
 
     # Java / Kotlin / Scala (Maven, Gradle, sbt)
     "**/.gradle"
