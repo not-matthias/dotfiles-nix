@@ -136,13 +136,10 @@ retry:
       - google/gemini-3-pro-image-preview
       - deepinfra/black-forest-labs/FLUX-2-pro
 
-# Claude marketplace plugins are a foreign user-level source, disabled by
-# default. Enable them only for CodSpeed work checkouts. Paths match the
-# working directory or anything below it; ~/.omp/wt holds omp's own worktrees
-# of those same repos.
-enabledProviders:
+# Load marketplace skills explicitly through the wgit codspeed-marketplace skill.
+enabledProviders: []
+disabledProviders:
   - paths:
       - ~/Documents/work/wgit
-      - ~/.omp/wt
     providers:
-      - claude-plugins
+      - agents
