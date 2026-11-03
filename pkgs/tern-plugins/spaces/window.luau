@@ -4,6 +4,7 @@ local stateModel = require("./state")
 local view = require("./view")
 
 local PANEL_SHARE = 0.15
+-- Only drags are persisted, so changing PANEL_SHARE reaches users who never resized.
 local WIDTH_KEY = "sidebar-width"
 local WIDTH_TOLERANCE = 0.0001
 local MAX_SPLIT_SHARE = 0.99
@@ -14,7 +15,7 @@ local rendered = {}
 local pending = {}
 local collapsed = {}
 local syncing = false
-local sharedWidth = tern.kv.get(WIDTH_KEY)
+local sharedWidth: number = tern.kv.get(WIDTH_KEY) or PANEL_SHARE
 local widths = {}
 local activePanel = nil
 local panelByTab = {}
@@ -33,19 +34,33 @@ local function panels(cx: WindowCx)
   return result
 end
 
-local function paneShare(node: TabTree, pane: number, share: number): number?
+-- The pane's share of the tab width, and the ratio of the split directly holding it.
+local function paneGeometry(node: TabTree, pane: number, share: number, divider: number?): (number?, number?)
   if node.pane then
-    return if node.pane == pane then share else nil
+    if node.pane == pane then
+      return share, divider
+    end
+    return nil, nil
   end
   local horizontal = node.split == "right"
-  return paneShare(node[1], pane, if horizontal then share * node.ratio else share)
-    or paneShare(node[2], pane, if horizontal then share * (1 - node.ratio) else share)
+  local found, ratio = paneGeometry(node[1], pane, if horizontal then share * node.ratio else share, node.ratio)
+  if found then
+    return found, ratio
+  end
+  return paneGeometry(node[2], pane, if horizontal then share * (1 - node.ratio) else share, node.ratio)
+end
+
+local function panelGeometry(cx: WindowCx, pane: number): (number?, number?)
+  local tab = cx.session:tab_of(pane)
+  local layout = if tab then cx.session:layout(tab) else nil
+  if not layout then
+    return nil, nil
+  end
+  return paneGeometry(layout.root, pane, 1, nil)
 end
 
 local function panelWidth(cx: WindowCx, pane: number): number?
-  local tab = cx.session:tab_of(pane)
-  local layout = if tab then cx.session:layout(tab) else nil
-  return if layout then paneShare(layout.root, pane, 1) else nil
+  return (panelGeometry(cx, pane))
 end
 
 local function rememberWidth(width: number)
@@ -55,17 +70,25 @@ end
 
 local function observeWidth(cx: WindowCx): boolean
   local previous = if activePanel then widths[activePanel] else nil
-  local actual = if previous then panelWidth(cx, activePanel) else nil
+  if not previous then
+    return false
+  end
+  local actual, divider = panelGeometry(cx, activePanel)
   if not actual then
     return false
   end
-  local changed = previous.actual and math.abs(actual - previous.actual) > WIDTH_TOLERANCE
-  if changed then
+  -- Only moving the panel's own divider is a resize. Closing a split neighbour
+  -- also changes its share, but sync reopens it at the shared width instead.
+  local dragged = previous.divider ~= nil
+    and divider ~= nil
+    and math.abs(divider - previous.divider) > WIDTH_TOLERANCE
+  if dragged then
     rememberWidth(actual)
     previous.requested = actual
+    previous.actual = actual
   end
-  previous.actual = actual
-  return changed == true
+  previous.divider = divider
+  return dragged
 end
 
 -- Render one panel per callback to stay within Tern's plugin-hook budget.
@@ -166,9 +189,6 @@ local function sync(cx: WindowCx)
   end
   panelByTab = byTab
   activePanel = byTab[state.activeTab]
-  if not sharedWidth then
-    rememberWidth((if activePanel then panelWidth(cx, activePanel) else nil) or PANEL_SHARE)
-  end
   local model = stateModel.sidebarModel(cx, state, collapsed)
   local signature = tern.json.encode(model)
   local nextUpdates = {}
@@ -197,10 +217,13 @@ local function sync(cx: WindowCx)
       continue
     end
     if existing then
-      local actual = panelWidth(cx, existing)
+      local actual, divider = panelGeometry(cx, existing)
       local previous = widths[existing]
       if actual then
-        if not previous or math.abs(previous.requested - sharedWidth) > WIDTH_TOLERANCE then
+        local relaid = previous
+          and previous.actual
+          and math.abs(actual - previous.actual) > WIDTH_TOLERANCE
+        if not previous or relaid or math.abs(previous.requested - sharedWidth) > WIDTH_TOLERANCE then
           if math.abs(actual - sharedWidth) > WIDTH_TOLERANCE then
             if canCreate then
               -- Exact ratios require reopening. Wait for pane_closed before replacing
@@ -213,11 +236,12 @@ local function sync(cx: WindowCx)
             end
             deferredLayouts[tab.id] = true
           else
-            widths[existing] = { requested = sharedWidth, actual = actual }
+            widths[existing] = { requested = sharedWidth, actual = actual, divider = divider }
           end
         elseif not previous.actual then
           -- Minimum pane sizes may clamp the opening ratio; this is not a drag.
           previous.actual = actual
+          previous.divider = divider
         end
       end
       local cached = rendered[existing]

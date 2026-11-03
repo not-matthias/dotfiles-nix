@@ -747,6 +747,34 @@ def test_sidebar_width_follows_resize_across_spaces_tabs_and_reload(tern, remote
     assert original_pane in {pane["pane"] for pane in tern.snapshot()["panes"]}
 
 
+def test_sidebar_width_survives_closing_a_split_neighbour(tern):
+    def width():
+        nodes = tern.panel_tree()
+        return nodes[0]["rect"][2] if nodes else 0
+
+    def panel():
+        panels = [p["pane"] for p in tern.snapshot()["panels"] if p["owner"] == "spaces"]
+        return panels[0] if len(panels) == 1 else None
+
+    initial = tern.until(width)
+    left = tern.terminal()["pane"]
+    tern.keys("ctrl+b", "v")
+    tern.until(lambda: tern.terminal()["pane"] != left)
+    right = tern.terminal()["pane"]
+    # A reopen (e.g. after a width change elsewhere) targets only the left half.
+    old = tern.until(panel)
+    tern.lua(f"cx.layout:close({old})")
+    tern.until(lambda: panel() not in (None, old))
+    tern.until(lambda: abs(width() - initial) < 1)
+    tern.lua(f"cx.layout:close({right})")
+    tern.until(lambda: right not in {p["pane"] for p in tern.snapshot()["panes"]})
+    tern.until(lambda: abs(width() - initial) < 1)
+    kv = tern.root / "state" / "tern" / "plugin-data" / "spaces" / "kv.json"
+    saved = json.loads(kv.read_text()) if kv.exists() else {}
+    assert "sidebar-width" not in saved
+
+
+
 @pytest.mark.parametrize("remote", [False, True], ids=["local", "remote"])
 def test_existing_native_spaces_and_tabs_stay_synchronized(tern, remote):
     registration = tern.root / "config" / "plugins" / "spaces.path"
