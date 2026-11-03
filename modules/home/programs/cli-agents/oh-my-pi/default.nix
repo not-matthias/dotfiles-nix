@@ -119,6 +119,7 @@ in {
         ".omp/agent/extensions/atuin.ts".source = ./extensions/atuin.ts;
         ".omp/agent/extensions/herdr-tab-title.ts".source = ./extensions/herdr-tab-title.ts;
         ".omp/agent/extensions/deslop.ts".source = ./extensions/deslop.ts;
+        ".omp/agent/extensions/direnv.ts".source = ./extensions/direnv.ts;
       }
       // pluginFiles;
 
