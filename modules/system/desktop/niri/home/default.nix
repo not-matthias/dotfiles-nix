@@ -33,7 +33,7 @@ in {
           enable = true;
           wallpaper = ../../hyprland/home/wallpaper.png;
         };
-        dunst.enable = true;
+        hokum.enable = true;
       };
 
       xdg.portal = {
@@ -309,7 +309,6 @@ in {
           #   {
           #     matches = [
           #       {namespace = "^notifications$";}
-          #       {namespace = "^dunst$";}
           #     ];
           #     block-out-from = ["screencast"];
           #   }

@@ -19,7 +19,6 @@
     {command = ["uwsm" "app" "--" "awww" "img" "${config.home.homeDirectory}/.wallpaper.png"];}
     {command = ["uwsm" "app" "--" "nm-applet" "--indicator"];}
     {command = ["uwsm" "app" "--" "blueman-applet"];}
-    {command = ["uwsm" "app" "--" "dunst"];}
     {command = ["uwsm" "app" "--" "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"];}
     {command = ["uwsm" "app" "--" "xwayland-satellite"];}
   ];

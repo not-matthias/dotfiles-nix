@@ -18,7 +18,7 @@ BarButton {
     Process {
         id: action
 
-        command: [Commands.dunstctl, "set-paused", "toggle"]
+        command: [Commands.hokum, "dnd", "toggle"]
     }
 
     onClicked: function (button) {

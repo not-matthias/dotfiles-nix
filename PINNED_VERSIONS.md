@@ -212,8 +212,13 @@ Source: `flake.nix`. Resolved revisions for all flake inputs are recorded separa
 | Input | Explicit pin |
 |---|---|
 | devenv | `v2.4.0` |
+| hokum | Commit `f30af6ae2762` (2026-11-03); includes the DND control API used by Quickshell and Flashgen |
 | steel-pty | Commit `4d41b6988107` |
 | microscopehx | Commit `7fe4e60f0c4f` |
+
+Hokum replaces Dunst in Niri. Its writable configuration is seeded once with the Capsule theme and sound/Bluetooth modules disabled. Later settings changes persist across rebuilds.
+2026-11-03: Enable `fonts.fontDir.enable` so Hokum's directory-based font loader can find installed CJK fonts in `/run/current-system/sw/share/X11/fonts`.
+On first activation, log out and back in to stop the old Niri-launched Dunst process before Hokum starts.
 
 ## Related selections that are not exact release pins
 

@@ -15,7 +15,7 @@
   ./tmux
   ./quickshell
   ./direnv.nix
-  ./dunst.nix
+  ./hokum.nix
   ./firefox.nix
   ./ghostty.nix
   ./herdr-app.nix

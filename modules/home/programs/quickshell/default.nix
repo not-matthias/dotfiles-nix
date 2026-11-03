@@ -5,8 +5,9 @@
   ...
 }: let
   cfg = config.programs.quickshellBar;
+  hokumPackage = config.services.hokum.package;
   flashgen = import ./config/Components/Flashgen/default.nix {
-    inherit pkgs;
+    inherit pkgs hokumPackage;
     cfg = cfg.flashgenWordOfHour;
   };
   aiUsage = import ./config/Components/AiUsage/default.nix {inherit pkgs;};
@@ -39,7 +40,7 @@
     antigravityUsage = "${aiUsage.antigravityScript}/bin/quickshell-antigravity-usage";
     statusBridge = "${statusBridge.bridge}/bin/quickshell-status-bridge";
     pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
-    dunstctl = "${pkgs.dunst}/bin/dunstctl";
+    hokum = "${hokumPackage}/bin/hokum";
     niri = "${pkgs.niri}/bin/niri";
     systemctl = "${pkgs.systemd}/bin/systemctl";
   };
@@ -55,7 +56,7 @@
         readonly property string antigravityUsage: ${builtins.toJSON commands.antigravityUsage}
         readonly property string statusBridge: ${builtins.toJSON commands.statusBridge}
         readonly property string pavucontrol: ${builtins.toJSON commands.pavucontrol}
-        readonly property string dunstctl: ${builtins.toJSON commands.dunstctl}
+        readonly property string hokum: ${builtins.toJSON commands.hokum}
         readonly property string niri: ${builtins.toJSON commands.niri}
         readonly property string systemctl: ${builtins.toJSON commands.systemctl}
     }
@@ -121,7 +122,7 @@ in {
         autoSpeak = lib.mkOption {
           type = lib.types.bool;
           default = false;
-          description = "Speak the new word on the hourly notification unless dunst is paused.";
+          description = "Speak the new word on the hourly notification only when Hokum reports do-not-disturb is off.";
         };
       };
     };

@@ -11,9 +11,9 @@
       from dbus_fast.aio import MessageBus
 
 
-      DUNST_NAME = "org.freedesktop.Notifications"
-      DUNST_PATH = "/org/freedesktop/Notifications"
-      DUNST_INTERFACE = "org.dunstproject.cmd0"
+      HOKUM_NAME = "org.freedesktop.Notifications"
+      HOKUM_PATH = "/app/hokum/Daemon"
+      HOKUM_INTERFACE = "app.hokum.Daemon"
       SYSTEMD_NAME = "org.freedesktop.systemd1"
       SYSTEMD_PATH = "/org/freedesktop/systemd1"
       SYSTEMD_MANAGER = "org.freedesktop.systemd1.Manager"
@@ -22,11 +22,11 @@
       UNIT_NAME = "quickshell-idle-inhibit.service"
 
 
-      def dnd_status(paused):
+      def dnd_status(on):
           return {
-              "text": "󰂛" if paused else "󰂚",
-              "tooltip": "Do not disturb: ON" if paused else "Do not disturb: OFF",
-              "class": "active" if paused else "inactive",
+              "text": "󰂛" if on else "󰂚",
+              "tooltip": "Do not disturb: ON" if on else "Do not disturb: OFF",
+              "class": "active" if on else "inactive",
           }
 
 
@@ -71,10 +71,10 @@
               )
               await self.add_match(
                   "type='signal',sender='org.freedesktop.Notifications',"
-                  "path='/org/freedesktop/Notifications',"
+                  "path='/app/hokum/Daemon',"
                   "interface='org.freedesktop.DBus.Properties',"
                   "member='PropertiesChanged',"
-                  "arg0='org.dunstproject.cmd0'"
+                  "arg0='app.hokum.Daemon'"
               )
               await self.add_match(
                   "type='signal',sender='org.freedesktop.systemd1',"
@@ -110,7 +110,7 @@
                   and len(message.body) == 3
               ):
                   name, _old_owner, new_owner = message.body
-                  if name == DUNST_NAME and new_owner:
+                  if name == HOKUM_NAME and new_owner:
                       self.start_refresh("dnd")
                   elif name == SYSTEMD_NAME and new_owner:
                       self.unit_path = None
@@ -124,11 +124,11 @@
               ):
                   changed = message.body[1]
                   if (
-                      message.path == DUNST_PATH
-                      and message.body[0] == DUNST_INTERFACE
-                      and "paused" in changed
+                      message.path == HOKUM_PATH
+                      and message.body[0] == HOKUM_INTERFACE
+                      and "DoNotDisturb" in changed
                   ):
-                      self.set_dnd(bool(changed["paused"].value))
+                      self.set_dnd(bool(changed["DoNotDisturb"].value))
                   elif (
                       message.path == self.unit_path
                       and message.body[0] == SYSTEMD_UNIT
@@ -182,14 +182,14 @@
 
           async def refresh_dnd(self):
               try:
-                  paused = await self.get_property(
-                      DUNST_NAME, DUNST_PATH, DUNST_INTERFACE, "paused"
+                  on = await self.get_property(
+                      HOKUM_NAME, HOKUM_PATH, HOKUM_INTERFACE, "DoNotDisturb"
                   )
               except Exception:
                   if self.dnd is None:
                       self.set_dnd(False)
                   return
-              self.set_dnd(bool(paused))
+              self.set_dnd(bool(on))
 
           async def refresh_idle(self):
               try:

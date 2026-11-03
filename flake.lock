@@ -864,6 +864,27 @@
         "url": "https://github.com/heraeyes/platform"
       }
     },
+    "hokum": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793506764,
+        "narHash": "sha256-SCGQ1CQgrVNwtyAOI6cQIgKC2EGqRdnRJmE9dVhuaQw=",
+        "owner": "anomalyco",
+        "repo": "hokum",
+        "rev": "f30af6ae2762bf9a3b41b9cbccac6e01cbed08ab",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anomalyco",
+        "repo": "hokum",
+        "rev": "f30af6ae2762bf9a3b41b9cbccac6e01cbed08ab",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -1553,6 +1574,7 @@
         "glyphhx": "glyphhx",
         "helium": "helium",
         "hera": "hera",
+        "hokum": "hokum",
         "home-manager": "home-manager",
         "language-study": "language-study",
         "llm-agents": "llm-agents",

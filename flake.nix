@@ -60,6 +60,10 @@
     };
     niri.url = "github:sodiboo/niri-flake";
     vicinae.url = "github:vicinaehq/vicinae";
+    hokum = {
+      url = "github:anomalyco/hokum/f30af6ae2762bf9a3b41b9cbccac6e01cbed08ab";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     stylix = {
       url = "github:nix-community/stylix/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -1,7 +1,12 @@
-{unstable, ...}: {
+{
+  unstable,
+  flakes,
+  ...
+}: {
   nixpkgs.overlays = [
     (_self: _super: {
       pnpm_10 = unstable.pnpm_10;
+      hokum = flakes.hokum.packages.${_super.stdenv.hostPlatform.system}.default;
     })
     (_self: super: {
       # 2026-10-24: Backport support for Determinate Nix's extended activity types.

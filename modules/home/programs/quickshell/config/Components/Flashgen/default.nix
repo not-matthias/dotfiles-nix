@@ -1,6 +1,7 @@
 {
   pkgs,
   cfg,
+  hokumPackage,
 }: let
   ttsEnabled =
     if cfg.tts.enable
@@ -15,7 +16,7 @@
     runtimeInputs = [
       pkgs.coreutils
       pkgs.curl
-      pkgs.dunst
+      hokumPackage
       pkgs.jq
       pkgs.libnotify
       pkgs.pipewire
@@ -98,7 +99,9 @@
                       notify-send -a Flashgen "$FLASHGEN_NOTIFY_TITLE" "$FLASHGEN_NOTIFY_BODY"
                       exit 0
                     fi
-                    if [ "$TTS_AUTO_SPEAK" = 1 ] && [ "$(dunstctl is-paused)" != true ]; then
+                    if [ "$TTS_AUTO_SPEAK" = 1 ] \
+                      && dnd_status="$(hokum dnd)" \
+                      && [ "$dnd_status" = off ]; then
                       speak_current &
                     fi
                     chosen="$(notify-send -a Flashgen -A play=Play "$FLASHGEN_NOTIFY_TITLE" "$FLASHGEN_NOTIFY_BODY")"
