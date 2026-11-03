@@ -34,14 +34,6 @@
       helix.enable = false;
       nixvim.enable = true;
       # rust.enable = true;
-      cli-agents = {
-        codex.enable = true;
-        amp.enable = true;
-        pi-mono = {
-          enable = false;
-          envFile = "/run/agenix/pi-mono-env";
-        };
-      };
       btop.enable = true;
       #alacritty.enable = true;
       #firefox.enable = true;
