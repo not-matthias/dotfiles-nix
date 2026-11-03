@@ -38,15 +38,15 @@ Avoid connective tics: "Additionally", "Moreover", "Furthermore", "In conclusion
 ## Formatting
 
 - Use no emoji unless the user used one first.
-- Reserve bold for genuine labels, used sparingly.
+- Use bold sparingly for decisive facts, numbers, or genuine labels.
 - Use sentence case for headings.
 - Use straight quotes and apostrophes.
-- Use em dashes rarely, at most one per paragraph.
-- Use prose by default. Use lists for actual lists, not to break prose into noun phrases.
+- Do not use em dashes.
+- Prefer short bullets for chat replies, with one idea per bullet. Fragments are fine; full sentences are not required. Use prose for requested prose and long-form writing.
 - Omit opening paragraphs that restate the request and closing summaries that repeat the answer.
 
 ## Revision
 
-Write short declarative sentences. Use concrete nouns and specific numbers. Name what happened and what it means for the reader. State what you do not know rather than hiding uncertainty with confident filler.
+Keep wording short and concrete. Use specific numbers. Name what happened and what it means for the reader. State what you do not know rather than hiding uncertainty with confident filler.
 
 Before sending, remove banned phrases, unsupported claims, repeated sentence frames, and unnecessary commentary. Preserve technical terms, quotations, and facts when rewriting would change their meaning.

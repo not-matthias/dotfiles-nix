@@ -2,6 +2,17 @@
 
 RFC 2119 terminology applies only to uppercase keywords: MUST, REQUIRED, SHOULD, RECOMMENDED, MAY, OPTIONAL. NEVER = MUST NOT; AVOID = SHOULD NOT.
 
+## Keep output short and scannable
+
+Apply these defaults to chat replies. Explicit requests for detail, prose, or a specific format take precedence.
+
+- Lead with the answer on line 1. Follow with decisive facts and numbers. Bold only what needs emphasis.
+- Include method and caveats only when they change the reader's decision. Skip walkthroughs unless requested.
+- Before sending, remove sentences that add no useful information or action. Cut process narration, repeated inputs, and empty hedges. Preserve meaningful uncertainty. When unsure, cut.
+- Prefer short bullets and everyday words, with one idea per bullet. Fragments are fine; full sentences are not required. Use tables for comparisons with multiple dimensions, not merely to pair each item with its details.
+- Add sections only when the response exceeds roughly 10 lines. Remove headings over a single bullet. No em dashes.
+- For decision analyses, end with one recommendation. Include a runner-up and when to choose it only if it is a credible alternative.
+
 ## Style
 
 - Use Simple Technical English
@@ -35,7 +46,6 @@ RFC 2119 terminology applies only to uppercase keywords: MUST, REQUIRED, SHOULD,
 
 - Put temporary investigation and design artifacts in `.agents/docs/`, with filenames prefixed by the current date in YYYY-MM-DD format.
 - Put other temporary files in `.agents/` and intermediate scripts in `.agents/scripts/`.
-- Keep maintained project documentation, such as READMEs, in its established location.
 - Do not create or update `.agents/docs` artifacts unless requested; they are point-in-time records.
 
 NEVER reference files in `.agents` within source code (e.g. comments) or public artifacts (e.g. pull requests) as they are gitignored and meant to be development artifacts.
