@@ -15,8 +15,12 @@ with lib; let
   # (e.g. agenix secrets) before launching, in the order configured.
   ompPkg = pkgs.oh-my-pi;
   envFilesScript =
-    concatMapStringsSep "\n" (envFile: ''
-      [ -f ${escapeShellArg envFile} ] && set -a && . ${escapeShellArg envFile} && set +a || true
+    concatMapStringsSep "\n" (envFile: let
+      path =
+        concatMapStringsSep "\"$XDG_RUNTIME_DIR\"" escapeShellArg
+        (splitString "\${XDG_RUNTIME_DIR}" envFile);
+    in ''
+      [ -f ${path} ] && set -a && . ${path} && set +a || true
     '')
     cfg.envFiles;
   wrappedOmp = pkgs.symlinkJoin {
@@ -75,7 +79,7 @@ in {
     envFiles = mkOption {
       type = types.listOf types.str;
       default = [];
-      description = "Environment files sourced in list order before launching omp, with variables exported; missing files and nonzero source results are ignored so omp still launches.";
+      description = "Environment files sourced in list order before launching omp, with variables exported. The literal \${XDG_RUNTIME_DIR} placeholder is expanded at launch; missing files and nonzero source results are ignored so omp still launches.";
     };
     settings = mkOption {
       type = types.attrsOf types.anything;

@@ -7,6 +7,11 @@
 }: {
   imports = import ../modules/home;
 
+  age.secrets = lib.mkIf config.programs.cli-agents.oh-my-pi.enable {
+    pi-mono-env.file = ../secrets/pi-mono-env.age;
+    hindsight-client-env.file = ../secrets/hindsight-client-env.age;
+  };
+
   home = {
     username = "${user}";
     homeDirectory = "/home/${user}";
@@ -80,6 +85,13 @@
   };
 
   programs = {
+    cli-agents.oh-my-pi = {
+      enable = lib.mkDefault (pkgs.stdenv.hostPlatform.system == "x86_64-linux");
+      envFiles = lib.mkDefault (lib.optionals config.programs.cli-agents.oh-my-pi.enable [
+        config.age.secrets.pi-mono-env.path
+        config.age.secrets.hindsight-client-env.path
+      ]);
+    };
     home-manager.enable = true;
     nh = {
       enable = true;

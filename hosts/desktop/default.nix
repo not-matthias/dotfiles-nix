@@ -41,7 +41,6 @@
           enable = false;
           envFile = "/run/agenix/pi-mono-env";
         };
-        oh-my-pi.enable = true;
       };
       btop.enable = true;
       #alacritty.enable = true;
