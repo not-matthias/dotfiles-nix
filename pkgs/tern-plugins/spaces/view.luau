@@ -29,6 +29,10 @@ tern.css(
     flex-direction: column;
     min-width: 0;
   }
+  .spaces-sidebar .space-row-current {
+    border-radius: 4px;
+    background-color: color-mix(in srgb, var(--t1) 9%, transparent);
+  }
   .spaces-sidebar .space-name {
     margin: 0;
     display: flex;
@@ -158,7 +162,8 @@ local function view(groups, selectedSession: number): Node
           }, { tern.ui.text({ tern.ui.span(branch, "muted") }) })
         )
       end
-      table.insert(rows, tern.ui.el("div", { class = "space-row" }, contents))
+      local rowClass = if session.id == selectedSession then "space-row space-row-current" else "space-row"
+      table.insert(rows, tern.ui.el("div", { class = rowClass }, contents))
     end
   end
   return tern.ui.el("div", { class = "spaces-sidebar" }, rows)

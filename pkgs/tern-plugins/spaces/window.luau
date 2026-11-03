@@ -6,6 +6,7 @@ local view = require("./view")
 local PANEL_SHARE = 0.15
 -- Only drags are persisted, so changing PANEL_SHARE reaches users who never resized.
 local WIDTH_KEY = "sidebar-width"
+local COLLAPSED_PREFIX = "collapsed:"
 local WIDTH_TOLERANCE = 0.0001
 local MAX_SPLIT_SHARE = 0.99
 local REFRESH_MS = 1000
@@ -13,7 +14,10 @@ local GROUP = "Spaces"
 local CUSTOM_NAME_PREFIX = "custom-name:"
 local rendered = {}
 local pending = {}
-local collapsed = {}
+-- KV is shared by every window and re-read when it changes on disk.
+local function isCollapsed(host: string): boolean
+  return tern.kv.get(COLLAPSED_PREFIX .. host) == true
+end
 local syncing = false
 local sharedWidth: number = tern.kv.get(WIDTH_KEY) or PANEL_SHARE
 local widths = {}
@@ -189,7 +193,7 @@ local function sync(cx: WindowCx)
   end
   panelByTab = byTab
   activePanel = byTab[state.activeTab]
-  local model = stateModel.sidebarModel(cx, state, collapsed)
+  local model = stateModel.sidebarModel(cx, state, isCollapsed)
   local signature = tern.json.encode(model)
   local nextUpdates = {}
   local live = table.clone(owned)
@@ -351,9 +355,14 @@ tern.on("canvas_action", function(ev: CanvasAction, cx: WindowCx)
     renameSpace(cx, rename)
     return true
   end
-  local host = tonumber(string.match(ev.act, "^host:(%d+)$"))
-  if host then
-    collapsed[host] = not collapsed[host]
+  local hostId = tonumber(string.match(ev.act, "^host:(%d+)$"))
+  if hostId then
+    -- Host ids are per connection; names survive reconnects and restarts.
+    for _, host in cx.hosts:list() do
+      if host.id == hostId then
+        tern.kv.set(COLLAPSED_PREFIX .. host.name, if isCollapsed(host.name) then nil else true)
+      end
+    end
     sync(cx)
     return true
   end

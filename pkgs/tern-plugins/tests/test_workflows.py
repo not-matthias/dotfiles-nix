@@ -360,6 +360,14 @@ def test_machine_collapse_and_plugin_reload_preserve_terminals(tern):
     tern.until(lambda: "▸" in tern.panel_tree()[0]["text"])
     assert "▾" not in tern.panel_tree()[0]["text"]
     assert not tern.ctl("tree", ".space-name")["nodes"]
+    subprocess.run(
+        [tern.binary, "plugin", "reload"], env=tern.env, check=True, timeout=TIMEOUT
+    )
+    tern.ctl("wait", "1100")
+    tern.until(lambda: "▸" in tern.panel_tree()[0]["text"])
+    assert not tern.ctl("tree", ".space-name")["nodes"]
+    buttons = tern.ctl("tree", ".spaces-sidebar .sf-button")["nodes"]
+    x, y, width, height = buttons[0]["rect"]
     tern.ctl("click", str(x + width / 2), str(y + height / 2))
     tern.until(lambda: tern.panel_tree()[0]["text"] == expanded)
     subprocess.run(

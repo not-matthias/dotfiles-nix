@@ -129,13 +129,13 @@ local function agentStates(cx: WindowCx, state): { [number]: string }
   return states
 end
 
-local function sidebarModel(cx: WindowCx, state, collapsed)
+local function sidebarModel(cx: WindowCx, state, isCollapsed: (string) -> boolean)
   updateBranches(cx, state)
   local agents = agentStates(cx, state)
   local groups = {}
   local byHost = {}
   for _, host in state.hosts do
-    local group = { id = host.id, name = host.name, collapsed = collapsed[host.id] == true, sessions = {} }
+    local group = { id = host.id, name = host.name, collapsed = isCollapsed(host.name), sessions = {} }
     table.insert(groups, group)
     byHost[host.id] = group
   end
