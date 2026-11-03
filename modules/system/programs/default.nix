@@ -2,7 +2,6 @@
   ./steam.nix
   ./agenix.nix
   ./fcitx5.nix
-  ./nix-ld.nix
   ./obs.nix
   ./openclaw.nix
   ./oneleet.nix

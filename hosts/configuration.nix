@@ -44,6 +44,17 @@
     fish.enable = true;
     dconf.enable = true;
     command-not-found.enable = false;
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        libevdev
+        libdrm
+        elfutils.out
+        zlib
+        zstd
+        stdenv.cc.cc.lib
+      ];
+    };
   };
 
   # Helium uses Chromium's policy directory. Recommended policies remain editable.

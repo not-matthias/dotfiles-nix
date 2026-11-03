@@ -134,8 +134,6 @@
     noisetorch.enable = true;
     steam.enable = true;
     fcitx5.enable = true;
-    nix-ld.enable = true;
-    nix-ld.libraries = [pkgs.libevdev];
     nix-index.enable = true;
     oneleet = {
       enable = true;

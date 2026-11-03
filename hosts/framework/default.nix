@@ -202,14 +202,11 @@ in {
     noisetorch.enable = true;
     fcitx5.enable = true;
     nix-ld = {
-      enable = true;
-      # Base set covers CLI tools with native deps (e.g. libevdev for
-      # input-emulation). GTK/Electron stack covers self-updating
+      # GTK/Electron stack on top of the shared base: covers self-updating
       # prebuilt Electron/Chromium binaries outside the nix store
       # (e.g. terminal-browser), which are dynamically linked against
       # the full desktop-app dependency graph.
       libraries = with pkgs; [
-        libevdev
         glib
         nspr
         nss

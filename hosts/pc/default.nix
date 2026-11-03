@@ -174,17 +174,6 @@
   };
 
   programs = {
-    nix-ld = {
-      enable = true;
-      libraries = with pkgs; [
-        libevdev
-        libdrm
-        elfutils.out
-        zlib
-        zstd
-        stdenv.cc.cc.lib
-      ];
-    };
     kache.enable = true;
     openclaw.enable = true;
     nix-index.enable = true;
