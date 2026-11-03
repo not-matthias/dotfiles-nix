@@ -41,6 +41,14 @@ in {
     };
 
     services.meilisearch.package = unstable.meilisearch;
+    services.meilisearch.settings = lib.mkForce {
+      db_path = "/var/lib/meilisearch";
+      dump_dir = "/var/lib/meilisearch/dumps";
+      http_addr = "localhost:7700";
+      no_analytics = true;
+      snapshot_dir = "/var/lib/meilisearch/snapshots";
+      upgrade_db = true;
+    };
 
     services.caddy.virtualHosts."links.${domain}".extraConfig = ''
       encode zstd gzip
