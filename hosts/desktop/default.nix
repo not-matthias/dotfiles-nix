@@ -16,6 +16,7 @@
   boot.kernelModules = ["ntfs3"];
 
   home-manager.users.${user} = {
+    disabledModules = [../../modules/home/programs/helix];
     home.stateVersion = "25.05";
     #   home.packages = with pkgs; [
     #     unstable.zed-editor
@@ -30,10 +31,8 @@
     #   ];
     #
     programs = {
-      helix = {
-        enable = true;
-        compat.enable = true;
-      };
+      helix.enable = false;
+      nixvim.enable = true;
       # rust.enable = true;
       cli-agents = {
         codex.enable = true;
