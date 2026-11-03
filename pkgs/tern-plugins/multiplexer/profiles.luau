@@ -11,6 +11,7 @@ local herdr = {
   [PREFIX .. "p"] = "previous_tab",
   [PREFIX .. "n"] = "next_tab",
   [PREFIX .. "c"] = "new_tab",
+  [PREFIX .. "shift+n"] = "plugin.spaces.new_space",
   [PREFIX .. "v"] = "split_right",
   [PREFIX .. "minus"] = "split_down",
   [PREFIX .. "z"] = "zoom",
@@ -20,7 +21,6 @@ local herdr = {
   [PREFIX .. "."] = PLUGIN .. "next_agent",
   [PREFIX .. ","] = PLUGIN .. "previous_agent",
   [PREFIX .. "shift+r"] = PLUGIN .. "label_agent",
-  [PREFIX .. "w"] = PLUGIN .. "choose_agent",
   [PREFIX .. "ctrl+b"] = PLUGIN .. "send_prefix",
 }
 
@@ -74,6 +74,7 @@ local zellij = {
 
 for index = 1, 9 do
   herdr[PREFIX .. index] = "goto_tab:" .. index
+  herdr[PREFIX .. "w>" .. index] = "plugin.spaces.space_" .. index
   herdr[PREFIX .. "shift+" .. index] = PLUGIN .. "agent_" .. index
   tmux[PREFIX .. index] = "goto_tab:" .. index
   zellij["ctrl+t>" .. index] = "goto_tab:" .. index

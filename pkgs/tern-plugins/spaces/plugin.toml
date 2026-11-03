@@ -1,0 +1,7 @@
+schema = 1
+id = "spaces"
+name = "Spaces"
+version = "0.1.0"
+description = "A workspace sidebar grouped by machine, with Git branches, agent activity and a shared adjustable width."
+icon = "terminal"
+window = "window.luau"
