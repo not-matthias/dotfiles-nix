@@ -13,7 +13,7 @@
 11431 = twenty
 11430 = gitea
 11429 = adguard home (disabled)
-11428 = scrutiny
+11428 = scrutiny (desktop and pc; PC: https://scrutiny.pcnm.duckdns.org)
 11427 = netdata
 11426 = netdata
 11425 = firefly-iii
@@ -26,6 +26,7 @@
 8123 = home-assistant
 24→5006 = actual-budget
 18789 = openclaw gateway
+7676 = homepage-dashboard (desktop and pc; PC: https://home.pcnm.duckdns.org)
 
 https://jellyfin.org/docs/general/networking/
 8096 = jellyfin http
@@ -45,3 +46,5 @@ docker-compose ports:
 9999 = Hindsight Control Plane (PC loopback; https://hindsight-ui.pcnm.duckdns.org via tailnet-only Caddy)
 
 All Caddy virtual hosts use a shared tailnet-only access policy. Requests from outside `100.64.0.0/10` and `fd7a:115c:a1e0::/48`, including direct LAN and loopback requests, receive `403`. Forwarded client-IP headers do not bypass this policy.
+
+2026-11-03: Enabled Scrutiny and Homepage on pc for local drive monitoring and a service dashboard.

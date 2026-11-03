@@ -192,6 +192,8 @@
   };
 
   services = {
+    scrutiny.enable = true;
+    homepage-dashboard.enable = true;
     language-study.enable = true;
     self-bot.enable = true;
     kaneo = {
