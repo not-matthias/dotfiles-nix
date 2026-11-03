@@ -987,3 +987,66 @@ def test_native_agent_activity_survives_parking_and_aggregates_split_agents(tern
     tern.until(lambda: indicator("idle"))
     tern.lua(f"cx.layout:close({second})")
     tern.until(lambda: not tern.ctl("tree", ".space-agent")["nodes"])
+
+
+@pytest.mark.parametrize("remote", [False, True], ids=["local", "remote"])
+def test_hidden_sidebars_keep_names_and_their_own_selection(tern, remote):
+    first = tern.current()["id"]
+    if remote:
+        tern.ctl("remote", "loopback", "prepared-server")
+    else:
+        tern.lua('cx.sessions:create({name="Second space"})')
+    tern.ctl("ready")
+    second = tern.current()["id"]
+    tern.ctl("plugins", "run", "plugin.spaces.new_tab")
+    tern.ctl("ready")
+    tern.lua(
+        f"cx.sessions:switch({first}); "
+        f'cx.sessions:rename({first}, "First space"); '
+        f'cx.sessions:rename({second}, "Renamed hidden space")'
+    )
+    owners = {tab["id"]: tab["session"] for tab in tern.snapshot()["tabs"]}
+
+    def prepared_panels():
+        result = tern.lua("""
+            local function buttons(node, out)
+                if node.k == "table" then
+                    for _, row in node.p.rows do
+                        for _, cell in row.cells do
+                            if cell.button then table.insert(out, cell.button) end
+                        end
+                    end
+                end
+                for _, child in node.c or {} do buttons(child, out) end
+            end
+            local result = {}
+            for _, panel in cx.canvas:list() do
+                if panel.owner ~= "spaces" then continue end
+                local rows = {}
+                buttons(cx.canvas:get(panel.pane).view, rows)
+                table.insert(result, {tab=cx.session:tab_of(panel.pane), rows=rows})
+            end
+            return tern.json.encode(result)
+        """)
+        panels = json.loads(result.split("→ ", 1)[1])
+        if {panel["tab"] for panel in panels} != owners.keys():
+            return False
+        for panel in panels:
+            if {row["text"] for row in panel["rows"]} != {
+                "First space",
+                "Renamed hidden space",
+            }:
+                return False
+            selected = [
+                row["act"] for row in panel["rows"] if row["variant"] == "primary"
+            ]
+            if selected != [f"space:{owners[panel['tab']]}"]:
+                return False
+        return True
+
+    tern.until(prepared_panels)
+    assert tern.current()["id"] == first
+    tern.keys("ctrl+b", "w", "2")
+    tern.until(lambda: tern.current()["id"] == second)
+    assert prepared_panels()
+    assert "Renamed hidden space" in tern.panel_tree()[0]["text"]

@@ -1,107 +1,27 @@
 --!strict
 
+local stateModel = require("./state")
+local view = require("./view")
+
 local PANEL_SHARE = 0.15
 local WIDTH_KEY = "sidebar-width"
 local WIDTH_TOLERANCE = 0.0001
 local MAX_SPLIT_SHARE = 0.99
 local REFRESH_MS = 1000
-local BRANCH_REFRESH_MS = 5000
 local GROUP = "Spaces"
 local CUSTOM_NAME_PREFIX = "custom-name:"
 local rendered = {}
 local pending = {}
 local collapsed = {}
-local branches = {}
-local lastDirectoryPane = {}
 local syncing = false
 local sharedWidth = tern.kv.get(WIDTH_KEY)
 local widths = {}
 local activePanel = nil
-
-tern.css(
-  "sidebar",
-  [[
-  .spaces-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 6px;
-    font-size: 13px;
-    min-width: 0;
-    overflow: hidden;
-  }
-  .spaces-sidebar .sf-button {
-    width: 100%;
-    justify-content: flex-start;
-    border-radius: 4px;
-    min-height: 24px;
-    padding: 2px 6px;
-  }
-  .spaces-sidebar > .sf-button {
-    width: auto;
-    margin-left: -4px;
-    padding-left: 0;
-  }
-  .spaces-sidebar .space-row {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-  }
-  .spaces-sidebar .space-name {
-    margin: 0;
-    display: flex;
-    align-items: center;
-    min-width: 0;
-  }
-  .spaces-sidebar .space-name > .sf-table {
-    flex: 1;
-    min-width: 0;
-  }
-  .spaces-sidebar .space-name .sf-tbl {
-    margin: 0;
-    width: 100%;
-    min-width: 0;
-  }
-  .spaces-sidebar .space-name .head,
-  .spaces-sidebar .space-name .sf-tbl-probe {
-    display: none;
-  }
-  .spaces-sidebar .space-name .sf-tbl-row:not(.head) {
-    display: flex;
-  }
-  .spaces-sidebar .space-name .sf-tbl-c {
-    padding: 0;
-    flex: 1;
-    min-width: 0;
-  }
-  .spaces-sidebar .space-name button {
-    width: 100%;
-    min-height: 22px;
-    justify-content: flex-start;
-    padding: 2px 6px;
-    border-radius: 4px;
-  }
-  .spaces-sidebar .sf-btn-label,
-  .spaces-sidebar .space-branch .sf-text {
-    min-width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-  .spaces-sidebar .space-agent {
-    flex: 0 0 auto;
-    padding: 0 4px;
-    font-size: 11px;
-  }
-  .spaces-sidebar .space-branch {
-    padding: 0 6px 2px;
-    font-size: 11px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-]]
-)
+local panelByTab = {}
+local focusAfterOpen = {}
+local deferredLayouts = {}
+local updates = {}
+local updateScheduled = false
 
 local function panels(cx: WindowCx)
   local result = {}
@@ -111,217 +31,6 @@ local function panels(cx: WindowCx)
     end
   end
   return result
-end
-
-local function directoryPanes(cx: WindowCx)
-  local byId = {}
-  local byTab = {}
-  for _, pane in cx.session:panes() do
-    if pane.kind ~= "terminal" and pane.kind ~= "agent" then
-      continue
-    end
-    if pane.tab and not pane.parked and pane.cwd and pane.cwd ~= "" then
-      byId[pane.pane] = pane
-      if not byTab[pane.tab] or lastDirectoryPane[pane.tab] == pane.pane then
-        byTab[pane.tab] = pane
-      end
-    end
-  end
-  -- Keep the last terminal directory while native blocks have focus.
-  for _, tab in cx.session:tabs() do
-    if byId[tab.pane] then
-      byTab[tab.id] = byId[tab.pane]
-    end
-  end
-  for tab, pane in byTab do
-    lastDirectoryPane[tab] = pane.pane
-  end
-  for tab in lastDirectoryPane do
-    if not byTab[tab] then
-      lastDirectoryPane[tab] = nil
-    end
-  end
-  return byTab
-end
-
-local function button(label: string, action: string): Node
-  return tern.ui.button(label, {
-    key = action,
-    actions = { click = action },
-    variant = "quiet",
-  })
-end
-
-local function updateBranches(cx: WindowCx)
-  local focused = cx.session:focused()
-  local activeTab = if focused then cx.session:tab_of(focused) else nil
-  local directories = directoryPanes(cx)
-  local chosen = {}
-  for _, tab in cx.session:tabs() do
-    local previous = branches[tab.session]
-    local pane = directories[tab.id]
-    if
-      pane
-      and (
-        not chosen[tab.session]
-        or tab.id == activeTab
-        or (chosen[tab.session].tab ~= activeTab and previous and previous.tab == tab.id)
-      )
-    then
-      chosen[tab.session] = pane
-    end
-  end
-  local localHosts = {}
-  for _, host in cx.hosts:list() do
-    localHosts[host.id] = host.kind == "local"
-  end
-  local live = {}
-  for _, session in cx.sessions:list() do
-    live[session.id] = true
-    local pane = chosen[session.id]
-    if not localHosts[session.host] or not pane then
-      branches[session.id] = nil
-      continue
-    end
-    local entry = branches[session.id]
-    if not entry or entry.cwd ~= pane.cwd then
-      entry = { cwd = pane.cwd, tab = pane.tab, checked = -BRANCH_REFRESH_MS }
-      branches[session.id] = entry
-    end
-    entry.tab = pane.tab
-    if entry.pending or tern.now() - entry.checked < BRANCH_REFRESH_MS then
-      continue
-    end
-    entry.pending = true
-    entry.checked = tern.now()
-    cx.git:repo(pane.cwd):next(function(repo, err)
-      entry.pending = false
-      entry.name = if not err and repo then repo.branch else nil
-    end)
-  end
-  for id in branches do
-    if not live[id] then
-      branches[id] = nil
-    end
-  end
-end
-
-local function agentStates(cx: WindowCx): { [number]: string }
-  local sessionByTab = {}
-  for _, tab in cx.session:tabs() do
-    sessionByTab[tab.id] = tab.session
-  end
-
-  local priority = { present = 1, idle = 2, waiting_input = 3, working = 4 }
-  local states = {}
-  local native = {}
-  for _, agent in cx.agents:list() do
-    native[agent.pane] = true
-    -- Runtime agent rows include their session even when parked without a tab.
-    local session = agent.session
-    local state = agent.state
-    if state ~= "exited" and (not states[session] or priority[state] > priority[states[session]]) then
-      states[session] = state
-    end
-  end
-
-  for _, pane in cx.session:panes() do
-    if native[pane.pane] or not pane.tab then
-      continue
-    end
-    local session = sessionByTab[pane.tab]
-    if not session then
-      continue
-    end
-
-    local program = string.match(pane.program or "", "([^/]+)$")
-    if program == "omp" or program == "pi" or program == "claude" or program == "codex" then
-      local state = if pane.busy then "working" else "present"
-      if not states[session] or priority[state] > priority[states[session]] then
-        states[session] = state
-      end
-    end
-  end
-  return states
-end
-
-local function view(cx: WindowCx): Node
-  updateBranches(cx)
-  local agents = agentStates(cx)
-  local rows = { tern.ui.text({ tern.ui.span("SPACES", "muted") }) }
-  local sessions = cx.sessions:list()
-  for _, host in cx.hosts:list() do
-    local marker = if collapsed[host.id] then "▸ " else "▾ "
-    table.insert(rows, button(marker .. host.name, "host:" .. host.id))
-    if collapsed[host.id] then
-      continue
-    end
-    for _, session in sessions do
-      if session.host == host.id then
-        local action = "space:" .. session.id
-        -- TSP exposes context menus on table rows, not standalone buttons.
-        local title = tern.ui.table({ { id = "name", head = "", grow = 1 } }, {
-          {
-            id = tostring(session.id),
-            cells = {
-              {
-                button = {
-                  text = session.name,
-                  act = action,
-                  variant = if session.current then "primary" else "quiet",
-                },
-              },
-            },
-            menu = { "Rename" },
-          },
-        })
-        title.p.key = action
-        local nameParts = { title }
-        local agentState = agents[session.id]
-        if agentState then
-          local labels = {
-            working = "Agent working",
-            waiting_input = "Agent awaiting input",
-            idle = "Idle agent",
-            present = "Agent present",
-          }
-          local label = labels[agentState]
-          local stateClass = string.gsub(agentState, "_", "-")
-          local tones = {
-            working = "success",
-            waiting_input = "warning",
-            idle = "muted",
-            present = "muted",
-          }
-          table.insert(
-            nameParts,
-            tern.ui.el("span", {
-              class = "space-agent space-agent-" .. stateClass,
-              title = label,
-              attrs = {
-                ["aria-label"] = label,
-                ["data-session"] = tostring(session.id),
-                ["data-state"] = agentState,
-              },
-            }, { tern.ui.text({ tern.ui.span("●", tones[agentState]) }) })
-          )
-        end
-        local contents = { tern.ui.el("div", { class = "space-name" }, nameParts) }
-        local branch = branches[session.id]
-        if branch and branch.name then
-          table.insert(
-            contents,
-            tern.ui.el("div", {
-              class = "space-branch",
-              actions = { click = action },
-            }, { tern.ui.text({ tern.ui.span(branch.name, "muted") }) })
-          )
-        end
-        table.insert(rows, tern.ui.el("div", { class = "space-row" }, contents))
-      end
-    end
-  end
-  return tern.ui.el("div", { class = "spaces-sidebar" }, rows)
 end
 
 local function paneShare(node: TabTree, pane: number, share: number): number?
@@ -344,17 +53,73 @@ local function rememberWidth(width: number)
   tern.kv.set(WIDTH_KEY, width)
 end
 
-local function observeWidth(cx: WindowCx)
+local function observeWidth(cx: WindowCx): boolean
   local previous = if activePanel then widths[activePanel] else nil
   local actual = if previous then panelWidth(cx, activePanel) else nil
   if not actual then
-    return
+    return false
   end
-  if previous.actual and math.abs(actual - previous.actual) > WIDTH_TOLERANCE then
+  local changed = previous.actual and math.abs(actual - previous.actual) > WIDTH_TOLERANCE
+  if changed then
     rememberWidth(actual)
     previous.requested = actual
   end
   previous.actual = actual
+  return changed == true
+end
+
+-- Render one panel per callback to stay within Tern's plugin-hook budget.
+local function flush(cx: WindowCx)
+  updateScheduled = false
+  local focused = cx.session:focused()
+  local tab = if focused then cx.session:tab_of(focused) else nil
+  local update = if tab then updates[tab] else nil
+  if not update then
+    tab, update = next(updates)
+  end
+  if not tab then
+    return
+  end
+  updates[tab] = nil
+  -- Canvas creation uses the selected host, even with a target on another host.
+  if not update.pane and cx.hosts:current().id ~= update.host then
+    deferredLayouts[tab] = true
+  elseif cx.session:tab_of(update.target) == tab then
+    local root = view(update.model, update.session)
+    local pane = update.pane
+    if pane then
+      cx.canvas:set(pane, { view = root })
+    elseif not pending[tab] then
+      local targetWidth = panelWidth(cx, update.target) or 1
+      local err
+      pane, err = cx.canvas:open({
+        title = "Spaces",
+        view = root,
+        target = update.target,
+        dir = "left",
+        ratio = math.min(sharedWidth / targetWidth, MAX_SPLIT_SHARE),
+        focus = false,
+      })
+      if pane then
+        pending[tab] = pane
+        panelByTab[tab] = pane
+        -- focus=false preserves the shown pane, but changes hidden tabs' focus.
+        if update.focus ~= cx.session:focused() then
+          focusAfterOpen[pane] = update.focus
+        end
+        widths[pane] = { requested = sharedWidth }
+      elseif err then
+        cx:toast("error", err)
+      end
+    end
+    if pane then
+      rendered[pane] = { signature = update.signature, session = update.session }
+    end
+  end
+  if next(updates) then
+    updateScheduled = true
+    tern.timer(0, flush)
+  end
 end
 
 local function sync(cx: WindowCx)
@@ -362,19 +127,28 @@ local function sync(cx: WindowCx)
     return
   end
   syncing = true
-  -- Read the departing panel too: a drag followed immediately by a space switch
-  -- must propagate without waiting for the refresh timer.
   observeWidth(cx)
   local owned = panels(cx)
+  local state = {
+    panes = cx.session:panes(),
+    tabs = cx.session:tabs(),
+    sessions = cx.sessions:list(),
+    hosts = cx.hosts:list(),
+  }
+  local tabByPane = {}
+  for _, pane in state.panes do
+    tabByPane[pane.pane] = pane.tab
+  end
+  state.activeTab = tabByPane[cx.session:focused()]
   local contents = {}
-  for _, pane in cx.session:panes() do
+  for _, pane in state.panes do
     if not owned[pane.pane] and not pane.parked then
       contents[pane.tab] = contents[pane.tab] or pane.pane
     end
   end
   local byTab = {}
   for pane in owned do
-    local tab = cx.session:tab_of(pane)
+    local tab = tabByPane[pane]
     if tab then
       pending[tab] = nil
       -- Panels never keep empty tabs alive; concurrent windows may create duplicates.
@@ -390,56 +164,93 @@ local function sync(cx: WindowCx)
       end
     end
   end
-  local focused = cx.session:focused()
-  local tab = if focused then cx.session:tab_of(focused) else nil
-  local existing = if tab then byTab[tab] else nil
-  local actual = if existing then panelWidth(cx, existing) else nil
+  panelByTab = byTab
+  activePanel = byTab[state.activeTab]
   if not sharedWidth then
-    rememberWidth(actual or PANEL_SHARE)
+    rememberWidth((if activePanel then panelWidth(cx, activePanel) else nil) or PANEL_SHARE)
   end
-  activePanel = existing
-  if existing and actual then
-    local previous = widths[existing]
-    if not previous or math.abs(previous.requested - sharedWidth) > WIDTH_TOLERANCE then
-      if math.abs(actual - sharedWidth) > WIDTH_TOLERANCE then
-        -- The API sets exact ratios only when opening a canvas. Recreate only our
-        -- panel; wait for pane_closed so remote layouts have removed its old split.
-        cx.layout:close(existing)
-        widths[existing] = nil
-        rendered[existing] = nil
-        activePanel = nil
-        syncing = false
-        return
+  local model = stateModel.sidebarModel(cx, state, collapsed)
+  local signature = tern.json.encode(model)
+  local nextUpdates = {}
+  local live = table.clone(owned)
+  local currentHost = cx.hosts:current().id
+  local hostBySession = {}
+  for _, session in state.sessions do
+    hostBySession[session.id] = session.host
+  end
+  deferredLayouts = {}
+  for _, tab in state.tabs do
+    local target = contents[tab.id]
+    if not target then
+      pending[tab.id] = nil
+      continue
+    end
+    local existing = byTab[tab.id]
+    local host = hostBySession[tab.session]
+    local canCreate = host == currentHost
+    if not existing and not canCreate then
+      deferredLayouts[tab.id] = true
+      continue
+    end
+    if pending[tab.id] then
+      live[pending[tab.id]] = true
+      continue
+    end
+    if existing then
+      local actual = panelWidth(cx, existing)
+      local previous = widths[existing]
+      if actual then
+        if not previous or math.abs(previous.requested - sharedWidth) > WIDTH_TOLERANCE then
+          if math.abs(actual - sharedWidth) > WIDTH_TOLERANCE then
+            if canCreate then
+              -- Exact ratios require reopening. Wait for pane_closed before replacing
+              -- the panel so remote layouts have removed its old split.
+              cx.layout:close(existing)
+              widths[existing] = nil
+              rendered[existing] = nil
+              byTab[tab.id] = nil
+              continue
+            end
+            deferredLayouts[tab.id] = true
+          else
+            widths[existing] = { requested = sharedWidth, actual = actual }
+          end
+        elseif not previous.actual then
+          -- Minimum pane sizes may clamp the opening ratio; this is not a drag.
+          previous.actual = actual
+        end
       end
-      widths[existing] = { requested = sharedWidth, actual = actual }
-    elseif not previous.actual then
-      -- Native minimum pane sizes can clamp a requested width. This is not a drag.
-      previous.actual = actual
+      local cached = rendered[existing]
+      if cached and cached.signature == signature and cached.session == tab.session then
+        continue
+      end
+    end
+    nextUpdates[tab.id] = {
+      pane = existing,
+      target = target,
+      focus = if not owned[tab.pane] then tab.pane else nil,
+      session = tab.session,
+      host = host,
+      model = model,
+      signature = signature,
+    }
+  end
+  for pane in widths do
+    if not live[pane] then
+      rendered[pane] = nil
+      widths[pane] = nil
+      focusAfterOpen[pane] = nil
     end
   end
-  local root = view(cx)
-  local encoded = tern.json.encode(root)
-  if tab and contents[tab] and not existing and not pending[tab] then
-    local targetWidth = panelWidth(cx, contents[tab]) or 1
-    local pane, err = cx.canvas:open({
-      title = "Spaces",
-      view = root,
-      target = contents[tab],
-      dir = "left",
-      ratio = math.min(sharedWidth / targetWidth, MAX_SPLIT_SHARE),
-      focus = false,
-    })
-    if pane then
-      pending[tab] = pane
-      rendered[pane] = encoded
-      widths[pane] = { requested = sharedWidth }
-    elseif err then
-      cx:toast("error", err)
+  for tab in pending do
+    if not contents[tab] then
+      pending[tab] = nil
     end
   end
-  if existing and rendered[existing] ~= encoded then
-    cx.canvas:set(existing, { view = root })
-    rendered[existing] = encoded
+  updates = nextUpdates
+  if next(updates) and not updateScheduled then
+    updateScheduled = true
+    tern.timer(0, flush)
   end
   syncing = false
 end
@@ -447,7 +258,7 @@ end
 local function currentDirectory(cx: WindowCx): string?
   local focused = cx.session:focused()
   local tab = if focused then cx.session:tab_of(focused) else nil
-  local pane = if tab then directoryPanes(cx)[tab] else nil
+  local pane = if tab then stateModel.directoryPanes(cx.session:panes(), cx.session:tabs())[tab] else nil
   return if pane then pane.cwd else nil
 end
 
@@ -507,7 +318,7 @@ tern.on("canvas_action", function(ev: CanvasAction, cx: WindowCx)
     return false
   end
   local tab = cx.session:tab_of(ev.pane)
-  local pane = if tab then directoryPanes(cx)[tab] else nil
+  local pane = if tab then stateModel.directoryPanes(cx.session:panes(), cx.session:tabs())[tab] else nil
   if pane then
     cx.layout:focus(pane.pane)
   end
@@ -526,7 +337,6 @@ tern.on("canvas_action", function(ev: CanvasAction, cx: WindowCx)
   if session then
     cx.sessions:switch(session)
   end
-  sync(cx)
   return true
 end)
 
@@ -548,7 +358,6 @@ for index = 1, 9 do
             position += 1
             if position == index then
               cx.sessions:switch(session.id)
-              sync(cx)
               return
             end
           end
@@ -608,7 +417,25 @@ tern.on("tab_closed", function(_, cx: WindowCx)
   closeEmptySpaces(cx)
 end)
 
-for _, event in { "focus", "tab_created", "tab_closed", "pane_closed", "session_ended" } do
+tern.on("focus", function(ev: FocusEvent, cx: WindowCx)
+  stateModel.focus(ev)
+  local resized = observeWidth(cx)
+  activePanel = panelByTab[ev.tab]
+  local restore = focusAfterOpen[ev.pane]
+  if restore and cx.session:focused() == ev.pane then
+    focusAfterOpen[ev.pane] = nil
+    if cx.session:tab_of(restore) == ev.tab then
+      cx.layout:focus(restore)
+    end
+  elseif activePanel and ev.pane ~= activePanel then
+    focusAfterOpen[activePanel] = nil
+  end
+  if resized or deferredLayouts[ev.tab] then
+    sync(cx)
+  end
+end)
+
+for _, event in { "tab_created", "tab_closed", "pane_created", "pane_closed", "session_ended" } do
   tern.on(event, function(_, cx: WindowCx)
     sync(cx)
   end)
