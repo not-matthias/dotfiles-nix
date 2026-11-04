@@ -72,7 +72,6 @@
         };
       };
       niri-organize.enable = true;
-      helix.enable = true;
       nixvim.enable = true;
       vscode.enable = true;
       binary-ninja = {
