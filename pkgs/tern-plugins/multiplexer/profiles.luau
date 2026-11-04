@@ -94,7 +94,7 @@ return {
     ["ctrl+shift+tab"] = "previous_tab",
     ["ctrl+tab"] = "next_tab",
     ["ctrl+alt+c"] = "new_tab",
-    ["ctrl+shift+w"] = "close_tab",
+    ["ctrl+shift+w"] = "close_pane",
     ["ctrl+alt+d"] = "split_right",
     ["ctrl+alt+shift+d"] = "split_down",
     ["ctrl+alt+z"] = "zoom",

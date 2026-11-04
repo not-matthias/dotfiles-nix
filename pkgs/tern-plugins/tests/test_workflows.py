@@ -267,9 +267,34 @@ def test_custom_space_name_survives_cd_and_plugin_reload(tern):
 
 
 @pytest.mark.parametrize(
+    "focused_index", [0, 1, 2], ids=["left", "upper-right", "lower-right"]
+)
+def test_close_shortcut_only_removes_focused_split(tern, focused_index):
+    session = tern.current()["id"]
+    tab = tern.terminal()["tab"]
+    left = tern.terminal()["pane"]
+    tern.keys("ctrl+alt+d")
+    tern.until(lambda: tern.terminal()["pane"] != left)
+    upper_right = tern.terminal()["pane"]
+    tern.keys("ctrl+alt+shift+d")
+    tern.until(lambda: tern.terminal()["pane"] not in {left, upper_right})
+    lower_right = tern.terminal()["pane"]
+    terminals = [left, upper_right, lower_right]
+    focused = terminals[focused_index]
+    tern.lua(f"cx.layout:focus({focused})")
+    tern.keys("ctrl+shift+w")
+    tern.until(lambda: focused not in {p["pane"] for p in tern.snapshot()["panes"]})
+    state = tern.snapshot()
+    assert {p["pane"] for p in state["panes"] if p.get("kind") == "terminal"} == (
+        set(terminals) - {focused}
+    )
+    assert {t["id"] for t in tern.tabs(session)} == {tab}
+
+
+@pytest.mark.parametrize(
     "sidebar_close",
-    [("ctrl+shift+w",), ("ctrl+b", "x"), ("ctrl+b", "ctrl+x")],
-    ids=["direct", "prefix-released", "prefix-held"],
+    [("ctrl+b", "x"), ("ctrl+b", "ctrl+x")],
+    ids=["prefix-released", "prefix-held"],
 )
 def test_close_from_sidebar_preserves_other_spaces_and_falls_back(tern, sidebar_close):
     first = tern.current()["id"]
@@ -411,7 +436,7 @@ return {
     ["ctrl+b>n"] = "next_tab",
     ["ctrl+b>w"] = "plugin.multiplexer.choose_agent",
   }},
-  personal = {},
+  personal = {["ctrl+shift+w"] = "close_tab"},
 }
 """)
     subprocess.run(

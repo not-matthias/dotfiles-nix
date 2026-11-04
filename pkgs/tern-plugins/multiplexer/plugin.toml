@@ -2,6 +2,6 @@ schema = 1
 id = "multiplexer"
 name = "Multiplexer Shortcuts"
 version = "0.1.0"
-description = "Herdr, tmux and Zellij-style shortcuts for Tern panes, tabs and agents."
+description = "Herdr, tmux and Zellij-style shortcuts for Tern panes, tabs and agents. Ctrl+Shift+W closes only the focused pane."
 icon = "terminal"
 window = "window.luau"
