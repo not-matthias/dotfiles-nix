@@ -100,22 +100,24 @@ in {
     # a build may start after the check passes); true exclusion would need a
     # shared lock with Cargo, which cargo-sweep does not take. Persistent=true
     # keeps the weekly cadence; a catch-up run skips if busy at login.
-    systemd.user.services.cargo-maintenance = lib.mkIf cfg.maintenance.enable {
-      Unit.Description = "Cargo maintenance: sweep stale target/ + autoclean ~/.cargo";
-      Service = {
-        Type = "oneshot";
-        ExecCondition = "${pkgs.bash}/bin/sh -c 'if ${pkgs.procps}/bin/pgrep -u ${config.home.username} -x \"cargo|rustc\" >/dev/null 2>&1; then echo \"cargo/rustc running, skipping cargo-maintenance\"; exit 1; fi'";
-        # writeShellScript places the executable at the store path root (no /bin/).
-        ExecStart = "${maintenanceScript}";
+    systemd.user = lib.mkIf cfg.maintenance.enable {
+      services.cargo-maintenance = {
+        Unit.Description = "Cargo maintenance: sweep stale target/ + autoclean ~/.cargo";
+        Service = {
+          Type = "oneshot";
+          ExecCondition = "${pkgs.bash}/bin/sh -c 'if ${pkgs.procps}/bin/pgrep -u ${config.home.username} -x \"cargo|rustc\" >/dev/null 2>&1; then echo \"cargo/rustc running, skipping cargo-maintenance\"; exit 1; fi'";
+          # writeShellScript places the executable at the store path root (no /bin/).
+          ExecStart = "${maintenanceScript}";
+        };
       };
-    };
-    systemd.user.timers.cargo-maintenance = lib.mkIf cfg.maintenance.enable {
-      Unit.Description = "Weekly cargo maintenance";
-      Timer = {
-        OnCalendar = "weekly";
-        Persistent = true;
+      timers.cargo-maintenance = {
+        Unit.Description = "Weekly cargo maintenance";
+        Timer = {
+          OnCalendar = "weekly";
+          Persistent = true;
+        };
+        Install.WantedBy = ["timers.target"];
       };
-      Install.WantedBy = ["timers.target"];
     };
   };
 }
