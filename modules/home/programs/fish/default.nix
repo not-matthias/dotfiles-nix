@@ -65,7 +65,6 @@ in {
     };
     interactiveShellInit =
       ''
-        eval (${pkgs.direnv}/bin/direnv hook fish)
         atuin init fish --disable-up-arrow | source
 
         # Disable kitty keyboard protocol — VSCode's xterm.js doesn't fully support it,
@@ -90,13 +89,14 @@ in {
     functions = {
       fish_greeting = '''';
       fish_mode_prompt = '''';
-      dir = ''
-        # https://github.com/laughedelic/fish/blob/master/functions/dir.fish
-        function dir -a path -d "Creates subdirectories and jumps inside"
-        	mkdir -p $path
-        	and cd $path
-        end
-      '';
+      dir = {
+        argumentNames = ["path"];
+        description = "Create a directory and enter it";
+        body = ''
+          mkdir -p -- "$path"
+          and cd -- "$path"
+        '';
+      };
 
       zj = ''
         set -l dir (zoxide query $argv)
