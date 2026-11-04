@@ -53,7 +53,6 @@ in {
       gh
       hushmic
       sone
-      openbot
 
       # protonmail-bridge-gui
       # thunderbird
@@ -74,10 +73,10 @@ in {
     xdg.mimeApps = {
       associations.added."text/html" = lib.mkForce defaultBrowser.desktop;
       defaultApplications."text/html" = lib.mkForce defaultBrowser.desktop;
-      defaultApplications."x-scheme-handler/openbot" = ["openbot.desktop"];
     };
 
     programs = {
+      openbot.enable = true;
       ghostty.enable = true;
       herdr-app.enable = true;
       tern.enable = true;

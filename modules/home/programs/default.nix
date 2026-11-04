@@ -50,6 +50,7 @@
   ./swaylock.nix
   ./webapps.nix
   ./obsidian.nix
+  ./openbot.nix
   ./solidtime-desktop.nix
   ./tradingview.nix
   ./spicetify.nix
