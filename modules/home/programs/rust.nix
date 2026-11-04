@@ -93,6 +93,10 @@ in {
         rr = "run --release";
         br = "build --release";
       };
+      target.${pkgs.stdenv.hostPlatform.rust.rustcTarget} = {
+        linker = lib.getExe' pkgs.clang "clang";
+        rustflags = ["-C" "link-arg=-fuse-ld=${lib.getExe pkgs.mold}"];
+      };
     };
 
     # Single maintenance job (sweep then cache), behind a guard that skips
