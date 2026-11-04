@@ -110,6 +110,8 @@ in {
       gvfs.enable = true;
       upower.enable = true;
       gnome = {
+        # Expose org.a11y.Bus for desktop accessibility clients such as OMP.
+        at-spi2-core.enable = true;
         sushi.enable = true;
         gnome-keyring.enable = true;
       };
