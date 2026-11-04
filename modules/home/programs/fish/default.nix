@@ -78,9 +78,8 @@ in {
       # store paths and per-project devenv dirs pile up as dead PATH members.
       fish_add_path --global --prepend ~/.nix-profile/bin /etc/profiles/per-user/$USER/bin
 
-      # Appended, not prepended: imperatively installed binaries (cargo install, uv tool
-      # install) stay reachable without shadowing their Nix-managed counterparts.
-      fish_add_path --global --append ~/.cargo/bin ~/.local/bin
+      # Keep user-installed tools reachable without shadowing Nix-managed binaries.
+      fish_add_path --global --append ~/.local/bin
 
       if command -sq any-nix-shell
         any-nix-shell fish --info-right | source
