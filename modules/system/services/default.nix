@@ -39,6 +39,7 @@
   ./postiz.nix
   ./postgresql.nix
   ./postgresql-backup.nix
+  ./ratbagd.nix
   ./redlib.nix
   ./restic.nix
   ./rustdesk.nix
