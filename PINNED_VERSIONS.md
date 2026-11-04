@@ -20,7 +20,6 @@ Sources are `pkgs/<name>.nix` unless noted.
 | disktree | `0.11.0` |
 | feishin | `1.8.0` |
 | ghidra-cli | `0.2.2` |
-| greptile | `3.6.1` |
 | handy | `0.9.8` |
 | harbor | `0.5.10` |
 | helix-file-watcher | `unstable-2026-08-30`; commit `8cd0726da47b` |
