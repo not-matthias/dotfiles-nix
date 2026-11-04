@@ -60,6 +60,9 @@
       lmstudio = super.callPackage ../../pkgs/lmstudio.nix {};
     })
     (_self: super: {
+      openbot = super.callPackage ../../pkgs/openbot.nix {};
+    })
+    (_self: super: {
       feishin = super.callPackage ../../pkgs/feishin.nix {};
     })
     (_self: super: {
