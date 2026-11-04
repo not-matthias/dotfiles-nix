@@ -60,7 +60,11 @@ Item {
                 screen: bar.screen
                 popupCenterX: rightItems.x + controls.x + media.parent.x + media.x + media.width / 2
             }
-            Volume {}
+            Volume {
+                id: volume
+                screen: bar.screen
+                popupCenterX: rightItems.x + controls.x + volume.parent.x + volume.x + volume.width / 2
+            }
             Battery {}
         }
 

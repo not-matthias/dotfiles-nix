@@ -7,6 +7,8 @@ Item {
 
     property string text: ""
     property string tooltipText: ""
+    property alias fontFamily: label.font.family
+    property alias textAlignment: label.horizontalAlignment
     property color foreground: Theme.foreground
     property color background: Theme.pillBackground
     property color borderColor: Theme.border
@@ -32,6 +34,8 @@ Item {
         id: label
         anchors.fill: parent
         horizontalAlignment: Text.AlignHCenter
+        leftPadding: horizontalAlignment === Text.AlignLeft ? 8 : 0
+        rightPadding: horizontalAlignment === Text.AlignLeft ? 8 : 0
         verticalAlignment: Text.AlignVCenter
         color: root.foreground
         font.family: Theme.fontFamily
