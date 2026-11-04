@@ -7,6 +7,6 @@
   ./oneleet.nix
   ./sccache.nix
   ./kache.nix
-  ../../home/programs/taskwarrior.nix
+  ./taskwarrior-web.nix
   ./determinate.nix
 ]

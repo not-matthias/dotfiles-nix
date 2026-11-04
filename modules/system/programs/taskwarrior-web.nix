@@ -46,8 +46,8 @@
               "ORIGIN=https://todo.${domain}"
               "TASKWARRIOR_WEB_ALLOWED_HOST=todo.${domain}"
             ]);
-          programs.cli-agents.programSkills.taskwarrior = ./cli-agents/shared/program-skills/taskwarrior;
-          programs.cli-agents.programSkills.taskwarrior-implementation = ./cli-agents/shared/program-skills/taskwarrior-implementation;
+          programs.cli-agents.programSkills.taskwarrior = ../../home/programs/cli-agents/shared/program-skills/taskwarrior;
+          programs.cli-agents.programSkills.taskwarrior-implementation = ../../home/programs/cli-agents/shared/program-skills/taskwarrior-implementation;
 
           home.packages = with pkgs; [
             tasksh
