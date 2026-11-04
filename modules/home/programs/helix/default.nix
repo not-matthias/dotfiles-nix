@@ -43,6 +43,7 @@ in {
     // {
       programs.fish.shellAbbrs.h = "hx .";
       programs.helix = {
+        defaultEditor = true;
         # nixpkgs' steelix expression replaces `patches` on the unwrapped derivation,
         # so extra source patches are applied through `postPatch`, which it leaves alone.
         package = unstable.steelix.override {

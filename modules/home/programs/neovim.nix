@@ -11,7 +11,7 @@
   # https://github.com/tars0x9752/home/blob/main/modules/neovim/default.nix
   # https://github.com/notusknot/dotfiles-nix/blob/main/modules/nvim/default.nix
   programs.nixvim = {
-    defaultEditor = true;
+    defaultEditor = !config.programs.helix.enable;
     colorschemes.catppuccin = {
       enable = true;
       settings = let
