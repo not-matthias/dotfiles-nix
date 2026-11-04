@@ -174,9 +174,6 @@
       openclaw-desktop = super.callPackage ../../pkgs/openclaw.nix {};
     })
     (_self: super: {
-      greptile = super.callPackage ../../pkgs/greptile.nix {};
-    })
-    (_self: super: {
       disktree = super.callPackage ../../pkgs/disktree.nix {};
     })
     (_self: super: {

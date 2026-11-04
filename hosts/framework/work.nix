@@ -9,7 +9,6 @@
       unstable.google-chrome
       slack
       awscli2
-      greptile
       linear-cli
       slk
       slackcli
