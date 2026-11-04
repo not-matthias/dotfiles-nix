@@ -47,7 +47,6 @@ in {
       radius2
       tldraw-offline
       knife
-      # unstable.antigravity-fhs
 
       # Install desktop apps rather than websites
       feishin

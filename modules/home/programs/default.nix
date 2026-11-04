@@ -32,11 +32,9 @@
   ./jj.nix
   ./worktrunk.nix
   ./helix
-  ./idea-copilot.nix
   ./binary-ninja.nix
   ./ghidra.nix
   ./lmstudio.nix
-  ./kitty.nix
   ./lazygit.nix
   ./minecraft.nix
   ./neovim.nix
@@ -44,7 +42,6 @@
   ./rust.nix
   ./starship.nix
   ./vicinae.nix
-  # ./wofi.nix
   ./zellij.nix
   ./zoxide.nix
   ./low-battery-alert.nix

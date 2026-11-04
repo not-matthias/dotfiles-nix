@@ -18,7 +18,6 @@
       nodejs
       google-chrome
       notepad-next
-      # msty
       # mission-center
       # jujutsu
       # planify
@@ -35,7 +34,6 @@
       binary-ninja
       vmprotect
       unstable.ida-free
-      # unstable.antigravity-fhs
 
       # Install desktop apps rather than websites
       # discord

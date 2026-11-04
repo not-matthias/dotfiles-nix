@@ -6,7 +6,7 @@
   lib,
   ...
 }: {
-  imports = (import ../modules/overlays) ++ (import ../modules/system);
+  imports = import ../modules/system;
 
   boot = {
     # Disable security mitigations. Don't use this on servers/multi-user systems.
