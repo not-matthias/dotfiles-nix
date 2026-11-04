@@ -1,4 +1,3 @@
-# TODO: Setup wild linker, see: https://github.com/davidlattimore/wild/blob/main/nix/nix.md
 {
   pkgs,
   lib,
@@ -10,43 +9,11 @@
   rustupRepatch = pkgs.writeShellApplication {
     name = "rustup-repatch";
     runtimeInputs = with pkgs; [patchelf findutils gnused coreutils];
-    text = ''
-      DYNAMIC_LINKER=${lib.escapeShellArg pkgs.stdenv.cc.bintools.dynamicLinker}
-      ZLIB_LIB=${lib.escapeShellArg (lib.makeLibraryPath [pkgs.zlib])}
-
-      # rustup's install-time patches can reference libraries later removed by GC.
-      toolchains="''${RUSTUP_HOME:-$HOME/.rustup}/toolchains"
-      [ -d "$toolchains" ] || exit 0
-      target="$DYNAMIC_LINKER $ZLIB_LIB"
-
-      for tc in "$toolchains"/*/; do
-        tc=''${tc%/}
-        [ -d "$tc" ] || continue
-        [ -L "$tc" ] && continue
-        stamp="$tc/.nix-repatch"
-        [ "$(cat "$stamp" 2>/dev/null)" = "$target" ] && continue
-
-        ok=1
-        while IFS= read -r -d "" f; do
-          [ "$(head -c4 "$f")" = $'\x7fELF' ] || continue
-          if interp=$(patchelf --print-interpreter "$f" 2>/dev/null) &&
-            [[ $interp == /nix/store/* && $interp != "$DYNAMIC_LINKER" ]]; then
-            patchelf --set-interpreter "$DYNAMIC_LINKER" "$f" || ok=0
-          fi
-          rpath=$(patchelf --print-rpath "$f" 2>/dev/null) || continue
-          new=$(sed -E "s#/nix/store/[^:]*-zlib-[^:]*/lib#$ZLIB_LIB#g" <<<"$rpath")
-          if [ "$new" != "$rpath" ]; then
-            patchelf --set-rpath "$new" "$f" || ok=0
-          fi
-        done < <(find "$tc" -type f \( -perm -u+x -o -name '*.so*' \) -print0)
-
-        if [ "$ok" = 1 ]; then
-          printf '%s\n' "$target" >"$stamp"
-        else
-          echo "rustup-repatch: some files of $tc could not be patched, retrying next run" >&2
-        fi
-      done
-    '';
+    runtimeEnv = {
+      DYNAMIC_LINKER = pkgs.stdenv.cc.bintools.dynamicLinker;
+      ZLIB_LIB = lib.makeLibraryPath [pkgs.zlib];
+    };
+    text = builtins.readFile ./rustup-repatch.sh;
   };
   # One job: sweep stale target/ artifacts, then autoclean ~/.cargo.
   # Runs behind an ExecCondition that skips while cargo/rustc are active
@@ -64,38 +31,6 @@
 in {
   options.programs.rust = {
     enable = lib.mkEnableOption "rust";
-
-    # Profile knobs CAN shrink target/, but a profile set in
-    # ~/.cargo/config.toml OVERRIDES the project's Cargo.toml [profile.dev]
-    # (per Cargo docs) — so these are opt-in, defaulting to "emit nothing".
-    # sccache does NOT reduce target/ — it caches rustc output in its own dir
-    # while still materializing artifacts into each project's target/.
-    profile = {
-      devDebug = lib.mkOption {
-        type = lib.types.nullOr lib.types.str;
-        default = null;
-        example = "line-tables-only";
-        description = ''
-          [profile.dev] debug level to force globally, e.g.
-          "line-tables-only" (keeps backtraces, drops most debug info,
-          ~halves target/). null emits nothing.
-
-          WARNING: a profile in ~/.cargo/config.toml OVERRIDES the
-          project's Cargo.toml [profile.dev] (Cargo docs), so setting this
-          forces the value on EVERY project, defeating per-project debug
-          settings (e.g. projects needing full debug for gdb/lldb).
-        '';
-      };
-      disableIncremental = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        description = ''
-          Force [profile.dev] incremental = false globally. Removes the
-          target/debug/incremental/ tree at the cost of slower rebuilds.
-          Same override caveat as devDebug — affects every project.
-        '';
-      };
-    };
 
     maintenance = {
       enable = lib.mkEnableOption "weekly cargo maintenance (sweep stale target/ + autoclean ~/.cargo, behind a no-active-build guard)";
@@ -131,7 +66,6 @@ in {
           cargo-edit
           cargo-expand
           cargo-udeps
-          cargo-wipe
           cargo-nextest
         ]
         ++ lib.optionals pkgs.stdenv.isLinux [rustupRepatch]
@@ -140,9 +74,7 @@ in {
           cargo-cache
         ];
 
-      sessionPath = [
-        "$HOME/.cargo/bin"
-      ];
+      sessionPath = ["$HOME/.cargo/bin"];
     };
 
     home.activation.rustupRepatch = lib.mkIf pkgs.stdenv.isLinux (
@@ -151,25 +83,17 @@ in {
       ''
     );
 
-    # Emit [profile.dev] only when explicitly opted in. An empty
-    # [profile.dev] table is avoided on purpose (its override semantics are
-    # ambiguous and could reset a project's dev profile to defaults).
-    home.file.".cargo/config.toml".source = (pkgs.formats.toml {}).generate "cargo-config" ({
-        alias = {
-          b = "build";
-          c = "check";
-          t = "nextest run";
-          tr = "nextest run --release";
-          r = "run";
-          rr = "run --release";
-          br = "build --release";
-        };
-      }
-      // lib.optionalAttrs (cfg.profile.devDebug != null || cfg.profile.disableIncremental) {
-        profile.dev =
-          (lib.optionalAttrs (cfg.profile.devDebug != null) {debug = cfg.profile.devDebug;})
-          // (lib.optionalAttrs cfg.profile.disableIncremental {incremental = false;});
-      });
+    home.file.".cargo/config.toml".source = (pkgs.formats.toml {}).generate "cargo-config" {
+      alias = {
+        b = "build";
+        c = "check";
+        t = "nextest run";
+        tr = "nextest run --release";
+        r = "run";
+        rr = "run --release";
+        br = "build --release";
+      };
+    };
 
     # Single maintenance job (sweep then cache), behind a guard that skips
     # while a cargo/rustc build is active. The guard is best-effort (TOCTOU:
@@ -180,7 +104,7 @@ in {
       Unit.Description = "Cargo maintenance: sweep stale target/ + autoclean ~/.cargo";
       Service = {
         Type = "oneshot";
-        ExecCondition = "${pkgs.bash}/bin/sh -c 'if ${pkgs.procps}/bin/pgrep -u ${config.home.username} -x cargo >/dev/null 2>&1 || ${pkgs.procps}/bin/pgrep -u ${config.home.username} -x rustc >/dev/null 2>&1; then echo \"cargo/rustc running, skipping cargo-maintenance\"; exit 1; fi'";
+        ExecCondition = "${pkgs.bash}/bin/sh -c 'if ${pkgs.procps}/bin/pgrep -u ${config.home.username} -x \"cargo|rustc\" >/dev/null 2>&1; then echo \"cargo/rustc running, skipping cargo-maintenance\"; exit 1; fi'";
         # writeShellScript places the executable at the store path root (no /bin/).
         ExecStart = "${maintenanceScript}";
       };
