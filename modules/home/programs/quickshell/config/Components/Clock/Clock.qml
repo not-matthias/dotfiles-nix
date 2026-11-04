@@ -28,8 +28,8 @@ PillGroup {
         id: calendarPopup
 
         anchor.item: clockButton
-        anchor.edges: Edges.Bottom | Edges.Left
-        anchor.gravity: Edges.Bottom | Edges.Left
+        anchor.edges: Edges.Bottom
+        anchor.gravity: Edges.Bottom
         anchor.adjustment: PopupAdjustment.Slide
         color: Theme.barBackground
         implicitWidth: 296
