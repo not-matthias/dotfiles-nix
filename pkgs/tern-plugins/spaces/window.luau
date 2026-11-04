@@ -420,6 +420,28 @@ tern.on("cwd", function(ev: CwdEvent, cx: WindowCx)
   end
 end)
 
+local function adjacentSpace(cx: WindowCx, sessions, current: number): number?
+  local previous = nil
+  local afterCurrent = false
+  -- Match the sidebar's machine grouping and session order.
+  for _, host in cx.hosts:list() do
+    for _, session in sessions do
+      if session.host ~= host.id then
+        continue
+      end
+      if session.id == current then
+        afterCurrent = true
+      elseif session.tabs > 0 then
+        if afterCurrent then
+          return session.id
+        end
+        previous = session.id
+      end
+    end
+  end
+  return previous
+end
+
 local function closeEmptySpaces(cx: WindowCx)
   local known = {}
   for _, session in cx.sessions:list() do
@@ -427,12 +449,11 @@ local function closeEmptySpaces(cx: WindowCx)
   end
   tern.timer(0, function(fresh: WindowCx)
     local sessions = fresh.sessions:list()
-    if fresh.sessions:current().tabs == 0 then
-      for _, session in sessions do
-        if session.tabs > 0 then
-          fresh.sessions:switch(session.id)
-          break
-        end
+    local current = fresh.sessions:current()
+    if current.tabs == 0 then
+      local target = adjacentSpace(fresh, sessions, current.id)
+      if target then
+        fresh.sessions:switch(target)
       end
     end
     local remaining = #sessions

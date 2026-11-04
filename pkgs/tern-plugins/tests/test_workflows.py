@@ -355,6 +355,67 @@ def test_close_from_sidebar_preserves_other_spaces_and_falls_back(tern, sidebar_
     assert "SURVIVING_TERMINAL" in tern.read_terminal(survivor)
 
 
+@pytest.mark.parametrize("focus_sidebar", [False, True], ids=["terminal", "sidebar"])
+def test_space_close_selects_next_then_previous_in_sidebar_order(tern, focus_sidebar):
+    first = tern.current()["id"]
+    first_pane = tern.terminal()["pane"]
+    spaces = [first]
+    for _ in range(3):
+        tern.keys("ctrl+b", "shift+n")
+        tern.until(lambda: tern.current()["id"] != spaces[-1])
+        spaces.append(tern.current()["id"])
+    _, second, third, fourth = spaces
+    tern.lua(
+        "; ".join(
+            f'cx.sessions:rename({space}, "Space {index}")'
+            for index, space in enumerate(spaces, 1)
+        )
+    )
+
+    def highlighted():
+        return [
+            row["text"]
+            for row in tern.ctl("tree", ".space-row-current .space-name button")["nodes"]
+        ]
+
+    def assert_highlighted():
+        name = tern.current()["name"]
+        tern.until(lambda: highlighted() == [name])
+
+    def close_active():
+        if focus_sidebar:
+            tab = tern.terminal()["tab"]
+            state = tern.snapshot()
+            panels = {p["pane"] for p in state["panels"] if p["owner"] == "spaces"}
+            panel = next(
+                p["pane"]
+                for p in state["panes"]
+                if p["pane"] in panels and p["tab"] == tab
+            )
+            tern.lua(f"cx.layout:focus({panel})")
+        tern.keys("ctrl+b", "x")
+
+    tern.keys("ctrl+b", "w", "2")
+    tern.until(lambda: tern.current()["id"] == second)
+    close_active()
+    tern.until(lambda: second not in {s["id"] for s in tern.snapshot()["sessions"]})
+    assert tern.current()["id"] == third
+    assert_highlighted()
+
+    tern.keys("ctrl+b", "w", "3")
+    tern.until(lambda: tern.current()["id"] == fourth)
+    close_active()
+    tern.until(lambda: fourth not in {s["id"] for s in tern.snapshot()["sessions"]})
+    assert tern.current()["id"] == third
+    assert_highlighted()
+
+    # Closing another space's last terminal must not move the active space.
+    tern.lua(f"cx.layout:close({first_pane})")
+    tern.until(lambda: first not in {s["id"] for s in tern.snapshot()["sessions"]})
+    assert tern.current()["id"] == third
+    assert_highlighted()
+
+
 def test_shell_exit_removes_orphan_panel_without_recreating_empty_tabs(tern):
     session = tern.current()["id"]
     tern.keys("ctrl+b", "c")
