@@ -12,6 +12,7 @@
   # https://github.com/notusknot/dotfiles-nix/blob/main/modules/nvim/default.nix
   programs.nixvim = {
     defaultEditor = !config.programs.helix.enable;
+    nixpkgs.source = pkgs.path;
     colorschemes.catppuccin = {
       enable = true;
       settings = let

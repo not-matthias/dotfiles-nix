@@ -5,7 +5,6 @@
   nurpkgs,
   home-manager,
   user,
-  fenix,
   nixvim,
   nixos-hardware,
   arion,
@@ -51,8 +50,6 @@
       }
     );
     overlays = [
-      fenix.overlays.default
-
       fontsOverlay
     ];
 

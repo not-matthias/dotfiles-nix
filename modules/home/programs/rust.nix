@@ -133,15 +133,6 @@ in {
           cargo-udeps
           cargo-wipe
           cargo-nextest
-
-          # (fenix.complete.withComponents [
-          #   "cargo"
-          #   "clippy"
-          #   "rust-src"
-          #   "rustc"
-          #   "rustfmt"
-          #   "rust-analyzer"
-          # ])
         ]
         ++ lib.optionals pkgs.stdenv.isLinux [rustupRepatch]
         ++ lib.optionals cfg.maintenance.enable [
