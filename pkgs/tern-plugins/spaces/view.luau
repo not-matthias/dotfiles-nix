@@ -6,7 +6,7 @@ tern.css(
   .spaces-sidebar {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
     padding: 6px;
     font-size: 13px;
     min-width: 0;
@@ -26,13 +26,38 @@ tern.css(
   }
   .spaces-sidebar .space-row {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 6px;
+    border-radius: 8px;
     min-width: 0;
   }
   .spaces-sidebar .space-row-current {
-    border-radius: 4px;
+    border-radius: 8px;
     background-color: color-mix(in srgb, var(--t1) 9%, transparent);
   }
+  .spaces-sidebar .space-content {
+    flex: 1;
+    min-width: 0;
+  }
+  .spaces-sidebar .space-index {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    min-width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+  .spaces-sidebar .space-color-blue { background-color: #3978c6; }
+  .spaces-sidebar .space-color-teal { background-color: #158575; }
+  .spaces-sidebar .space-color-orange { background-color: #b86128; }
+  .spaces-sidebar .space-color-purple { background-color: #8051bc; }
+  .spaces-sidebar .space-color-pink { background-color: #b84274; }
+  .spaces-sidebar .space-color-yellow { background-color: #8f7615; }
   .spaces-sidebar .space-name {
     margin: 0;
     display: flex;
@@ -62,9 +87,9 @@ tern.css(
   }
   .spaces-sidebar .space-name button {
     width: 100%;
-    min-height: 22px;
+    min-height: 18px;
     justify-content: flex-start;
-    padding: 2px 6px;
+    padding: 0 6px;
     border-radius: 4px;
   }
   .spaces-sidebar .sf-btn-label,
@@ -76,15 +101,34 @@ tern.css(
   }
   .spaces-sidebar .space-agent {
     flex: 0 0 auto;
-    padding: 0 4px;
-    font-size: 14px;
+    width: 11px;
+    height: 11px;
+    margin: 0 4px;
+    border-radius: 50%;
+    box-sizing: border-box;
+  }
+  .spaces-sidebar .space-agent-working {
+    background-color: #269c56;
+  }
+  .spaces-sidebar .space-agent-waiting-input {
+    background-color: #c38a22;
+  }
+  .spaces-sidebar .space-agent-idle,
+  .spaces-sidebar .space-agent-present {
+    opacity: 0.55;
+    border: 2px solid var(--t1);
   }
   .spaces-sidebar .space-branch {
-    padding: 0 6px 2px;
+    padding: 0 6px;
     font-size: 11px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+  .spaces-sidebar .space-branch .sf-text {
+    margin: 0;
+    font-size: 11px;
+    line-height: 14px;
   }
 ]]
 )
@@ -96,6 +140,8 @@ local function button(label: string, action: string): Node
     variant = "quiet",
   })
 end
+
+local BADGE_COLORS = { "blue", "teal", "orange", "purple", "pink", "yellow" }
 
 local function view(groups, selectedSession: number): Node
   local rows = { tern.ui.text({ tern.ui.span("SPACES", "muted") }) }
@@ -113,7 +159,7 @@ local function view(groups, selectedSession: number): Node
               button = {
                 text = session.name,
                 act = action,
-                variant = if session.id == selectedSession then "primary" else "quiet",
+                variant = "quiet",
               },
             },
           },
@@ -132,12 +178,6 @@ local function view(groups, selectedSession: number): Node
         }
         local label = labels[agentState]
         local stateClass = string.gsub(agentState, "_", "-")
-        local tones = {
-          working = "success",
-          waiting_input = "warning",
-          idle = "muted",
-          present = "muted",
-        }
         table.insert(
           nameParts,
           tern.ui.el("span", {
@@ -148,7 +188,7 @@ local function view(groups, selectedSession: number): Node
               ["data-session"] = tostring(session.id),
               ["data-state"] = agentState,
             },
-          }, { tern.ui.text({ tern.ui.span("●", tones[agentState]) }) })
+          }, {})
         )
       end
       local contents = { tern.ui.el("div", { class = "space-name" }, nameParts) }
@@ -163,7 +203,15 @@ local function view(groups, selectedSession: number): Node
         )
       end
       local rowClass = if session.id == selectedSession then "space-row space-row-current" else "space-row"
-      table.insert(rows, tern.ui.el("div", { class = rowClass }, contents))
+      local color = BADGE_COLORS[session.id % #BADGE_COLORS + 1]
+      local badge = tern.ui.el("div", {
+        class = "space-index space-color-" .. color,
+        actions = { click = action },
+      }, { tern.ui.text(tostring(session.index)) })
+      table.insert(rows, tern.ui.el("div", { class = rowClass }, {
+        badge,
+        tern.ui.el("div", { class = "space-content" }, contents),
+      }))
     end
   end
   return tern.ui.el("div", { class = "spaces-sidebar" }, rows)

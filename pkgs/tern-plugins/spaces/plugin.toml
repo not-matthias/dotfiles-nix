@@ -2,6 +2,6 @@ schema = 1
 id = "spaces"
 name = "Spaces"
 version = "0.1.0"
-description = "Pre-rendered workspace sidebars grouped by machine, with Git branches, agent activity and a shared adjustable width."
+description = "Compact workspace sidebars grouped by machine, with colored index badges, Git branches, solid active and hollow idle agent indicators, and a shared adjustable width."
 icon = "terminal"
 window = "window.luau"

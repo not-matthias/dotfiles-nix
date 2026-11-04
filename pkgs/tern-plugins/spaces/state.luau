@@ -135,13 +135,24 @@ local function sidebarModel(cx: WindowCx, state, isCollapsed: (string) -> boolea
   local groups = {}
   local byHost = {}
   for _, host in state.hosts do
-    local group = { id = host.id, name = host.name, collapsed = isCollapsed(host.name), sessions = {} }
+    local group = {
+      id = host.id,
+      name = host.name,
+      collapsed = isCollapsed(host.name),
+      sessions = {},
+      count = 0,
+    }
     table.insert(groups, group)
     byHost[host.id] = group
   end
   for _, session in state.sessions do
     local group = byHost[session.host]
-    if not group or group.collapsed then
+    if not group then
+      continue
+    end
+    -- Collapsed hosts still occupy positions in the global space shortcuts.
+    group.count += 1
+    if group.collapsed then
       continue
     end
     local branch = branches[session.id]
@@ -151,6 +162,13 @@ local function sidebarModel(cx: WindowCx, state, isCollapsed: (string) -> boolea
       agent = agents[session.id],
       branch = if branch then branch.name else nil,
     })
+  end
+  local offset = 0
+  for _, group in groups do
+    for index, session in group.sessions do
+      session.index = offset + index
+    end
+    offset += group.count
   end
   return groups
 end

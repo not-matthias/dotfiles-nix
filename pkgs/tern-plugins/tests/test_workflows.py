@@ -764,6 +764,10 @@ def test_remote_spaces_group_collapse_and_navigate_without_losing_local_tabs(ter
     labels = [node["text"] for node in buttons]
     assert labels.index("local-space") < labels.index("▾ " + remote["name"])
     assert labels.index("▾ " + remote["name"]) < labels.index("remote-space")
+    assert [node["text"] for node in tern.ctl("tree", ".space-index")["nodes"]] == [
+        "1",
+        "2",
+    ]
     header = next(node for node in buttons if node["text"] == "▾ " + remote["name"])
     x, y, width, height = header["rect"]
     tern.ctl("click", str(x + width / 2), str(y + height / 2))
@@ -776,6 +780,23 @@ def test_remote_spaces_group_collapse_and_navigate_without_losing_local_tabs(ter
     )
     tern.ctl("click", str(x + width / 2), str(y + height / 2))
     tern.until(lambda: "remote-space" in tern.panel_tree()[0]["text"])
+    local_host = next(host for host in state["hosts"] if host["id"] != remote_host)
+    local_header = next(
+        node
+        for node in tern.ctl("tree", ".spaces-sidebar button")["nodes"]
+        if node["text"] == "▾ " + local_host["name"]
+    )
+    lx, ly, lw, lh = local_header["rect"]
+    tern.ctl("click", str(lx + lw / 2), str(ly + lh / 2))
+    tern.until(lambda: "local-space" not in tern.panel_tree()[0]["text"])
+    indices = [node["text"] for node in tern.ctl("tree", ".space-index")["nodes"]]
+    assert indices == ["2"]
+    tern.keys("ctrl+b", "w", "1")
+    tern.until(lambda: tern.current()["id"] == local_session)
+    tern.keys("ctrl+b", "w", "2")
+    tern.until(lambda: tern.current()["id"] == remote_session)
+    tern.ctl("click", str(lx + lw / 2), str(ly + lh / 2))
+    tern.until(lambda: "local-space" in tern.panel_tree()[0]["text"])
     tern.keys("ctrl+b", "w", "1")
     tern.until(lambda: tern.current()["id"] == local_session)
     tern.keys("ctrl+b", "w", "2")
@@ -1127,44 +1148,39 @@ def test_hidden_sidebars_keep_names_and_their_own_selection(tern, remote):
         f'cx.sessions:rename({first}, "First space"); '
         f'cx.sessions:rename({second}, "Renamed hidden space")'
     )
+
     owners = {tab["id"]: tab["session"] for tab in tern.snapshot()["tabs"]}
 
     def prepared_panels():
         result = tern.lua("""
-            local function buttons(node, out)
+            local function buttons(node, selected, rows, current)
+                selected = selected or string.find(node.p.class or "", "space-row-current", 1, true) ~= nil
                 if node.k == "table" then
                     for _, row in node.p.rows do
                         for _, cell in row.cells do
-                            if cell.button then table.insert(out, cell.button) end
+                            if not cell.button then continue end
+                            table.insert(rows, cell.button.text)
+                            if selected then table.insert(current, cell.button.act) end
                         end
                     end
                 end
-                for _, child in node.c or {} do buttons(child, out) end
+                for _, child in node.c or {} do buttons(child, selected, rows, current) end
             end
             local result = {}
             for _, panel in cx.canvas:list() do
                 if panel.owner ~= "spaces" then continue end
-                local rows = {}
-                buttons(cx.canvas:get(panel.pane).view, rows)
-                table.insert(result, {tab=cx.session:tab_of(panel.pane), rows=rows})
+                local rows, current = {}, {}
+                buttons(cx.canvas:get(panel.pane).view, false, rows, current)
+                table.insert(result, {tab=cx.session:tab_of(panel.pane), rows=rows, current=current})
             end
             return tern.json.encode(result)
         """)
         panels = json.loads(result.split("→ ", 1)[1])
-        if {panel["tab"] for panel in panels} != owners.keys():
-            return False
-        for panel in panels:
-            if {row["text"] for row in panel["rows"]} != {
-                "First space",
-                "Renamed hidden space",
-            }:
-                return False
-            selected = [
-                row["act"] for row in panel["rows"] if row["variant"] == "primary"
-            ]
-            if selected != [f"space:{owners[panel['tab']]}"]:
-                return False
-        return True
+        return {panel["tab"] for panel in panels} == owners.keys() and all(
+            set(panel["rows"]) == {"First space", "Renamed hidden space"}
+            and panel["current"] == [f"space:{owners[panel['tab']]}"]
+            for panel in panels
+        )
 
     tern.until(prepared_panels)
     assert tern.current()["id"] == first
