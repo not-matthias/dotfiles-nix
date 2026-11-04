@@ -10,13 +10,13 @@
   desktopUid = 1000;
   desktopGid = config.ids.gids.users;
   sessionBus = "/run/user/${toString desktopUid}/bus";
-  version = "0.16.5";
+  version = "0.20.3";
   # Each MPRIS poll owns one bus connection and closes it before returning.
   mprisSource =
     pkgs.runCommand "multi-scrobbler-${version}-MPRISSource.ts" {
       src = pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/foxxmd/multi-scrobbler/${version}/src/backend/sources/MPRISSource.ts";
-        hash = "sha256-OBf1nx6+DzCJOMy/5feVW+hGMOAetjsBjrCnqo/h/JA=";
+        hash = "sha256-aa08yUfjJOJHAXuy3do6PWlbtzqcw2DHOHgo1JraW7E=";
       };
       nativeBuildInputs = [pkgs.patch];
     } ''
@@ -96,9 +96,8 @@ in {
       reverse_proxy http://127.0.0.1:9078
     '';
 
-    # Ensure the config directory exists with proper permissions
     systemd.tmpfiles.rules = [
-      "d /var/lib/multi-scrobbler 0755 root root -"
+      "d /var/lib/multi-scrobbler 0755 ${toString desktopUid} ${toString desktopGid} -"
     ];
   };
 }
