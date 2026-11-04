@@ -10,6 +10,8 @@
 # - https://mozilla.github.io/policy-templates/#searchengines--default
 #
 {
+  config,
+  lib,
   unstable,
   addons,
   ...
@@ -21,6 +23,10 @@
     }
   '';
 in {
+  home.sessionVariables.BROWSER =
+    lib.mkIf (config.programs.firefox.enable && !config.programs.helium.enable && !config.programs.zen-browser.enable)
+    (lib.mkDefault "firefox");
+
   programs.firefox = {
     package = unstable.firefox;
     policies = {

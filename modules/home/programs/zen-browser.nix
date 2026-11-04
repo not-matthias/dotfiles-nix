@@ -4,6 +4,8 @@
 * A comprehensive privacy and security configuration based on LibreWolf settings. This configuration includes similar categories and settings from LibreWolf's librewolf.cfg to provide enhanced privacy, security, and performance for Zen Browser.
 */
 {
+  config,
+  lib,
   unstable,
   flakes,
   addons,
@@ -52,6 +54,9 @@
   '';
 in {
   imports = [flakes.zen-browser.homeModules.default];
+  home.sessionVariables.BROWSER =
+    lib.mkIf (config.programs.zen-browser.enable && !config.programs.helium.enable)
+    (lib.mkDefault "zen");
 
   stylix.targets.zen-browser.enable = false;
 

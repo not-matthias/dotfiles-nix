@@ -87,7 +87,6 @@
   environment = {
     variables = {
       TERMINAL = "ghostty";
-      BROWSER = "firefox";
       NIXPKGS_ALLOW_UNFREE = "1";
     };
     systemPackages = with pkgs; [
