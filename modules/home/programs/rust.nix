@@ -155,25 +155,6 @@ in {
     # [profile.dev] table is avoided on purpose (its override semantics are
     # ambiguous and could reset a project's dev profile to defaults).
     home.file.".cargo/config.toml".source = (pkgs.formats.toml {}).generate "cargo-config" ({
-        # Fails with: `rustc: symbol lookup error: rustc: undefined symbol: _ZN3std2rt19lang_start_internal17h4172e5a0738dcd76E`
-        target.x86_64-unknown-linux-gnu = {
-          # rustflags = ["-C" "link-arg=-fuse-ld=${pkgs.mold}/bin/mold"];
-          # rustflags = ["-Zthreads=8"];
-          # rustflags = ["-Clink-arg=-fuse-ld=lld" "-Zthreads=8" "-Csymbol-mangling-version=v0"];
-        };
-        build = {
-          # rustflags = ["-Clink-arg=-fuse-ld=lld" "-Zthreads=8" "-Csymbol-mangling-version=v0"];
-          # rustc-wrapper = "${pkgs.sccache}/bin/sccache";
-        };
-
-        # unstable = {
-        #   build-dir-new-layout = true;
-        #   gc = true;
-        #   gitoxide = true;
-        #   mtime-on-use = true;
-        #   checksum-freshness = true;
-        #   fine-grain-locking = true;
-        # };
         alias = {
           b = "build";
           c = "check";
