@@ -76,6 +76,7 @@ in {
     };
 
     programs = {
+      openbot.enable = true;
       ghostty.enable = true;
       herdr-app.enable = true;
       tern.enable = true;
