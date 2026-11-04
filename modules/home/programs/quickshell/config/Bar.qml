@@ -20,11 +20,6 @@ Item {
     implicitHeight: Theme.barHeight
     anchors.fill: parent
 
-    Rectangle {
-        anchors.fill: parent
-        color: Theme.barBackground
-    }
-
     Workspaces {
         id: workspaces
         anchors.left: parent.left
@@ -44,7 +39,12 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         spacing: 4
 
-        Flashgen {}
+        PillGroup {
+            visible: flashgen.statusText.length > 0
+            Flashgen {
+                id: flashgen
+            }
+        }
         AiUsage {}
 
         PillGroup {

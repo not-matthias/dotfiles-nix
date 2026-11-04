@@ -17,7 +17,7 @@ BarButton {
     tooltipText: statusTooltip
     foreground: Theme.statusColor(statusClass)
     background: "transparent"
-    borderColor: Theme.accent
+    borderColor: "transparent"
     interactive: statusText.length > 0
 
     Process {

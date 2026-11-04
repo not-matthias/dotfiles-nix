@@ -6,8 +6,9 @@ Item {
     id: root
 
     default property alias content: contentRow.data
+    readonly property int padding: 2
 
-    implicitWidth: contentRow.childrenRect.width + 8
+    implicitWidth: contentRow.childrenRect.width + 2 * padding
     implicitHeight: Theme.pillHeight
 
     Rectangle {
@@ -21,7 +22,7 @@ Item {
     Row {
         id: contentRow
         anchors.fill: parent
-        anchors.margins: 2
+        anchors.margins: root.padding
         spacing: 0
     }
 }

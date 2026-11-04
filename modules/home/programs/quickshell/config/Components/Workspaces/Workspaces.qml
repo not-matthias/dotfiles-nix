@@ -51,5 +51,11 @@ PillGroup {
                 verticalAlignment: Text.AlignVCenter
             }
         }
+
+        Item {
+            visible: Niri.windows.length > 0
+            width: 6
+            height: 1
+        }
     }
 }
