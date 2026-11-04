@@ -4,10 +4,14 @@ import Quickshell
 import qs.Services
 import qs.Shared
 
-PillGroup {
+Item {
     id: root
     required property var screen
     required property real popupCenterX
+    readonly property int popupMargin: 8
+
+    implicitWidth: mediaButton.implicitWidth
+    implicitHeight: Theme.itemHeight
 
     property bool popupOpen: false
     readonly property var activePlayer: MediaManager.active
@@ -21,21 +25,12 @@ PillGroup {
             popupOpen = false;
     }
 
-    TextMetrics {
-        id: titleMetrics
-
-        font.family: Theme.fontFamily
-        font.pixelSize: Theme.fontSize
-        text: "\uf001  " + root.title
-    }
-
     BarButton {
         id: mediaButton
 
-        implicitWidth: Math.min(180, titleMetrics.advanceWidth + 16)
-        text: "\uf001  " + root.title
+        text: "\uf001"
         tooltipText: root.artist.length > 0 ? root.title + " — " + root.artist : root.title
-        foreground: Theme.barText
+        foreground: Theme.foreground
         background: "transparent"
         borderColor: "transparent"
         onClicked: function (button) {
@@ -64,9 +59,11 @@ PillGroup {
         }
 
         Column {
-            x: root.popupCenterX - width / 2
+            id: popupCards
+            width: Math.min(392, Math.max(0, mediaPopup.width - 2 * root.popupMargin))
+            x: Math.max(root.popupMargin, Math.min(root.popupCenterX - width / 2, mediaPopup.width - width - root.popupMargin))
             anchors.top: parent.top
-            anchors.topMargin: Theme.barHeight + 8
+            anchors.topMargin: root.popupMargin
             spacing: 8
 
             Repeater {
@@ -75,7 +72,7 @@ PillGroup {
                 delegate: Item {
                     required property var modelData
 
-                    width: 392
+                    width: popupCards.width
                     height: 172
 
                     MouseArea {
@@ -84,6 +81,7 @@ PillGroup {
                     }
 
                     MediaCard {
+                        width: parent.width
                         player: modelData
                         popupVisible: mediaPopup.visible
                         layer.enabled: true

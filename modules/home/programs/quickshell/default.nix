@@ -69,7 +69,7 @@
   '';
 in {
   options.programs.quickshellBar = {
-    enable = lib.mkEnableOption "Quickshell status bar";
+    enable = lib.mkEnableOption "Quickshell status bar with a centered clock and compact media controls";
 
     flashgenWordOfHour = {
       enable = (lib.mkEnableOption "Flashgen passive word-of-the-hour Quickshell widget") // {default = true;};

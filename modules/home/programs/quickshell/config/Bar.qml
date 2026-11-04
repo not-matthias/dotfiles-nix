@@ -32,22 +32,9 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
     }
 
-    Row {
-        id: centerItems
+    Clock {
+        id: clock
         anchors.centerIn: parent
-        spacing: 4
-
-        Media {
-            id: media
-            popupCenterX: centerItems.x + media.x + media.width / 2
-            screen: bar.screen
-            anchors.verticalCenter: parent.verticalCenter
-        }
-
-        Clock {
-            id: clock
-            anchors.verticalCenter: parent.verticalCenter
-        }
     }
 
     Row {
@@ -66,7 +53,13 @@ Item {
         }
 
         PillGroup {
+            id: controls
             Language {}
+            Media {
+                id: media
+                screen: bar.screen
+                popupCenterX: rightItems.x + controls.x + media.parent.x + media.x + media.width / 2
+            }
             Volume {}
             Battery {}
         }
