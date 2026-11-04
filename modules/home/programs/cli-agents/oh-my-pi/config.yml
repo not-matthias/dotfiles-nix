@@ -59,6 +59,8 @@ bash:
     enabled: true
 completion:
   notify: "off"
+mcp:
+  notifications: false
 codexResets:
   autoRedeem: "yes"
 claudeResets:
