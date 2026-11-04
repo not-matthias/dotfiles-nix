@@ -16,7 +16,6 @@
 11428 = scrutiny (desktop and pc; PC: https://scrutiny.pcnm.duckdns.org)
 11427 = netdata
 11426 = netdata
-11425 = firefly-iii
 11424 = ntopng
 11000 = nitter
 10999 = redlib
