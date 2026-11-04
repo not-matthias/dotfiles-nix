@@ -42,13 +42,11 @@ in {
       notepad-next
       unstable.beeper
       flakes.devenv.packages.${pkgs.stdenv.hostPlatform.system}.devenv
-      flakes.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.grok-bot
 
       # vmprotect
       radius2
       tldraw-offline
       knife
-      # unstable.antigravity-fhs
 
       # Install desktop apps rather than websites
       feishin
@@ -75,8 +73,6 @@ in {
     xdg.mimeApps = {
       associations.added."text/html" = lib.mkForce defaultBrowser.desktop;
       defaultApplications."text/html" = lib.mkForce defaultBrowser.desktop;
-      defaultApplications."x-scheme-handler/grokbot" = ["grok-bot.desktop"];
-      defaultApplications."x-scheme-handler/sand" = ["grok-bot.desktop"];
     };
 
     programs = {
@@ -97,7 +93,6 @@ in {
       low-battery-alert.enable = true;
       niri-organize.enable = true;
       nixvim.enable = true;
-      # helix.enable = true;
       idasql.enable = true;
       cli-agents = {
         programSkills.knife = lib.mkIf (lib.elem pkgs.knife config.home.packages) ../../modules/home/programs/cli-agents/shared/program-skills/knife;

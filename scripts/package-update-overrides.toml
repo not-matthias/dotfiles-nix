@@ -16,12 +16,6 @@ provider = "manual"
 reason = "Amp publishes the CLI through a versioned binary endpoint without a release API."
 
 [[package]]
-path = "pkgs/antigravity.nix"
-name = "antigravity"
-provider = "manual"
-reason = "Google's Antigravity download endpoint does not expose a release API."
-
-[[package]]
 path = "pkgs/binary-ninja.nix"
 name = "binaryninja"
 provider = "manual"

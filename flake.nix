@@ -33,11 +33,10 @@
       url = "github:hercules-ci/arion";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    fenix = {
-      url = "github:nix-community/fenix";
+    nixvim = {
+      url = "github:nix-community/nixvim/nixos-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixvim.url = "github:nix-community/nixvim/nixos-26.05";
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -59,7 +58,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     niri.url = "github:sodiboo/niri-flake";
-    vicinae.url = "github:vicinaehq/vicinae";
+    vicinae = {
+      url = "github:vicinaehq/vicinae";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     hokum = {
       url = "github:anomalyco/hokum/f30af6ae2762bf9a3b41b9cbccac6e01cbed08ab";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -143,7 +145,6 @@
     nixpkgs-unstable,
     nurpkgs,
     home-manager,
-    fenix,
     nixvim,
     nixos-hardware,
     arion,
@@ -158,7 +159,7 @@
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user fenix nixvim nixos-hardware arion agenix stylix niri nix-webapps;
+        inherit flakes nixpkgs nixpkgs-unstable nurpkgs home-manager user nixvim nixos-hardware arion agenix stylix niri nix-webapps;
       }
     );
 

@@ -1,5 +1,11 @@
-{flakes, ...}: {
+{
+  config,
+  flakes,
+  lib,
+  ...
+}: {
   imports = [flakes.helium.homeModules.default];
+  home.sessionVariables.BROWSER = lib.mkIf config.programs.helium.enable (lib.mkDefault "helium");
 
   programs.helium = {
     commandLineArgs = [

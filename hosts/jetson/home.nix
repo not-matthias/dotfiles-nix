@@ -14,7 +14,6 @@
     ../../modules/home/programs/fish
     ../../modules/home/programs/git.nix
     ../../modules/home/programs/gitui.nix
-    ../../modules/home/programs/helix.nix
     ../../modules/home/programs/jj.nix
     ../../modules/home/programs/neovim.nix
     ../../modules/home/programs/rust.nix
@@ -34,7 +33,6 @@
       navi
       yazi
       eza
-      bottom
       tealdeer
       kalker
       ripgrep

@@ -6,7 +6,7 @@
   lib,
   ...
 }: {
-  imports = (import ../modules/overlays) ++ (import ../modules/system);
+  imports = import ../modules/system;
 
   boot = {
     # Disable security mitigations. Don't use this on servers/multi-user systems.
@@ -87,9 +87,6 @@
   environment = {
     variables = {
       TERMINAL = "ghostty";
-      BROWSER = "firefox";
-      EDITOR = "hx";
-      VISUAL = "hx";
       NIXPKGS_ALLOW_UNFREE = "1";
     };
     systemPackages = with pkgs; [
@@ -127,8 +124,6 @@
     registry.nixpkgs.flake = flakes.nixpkgs;
     extraOptions = ''
       experimental-features = nix-command flakes
-      keep-outputs          = true
-      keep-derivations      = true
       keep-going            = true
     '';
 

@@ -11,7 +11,8 @@
   # https://github.com/tars0x9752/home/blob/main/modules/neovim/default.nix
   # https://github.com/notusknot/dotfiles-nix/blob/main/modules/nvim/default.nix
   programs.nixvim = {
-    defaultEditor = true;
+    defaultEditor = !config.programs.helix.enable;
+    nixpkgs.source = pkgs.path;
     colorschemes.catppuccin = {
       enable = true;
       settings = let
@@ -748,7 +749,6 @@
         enable = true;
         settings.debounce_delay = 3000;
       };
-      autoclose.enable = true;
       comment.enable = true;
       todo-comments.enable = true;
       rainbow-delimiters.enable = true;

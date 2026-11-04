@@ -57,9 +57,6 @@
       detect-it-easy = super.callPackage ../../pkgs/detect-it-easy.nix {};
     })
     (_self: super: {
-      msty = super.callPackage ../../pkgs/msty.nix {};
-    })
-    (_self: super: {
       lmstudio = super.callPackage ../../pkgs/lmstudio.nix {};
     })
     (_self: super: {
@@ -72,12 +69,6 @@
     })
     (_self: super: {
       solidtime-desktop = super.callPackage ../../pkgs/solidtime.nix {};
-    })
-    (_self: super: {
-      zessionizer = super.callPackage ../../pkgs/zessionizer.nix {inherit (super) fenix;};
-    })
-    (_self: super: {
-      antigravity = super.callPackage ../../pkgs/antigravity.nix {};
     })
     (_self: super: {
       vmprotect = super.callPackage ../../pkgs/vmprotect.nix {};
@@ -172,9 +163,6 @@
     })
     (_self: super: {
       openclaw-desktop = super.callPackage ../../pkgs/openclaw.nix {};
-    })
-    (_self: super: {
-      greptile = super.callPackage ../../pkgs/greptile.nix {};
     })
     (_self: super: {
       disktree = super.callPackage ../../pkgs/disktree.nix {};

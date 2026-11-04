@@ -65,7 +65,6 @@ in {
     };
     interactiveShellInit =
       ''
-        eval (${pkgs.direnv}/bin/direnv hook fish)
         atuin init fish --disable-up-arrow | source
 
         # Disable kitty keyboard protocol — VSCode's xterm.js doesn't fully support it,
@@ -79,9 +78,8 @@ in {
       # store paths and per-project devenv dirs pile up as dead PATH members.
       fish_add_path --global --prepend ~/.nix-profile/bin /etc/profiles/per-user/$USER/bin
 
-      # Appended, not prepended: imperatively installed binaries (cargo install, uv tool
-      # install) stay reachable without shadowing their Nix-managed counterparts.
-      fish_add_path --global --append ~/.cargo/bin ~/.local/bin
+      # Keep user-installed tools reachable without shadowing Nix-managed binaries.
+      fish_add_path --global --append ~/.local/bin
 
       if command -sq any-nix-shell
         any-nix-shell fish --info-right | source
@@ -90,13 +88,14 @@ in {
     functions = {
       fish_greeting = '''';
       fish_mode_prompt = '''';
-      dir = ''
-        # https://github.com/laughedelic/fish/blob/master/functions/dir.fish
-        function dir -a path -d "Creates subdirectories and jumps inside"
-        	mkdir -p $path
-        	and cd $path
-        end
-      '';
+      dir = {
+        argumentNames = ["path"];
+        description = "Create a directory and enter it";
+        body = ''
+          mkdir -p -- "$path"
+          and cd -- "$path"
+        '';
+      };
 
       zj = ''
         set -l dir (zoxide query $argv)

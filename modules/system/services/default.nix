@@ -8,7 +8,6 @@
   ./calibre-web.nix
   ./change-detection.nix
   ./earlyoom.nix
-  # ./firefly-iii.nix
   ./gitea.nix
   ./homepage.nix
   ./jellyfin.nix

@@ -9,7 +9,6 @@ Sources are `pkgs/<name>.nix` unless noted.
 | Software | Version |
 |---|---|
 | amp-cli | `0.0.1789566678-g555089` |
-| antigravity | `2.5.5`; installer build `4923483625488384` |
 | aw-watcher-media-player | `1.1.4` |
 | Binary Ninja | `6.0.10601` (`pkgs/binary-ninja.nix`) |
 | binja-codemode-mcp | `0.1.3` |
@@ -18,9 +17,8 @@ Sources are `pkgs/<name>.nix` unless noted.
 | choosr | `1.0.0-unstable-2026-09-16` |
 | Detect It Easy | `3.21` (`pkgs/detect-it-easy.nix`) |
 | disktree | `0.11.0` |
-| feishin | `1.8.0` |
+| feishin | `1.17.0` (updated 2026-11-04) |
 | ghidra-cli | `0.2.2` |
-| greptile | `3.6.1` |
 | handy | `0.9.8` |
 | harbor | `0.5.10` |
 | helix-file-watcher | `unstable-2026-08-30`; commit `8cd0726da47b` |
@@ -32,7 +30,6 @@ Sources are `pkgs/<name>.nix` unless noted.
 | lmstudio | `0.4.24-1` |
 | lobe-chat | `1.114.0` |
 | mcporter | `0.16.0` |
-| msty | `1.0` (derivation label; URL has no release version) |
 | oh-my-pi | `18.15.0` (updated 2026-11-02) |
 | openclaw desktop | `2026.9.5` (`pkgs/openclaw.nix`) |
 | oracle | `0.21.4` |
@@ -48,7 +45,7 @@ Sources are `pkgs/<name>.nix` unless noted.
 | solidtime desktop | `0.3.2` (`pkgs/solidtime.nix`) |
 | soulsync | `3.4.2` |
 | terminal-browser | `0.8.1` |
-| tern | `0.6.2` |
+| tern | `0.9.10` (updated 2026-11-04) |
 | tldraw-offline | `1.21.0` |
 | vmprotect | `demo` (no numeric release identified) |
 
@@ -98,14 +95,7 @@ Sources are `pkgs/pi-mono/packages/<name>.nix` unless noted.
 
 | Package | Version |
 |---|---|
-| pi-agentic-compaction | `0.3.1` |
-| pi-anthropic-oauth | `0.3.1` |
-| pi-diff | `0.9.2` |
-| pi-goal | `0.0.2-unstable-2026-05-28` |
 | pi-codex-conversion | `3.0.47` (`pkgs/pi-mono/extensions/pi-codex-conversion.nix`; maintained `@howaboua` package, with Codex Code Mode host `0.145.0`) |
-| pi-openai-server-compaction | `0.1.0` |
-| pi-pretty | `0.6.31` |
-| pi-queue-picker | `1.0.5` |
 | pi-web-access | `0.37.0` |
 | tintinweb-pi-subagents | `0.19.0` |
 | pi-token-usage | `0.4.0` (commented-out integration; `pkgs/pi-mono/extensions/pi-token-usage.nix`) |
@@ -171,7 +161,6 @@ Sources are `pkgs/pi-mono/extensions/<name>.nix`.
 | Herdr auto-title | `0.4.0`; commit `0f0026b0897f` | `hosts/pc/default.nix` |
 | Herdr annotate | `0.3.0`; commit `46cbf5dab174` | `hosts/pc/default.nix` |
 | Herdr resurrect | `0.2.0`; commit `5afa6755d4f3` | `hosts/pc/default.nix` |
-| Mutter override (disabled) | Commit `663f19bc02c1` | `modules/overlays/gnome.nix` |
 | Bluetooth patch (not a BlueZ version pin) | Commit `066a164a524e` | `modules/system/hardware/bluetooth.nix` |
 
 ## Containers
@@ -226,7 +215,6 @@ On first activation, log out and back in to stop the old Niri-launched Dunst pro
 - Major-version selections: Docker 29, Garage 2, PostgreSQL 16, and Taskwarrior 3. Minor versions come from nixpkgs.
 - 2026-10-18: The package overlay selects `pnpm_10` from the locked nixpkgs-unstable input (`10.34.5`) to use its security fixes while keeping pnpm 10 compatibility.
 - Octo-fiesta uses floating container tag `dev` in `modules/system/services/octo-fiesta.nix`.
-- The disabled Discord overlay uses a floating `latest` tarball URL with a fixed content hash in `modules/overlays/discord.nix`; no release version is identified.
 - Floating source selectors in `flake.nix`: nixos-hardware `master`, nix-webapps `tlater/idiomatic-flake`, hera `main`, and determinate `*`.
 - The Google fonts overlay uses a `master` archive with a fixed content hash in `hosts/default.nix`.
 - Hushmic's DPDFNet model downloads use Hugging Face `main` URLs with fixed content hashes.

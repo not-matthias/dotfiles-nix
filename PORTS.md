@@ -15,8 +15,6 @@
 11429 = adguard home (disabled)
 11428 = scrutiny (desktop and pc; PC: https://scrutiny.pcnm.duckdns.org)
 11427 = netdata
-11426 = netdata
-11425 = firefly-iii
 11424 = ntopng
 11000 = nitter
 10999 = redlib
@@ -31,8 +29,6 @@
 https://jellyfin.org/docs/general/networking/
 8096 = jellyfin http
 8920 = jellyfin https
-
-8123 = home-assistant
 
 docker-compose ports:
 9078 = multi-scrobbler
