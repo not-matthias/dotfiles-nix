@@ -33,7 +33,6 @@
       navi
       yazi
       eza
-      bottom
       tealdeer
       kalker
       ripgrep

@@ -21,7 +21,6 @@
         # Rust tools
         yazi
         eza
-        bottom
         tealdeer
         kalker
         ripgrep
