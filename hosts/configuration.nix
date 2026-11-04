@@ -125,8 +125,6 @@
     registry.nixpkgs.flake = flakes.nixpkgs;
     extraOptions = ''
       experimental-features = nix-command flakes
-      keep-outputs          = true
-      keep-derivations      = true
       keep-going            = true
     '';
 
