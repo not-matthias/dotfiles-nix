@@ -749,7 +749,6 @@
         enable = true;
         settings.debounce_delay = 3000;
       };
-      autoclose.enable = true;
       comment.enable = true;
       todo-comments.enable = true;
       rainbow-delimiters.enable = true;
