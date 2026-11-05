@@ -423,8 +423,9 @@ end)
 local function adjacentSpace(cx: WindowCx, sessions, current: number): number?
   local previous = nil
   local afterCurrent = false
-  -- Match the sidebar's machine grouping and session order.
+  -- Prefer neighbours on the same machine, then fall back to sidebar order.
   for _, host in cx.hosts:list() do
+    local previousOnHost = nil
     for _, session in sessions do
       if session.host ~= host.id then
         continue
@@ -436,7 +437,11 @@ local function adjacentSpace(cx: WindowCx, sessions, current: number): number?
           return session.id
         end
         previous = session.id
+        previousOnHost = session.id
       end
+    end
+    if afterCurrent and previousOnHost then
+      return previousOnHost
     end
   end
   return previous

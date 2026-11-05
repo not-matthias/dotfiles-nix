@@ -416,6 +416,45 @@ def test_space_close_selects_next_then_previous_in_sidebar_order(tern, focus_sid
     assert_highlighted()
 
 
+def test_remote_space_close_stays_on_same_machine(tern):
+    tern.ctl("remote", "loopback", "build-server")
+    tern.until(
+        lambda: any(
+            h["id"] == tern.current()["host"] and h["kind"] == "remote"
+            for h in tern.snapshot()["hosts"]
+        )
+    )
+    host = tern.current()["host"]
+    spaces = [tern.current()["id"]]
+    for _ in range(2):
+        tern.keys("ctrl+b", "shift+n")
+        tern.until(lambda: tern.current()["id"] != spaces[-1])
+        assert tern.current()["host"] == host
+        spaces.append(tern.current()["id"])
+    first, middle, last = spaces
+
+    tern.ctl("remote", "loopback", "other-server")
+    tern.until(lambda: tern.current()["host"] != host)
+    other = tern.current()["id"]
+
+    for closing in (last, first):
+        tern.lua(f"cx.sessions:switch({closing})")
+        tern.until(lambda: tern.current()["id"] == closing)
+        tern.keys("ctrl+b", "x")
+        tern.until(
+            lambda: not any(
+                s["id"] == closing and s["tabs"] > 0
+                for s in tern.snapshot()["sessions"]
+            )
+        )
+        tern.until(lambda: tern.current()["id"] == middle)
+        assert tern.current()["host"] == host
+
+    # Only leaving the machine's final space may cross to the next machine.
+    tern.keys("ctrl+b", "x")
+    tern.until(lambda: tern.current()["id"] == other)
+
+
 def test_shell_exit_removes_orphan_panel_without_recreating_empty_tabs(tern):
     session = tern.current()["id"]
     tern.keys("ctrl+b", "c")
