@@ -79,6 +79,7 @@ in {
         HINDSIGHT_API_DATABASE_URL = "postgresql://hindsight@127.0.0.1:5432/hindsight";
         HINDSIGHT_API_HOST = "127.0.0.1";
         HINDSIGHT_API_LLM_CHATGPT_HOME = credentials;
+        HINDSIGHT_API_LLM_OUTPUT_LANGUAGE = "English";
         HINDSIGHT_API_LLM_PROVIDER = "chatgpt";
         HINDSIGHT_API_RUN_MIGRATIONS_ON_STARTUP = "true";
         HINDSIGHT_API_TENANT_EXTENSION = "hindsight_api.extensions.builtin.tenant:ApiKeyTenantExtension";
