@@ -507,8 +507,11 @@ end
 
 -- Session renames and changes from other windows have no dedicated window event.
 local function refresh(cx: WindowCx)
-  sync(cx)
+  -- Queue recovery before native calls can exhaust the callback budget.
   tern.timer(REFRESH_MS, refresh)
+  -- Callbacks are serial; a guard still set here belongs to an interrupted sync.
+  syncing = false
+  sync(cx)
 end
 tern.timer(0, function(cx: WindowCx)
   -- Native tabs and the space picker share the same sessions, without an import copy.
