@@ -97,6 +97,7 @@ in {
       settings = {
         battery = {
           governor = "powersave";
+          platform_profile = "low-power";
           turbo = "never";
 
           # Maximize battery
@@ -107,6 +108,7 @@ in {
         };
         charger = {
           governor = "performance";
+          platform_profile = "performance";
           energy_performance_preference = "performance";
           turbo = "always";
         };
