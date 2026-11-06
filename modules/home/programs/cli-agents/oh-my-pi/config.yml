@@ -75,6 +75,8 @@ tools:
 secrets:
   enabled: true
 compaction:
+  modelThresholds:
+    "anthropic/claude-*": "f300000"
   handoffSaveToDisk: true
   experimentalContextManagement: true
 dev:
