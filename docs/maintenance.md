@@ -44,6 +44,8 @@ Run `nix flake update`, review `flake.lock`, then build and activate the intende
 
 Nix registry entries affect shorthand references used by the CLI, not the dependencies pinned in this repository's lockfile. Inspect them with `nix registry list`; use flake updates to change repository dependencies.
 
+OMP is pinned separately in [pkgs/oh-my-pi.nix](../pkgs/oh-my-pi.nix), not in `flake.lock`. Version 18.17.0 (2026-11-06) uses the upstream binary checksum. Rebuild and activate the host configuration after changing the pin.
+
 ## Garbage collection
 
 Deleting generations removes rollback options. Keep any generation you may need before collecting its store paths.
