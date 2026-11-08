@@ -8,8 +8,12 @@
   options.services.caddy.virtualHosts = lib.mkOption {
     type = lib.types.attrsOf (lib.types.submodule {
       config.extraConfig = lib.mkBefore ''
-        @notTailnet not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
-        respond @notTailnet "Tailnet access only" 403
+        # Local hostname overrides reach Caddy over loopback, not Tailscale.
+        @notLocalOrTailnet {
+          not remote_ip 127.0.0.1 ::1
+          not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
+        }
+        respond @notLocalOrTailnet "Local or tailnet access only" 403
       '';
     });
   };
