@@ -9,6 +9,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ./kernel-build.nix
     nixos-hardware.nixosModules.framework-desktop-amd-ai-max-300-series
     flakes.win11-kvm.nixosModules.default
   ];
