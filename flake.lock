@@ -914,11 +914,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792927392,
-        "narHash": "sha256-tLSLH6NTXESVnRlN5B0QHX04fq9MOxP5J4prxwPQ8/4=",
+        "lastModified": 1793832345,
+        "narHash": "sha256-4rctc+5JOOVCzTyNtYnI9Mehl3tdK5r2aE2akve/+m4=",
         "ref": "refs/heads/main",
-        "rev": "02beb099b1d1b0cca71d34ff0e0a9826746801b5",
-        "revCount": 84,
+        "rev": "9c29dc845a74e1bd1233146578f1fcb340096695",
+        "revCount": 85,
         "type": "git",
         "url": "https://github.com/not-matthias/language-study.git"
       },
