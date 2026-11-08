@@ -85,13 +85,13 @@ dev:
 
 modelRoles:
   default: openai-codex/gpt-6.1-sol:auto
-  tiny: openai-codex/gpt-6-luna
+  tiny: openai-codex/gpt-6-luna:auto
   commit: google-antigravity/gemini-3.8-flash
   task: openai-codex/gpt-6.1-sol:auto
-  smol: openai-codex/gpt-6-luna:xhigh
-  advisor: openai-codex/gpt-6-luna:xhigh
-  plan: openai-codex/gpt-6.1-sol:high
-  slow: openai-codex/gpt-6.1-sol:high
+  smol: openai-codex/gpt-6.1-sol:auto
+  advisor: openai-codex/gpt-6-luna:auto
+  plan: openai-codex/gpt-6-astra:auto
+  slow: openai-codex/gpt-6-astra:auto
   image: openai-codex/gpt-image-1
 
 task:
@@ -109,9 +109,9 @@ task:
   #   task: "on"
   agentModelOverrides:
     scout: google-antigravity/gemini-3.8-flash
-    solver: openai-codex/gpt-6.1-sol:high
-    reviewer: openai-codex/gpt-6-luna:xhigh
-    security-reviewer: openai-codex/gpt-6-luna:xhigh
+    solver: openai-codex/gpt-6.1-sol:auto
+    reviewer: openai-codex/gpt-6-luna:auto
+    security-reviewer: openai-codex/gpt-6-luna:auto
   # Currently disabled, as it can increase the cost. Use orchestrate or workflowz instead
   # eager: preferred
 
