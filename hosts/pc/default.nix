@@ -386,7 +386,7 @@
   };
 
   desktop = {
-    theme = "dark";
+    theme = "light";
     niri.enable = true;
     fonts.enable = true;
   };
