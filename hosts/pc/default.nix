@@ -61,6 +61,7 @@
       };
       git.settings.commit.gpgsign = lib.mkForce false;
       ghostty.enable = true;
+      tern.enable = true;
       rust = {
         enable = true;
         maintenance = {
