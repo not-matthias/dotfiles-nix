@@ -9,7 +9,6 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    ./windows-timing.nix
     nixos-hardware.nixosModules.framework-desktop-amd-ai-max-300-series
     flakes.win11-kvm.nixosModules.default
   ];
@@ -256,6 +255,11 @@
         uuid = "e270b36a-1611-4003-9dbc-37a40921b16d";
       };
       settings = {
+        # Initial calibration candidate, not a validated Windows latency target.
+        rdtsc_spoofing = true;
+        rdtsc_divisor = 64;
+        handler_time_compensation = false;
+        cpuid_fastpath = true;
         memory_mib = 16384;
         cpu = {
           sockets = 1;
