@@ -83,15 +83,29 @@ dev:
   autoqa: false
   autoqaConsent: denied
 
+# Original roles, kept verbatim for quick rollback.
+# modelRoles:
+#   # default: openai-codex/gpt-6.1-sol:auto
+#   default: anthropic/claude-opus-5:auto
+#   tiny: openai-codex/gpt-6-luna:auto
+#   commit: google-antigravity/gemini-3.8-flash
+#   task: openai-codex/gpt-6.1-sol:auto
+#   smol: openai-codex/gpt-6.1-sol:auto
+#   advisor: openai-codex/gpt-6-luna:auto
+#   plan: openai-codex/gpt-6-astra:auto
+#   slow: openai-codex/gpt-6-astra:auto
+#   image: openai-codex/gpt-image-1
+
 modelRoles:
-  default: openai-codex/gpt-6.1-sol:auto
-  tiny: openai-codex/gpt-6-luna:auto
+  default: anthropic/claude-opus-5:auto
+  tiny: anthropic/claude-sonnet-5:auto
   commit: google-antigravity/gemini-3.8-flash
-  task: openai-codex/gpt-6.1-sol:auto
-  smol: openai-codex/gpt-6.1-sol:auto
-  advisor: openai-codex/gpt-6-luna:auto
-  plan: openai-codex/gpt-6-astra:auto
-  slow: openai-codex/gpt-6-astra:auto
+  task: anthropic/claude-opus-5:auto
+  smol: anthropic/claude-opus-5:auto
+  advisor: anthropic/claude-sonnet-5:auto
+  plan: anthropic/claude-fable-5-1:auto
+  slow: anthropic/claude-fable-5-1:auto
+  # Anthropic has no image model.
   image: openai-codex/gpt-image-1
 
 task:
