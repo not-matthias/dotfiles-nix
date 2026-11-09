@@ -1,5 +1,11 @@
 --!strict
 
+-- Mobile keeps Tern's native session UI; the sidebar does not fit there.
+local MOBILE_OS = { ios = true, android = true }
+if MOBILE_OS[tern.runtime.os] then
+  return
+end
+
 local stateModel = require("./state")
 local view = require("./view")
 
