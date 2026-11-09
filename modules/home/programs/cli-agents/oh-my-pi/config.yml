@@ -131,6 +131,9 @@ task:
 
 retry:
   usageAwareFallback: false
+  # Wait out a usage limit when the provider reports an authoritative reset time,
+  # instead of failing the turn at retry.maxDelayMs.
+  waitForUsageReset: true
   fallbackChains:
     google-antigravity/gemini-3.8-flash:
       - openai-codex/gpt-6-luna
@@ -153,6 +156,11 @@ retry:
       - openrouter/google/gemini-3-pro-image-preview
       - google/gemini-3-pro-image-preview
       - deepinfra/black-forest-labs/FLUX-2-pro
+
+providers:
+  # Keep working on Anthropic's low-priority lane when a 5h limit is hit and the lane is offered.
+  anthropic:
+    slowMode: auto
 
 # Load marketplace skills explicitly through the wgit codspeed-marketplace skill.
 enabledProviders: []
