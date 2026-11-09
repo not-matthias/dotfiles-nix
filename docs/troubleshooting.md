@@ -31,3 +31,17 @@ Inspect unit files and drop-ins with `systemctl cat timeguard.service timeguard-
 Check `~/.local/state/tern/logs/tern.log` for Spaces callback timeouts. A timeout can leave existing sidebars visible while preventing new tabs from receiving one; this is not a space-count limit. `tern plugin reload spaces` restores the plugin's runtime state.
 
 The 2026-11-05 recovery fix schedules the next refresh before synchronization and clears an interrupted sync guard on that refresh. Once Tern resumes the paused plugin, sidebar synchronization can continue without a reload.
+
+2026-11-09: Spaces creates and resizes panels only in the focused tab, rechecking focus before a queued creation. Existing hidden panels can receive content updates without changing their layouts. Before opening a panel it checks for an existing owned panel in that tab; stale queued targets are discarded. This replaces background layout mutations that produced duplicate sidebars during live use. Android and iOS skip the window plugin; device verification is still pending.
+
+## Tern profiles (2026-11-07)
+
+Spaces groups native sessions inside one Tern window and uses the existing shared daemon and Tern settings. Switching profiles selects a session in the group; it does not create another window, daemon, or copy of a terminal. Existing sessions and running programs stay in place. Legacy imports assign existing sessions to the group matching their configuration; a fresh setup starts in **Default**.
+
+Click a profile button to switch groups. Use **+** to create a profile, or **Profiles: Open profile** (`Ctrl+Alt+P`) to open the picker. The new-profile prompt asks for a name and starting directory, then creates its first native session in the same window. **Rename profile** changes its name; **Configure profile** changes the starting directory used for the first terminal or when reopening an empty group. Additional spaces inherit the active terminal's directory.
+
+Use **Move to profile** in a space row's context menu to change that session's group. Its native session, tabs, and running programs are unchanged. **Spaces: Go to space 1** through **Go to space 9** navigate the current profile's sessions in host order.
+
+The profile picker and commands remain available when **Spaces: Show/hide spaces sidebar** hides the sidebar. Profile groups, session membership, starting directories, and each window's last selected space per group persist in the Spaces plugin KV for the current daemon/config.
+
+The one-time legacy import reads profile names and starting directories only. Opening an imported group starts a new terminal in the shared daemon. Legacy isolated configurations, daemons, and their sessions remain untouched and separate; the import does not transfer their running terminals.

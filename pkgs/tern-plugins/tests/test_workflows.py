@@ -1,6 +1,6 @@
 """Real Tern/X11 workflows, isolated from the user's config and session daemon.
 
-Run from the repository root with Tern 0.9.10+ on PATH:
+Run from the repository root with Tern 0.9.12+ on PATH:
   nix-shell pkgs/tern-plugins/tests/shell.nix --run \
     'xvfb-run -a uv run --no-project --with pytest python -m pytest pkgs/tern-plugins/tests -v'
 """
@@ -32,6 +32,7 @@ class Tern:
             TERN_CONFIG_DIR=str(root / "config"),
             TERN_DAEMON_SOCKET=str(root / "daemon.sock"),
             XDG_STATE_HOME=str(root / "state"),
+            TERN_PROFILES_DIR=str(root / "profiles"),
             XDG_SESSION_TYPE="x11",
             STENCIL_GPU="cpu",
         )
@@ -479,7 +480,7 @@ def test_machine_collapse_and_plugin_reload_preserve_terminals(tern):
     terminals = {p["pane"] for p in before["panes"] if p.get("kind") == "terminal"}
     tern.until(lambda: tern.panel_tree())
     expanded = tern.panel_tree()[0]["text"]
-    buttons = tern.ctl("tree", ".spaces-sidebar .sf-button")["nodes"]
+    buttons = tern.ctl("tree", ".spaces-sidebar > .sf-button")["nodes"]
     x, y, width, height = buttons[0]["rect"]
     tern.ctl("click", str(x + width / 2), str(y + height / 2))
     tern.until(lambda: "▸" in tern.panel_tree()[0]["text"])
@@ -491,7 +492,7 @@ def test_machine_collapse_and_plugin_reload_preserve_terminals(tern):
     tern.ctl("wait", "1100")
     tern.until(lambda: "▸" in tern.panel_tree()[0]["text"])
     assert not tern.ctl("tree", ".space-name")["nodes"]
-    buttons = tern.ctl("tree", ".spaces-sidebar .sf-button")["nodes"]
+    buttons = tern.ctl("tree", ".spaces-sidebar > .sf-button")["nodes"]
     x, y, width, height = buttons[0]["rect"]
     tern.ctl("click", str(x + width / 2), str(y + height / 2))
     tern.until(lambda: tern.panel_tree()[0]["text"] == expanded)
@@ -928,7 +929,6 @@ def test_sidebar_width_survives_closing_a_split_neighbour(tern):
     assert "sidebar-width" not in saved
 
 
-
 @pytest.mark.parametrize("remote", [False, True], ids=["local", "remote"])
 def test_existing_native_spaces_and_tabs_stay_synchronized(tern, remote):
     registration = tern.root / "config" / "plugins" / "spaces.path"
@@ -1215,10 +1215,14 @@ def test_hidden_sidebars_keep_names_and_their_own_selection(tern, remote):
             return tern.json.encode(result)
         """)
         panels = json.loads(result.split("→ ", 1)[1])
-        return {panel["tab"] for panel in panels} == owners.keys() and all(
-            set(panel["rows"]) == {"First space", "Renamed hidden space"}
-            and panel["current"] == [f"space:{owners[panel['tab']]}"]
-            for panel in panels
+        return (
+            len(panels) == len(owners)
+            and {panel["tab"] for panel in panels} == owners.keys()
+            and all(
+                set(panel["rows"]) == {"First space", "Renamed hidden space"}
+                and panel["current"] == [f"space:{owners[panel['tab']]}"]
+                for panel in panels
+            )
         )
 
     tern.until(prepared_panels)

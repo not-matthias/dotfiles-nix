@@ -130,6 +130,32 @@ tern.css(
     font-size: 11px;
     line-height: 14px;
   }
+  .spaces-sidebar .spaces-profiles {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--t4);
+    overflow-x: auto;
+    flex-shrink: 0;
+  }
+  .spaces-sidebar .profile-item {
+    flex: 0 0 auto;
+  }
+  .spaces-sidebar .profile-item button {
+    width: auto;
+    white-space: nowrap;
+    padding: 3px 7px;
+    border-radius: 5px;
+  }
+  .spaces-sidebar .profile-current button {
+    color: var(--accent);
+    background-color: color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+  .spaces-sidebar .spaces-profiles > .sf-button {
+    width: auto;
+    padding: 3px 7px;
+  }
 ]]
 )
 
@@ -143,14 +169,42 @@ end
 
 local BADGE_COLORS = { "blue", "teal", "orange", "purple", "pink", "yellow" }
 
-local function view(groups, selectedSession: number): Node
-  local rows = { tern.ui.text({ tern.ui.span("SPACES", "muted") }) }
+local function profileRow(profiles): Node
+  local items = {}
+  for _, profile in profiles.items do
+    local action = "profile:" .. profile.id
+    local title = tern.ui.button(profile.name, {
+      key = action,
+      variant = "quiet",
+      actions = {
+        click = action,
+        menu = { "Rename profile", "Configure profile" },
+      },
+    })
+    local class = if profile.current then "profile-item profile-current" else "profile-item"
+    table.insert(
+      items,
+      tern.ui.el("div", {
+        class = class,
+        attrs = { ["data-profile"] = profile.id },
+      }, { title })
+    )
+  end
+  table.insert(items, button("+", "profile:new"))
+  return tern.ui.el("div", { class = "spaces-profiles" }, items)
+end
+
+local function view(groups, selectedSession: number, profiles): Node
+  local rows = {}
+  if profiles then
+    table.insert(rows, profileRow(profiles))
+  end
+  table.insert(rows, tern.ui.text({ tern.ui.span("SPACES", "muted") }))
   for _, host in groups do
     local marker = if host.collapsed then "▸ " else "▾ "
     table.insert(rows, button(marker .. host.name, "host:" .. host.id))
     for _, session in host.sessions do
       local action = "space:" .. session.id
-      -- TSP exposes context menus on table rows, not standalone buttons.
       local title = tern.ui.table({ { id = "name", head = "", grow = 1 } }, {
         {
           id = tostring(session.id),
@@ -163,7 +217,7 @@ local function view(groups, selectedSession: number): Node
               },
             },
           },
-          menu = { "Rename" },
+          menu = { "Rename", "Move to profile" },
         },
       })
       title.p.key = action
@@ -208,10 +262,13 @@ local function view(groups, selectedSession: number): Node
         class = "space-index space-color-" .. color,
         actions = { click = action },
       }, { tern.ui.text(tostring(session.index)) })
-      table.insert(rows, tern.ui.el("div", { class = rowClass }, {
-        badge,
-        tern.ui.el("div", { class = "space-content" }, contents),
-      }))
+      table.insert(
+        rows,
+        tern.ui.el("div", { class = rowClass }, {
+          badge,
+          tern.ui.el("div", { class = "space-content" }, contents),
+        })
+      )
     end
   end
   return tern.ui.el("div", { class = "spaces-sidebar" }, rows)
