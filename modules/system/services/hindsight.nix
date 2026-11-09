@@ -191,7 +191,10 @@ in {
         HINDSIGHT_API_LLM_MODEL = "gpt-6-luna";
         HINDSIGHT_API_LLM_PROVIDER = "chatgpt";
         HINDSIGHT_API_LLM_STRATEGY = builtins.toJSON {mode = "failover";};
-        HINDSIGHT_API_REFLECT_WALL_TIMEOUT = "600";
+        # Mental-model refreshes fall back to the slow claude-code member
+        # whenever the ChatGPT plan quota is exhausted; 600s cancelled the
+        # largest models mid-refresh.
+        HINDSIGHT_API_REFLECT_WALL_TIMEOUT = "1800";
         HINDSIGHT_API_RERANKER_PROVIDER = "local";
         HINDSIGHT_API_RERANKER_LOCAL_MODEL = "hindsight-ai/hs-rerank-1";
         HINDSIGHT_API_RERANKER_LOCAL_FORCE_CPU = "true";
