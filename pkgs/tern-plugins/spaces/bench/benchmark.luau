@@ -1,9 +1,9 @@
--- Appended to an isolated copy of spaces/window.luau by benchmark_spaces.py.
+-- Appended to an isolated copy of the plugin's window entry by benchmark.py.
+-- Revisions before the src/ layout kept panel drawing in the entry: `flush`, `updates`, and
+-- `panels` and `view` functions instead of the `panels` and `view` modules.
 local SETTLE_MS = 50
 local benchmarkSync = sync
-local benchmarkView = view
 local benchmarkRefresh = refresh
-local benchmarkFlush = flush
 local capture = nil
 local polling = false
 sync = function(cx)
@@ -22,21 +22,41 @@ refresh = function(cx)
   benchmarkRefresh(cx)
   polling = false
 end
-if benchmarkFlush then
-  flush = function(cx)
+
+local function timedFlush(original)
+  return function(cx)
     local start = tern.now()
-    benchmarkFlush(cx)
+    original(cx)
     if capture then
       capture.ms += tern.now() - start
       capture.flushes += 1
     end
   end
 end
-view = function(...)
-  if capture then
-    capture.views += 1
+local function countedView(original)
+  return function(...)
+    if capture then
+      capture.views += 1
+    end
+    return original(...)
   end
-  return benchmarkView(...)
+end
+local modular = type(panels) == "table"
+if modular then
+  panels.flush = timedFlush(panels.flush)
+  view.render = countedView(view.render)
+else
+  if flush then
+    flush = timedFlush(flush)
+  end
+  view = countedView(view)
+end
+
+local function drawing(): boolean
+  if modular then
+    return panels.pending()
+  end
+  return updates ~= nil and next(updates) ~= nil
 end
 
 tern.command({
@@ -84,7 +104,7 @@ tern.command({
 
       -- Include queued hooks and background panel writes before starting another action.
       local function finish(settled: WindowCx)
-        if updates and next(updates) then
+        if drawing() then
           tern.timer(SETTLE_MS, finish)
           return
         end
@@ -107,7 +127,7 @@ tern.command({
       tern.timer(SETTLE_MS, finish)
     end
     local function begin(fresh: WindowCx)
-      if updates and next(updates) then
+      if drawing() then
         tern.timer(SETTLE_MS, begin)
         return
       end

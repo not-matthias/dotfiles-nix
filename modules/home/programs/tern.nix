@@ -5,6 +5,12 @@
   ...
 }: let
   cfg = config.programs.tern;
+  spacesRoot = ../../../pkgs/tern-plugins/spaces;
+  # Tests and benchmarks stay out of the linked plugin, and editing them does not relink it.
+  spaces = lib.fileset.toSource {
+    root = spacesRoot;
+    fileset = lib.fileset.unions [(spacesRoot + "/plugin.toml") (spacesRoot + "/src")];
+  };
 in {
   options.programs.tern.enable = lib.mkEnableOption "Tern terminal with persistent sessions";
 
@@ -16,7 +22,7 @@ in {
     '';
 
     home.activation.ternSpaces = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      $DRY_RUN_CMD ${lib.getExe pkgs.tern} plugin link ${../../../pkgs/tern-plugins/spaces}
+      $DRY_RUN_CMD ${lib.getExe pkgs.tern} plugin link ${spaces}
     '';
 
     xdg.desktopEntries.tern = {

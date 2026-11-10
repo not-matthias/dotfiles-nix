@@ -1,0 +1,4 @@
+# Written by `just types` and by pytest.
+tern.d.luau
+.pytest_cache/
+__pycache__/

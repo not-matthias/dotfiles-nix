@@ -110,7 +110,7 @@ local function remember(cx: WindowCx, id: string, session: number)
   tern.kv.set(LAST_SESSION_PREFIX .. cx:window_key() .. ":" .. id, session)
 end
 
-local function refresh(cx: WindowCx)
+local function refresh(cx: WindowCx, state: { hosts: { ManagedHost }, sessions: { ManagedSession } }?)
   if not initialize(cx) then
     return
   end
@@ -123,14 +123,19 @@ local function refresh(cx: WindowCx)
     end
   end
   local hosts = {}
-  for _, host in cx.hosts:list() do
+  for _, host in if state then state.hosts else cx.hosts:list() do
     hosts[host.id] = host.name
   end
   local nextSeen = {}
   local nextMembership = {}
   sessionKeys = {}
-  for _, session in cx.sessions:list() do
-    local key = SESSION_PREFIX .. hosts[session.host] .. ":" .. session.id
+  for _, session in if state then state.sessions else cx.sessions:list() do
+    local hostName = hosts[session.host]
+    -- A machine still connecting lists its sessions before itself.
+    if not hostName then
+      continue
+    end
+    local key = SESSION_PREFIX .. hostName .. ":" .. session.id
     sessionKeys[session.id] = key
     local id = tern.kv.get(key)
     if not id and initialized and not seen[session.id] and session.current then

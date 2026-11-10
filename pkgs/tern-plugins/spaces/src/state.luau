@@ -103,9 +103,9 @@ local function agentStates(cx: WindowCx, state): { [number]: string }
     native[agent.pane] = true
     -- Runtime agent rows include their session even when parked without a tab.
     local session = agent.session
-    local state = agent.state
-    if state ~= "exited" and (not states[session] or priority[state] > priority[states[session]]) then
-      states[session] = state
+    local rank = priority[agent.state]
+    if session and rank and (not states[session] or rank > priority[states[session]]) then
+      states[session] = agent.state
     end
   end
 

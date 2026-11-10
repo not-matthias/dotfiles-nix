@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from test_workflows import TIMEOUT, Tern
+from harness import TIMEOUT, Tern, running
 
 
 def click_node(tern, node, button=None):
@@ -165,14 +165,8 @@ def start_profile_tern(tern):
 
 @pytest.fixture
 def profile_tern():
-    assert os.environ.get("DISPLAY"), "Run these tests inside xvfb-run"
-    with tempfile.TemporaryDirectory(prefix="tern-profiles-", dir="/tmp") as directory:
-        tern = Tern(Path(directory))
-        try:
-            start_profile_tern(tern)
-            yield tern
-        finally:
-            tern.close()
+    with running("tern-profiles-", start_profile_tern) as tern:
+        yield tern
 
 
 def test_groups_switch_in_one_window_and_keep_membership_after_reload(profile_tern):

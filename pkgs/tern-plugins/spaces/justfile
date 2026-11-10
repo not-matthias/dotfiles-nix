@@ -1,0 +1,53 @@
+# Tests and benchmarks use shell.nix on a virtual display. Bring Tern and `just`
+# (`nix-shell -p just`); shell.nix supplies the test tools.
+
+set positional-arguments
+
+shell := justfile_directory() / "shell.nix"
+# The largest window size under test must fit on the virtual screen.
+on_display := "xvfb-run -a -s '-screen 0 2560x1440x24'"
+python := "uv run --no-project --with pytest python"
+
+[private]
+default:
+    @just --list --unsorted
+
+# Run the workflows in isolated Tern windows, e.g. `just test -x -k "sidebar and not width"`.
+test *args:
+    #!/usr/bin/env nix-shell
+    #!nix-shell {{ shell }} -i bash
+    {{ on_display }} {{ python }} -m pytest -o testpaths=tests "$@"
+
+# Fast confidence check: one workflow per area.
+smoke:
+    just test -q -k "inherits_cwd or laptop-12 or closed_sidebar or stale_and or most_recently_used"
+
+# Only the size, disturbance and two-machine workflows.
+robust *args:
+    just test tests/test_robustness.py tests/test_multi_window.py "$@"
+
+# Time sidebar refreshes, e.g. `just bench --baseline-ref HEAD --output /tmp/spaces.json`.
+bench *args:
+    #!/usr/bin/env nix-shell
+    #!nix-shell {{ shell }} -i bash
+    {{ on_display }} {{ python }} bench/benchmark.py "$@"
+
+# One short round, to check that the benchmark itself still runs.
+bench-smoke:
+    just bench --sessions 4 --samples 3 --warmup 1 --rounds 1
+
+# Write tern.d.luau so luau-lsp knows Tern's plugin API.
+types:
+    tern plugin types .
+
+# Run this checkout in the installed Tern until the next Home Manager switch.
+link:
+    tern plugin link .
+
+# Load the linked plugin again after editing it.
+reload:
+    tern plugin reload spaces
+
+# Show how Tern loaded its plugins, and any problems.
+status:
+    tern plugin list

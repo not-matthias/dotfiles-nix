@@ -194,7 +194,7 @@ local function profileRow(profiles): Node
   return tern.ui.el("div", { class = "spaces-profiles" }, items)
 end
 
-local function view(groups, selectedSession: number, profiles): Node
+local function render(groups, selectedSession: number, profiles): Node
   local rows = {}
   if profiles then
     table.insert(rows, profileRow(profiles))
@@ -274,4 +274,4 @@ local function view(groups, selectedSession: number, profiles): Node
   return tern.ui.el("div", { class = "spaces-sidebar" }, rows)
 end
 
-return view
+return { render = render }

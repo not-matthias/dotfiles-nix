@@ -1,10 +1,7 @@
 """Benchmark Spaces in real, isolated Tern windows, without changing installed plugins.
 
-From the repository root:
-  nix-shell pkgs/tern-plugins/tests/shell.nix --run \
-    'xvfb-run -a uv run --no-project --with pytest python \
-    pkgs/tern-plugins/tests/benchmark_spaces.py --baseline-ref HEAD \
-    --output /tmp/tern-spaces-benchmark.json'
+From this plugin's directory:
+  just bench --baseline-ref HEAD --output /tmp/tern-spaces-benchmark.json
 
 Reports sync() and deferred panel-render time per action, including queued hooks
 through the next timer tick (at least 50 ms of Tern's clock). Background polls
@@ -14,9 +11,9 @@ input dispatch. Neither metric measures input-to-frame latency, GPU rendering,
 asynchronous Git work, or remote network latency. Samples run in separate callbacks
 to respect Tern's 50 ms hook budget. Fixtures contain only local terminal workspaces.
 
-The optional baseline supplies all Spaces Luau modules from a Git revision; both
-sides use the current manifest, harness and Tern binary. Only isolated source copies
-are instrumented. Rounds alternate variant order and run serially.
+The optional baseline is the whole plugin (manifest and Luau modules) at a Git
+revision; both sides use the current harness and Tern binary. Only isolated source
+copies are instrumented. Rounds alternate variant order and run serially.
 JSON retains every sample, source hashes, revision, binary version and run order.
 """
 
@@ -25,20 +22,39 @@ import hashlib
 import json
 import math
 import os
-import re
+import shutil
 import statistics
 import subprocess
+import sys
 import time
+import tomllib
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from test_workflows import PLUGIN_ROOT, Tern
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tests"))
+from harness import PLUGIN, PLUGIN_ID, Tern  # noqa: E402
 
 SCENARIOS = ("unchanged", "switch", "rename")
 SAMPLE_PREFIX = "SPACES_BENCH_SAMPLE "
 DONE_MARKER = "SPACES_BENCH_DONE"
-SOURCE_PATH = "pkgs/tern-plugins/spaces/window.luau"
-REPO_ROOT = PLUGIN_ROOT.parents[1]
+MANIFEST = "plugin.toml"
+NOT_LOADED = ("bench", "tests")
+REPO_ROOT = Path(
+    subprocess.check_output(
+        ["git", "rev-parse", "--show-toplevel"], cwd=PLUGIN, text=True
+    ).strip()
+)
+
+
+def is_source(path):
+    """Whether Tern reads this plugin-relative path when it loads the plugin."""
+    if path == MANIFEST:
+        return True
+    return (
+        path.endswith(".luau")
+        and path != "tern.d.luau"
+        and Path(path).parts[0] not in NOT_LOADED
+    )
 
 
 def positive_int(value):
@@ -56,7 +72,7 @@ def collect_samples(app, timeout):
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         log = (app.root / "process.log").read_text()
-        if re.search(r'plugin (?:handler failed|hook exceeded).*plugin="spaces"', log):
+        if app.hook_failures():
             raise RuntimeError(f"Invalid benchmark: Spaces hook failed\n{log}")
         if any(process.poll() is not None for process in app.processes):
             raise RuntimeError(f"Benchmark Tern exited\n{log}")
@@ -81,11 +97,13 @@ def measure(sources, session_count, args):
         )
         try:
             app.start()
+            plugin = app.root / "sources" / PLUGIN_ID
+            shutil.rmtree(plugin)
             for name, source in sources.items():
-                target = app.root / "sources/spaces" / name
+                target = plugin / name
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_text(source)
-            entry = app.root / "sources/spaces/window.luau"
+            entry = plugin / tomllib.loads(sources[MANIFEST])["window"]
             # Reentrant plugin action dispatch is unavailable inside a plugin hook.
             # Capture the registered handlers instead of duplicating their switch path.
             registration = (
@@ -102,7 +120,7 @@ def measure(sources, session_count, args):
                 + Path(__file__).with_suffix(".luau").read_text()
             )
             reload = subprocess.run(
-                [app.binary, "plugin", "reload", "spaces", "--json"],
+                [app.binary, "plugin", "reload", PLUGIN_ID, "--json"],
                 env=app.env,
                 capture_output=True,
                 text=True,
@@ -218,11 +236,11 @@ def main():
     if min(args.sessions) < 2:
         parser.error("workspace switching requires at least two sessions")
 
-    plugin = PLUGIN_ROOT / "spaces"
     sources = {
         "current": {
-            str(path.relative_to(plugin)): path.read_text()
-            for path in sorted(plugin.rglob("*.luau"))
+            str(path.relative_to(PLUGIN)): path.read_text()
+            for path in sorted(PLUGIN.rglob("*"))
+            if path.is_file() and is_source(str(path.relative_to(PLUGIN)))
         }
     }
     baseline = None
@@ -230,13 +248,13 @@ def main():
         baseline = git(
             "rev-parse", "--verify", f"{args.baseline_ref}^{{commit}}"
         ).strip()
-        prefix = str(Path(SOURCE_PATH).parent) + "/"
+        prefix = str(PLUGIN.relative_to(REPO_ROOT)) + "/"
         files = git("ls-tree", "-r", "--name-only", baseline, "--", prefix).splitlines()
         sources = {
             "baseline": {
                 path.removeprefix(prefix): git("show", f"{baseline}:{path}")
                 for path in files
-                if path.endswith(".luau")
+                if is_source(path.removeprefix(prefix))
             },
             **sources,
         }
