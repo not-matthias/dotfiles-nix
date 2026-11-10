@@ -30,7 +30,7 @@ Sources are `pkgs/<name>.nix` unless noted.
 | lmstudio | `0.4.24-1` |
 | lobe-chat | `1.114.0` |
 | mcporter | `0.16.0` |
-| oh-my-pi | `18.18.5` (updated 2026-11-09) |
+| oh-my-pi | `18.18.7` (updated 2026-11-10) |
 | openclaw desktop | `2026.9.5` (`pkgs/openclaw.nix`) |
 | oracle | `0.21.4` |
 | paper-mono | `1.000` |
