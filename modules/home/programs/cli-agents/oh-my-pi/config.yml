@@ -103,8 +103,8 @@ modelRoles:
   task: anthropic/claude-opus-5:auto
   smol: anthropic/claude-opus-5:auto
   advisor: anthropic/claude-sonnet-5:auto
-  plan: anthropic/claude-fable-5-1:auto
-  slow: anthropic/claude-fable-5-1:auto
+  plan: anthropic/claude-fable-5-2:auto
+  slow: anthropic/claude-fable-5-2:auto
   # Anthropic has no image model.
   image: openai-codex/gpt-image-1
 
