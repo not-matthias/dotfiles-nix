@@ -61,10 +61,14 @@ completion:
   notify: "off"
 mcp:
   notifications: false
+# Prefer waiting out the limit (see retry.waitForUsageReset) over spending banked resets.
 codexResets:
-  autoRedeem: "yes"
+  autoRedeem5h: "no"
+  autoRedeemWeekly: "no"
 claudeResets:
-  autoRedeem: "yes"
+  autoRedeem5h: "no"
+  autoRedeemWeekly: "no"
+  autoRedeemFable: "no"
 ida:
   enabled: true
 astGrep:
