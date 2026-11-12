@@ -202,7 +202,10 @@
     octo-fiesta.enable = true;
     systembus-notify.enable = lib.mkForce true;
     vpn.enable = true;
-    hindsight.enable = true;
+    hindsight = {
+      enable = true;
+      decisionBackend = "rocm";
+    };
   };
 
   hardware = {
@@ -245,6 +248,9 @@
   };
 
   specialisation.windows-vfio.configuration = {config, ...}: {
+    # vfio-pci owns the iGPU in this boot entry, so /dev/kfd does not exist.
+    services.hindsight.decisionBackend = lib.mkForce "cpu";
+
     virtualisation.win11-kvm = {
       enable = true;
       instrumentation = {

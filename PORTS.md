@@ -39,7 +39,7 @@ docker-compose ports:
 8003 = ziit
 8004 = wakapi
 8888 = Hindsight API (PC loopback; https://hindsight.pcnm.duckdns.org via tailnet-only Caddy)
-8889 = Hindsight decision model (PC loopback; local CPU hs-decide-1-flash)
+8889 = Hindsight decision model (PC loopback; local ROCm hs-decide-1-flash, CPU under windows-vfio)
 9999 = Hindsight Control Plane (PC loopback; https://hindsight-ui.pcnm.duckdns.org via tailnet-only Caddy)
 
 All Caddy virtual hosts use a shared tailnet-only access policy. Requests from outside `100.64.0.0/10` and `fd7a:115c:a1e0::/48`, including direct LAN and loopback requests, receive `403`. Forwarded client-IP headers do not bypass this policy.
@@ -47,3 +47,5 @@ All Caddy virtual hosts use a shared tailnet-only access policy. Requests from o
 2026-11-03: Enabled Scrutiny and Homepage on pc for local drive monitoring and a service dashboard.
 
 2026-11-08: Upgraded Hindsight to 1.2.0 with local CPU reranking and decision inference. Extraction and synthesis remain on ChatGPT; embeddings are unchanged.
+
+2026-11-12: Moved PC decision inference to ROCm, with CPU selection under windows-vfio. Embeddings and reranking are unchanged.

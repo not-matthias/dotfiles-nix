@@ -7,7 +7,13 @@
 }: let
   cfg = config.services.hindsight;
   image = "ghcr.io/vectorize-io/hindsight:1.2.0@sha256:19d0c08f3df79acac29384826419a1ca158129e81ec527cdcbd8c97ff4ef76da";
-  decisionImage = "vllm/vllm-openai-cpu:v0.32.0@sha256:ffaba3989b9b96d95a576143c872a4110ce9800f5199b6a36eb27bdff1cbbe05";
+  cpuDecisionImage = "vllm/vllm-openai-cpu:v0.32.0@sha256:ffaba3989b9b96d95a576143c872a4110ce9800f5199b6a36eb27bdff1cbbe05";
+  rocmDecisionImage = "vllm/vllm-openai-rocm:v0.32.0@sha256:14f6a575e1fb0a580b0f633c09e06f648709d60405b85f6a7ff3f80d49f39905";
+  useRocm = cfg.decisionBackend == "rocm";
+  decisionImage =
+    if useRocm
+    then rocmDecisionImage
+    else cpuDecisionImage;
   credentials = "/var/lib/hindsight/chatgpt";
   modelCache = "/var/lib/hindsight/cache";
   decisionState = "/var/lib/hindsight/decision";
@@ -42,7 +48,18 @@
     sudo systemctl restart ${container}.service
   '';
 in {
-  options.services.hindsight.enable = lib.mkEnableOption "Hindsight memory service";
+  options.services.hindsight = {
+    enable = lib.mkEnableOption "Hindsight memory service";
+    decisionBackend = lib.mkOption {
+      type = lib.types.enum ["cpu" "rocm"];
+      default = "cpu";
+      description = ''
+        Inference backend of the local hs-decide-1-flash decision model.
+        "rocm" needs an amdgpu-owned GPU on the host, so it cannot be used
+        in boot entries that hand the GPU to vfio-pci.
+      '';
+    };
+  };
 
   config = lib.mkIf cfg.enable {
     age.secrets.hindsight-server-env = {
@@ -135,36 +152,52 @@ in {
       image = decisionImage;
       autoStart = true;
       environmentFiles = [decisionCredentials];
-      environment = {
-        HOME = "/tmp";
-        HF_HUB_OFFLINE = "1";
-        OMP_NUM_THREADS = "8";
-        PYTHONPATH = "/tmp/decision-plugin";
-        UV_OFFLINE = "1";
-        VLLM_CPU_KVCACHE_SPACE = "2";
-        VLLM_CPU_OMP_THREADS_BIND = "nobind";
-        XDG_CACHE_HOME = "/cache";
-      };
+      environment =
+        {
+          HOME = "/tmp";
+          HF_HUB_OFFLINE = "1";
+          PYTHONPATH = "/tmp/decision-plugin";
+          UV_OFFLINE = "1";
+          XDG_CACHE_HOME = "/cache";
+        }
+        // lib.optionalAttrs (!useRocm) {
+          OMP_NUM_THREADS = "8";
+          VLLM_CPU_KVCACHE_SPACE = "2";
+          VLLM_CPU_OMP_THREADS_BIND = "nobind";
+        };
       entrypoint = "/bin/bash";
       cmd = [
         "-euc"
         ''
           cp -r /model/serving /tmp/serving
           chmod -R u+w /tmp/serving
-          uv pip install --python /opt/venv/bin/python3 \
+          uv pip install --python ${
+            if useRocm
+            then "/usr/bin/python3"
+            else "/opt/venv/bin/python3"
+          } \
             --no-deps --no-build-isolation --target /tmp/decision-plugin /tmp/serving
           export PATH=/tmp/decision-plugin/bin:$PATH
           export VLLM_API_KEY="$HINDSIGHT_API_DECISION_MODEL_API_KEY"
           exec hindsight-decision-serve /model \
             --host 127.0.0.1 --port 8889 --served-model-name hs-decide-1-flash \
-            --enforce-eager --max-num-seqs 2 --no-enable-prefix-caching
+            --enforce-eager --max-num-seqs 2 --no-enable-prefix-caching ${
+            # amdgpu serves ROCm from GTT, which is system RAM: 0.3 of the
+            # 23.4 GiB pool holds the KV cache for two 65,536-token requests.
+            lib.optionalString useRocm "--gpu-memory-utilization 0.3"
+          }
         ''
       ];
       volumes = [
         "${decisionSource}:/model:ro"
         "${decisionState}:/cache:rw"
       ];
-      extraOptions = ["--network=host" "--shm-size=2g"];
+      extraOptions =
+        ["--network=host" "--shm-size=2g"]
+        ++ lib.optionals useRocm [
+          "--device=/dev/kfd"
+          "--device=/dev/dri"
+        ];
     };
 
     virtualisation.oci-containers.containers.hindsight = {
