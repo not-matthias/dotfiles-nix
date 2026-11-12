@@ -183,5 +183,8 @@
     (_self: super: {
       slackcli = super.callPackage ../../pkgs/slackcli.nix {};
     })
+    (_self: super: {
+      env-redact = super.callPackage ../../pkgs/env-redact {};
+    })
   ];
 }
