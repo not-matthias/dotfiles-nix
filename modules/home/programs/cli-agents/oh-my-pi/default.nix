@@ -89,7 +89,8 @@ in {
   };
   config = mkIf cfg.enable {
     programs.cli-agents.programSkills.omp-ttsr-rules = ./skills/omp-ttsr-rules;
-    home.packages = [wrappedOmp];
+    # The no-dotenv-* rules point agents at env-redact, so it has to be on PATH.
+    home.packages = [wrappedOmp pkgs.env-redact];
     home.file =
       {
         ".omp/agent/keybindings.yml".source = ./keybindings.yml;

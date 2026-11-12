@@ -78,6 +78,14 @@ tools:
     enabled: true
 secrets:
   enabled: true
+stream:
+  # Connection strings carry their password inline, and a shell expands them
+  # before omp records the command, so the credential-shaped part is stripped
+  # from every streamed row. `op://` references are left intact: they are
+  # pointers, not secrets, and seeing them is what keeps agents from resolving
+  # the value.
+  redactPatterns:
+    - '(?i)\b[a-z][a-z0-9+.-]*://[^\s/@:]+:[^\s/@]+@'
 compaction:
   modelThresholds:
     "anthropic/claude-*": "f300000"
