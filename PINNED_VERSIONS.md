@@ -9,6 +9,7 @@ Sources are `pkgs/<name>.nix` unless noted.
 | Software | Version |
 |---|---|
 | amp-cli | `0.0.1789566678-g555089` |
+| antigravity-cli | `1.5.9` (added 2026-11-14 for OMP ACP provider) |
 | aw-watcher-media-player | `1.1.4` |
 | Binary Ninja | `6.0.10601` (`pkgs/binary-ninja.nix`) |
 | binja-codemode-mcp | `0.1.3` |
@@ -31,6 +32,7 @@ Sources are `pkgs/<name>.nix` unless noted.
 | lobe-chat | `1.114.0` |
 | mcporter | `0.16.0` |
 | oh-my-pi | `18.20.2` (updated 2026-11-14) |
+| omp-antigravity | `0.1.0`; commit `f0a8720f838e` (added 2026-11-14) |
 | openclaw desktop | `2026.9.5` (`pkgs/openclaw.nix`) |
 | oracle | `0.21.4` |
 | paper-mono | `1.000` |

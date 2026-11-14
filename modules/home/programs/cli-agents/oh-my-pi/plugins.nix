@@ -7,9 +7,8 @@
   flakes,
 }: let
   plugins = {
-    "omp-autoresearch" = {
-      source = flakes.omp-autoresearch.packages.${pkgs.stdenv.hostPlatform.system}.omp-autoresearch;
-    };
+    "omp-antigravity".source = pkgs.omp-antigravity;
+    "omp-autoresearch".source = flakes.omp-autoresearch.packages.${pkgs.stdenv.hostPlatform.system}.omp-autoresearch;
   };
 in
   lib.foldlAttrs (

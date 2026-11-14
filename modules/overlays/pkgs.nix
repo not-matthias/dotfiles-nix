@@ -123,6 +123,8 @@
     })
     (_self: super: {
       oh-my-pi = super.callPackage ../../pkgs/oh-my-pi.nix {};
+      omp-antigravity = super.callPackage ../../pkgs/omp-antigravity.nix {};
+      antigravity-cli = super.callPackage ../../pkgs/antigravity-cli.nix {};
     })
     (_self: super: {
       handy = super.callPackage ../../pkgs/handy.nix {};
