@@ -45,7 +45,7 @@ Sources are `pkgs/<name>.nix` unless noted.
 | solidtime desktop | `0.3.2` (`pkgs/solidtime.nix`) |
 | soulsync | `3.4.2` |
 | terminal-browser | `0.8.1` |
-| tern | `0.9.10` (updated 2026-11-04) |
+| tern | `0.9.21` (updated 2026-11-14) |
 | tldraw-offline | `1.21.0` |
 | vmprotect | `demo` (no numeric release identified) |
 
