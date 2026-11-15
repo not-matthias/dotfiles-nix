@@ -123,7 +123,24 @@ in {
             --command='CREATE EXTENSION IF NOT EXISTS vector; CREATE EXTENSION IF NOT EXISTS pg_trgm;'
         '';
       };
+      # The decision model needs ~2 minutes to load, and the postStart health
+      # gate keeps its unit activating for that whole time. Targets implicitly
+      # order themselves after everything they want, so a plain
+      # WantedBy=multi-user.target would hold back multi-user.target and with it
+      # graphical.target, which uwsm waits for before starting the compositor.
+      # DefaultDependencies=no on this target suppresses that implicit ordering,
+      # so the containers come up in the background after boot.
+      targets.hindsight = {
+        description = "Hindsight containers";
+        wantedBy = ["multi-user.target"];
+        unitConfig.DefaultDependencies = false;
+        wants = [
+          "docker-hindsight-decision.service"
+          "${container}.service"
+        ];
+      };
       services."${container}" = {
+        wantedBy = lib.mkForce [];
         requires = [
           "postgresql.service"
           "hindsight-database-extensions.service"
@@ -138,6 +155,7 @@ in {
         ];
       };
       services.docker-hindsight-decision = {
+        wantedBy = lib.mkForce [];
         requires = ["hindsight-decision-credentials.service"];
         after = ["hindsight-decision-credentials.service"];
         postStart = ''
