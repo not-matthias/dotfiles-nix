@@ -47,6 +47,13 @@ autolearn:
   enabled: true
   autoContinue: true
 
+# The binary lives in a read-only store path, so a self-update rewrites whatever
+# wrapper path omp was launched through instead.
+update:
+  auto: false
+startup:
+  checkUpdate: false
+
 prewalk:
   auto: "on"
 
