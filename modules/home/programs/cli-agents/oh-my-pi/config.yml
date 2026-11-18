@@ -126,6 +126,7 @@ modelRoles:
   slow: anthropic/claude-fable-5-2:auto
   # Anthropic has no image model.
   image: openai-codex/gpt-image-1
+  judge: typesafe/jev-1.14.0
 
 task:
   isolation:
@@ -135,6 +136,8 @@ task:
   maxEffort: xhigh
   # Plan with the task model, then hand implementation to the smol role.
   prewalk: true
+  # Let the judge model split each new top-level prompt into concurrently runnable parts.
+  autoParallel: "on"
 
   # Currently disabled as it increases the context usage quite a lot. I observed up to 50% of total token usage being
   # used up by the advisor. Enable it only if not doing work with lots of subagents.
