@@ -211,6 +211,23 @@
     bluetooth.enable = true;
     sound.enable = true;
     ssd.enable = true;
+    fw-fanctrl = {
+      enable = true;
+      config = {
+        # The Desktop has no battery, so `ectool battery` fails and fw-fanctrl's
+        # is_on_ac() is always false: only strategyOnDischarging is honoured.
+        # Strix Halo idles near 75 °C, where "quiet" caps the fan at 40% (~950 RPM),
+        # below the EC's own idle ~1980 RPM.
+        defaultStrategy = "perf";
+        strategyOnDischarging = "perf";
+      };
+      # Quiet overnight; "night" trades idle silence for a late ramp without
+      # capping the fan under load (vLLM can run at any hour).
+      schedule = {
+        enable = true;
+        strategy = "night";
+      };
+    };
   };
 
   services = {
