@@ -44,7 +44,7 @@ Run `nix flake update`, review `flake.lock`, then build and activate the intende
 
 Nix registry entries affect shorthand references used by the CLI, not the dependencies pinned in this repository's lockfile. Inspect them with `nix registry list`; use flake updates to change repository dependencies.
 
-OMP is pinned separately in [pkgs/oh-my-pi.nix](../pkgs/oh-my-pi.nix), not in `flake.lock`. Version 18.20.3 (2026-11-16) uses the upstream binary checksum. Rebuild and activate the host configuration after changing the pin.
+OMP is pinned separately in [pkgs/oh-my-pi.nix](../pkgs/oh-my-pi.nix), not in `flake.lock`. Version 18.22.2 (2026-11-18) uses the upstream binary checksum. Rebuild and activate the host configuration after changing the pin.
 
 ## Garbage collection
 
