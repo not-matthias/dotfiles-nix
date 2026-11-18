@@ -22,6 +22,8 @@ display:
 title:
   # Re-check generated titles so Herdr tab labels keep matching the conversation.
   refreshAfterPrompts: 10
+checkpoint:
+  enabled: true
 
 ttsr:
   disabledRules:
