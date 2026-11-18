@@ -120,7 +120,7 @@ modelRoles:
   tiny: anthropic/claude-sonnet-5:auto
   commit: google-antigravity/gemini-3.8-flash
   task: anthropic/claude-opus-5:auto
-  smol: anthropic/claude-opus-5:auto
+  smol: anthropic/claude-sonnet-5:auto
   advisor: anthropic/claude-sonnet-5:auto
   plan: anthropic/claude-fable-5-2:auto
   slow: anthropic/claude-fable-5-2:auto
