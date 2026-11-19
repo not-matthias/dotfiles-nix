@@ -81,8 +81,6 @@ claudeResets:
   autoRedeem5h: "no"
   autoRedeemWeekly: "no"
   autoRedeemFable: "no"
-ida:
-  enabled: true
 astGrep:
   enabled: true
 tools:

@@ -10,10 +10,12 @@ in {
   options.programs.ida-pro.enable = mkEnableOption "IDA Pro agent skills";
 
   config = mkIf cfg.enable {
-    programs.cli-agents.oh-my-pi.settings.ida = {
-      enabled = true;
-      installDir = "${pkgs.ida-pro}/opt";
-      python = "${pkgs.ida-pro.pythonForIDA}/bin/python";
+    programs.cli-agents.oh-my-pi.settings = {
+      disassembler.backend = "ida";
+      ida = {
+        installDir = "${pkgs.ida-pro}/opt";
+        python = "${pkgs.ida-pro.pythonForIDA}/bin/python";
+      };
     };
 
     programs.cli-agents.programSkills = {
