@@ -121,12 +121,12 @@ dev:
 #   image: openai-codex/gpt-image-1
 
 modelRoles:
-  default: anthropic/claude-opus-5:auto
-  tiny: anthropic/claude-sonnet-5:auto
+  default: anthropic/claude-opus-5-5:auto
+  tiny: anthropic/claude-sonnet-5-5:auto
   commit: google-antigravity/gemini-3.8-flash
-  task: anthropic/claude-opus-5:auto
-  smol: anthropic/claude-sonnet-5:auto
-  advisor: anthropic/claude-sonnet-5:auto
+  task: anthropic/claude-opus-5-5:auto
+  smol: anthropic/claude-sonnet-5-5:auto
+  advisor: anthropic/claude-sonnet-5-5:auto
   plan: anthropic/claude-fable-5-2:auto
   slow: anthropic/claude-fable-5-2:auto
   # Anthropic has no image model.
@@ -150,7 +150,7 @@ task:
   #   task: "on"
   agentModelOverrides:
     scout: google-antigravity/gemini-3.8-flash
-    solver: openai-codex/gpt-6.1-sol:auto
+    solver: openai-codex/gpt-6.2-sol:auto
     reviewer: openai-codex/gpt-6-luna:auto
     security-reviewer: openai-codex/gpt-6-luna:auto
   # Currently disabled, as it can increase the cost. Use orchestrate or workflowz instead
@@ -164,16 +164,17 @@ retry:
   fallbackChains:
     google-antigravity/gemini-3.8-flash:
       - openai-codex/gpt-6-luna
-      - anthropic/claude-sonnet-5
-    openai-codex/gpt-6.1-sol:
-      - anthropic/claude-fable-5
+      - anthropic/claude-sonnet-5-5
+    openai-codex/gpt-6.2-sol:
+      - anthropic/claude-fable-5-2
       - google-antigravity/gemini-3.8-flash
-    openai-codex/gpt-5.6-terra:
-      - anthropic/claude-opus-5
-    anthropic/claude-fable-5:
-      - openai-codex/gpt-6.1-sol
+    anthropic/claude-opus-5-5:
+      - anthropic/claude-fable-5-2
+      - openai-codex/gpt-6.2-sol
+    anthropic/claude-fable-5-2:
+      - openai-codex/gpt-6.2-sol
       - google-antigravity/gemini-3.8-flash
-    anthropic/claude-haiku-4-5:
+    anthropic/claude-sonnet-5-5:
       - openai-codex/gpt-6-luna
     image:
       - openai/gpt-image-1
