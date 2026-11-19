@@ -221,11 +221,11 @@
         defaultStrategy = "perf";
         strategyOnDischarging = "perf";
       };
-      # Quiet overnight; "night" trades idle silence for a late ramp without
-      # capping the fan under load (vLLM can run at any hour).
+      # Quiet overnight; "quiet" caps the fan at 50%, so a night-time load runs
+      # warmer than during the day.
       schedule = {
         enable = true;
-        strategy = "night";
+        strategy = "quiet";
       };
     };
   };
