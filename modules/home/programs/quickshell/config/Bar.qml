@@ -8,6 +8,7 @@ import qs.Components.Flashgen
 import qs.Components.IdleInhibit
 import qs.Components.Language
 import qs.Components.Media
+import qs.Components.PowerProfiles
 import qs.Components.SystemTray
 import qs.Components.Volume
 import qs.Components.Workspaces
@@ -48,8 +49,14 @@ Item {
         AiUsage {}
 
         PillGroup {
+            id: statusGroup
             IdleInhibit {}
             DoNotDisturb {}
+            PowerProfiles {
+                id: powerProfiles
+                screen: bar.screen
+                popupCenterX: rightItems.x + statusGroup.x + powerProfiles.parent.x + powerProfiles.x + powerProfiles.width / 2
+            }
         }
 
         PillGroup {

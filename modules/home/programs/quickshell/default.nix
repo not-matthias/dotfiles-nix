@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  osConfig ? {},
   pkgs,
   ...
 }: let
@@ -13,6 +14,19 @@
   aiUsage = import ./config/Components/AiUsage/default.nix {inherit pkgs;};
   idleInhibit = import ./config/Components/IdleInhibit/default.nix {inherit pkgs;};
   statusBridge = import ./config/Services/status-bridge.nix {inherit pkgs;};
+
+  fanCommand =
+    if (osConfig.hardware.fw-fanctrl.enable or false)
+    then "${osConfig.hardware.fw-fanctrl.package}/bin/fw-fanctrl"
+    else "";
+  cpuCommand =
+    if (osConfig.programs.auto-cpufreq.enable or false)
+    then "/run/current-system/sw/bin/auto-cpufreq"
+    else "";
+  powerProfilesEnabled = cfg.powerProfiles.enable && (fanCommand != "" || cpuCommand != "");
+  powerProfiles = import ./config/Services/power-profiles.nix {
+    inherit pkgs fanCommand cpuCommand;
+  };
 
   flashgenEnabled = cfg.flashgenWordOfHour.enable;
   flashgenFallback = pkgs.writeShellScriptBin "quickshell-flashgen-disabled" ''
@@ -31,7 +45,8 @@
       statusBridge.bridge
     ]
     ++ lib.optionals flashgenEnabled [flashgen.script]
-    ++ lib.optionals (!flashgenEnabled) [flashgenFallback];
+    ++ lib.optionals (!flashgenEnabled) [flashgenFallback]
+    ++ lib.optionals powerProfilesEnabled [powerProfiles.script];
 
   commands = {
     flashgen = flashgenCommand;
@@ -43,6 +58,10 @@
     hokum = "${hokumPackage}/bin/hokum";
     niri = "${pkgs.niri}/bin/niri";
     systemctl = "${pkgs.systemd}/bin/systemctl";
+    powerProfiles =
+      if powerProfilesEnabled
+      then "${powerProfiles.script}/bin/quickshell-power-profiles"
+      else "";
   };
   commandsFile = pkgs.writeText "quickshell-commands.qml" ''
     pragma Singleton
@@ -59,6 +78,8 @@
         readonly property string hokum: ${builtins.toJSON commands.hokum}
         readonly property string niri: ${builtins.toJSON commands.niri}
         readonly property string systemctl: ${builtins.toJSON commands.systemctl}
+        readonly property string powerProfiles: ${builtins.toJSON commands.powerProfiles}
+        readonly property var fanStrategies: ${builtins.toJSON cfg.powerProfiles.fanStrategies}
     }
   '';
   quickshellConfig = pkgs.runCommandLocal "quickshell-config" {} ''
@@ -70,6 +91,16 @@
 in {
   options.programs.quickshellBar = {
     enable = lib.mkEnableOption "Quickshell status bar with a centered clock, compact media controls, and a native volume popup";
+
+    powerProfiles = {
+      enable = (lib.mkEnableOption "fan strategy and CPU governor switches in the bar") // {default = true;};
+
+      fanStrategies = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = ["quiet" "perf" "ultra"];
+        description = "fw-fanctrl strategies offered in the bar menu, ordered quietest to loudest.";
+      };
+    };
 
     flashgenWordOfHour = {
       enable = (lib.mkEnableOption "Flashgen passive word-of-the-hour Quickshell widget") // {default = true;};
