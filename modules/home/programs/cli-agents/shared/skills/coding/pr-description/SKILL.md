@@ -13,6 +13,7 @@ Keep it compact. A long description doesn't get read. Include only what the revi
 - Then short bullets: each change with its measured effect. Explain a mechanism only when the reviewer needs it to judge whether the change is correct.
 - Call out what needs care: behavior changes, risks, dependencies on unmerged work.
 - For visible UI changes, include screenshots for static results or a short video for interactions, transitions and multi-step flows. Use before/after evidence only when it helps reviewers compare the result.
+- For a new or changed command, script, CLI flag or tool output, include one usage example: the exact command and its real output from a run on the final code, in a fenced block under an `## Example` heading. Trim long output with `...` and shorten machine-specific noise (store hashes, home paths, tokens). Say where it ran when that explains gaps (e.g. a tool missing locally).
 - Add other evidence only when it proves something: before/after numbers, a link to the failing run, issue or dependent PR. Link inline where it's relevant.
 - Report only numbers measured on the final code, and name the input. Leave out estimates, superseded figures and anything CI already shows.
 - End with the issue reference, if there is one.
