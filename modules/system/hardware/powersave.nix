@@ -103,7 +103,8 @@ in {
           # Maximize battery
           energy_performance_preference = "power";
           energy_perf_bias = "power";
-          scaling_min_freq = 400000;
+          # Omitted scaling_min_freq defaults to cpuinfo_min_freq (419175 kHz here);
+          # any lower value makes auto-cpufreq exit 1 instead of applying the profile.
           scaling_max_freq = 1200000;
         };
         charger = {
