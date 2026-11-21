@@ -165,13 +165,13 @@ retry:
       - anthropic/claude-sonnet-5-5
     openai-codex/gpt-6.2-sol:
       - anthropic/claude-fable-5-2
-      - google-antigravity/gemini-3.8-flash
+      - openai-codex/gpt-6.2-astra
     anthropic/claude-opus-5-5:
+      - openai-codex/gpt-6.2-astra
       - anthropic/claude-fable-5-2
-      - openai-codex/gpt-6.2-sol
     anthropic/claude-fable-5-2:
-      - openai-codex/gpt-6.2-sol
-      - google-antigravity/gemini-3.8-flash
+      - openai-codex/gpt-6.2-astra
+      - anthropic/claude-opus-5-5
     anthropic/claude-sonnet-5-5:
       - openai-codex/gpt-6-luna
     image:
