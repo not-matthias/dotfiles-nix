@@ -21,7 +21,6 @@
       # mission-center
       # jujutsu
       # planify
-      todoist
       unstable.beeper
       flakes.devenv.packages.${pkgs.stdenv.hostPlatform.system}.devenv
 

@@ -65,7 +65,6 @@ in {
       file-roller
       anki
       imhex
-      todoist
       # Language servers
       taplo
       nil
