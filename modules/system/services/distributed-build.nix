@@ -22,7 +22,7 @@ in {
           sshKey = "/home/${user}/.ssh/id_rsa";
           protocol = "ssh-ng";
           system = "x86_64-linux";
-          maxJobs = 4;
+          maxJobs = 8;
           speedFactor = 2;
           supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
           # base64 of pc:/etc/ssh/ssh_host_ed25519_key.pub
