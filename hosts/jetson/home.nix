@@ -64,6 +64,7 @@
 
   programs = {
     home-manager.enable = true;
+    zellij.enable = true;
     nh = {
       enable = true;
       clean.enable = true;

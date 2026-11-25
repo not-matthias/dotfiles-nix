@@ -29,7 +29,6 @@ in {
       "du" = "dust";
       "k" = "kalker";
       "xxd" = "hexyl";
-      "tmux" = "zellij";
       "rm" = "trash-put";
 
       ".." = "cd ..";
