@@ -8,11 +8,11 @@
 }:
 stdenvNoCC.mkDerivation rec {
   pname = "aw-server-rust";
-  version = "0.14.1";
+  version = "0.14.3";
 
   src = fetchurl {
     url = "https://github.com/ActivityWatch/activitywatch/releases/download/v${version}/activitywatch-v${version}-linux-x86_64.zip";
-    hash = "sha256-IRUUqJEsCjmajHBIEBtpngov7bXoG17SJDBNXI4JHyo=";
+    hash = "sha256-u+ZgSqPbSxivVGs+xfVzFNGT+k7MPwVAQ1HwXW3Sw1E=";
   };
 
   dontUnpack = true;

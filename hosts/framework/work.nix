@@ -10,7 +10,6 @@
       slack
       awscli2
       linear-cli
-      slk
       slackcli
     ];
 

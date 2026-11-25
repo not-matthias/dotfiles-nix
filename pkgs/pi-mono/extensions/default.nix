@@ -347,27 +347,6 @@ in {
   #   resources.extensions = ".";
   # };
 
-  # "rtk-rewrite" = {
-  #   src = compileExtension {
-  #     src = pkgs.runCommand "pi-rtk-rewrite-src" {} ''
-  #       mkdir -p $out
-  #       cp -R ${call (import ./rtk-rewrite.nix)}/packages/rtk-rewrite/. $out/
-  #       chmod -R +w $out
-  #       ${pkgs.nodejs_22}/bin/node -e '
-  #         const fs = require("fs");
-  #         const file = process.env.out + "/src/rtk-rewrite.ts";
-  #         const src = fs.readFileSync(file, "utf8");
-  #         const old = "\t\tawait refreshAvailability(ctx, false);\n\t\tupdateStatus(ctx);\n\t\tif (rtkAvailable === false && ctx.hasUI) {\n\t\t\tctx.ui.notify(\"RTK rewrite extension loaded, but `rtk rewrite` is not available from PATH.\", \"warning\");\n\t\t}";
-  #         const replacement = "\t\trefreshAvailability(ctx, false).then(() => {\n\t\t\tupdateStatus(ctx);\n\t\t\tif (rtkAvailable === false && ctx.hasUI) {\n\t\t\t\tctx.ui.notify(\"RTK rewrite extension loaded, but `rtk rewrite` is not available from PATH.\", \"warning\");\n\t\t\t}\n\t\t});";
-  #         const patched = src.replace(old, replacement);
-  #         if (patched === src) throw new Error("Failed to patch rtk-rewrite session_start");
-  #         fs.writeFileSync(file, patched);
-  #       '
-  #     '';
-  #   };
-  #   resources.extensions = ".";
-  # };
-
   # "pi-better-messages-cache" = {
   #   src = pkgs.runCommand "pi-better-messages-cache-src" {} ''
   #     mkdir -p $out

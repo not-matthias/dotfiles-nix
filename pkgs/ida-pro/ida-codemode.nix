@@ -22,11 +22,11 @@
 
   ida-domain-pkg = python313Packages.buildPythonPackage rec {
     pname = "ida-domain";
-    version = "0.5.1";
+    version = "0.6.0";
     pyproject = true;
     src = fetchurl {
       url = "https://files.pythonhosted.org/packages/source/i/ida-domain/ida_domain-${version}.tar.gz";
-      hash = "sha256-xJ8sQXBH2ILpVPZRtQpwmj8nkDszulM7eUqlTWU20W8=";
+      hash = "sha256-rXsfAVLLj8ShBNR6/o+7c2JKhHUQ0dLsLX8mhoAJ27I=";
     };
     build-system = [python313Packages.hatchling];
     dependencies = with python313Packages; [

@@ -12,13 +12,13 @@
 in
   stdenv.mkDerivation rec {
     pname = "ida-lifter";
-    version = "2.2.0";
+    version = "2.7.0";
 
     src = fetchFromGitHub {
       owner = "19h";
       repo = "ida-lifter";
       rev = "v${version}";
-      hash = "sha256-cyb/vJKwfJR8dHsDO8w41qXbNMgkRGBTjQa3pGtyA7Y=";
+      hash = "sha256-PxzKEnh35VXwpyMC2NlNjEPrhFcX5vEVBvp7S+ktl3k=";
       fetchSubmodules = true;
     };
 
@@ -48,8 +48,8 @@ in
     installPhase = ''
       runHook preInstall
 
-      mkdir -p $out/plugins
-      cp build/lifter.so $out/plugins/ 2>/dev/null || true
+      # ida-cmake links the plugin into $IDASDK/bin/plugins (the writable SDK copy).
+      install -Dm755 $IDASDK/bin/plugins/lifter.so $out/plugins/lifter.so
 
       runHook postInstall
     '';

@@ -6,15 +6,15 @@
   buildFHSEnv,
 }: let
   pname = "openbot";
-  version = "0.61.0";
+  version = "0.78.0";
   sources = {
     x86_64-linux = {
       arch = "x86_64";
-      hash = "sha256-Jt+/w49sOQN9H8k2Wv3TqXMDH2GX7y/hpnN0Bc2KO4U=";
+      hash = "sha256-yM2kZ/M2dQLEiaL1UtUv9g7p8IxXAIJJnX1v41o519M=";
     };
     aarch64-linux = {
       arch = "arm64";
-      hash = "sha256-NYINNSCaWRK9Y/IoDlSZ8cF3SjsKlEaUo8GGvDUbxbE=";
+      hash = "sha256-T23/6xioDVkMCn1fW5bYIO155uAZyxnVpkPlNuY8Q/k=";
     };
   };
   source = sources.${stdenvNoCC.hostPlatform.system}

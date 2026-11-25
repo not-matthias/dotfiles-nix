@@ -86,7 +86,6 @@
     #   useNvidia = true;
     # };
     # open-webui.enable = true;
-    # lobe-chat.enable = true;
     miniflux.enable = true;
     memos.enable = false;
     scrutiny.enable = true;

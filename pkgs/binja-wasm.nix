@@ -6,11 +6,11 @@
 }:
 stdenv.mkDerivation rec {
   pname = "binja-wasm";
-  version = "0.1.1";
+  version = "0.2.0";
 
   src = fetchurl {
     url = "https://github.com/chadhyatt/binja-wasm/releases/download/${version}/binja-wasm-${version}-linux-x86_64.tar.gz";
-    hash = "sha256-unDUSo68HMokrf6cy+xyTBXs5I/tw3YQdy4KrlDByWU=";
+    hash = "sha256-WHphRqgnVPCp4HvD3BxbgosRXTETMdPFpDyOKASxi58=";
   };
 
   sourceRoot = ".";

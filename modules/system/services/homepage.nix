@@ -187,14 +187,6 @@ in {
                 siteMonitor = "https://solidtime.${domain}";
               };
             })
-            (includeService "lobe-chat" {
-              "Lobe Chat" = {
-                description = "Lobe Chat";
-                icon = "lobe-chat";
-                href = "https://chat.${domain}";
-                siteMonitor = "https://chat.${domain}";
-              };
-            })
             (includeService "hindsight" {
               Hindsight = {
                 description = "Private memory service";

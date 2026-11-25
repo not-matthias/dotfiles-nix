@@ -20,7 +20,6 @@ with lib; let
     "mermaid"
     "pi-codex-fast"
     "docs-rs"
-    "rtk-rewrite"
   ];
   activePackages = packages;
 

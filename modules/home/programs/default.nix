@@ -18,7 +18,6 @@
   ./hokum.nix
   ./firefox.nix
   ./ghostty.nix
-  ./herdr-app.nix
   ./tern.nix
   ./plannotator.nix
   ./gh.nix

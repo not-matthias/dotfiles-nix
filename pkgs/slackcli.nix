@@ -8,15 +8,15 @@
   xclip,
   procps,
 }: let
-  version = "0.17.0";
+  version = "0.19.3";
   platforms = {
     x86_64-linux = {
       asset = "slackcli-linux";
-      hash = "sha256-WybTHMnOpbVcN30PnDIDmQTuS8gIPozGcMGwcBF4RgA=";
+      hash = "sha256-LRatXBoFdzz777MAL1lsN5TKEcPp9e8Fv2XCl+X8Kxg=";
     };
     aarch64-linux = {
       asset = "slackcli-linux-arm64";
-      hash = "sha256-F6SIAc1NKtZn3JYkK78Try2PXGdmhBoZuQXONUeVfrg=";
+      hash = "sha256-HYHIPRN6L3EquXamQ8B/fcvk1zJ8LxOt0ftwU/Dl6Zk=";
     };
   };
   platform =

@@ -95,18 +95,6 @@
       mcporter = super.callPackage ../../pkgs/mcporter.nix {};
     })
     (_self: super: {
-      paperclip = super.callPackage ../../pkgs/paperclip.nix {};
-    })
-    (_self: super: {
-      qmd = super.callPackage ../../pkgs/qmd.nix {};
-    })
-    # (_self: super: {
-    #   lobe-chat = super.callPackage ../../pkgs/lobe-chat.nix {};
-    # })
-    (_self: super: {
-      rtk = super.callPackage ../../pkgs/rtk.nix {};
-    })
-    (_self: super: {
       hermes-agent = super.callPackage ../../pkgs/hermes-agent.nix {};
     })
     (_self: super: {
@@ -117,9 +105,6 @@
     })
     (_self: super: {
       linear-cli = super.callPackage ../../pkgs/linear-cli.nix {};
-    })
-    (_self: super: {
-      oracle = super.callPackage ../../pkgs/oracle.nix {};
     })
     (_self: super: {
       oh-my-pi = super.callPackage ../../pkgs/oh-my-pi.nix {};
@@ -137,18 +122,9 @@
       tldraw-offline = super.callPackage ../../pkgs/tldraw-offline.nix {};
     })
     (_self: super: {
-      jcode = super.callPackage ../../pkgs/jcode.nix {};
-    })
-    (_self: super: {
       terminal-browser = super.callPackage ../../pkgs/terminal-browser.nix {};
     })
-    (_self: super: {
-      harbor = super.callPackage ../../pkgs/harbor.nix {};
-    })
     (import ../../pkgs/ida-pro)
-    (_self: super: {
-      slk = super.callPackage ../../pkgs/slk.nix {};
-    })
     (_self: super: {
       ffmpeg_9 = super.ffmpeg_8 or super.ffmpeg;
       wrapFirefox = super.callPackage ({ffmpeg_8 ? null, ...} @ args:
@@ -172,10 +148,6 @@
     })
     (_self: super: {
       tern = super.callPackage ../../pkgs/tern.nix {};
-    })
-    (_self: super: {
-      herdr-app = super.callPackage ../../pkgs/herdr-app.nix {};
-      herdr-core = super.callPackage ../../pkgs/herdr-core.nix {};
     })
     (_self: super: {
       worktrunk = super.callPackage ../../pkgs/worktrunk.nix {};

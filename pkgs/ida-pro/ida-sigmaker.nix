@@ -3,10 +3,10 @@
   lib,
   ...
 }: let
-  version = "v1.6.0";
+  version = "v1.17.0";
   src = pkgs.fetchurl {
     url = "https://github.com/mahmoudimus/ida-sigmaker/releases/download/${version}/sigmaker.py";
-    sha256 = "pe5kEdihe7imcb4rRtsy0kJjEYmcRzlEQ0xKJ3zih6g=";
+    hash = "sha256-V0hh3QCuK2UqnzkeayUB3BgkwwkcU5GJMZwc8DJd5ZM=";
   };
 in
   pkgs.stdenv.mkDerivation {

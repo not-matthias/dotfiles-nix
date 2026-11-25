@@ -79,7 +79,6 @@ in {
     programs = {
       openbot.enable = true;
       ghostty.enable = true;
-      herdr-app.enable = true;
       tern.enable = true;
       plannotator.enable = true;
       handy.enable = true;
@@ -96,10 +95,7 @@ in {
       niri-organize.enable = true;
       nixvim.enable = true;
       idasql.enable = true;
-      cli-agents = {
-        programSkills.knife = lib.mkIf (lib.elem pkgs.knife config.home.packages) ../../modules/home/programs/cli-agents/shared/program-skills/knife;
-        herdr.enable = true;
-      };
+      cli-agents.programSkills.knife = lib.mkIf (lib.elem pkgs.knife config.home.packages) ../../modules/home/programs/cli-agents/shared/program-skills/knife;
       btop.enable = true;
       obsidian = {
         enable = true;

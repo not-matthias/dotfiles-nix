@@ -5,13 +5,13 @@
 }:
 stdenvNoCC.mkDerivation {
   pname = "ida-mcp";
-  version = "0.8.1";
+  version = "20261028.0.3";
 
   src = fetchFromGitHub {
     owner = "HexRaysSA";
     repo = "ida-mcp";
-    rev = "a36a51c9d68d7e8822348e057b1e82c633f2b8dd";
-    hash = "sha256-j4jz/kGLTB/9eZtlF/Eb57dIar3U2wevf+GsrmQKCpg=";
+    rev = "v20261028.0.3";
+    hash = "sha256-AoCC/MFOsXXbIK0wqe25cnKYVV/Z9g5uKHnZqlL/RPY=";
   };
 
   dontBuild = true;

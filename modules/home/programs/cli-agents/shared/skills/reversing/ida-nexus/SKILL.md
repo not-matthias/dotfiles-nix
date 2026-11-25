@@ -40,13 +40,15 @@ Prefer `ida-domain` APIs over ad hoc low-level IDAPython when they cover the tas
 
 ## MCP integration
 
-Run Nexus as an MCP server and configure the MCP client to launch it over stdio:
+Nexus 0.12+ no longer ships an MCP server. MCP is provided by Hex-Rays IDA MCP (`ida-mcp`), which is built on Nexus. Configure the MCP client to launch it over stdio:
 
 ```bash
-uvx ida-nexus mcp
+uvx ida-mcp stdio --agent=<agent-name>
 ```
 
-Typical MCP flow:
+For IDA GUI databases, also load the `ida-mcp` IDA plugin.
+
+Typical MCP flow (check the server's tool list; names can change between releases):
 
 1. Use `list_databases` to discover registered GUI and worker instances.
 2. Use `open_database` when a database is not already attached.

@@ -11,11 +11,16 @@
 assert lib.versions.majorMinor ida-pro.version == "9.4";
   stdenv.mkDerivation rec {
     pname = "idasql";
-    version = "0.0.18.1";
+    version = "0.0.20";
 
-    src = fetchurl {
-      url = "https://github.com/allthingsida/idasql/releases/download/v${version}/idasql-v${version}-ida94.zip";
-      hash = "sha256-Wm8vFcZgT41U9RDOkqNeqT+6uaYWIVLnxWsY+Lzp6Mw=";
+    srcCli = fetchurl {
+      url = "https://github.com/allthingsida/idasql/releases/download/v${version}/idasql-v${version}-ida94-cli.zip";
+      hash = "sha256-GOSWmntKxZMDsQAZo30ez7jf8zwZabISKnN9/+bS3Qg=";
+    };
+
+    srcPlugin = fetchurl {
+      url = "https://github.com/allthingsida/idasql/releases/download/v${version}/idasql-v${version}-ida94-plugin.zip";
+      hash = "sha256-x/c7/+pvBsHeiqHYHLr/DNUgIRor5W2R0Y6T/XH1AUw=";
     };
 
     nativeBuildInputs = [
@@ -35,11 +40,11 @@ assert lib.versions.majorMinor ida-pro.version == "9.4";
     installPhase = ''
       mkdir -p $out/bin $out/libexec $out/lib/ida/plugins
 
-      unzip -p $src idasql-v${version}-ida94/linux-x86_64/cli/idasql > $out/libexec/idasql
+      unzip -p $srcCli linux-x86_64/idasql > $out/libexec/idasql
       chmod +x $out/libexec/idasql
 
-      unzip -p $src idasql-v${version}-ida94/linux-x86_64/plugin/idasql.so > $out/lib/ida/plugins/idasql.so
-      unzip -p $src idasql-v${version}-ida94/linux-x86_64/plugin/ida-plugin.json > $out/lib/ida/plugins/ida-plugin.json
+      unzip -p $srcPlugin idasql.so > $out/lib/ida/plugins/idasql.so
+      unzip -p $srcPlugin ida-plugin.json > $out/lib/ida/plugins/ida-plugin.json
 
       makeWrapper $out/libexec/idasql $out/bin/idasql \
         --set IDADIR ${ida-pro}/opt \

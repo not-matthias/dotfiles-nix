@@ -2,28 +2,15 @@
   lib,
   stdenvNoCC,
   fetchFromGitHub,
-  fetchurl,
   python313Packages,
   ida-domain,
 }: let
-  version = "0.9.1";
+  version = "0.14.2";
   src = fetchFromGitHub {
     owner = "HexRaysSA";
     repo = "ida-nexus";
-    rev = "abac0b389fe280e66f17f74a17708ee38dc0bb0a";
-    hash = "sha256-7Q/nYxZzXj7GgukYbN2fN+RIX8Kjzlbjf3xs5O5Qmw0=";
-  };
-
-  zeromcp = python313Packages.buildPythonPackage {
-    pname = "zeromcp";
-    version = "1.9.0";
-    pyproject = true;
-    src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/08/1f/97c16db209141a5155255ea315af5f85d623d25b9ba092471240ad74ef14/zeromcp-1.9.0.tar.gz";
-      hash = "sha256-Qbz+dtgtm8sUlzm/ie/XEh+hrIGMIVVCFsnMcik+bMk=";
-    };
-    build-system = [python313Packages.hatchling];
-    doCheck = false;
+    rev = "v${version}";
+    hash = "sha256-gz5hf6n0WL7PluCXPmn1MrzygObNZPycPaBd8LN6HDE=";
   };
 
   plugin = stdenvNoCC.mkDerivation {
@@ -44,7 +31,7 @@ in
 
     pyproject = true;
     build-system = [python313Packages.hatchling];
-    dependencies = [ida-domain python313Packages.packaging zeromcp];
+    dependencies = [ida-domain];
 
     doCheck = false;
 

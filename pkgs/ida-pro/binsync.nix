@@ -14,71 +14,61 @@
       );
     });
 
-  # libbs 3.x imports PLY from pycparser; pycparser 3.0 removed that package.
-  pycparserLegacy = ps.buildPythonPackage rec {
-    pname = "pycparser";
-    version = "2.23";
-    pyproject = true;
-    src = ps.fetchPypi {
-      inherit pname version;
-      sha256 = "1hh01mrc0rcwr7fs8s5zzrnfknaa896mpw6n0q5g3n5d4i7nv0bq";
-    };
-    build-system = [ps.setuptools];
-    pythonImportsCheck = ["pycparser" "pycparser.ply"];
-  };
-
-  libbs-pkg = noRuntimeCheck (
+  # declib 4.x works with pycparser 3.
+  declib-pkg = noRuntimeCheck (
     ps.buildPythonPackage rec {
-      pname = "libbs";
-      version = "3.3.3";
+      pname = "declib";
+      version = "4.5.0";
       pyproject = true;
       src = ps.fetchPypi {
         inherit pname version;
-        hash = "sha256-hYtos6MBMddRq/ijQUIAXT+2HHU7oWaNcsQC2xsN9qE=";
+        hash = "sha256-Mz3TiZJjnrfrSY/hjCbYjqqnayCs5QTFn5Li6wvLWgc=";
       };
       build-system = [ps.setuptools];
       dependencies = with ps; [
         filelock
         networkx
-        packaging
         platformdirs
         ply
         prompt-toolkit
         psutil
-        pycparserLegacy
+        pycparser
+        pyghidra
+        setuptools
         toml
         tqdm
       ];
       doCheck = false;
-      pythonImportsCheck = ["libbs"];
+      pythonImportsCheck = ["declib"];
     }
   );
 
-  binsync-pkg = ps.buildPythonPackage rec {
-    pname = "binsync";
-    version = "5.11.2";
-    pyproject = true;
-    src = ps.fetchPypi {
-      inherit pname version;
-      hash = "sha256-zZsFkxKqf6Yoc/xfBzfRrT1aXdOnXauOntmxH34YCls=";
-    };
-    build-system = [ps.setuptools];
-    dependencies = with ps; [
-      libbs-pkg
-      sortedcontainers
-      toml
-      gitpython
-      filelock
-      pycparserLegacy
-      ply
-      prompt-toolkit
-      requests
-      tqdm
-      wordfreq
-    ];
-    doCheck = false;
-    pythonImportsCheck = ["binsync"];
-  };
+  binsync-pkg = noRuntimeCheck (
+    ps.buildPythonPackage rec {
+      pname = "binsync";
+      version = "5.15.4";
+      pyproject = true;
+      src = ps.fetchPypi {
+        inherit pname version;
+        hash = "sha256-53insWctR7c9YD3cVRYHHm1RXSoZnAw9CzH5k6q4tOI=";
+      };
+      build-system = [ps.setuptools];
+      dependencies = with ps; [
+        declib-pkg
+        sortedcontainers
+        toml
+        gitpython
+        filelock
+        ply
+        prompt-toolkit
+        requests
+        tqdm
+        wordfreq
+      ];
+      doCheck = false;
+      pythonImportsCheck = ["binsync"];
+    }
+  );
 in
   pkgs.stdenv.mkDerivation {
     pname = "binsync-ida";

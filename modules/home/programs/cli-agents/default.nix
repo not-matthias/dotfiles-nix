@@ -21,7 +21,6 @@ in {
     ./amp/default.nix
     ./pi-mono/default.nix
     ./oh-my-pi/default.nix
-    ./herdr/default.nix
   ];
 
   config = lib.mkIf anyCliAgentEnabled {
@@ -29,11 +28,9 @@ in {
       ast-grep
       rizin
       # ghidra-cli
-      rtk
       unstable.gogcli
       jq
       mcporter
-      oracle
     ];
 
     # Exclude shared agent scratch/working files from git by default

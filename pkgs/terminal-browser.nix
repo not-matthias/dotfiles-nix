@@ -62,11 +62,11 @@
 in
   stdenv.mkDerivation rec {
     pname = "terminal-browser";
-    version = "0.8.1";
+    version = "0.16.3";
 
     src = fetchurl {
       url = "https://github.com/zenbu-labs/terminal-browser/releases/download/v${version}/${pname}-linux-x64.tar.gz";
-      hash = "sha256-NeeAidEIncT0krvX0qA9V+1VQ7Q5S0/d875Xx1t3dH4=";
+      hash = "sha256-tmGZ9H7BiwCkdCPMgJXcBomOrtDE8keiUs/OdjiOoVE=";
     };
 
     nativeBuildInputs = [makeWrapper patchelf];
@@ -87,21 +87,25 @@ in
 
       # The stock launcher resolves its install root from $0, which breaks
       # under profile symlinks; run the CLI directly instead.
-      makeWrapper $dist/electron/electron $out/bin/${pname} \
+      makeWrapper $dist/electron/pixel $out/bin/${pname} \
         --add-flags "$dist/cli/dist/main.js" \
         --set TERMINAL_BROWSER_DIST_ROOT "$dist" \
         --set ELECTRON_RUN_AS_NODE 1
 
-      # The electron binary, the crashpad handler and the pixel.node addon
-      # are linked against libraries that only exist in the nix store; bake
+      # The electron binary (renamed to pixel) and the crashpad handler are
+      # linked against libraries that only exist in the nix store; bake
       # the store paths into their rpath, preserving $ORIGIN.
       # --force-rpath is required: the original binary uses DT_RPATH, which
       # is the global scope the dlopened bundled libs (libEGL, libGLESv2, ...)
       # rely on to resolve their own transitive deps.
       patchelf --force-rpath --set-rpath '${rpath}' \
-        $dist/electron/electron \
-        $dist/electron/chrome_crashpad_handler \
-        $dist/browser/native/pixel.node
+        $dist/electron/pixel \
+        $dist/electron/chrome_crashpad_handler
+
+      # Bundled agent-browser helper (libc/libm/libgcc_s only).
+      patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
+        --set-rpath '${lib.makeLibraryPath [stdenv.cc.cc]}' \
+        $dist/agent-browser/bin/agent-browser
 
       runHook postInstall
     '';

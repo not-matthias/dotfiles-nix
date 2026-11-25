@@ -5,16 +5,16 @@
   stdenv,
 }: let
   pname = "tldraw-offline";
-  version = "1.21.0";
+  version = "1.24.1";
 
   sources = {
     x86_64-linux = {
       suffix = "x86_64";
-      hash = "sha256-FpPZLRdQLG+3pFg5snxI/yQE7LGs0XxvPbKfXaPBEZs=";
+      hash = "sha256-X7CE3ypFnJIlnEQMDcpcUOEWEtGdBXXJzTxQGmOUGUE=";
     };
     aarch64-linux = {
       suffix = "arm64";
-      hash = "sha256-amtkpOMPK/Q1/AUJLnZ1lwC4hH+Nc39B1cXNnJ5MCAY=";
+      hash = "sha256-/+GV2YK5s3maNMCWufBMPfAH6vSi+vsNO3I8NumEl60=";
     };
   };
 
@@ -23,7 +23,7 @@
     or (throw "tldraw-offline: unsupported system ${stdenv.hostPlatform.system}");
 
   src = fetchurl {
-    url = "https://github.com/tldraw/tldraw-offline/releases/download/v${version}/tldraw-offline-linux-${source.suffix}.AppImage";
+    url = "https://github.com/tldraw/tldraw-offline/releases/download/v${version}/tldraw-office-linux-${source.suffix}.AppImage";
     inherit (source) hash;
   };
 

@@ -3,15 +3,15 @@
   stdenvNoCC,
   fetchurl,
 }: let
-  version = "0.81.0";
+  version = "0.83.0";
   assets = {
     x86_64-linux = {
       target = "x86_64-unknown-linux-musl";
-      hash = "sha256-DCU/IWmFzpzXsgKhFga1zmqpNLEBn9H7ubfOK0exx0o=";
+      hash = "sha256-4N1eXrNliQ3ceyVRg8In5EH7t9oEyrW3LlT6gP0hgYs=";
     };
     aarch64-linux = {
       target = "aarch64-unknown-linux-musl";
-      hash = "sha256-ejNNLmTFd6/QJH4kEe/2czYKsfGIl1ZPLS5dU3T710s=";
+      hash = "sha256-ksaIJ6GLA3xgi3covPfOHVlHcayBS+x0EqNRKfJ21K4=";
     };
   };
   asset = assets.${stdenvNoCC.hostPlatform.system}
@@ -33,7 +33,8 @@ in
     installPhase = ''
       runHook preInstall
       install -Dm755 wt "$out/bin/wt"
-      install -Dm644 LICENSE "$out/share/licenses/worktrunk/LICENSE"
+      install -Dm644 LICENSE-MIT "$out/share/licenses/worktrunk/LICENSE-MIT"
+      install -Dm644 LICENSE-APACHE "$out/share/licenses/worktrunk/LICENSE-APACHE"
       runHook postInstall
     '';
 

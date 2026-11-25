@@ -8,17 +8,17 @@
 in
   pkgs.rustPlatform.buildRustPackage {
     pname = "ida-mcp-rs";
-    version = "9.3.1";
+    version = "9.4.4";
 
     src = pkgs.fetchFromGitHub {
       owner = "blacktop";
       repo = "ida-mcp-rs";
-      rev = "216a67786a7b7ca7d1b7c4808bce2a7a85393aa9";
-      hash = "sha256-IFHx98ZsiaeDq/9o05cIjqBoUvtT99QG14qJkb9dPiQ=";
+      rev = "v9.4.4";
+      hash = "sha256-wiaShiZJo0euTRQTQd8i+xeC7tMT+R1I/K93fnY2Mbk=";
     };
 
     useFetchCargoVendor = true;
-    cargoHash = "sha256-VkL8CiNnV2OfQ7DhT+yGF7HUtn88DojAoaMAO3c43jg=";
+    cargoHash = "sha256-+8y13HMaMf2cuASxj+kTH59a+5iM+afgLXZjg2B+D0s=";
 
     nativeBuildInputs = with pkgs; [
       pkg-config

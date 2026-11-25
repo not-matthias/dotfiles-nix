@@ -14,13 +14,13 @@
 in
   stdenv.mkDerivation rec {
     pname = "ida-structor";
-    version = "1.0.0";
+    version = "2.2.0";
 
     src = fetchFromGitHub {
       owner = "19h";
       repo = "ida-structor";
-      rev = "46d744d13a4e631ad79385beaf410f0b842b0802";
-      hash = "sha256-Wff1GX5/dI/TDUHXtDVZoFFeTiiRnuHTlKEKXG22wCU=";
+      rev = "v${version}";
+      hash = "sha256-71CmDRqmmlohuLvmQ/TdBaw2wXjr+xNh4rHXBTPGQCA=";
     };
 
     nativeBuildInputs = [
@@ -36,12 +36,6 @@ in
       z3.lib
     ];
 
-    postPatch = ''
-      substituteInPlace CMakeLists.txt \
-        --replace-fail 'add_library(z3_custom STATIC IMPORTED GLOBAL)' 'add_library(z3_custom UNKNOWN IMPORTED GLOBAL)' \
-        --replace-fail 'elseif(NOT Z3_CUSTOM_LIBRARY MATCHES' 'elseif(FALSE AND NOT Z3_CUSTOM_LIBRARY MATCHES'
-    '';
-
     cmakeFlags = [
       "-DCMAKE_BUILD_TYPE=Release"
       "-DIDA_SDK_DIR=${ida-sdk}"
@@ -56,8 +50,8 @@ in
 
     installPhase = ''
       runHook preInstall
-      mkdir -p $out/plugins
-      cp build/structor.so $out/plugins/ 2>/dev/null || true
+      # cmake hook leaves cwd in the build dir, where the plugin is linked.
+      install -Dm755 structor.so $out/plugins/structor.so
       runHook postInstall
     '';
 

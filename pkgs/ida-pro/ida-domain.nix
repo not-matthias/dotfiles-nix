@@ -18,11 +18,11 @@
 in
   python313Packages.buildPythonPackage {
     pname = "ida-domain";
-    version = "0.5.1";
+    version = "0.6.0";
     pyproject = true;
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/80/34/be087d3ea1c3a6573e0660cb5b40f0c4ade9ae5772cf1c5d98d52472d28b/ida_domain-0.5.1.tar.gz";
-      hash = "sha256-xJ8sQXBH2ILpVPZRtQpwmj8nkDszulM7eUqlTWU20W8=";
+      url = "https://files.pythonhosted.org/packages/9d/97/56f3dacfe13414559a9b428a152375b79f302a432ab009aac33acb109ff1/ida_domain-0.6.0.tar.gz";
+      hash = "sha256-rXsfAVLLj8ShBNR6/o+7c2JKhHUQ0dLsLX8mhoAJ27I=";
     };
     build-system = [python313Packages.hatchling];
     dependencies = with python313Packages; [

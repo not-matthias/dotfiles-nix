@@ -10,7 +10,6 @@
 in {
   options.programs.webapps = {
     twenty.enable = lib.mkEnableOption "Twenty CRM webapp";
-    lobe-chat.enable = lib.mkEnableOption "Lobe Chat AI webapp";
     hackernews.enable = lib.mkEnableOption "Hacker News webapp";
   };
 
@@ -29,26 +28,6 @@ in {
             categories = [
               "Office"
               "Network"
-            ];
-          };
-        })
-      ];
-    })
-
-    (lib.mkIf cfg.lobe-chat.enable {
-      home.packages = [
-        (mkFirefoxApp {
-          name = "lobe-chat";
-          url = "https://lobe-chat.desktopnm.duckdns.org/";
-          firefoxBin = lib.getExe pkgs.librewolf;
-
-          makeDesktopItemArgs = {
-            comment = "AI Chat Interface";
-            icon = "application-chat";
-            genericName = "AI Chat";
-            categories = [
-              "Network"
-              "Utility"
             ];
           };
         })

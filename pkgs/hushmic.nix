@@ -14,7 +14,7 @@
   libXrandr,
   libxcb,
 }: let
-  version = "0.8.1";
+  version = "0.11.0";
 
   guiLibs = [
     libGL
@@ -33,7 +33,7 @@ in
 
     src = fetchurl {
       url = "https://github.com/Fovty/HushMic/releases/download/v${version}/hushmic-${version}-x86_64.tar.gz";
-      hash = "sha256-NnJ02BDD5w5Dv5+IpneRW9/sKaq5/ETjb0gvfMa9jrI=";
+      hash = "sha256-moyRVRwyWEU20neyO6kdjwO1X0HJOVfgMkhxapif2lM=";
     };
     sourceRoot = "hushmic-${version}-x86_64";
 

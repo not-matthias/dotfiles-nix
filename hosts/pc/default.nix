@@ -85,36 +85,6 @@
       };
       cli-agents = {
         claude.enable = true;
-        herdr = {
-          enable = true;
-          github = [
-            {
-              # v1.6.0
-              source = "AltanS/collie";
-              rev = "2e3df8aa32e5306f8d945d6b3c2c134306976a41";
-            }
-            {
-              # v0.4.0
-              source = "kryptamine/herdr-auto-title";
-              rev = "0f0026b0897f74e33f8809f3c48e3c631761a693";
-            }
-            {
-              # 0.3.0, main (no release tags upstream)
-              source = "plannotator/herdr-annotate";
-              rev = "46cbf5dab1746dfeb46eb160c33990b0e0de15b0";
-            }
-            {
-              # v0.1.0
-              source = "devashish2203/herdr-worktrunk";
-              rev = "8ceca541de8fb0d6006727e172534e1e2af17224";
-            }
-            {
-              # v0.2.0, main (no release tags upstream)
-              source = "ntindle/herdr-resurrect";
-              rev = "5afa6755d4f35c62c7522ba4fd04922d1ac69602";
-            }
-          ];
-        };
         pi-mono.enable = true;
       };
       btop.enable = true;

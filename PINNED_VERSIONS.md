@@ -11,42 +11,33 @@ Sources are `pkgs/<name>.nix` unless noted.
 | amp-cli | `0.0.1789566678-g555089` |
 | aw-watcher-media-player | `1.1.4` |
 | Binary Ninja | `6.0.10601` (`pkgs/binary-ninja.nix`) |
-| binja-codemode-mcp | `0.1.3` |
+| binja-codemode-mcp | `0.2.0` (updated 2026-11-25) |
 | binja-headless | `0.1.0-unstable-2025-02-13` |
-| binja-wasm | `0.1.1` |
+| binja-wasm | `0.2.0` (updated 2026-11-25) |
 | choosr | `1.0.0-unstable-2026-09-16` |
 | Detect It Easy | `3.21` (`pkgs/detect-it-easy.nix`) |
 | disktree | `0.11.0` |
 | feishin | `1.17.0` (updated 2026-11-04) |
 | ghidra-cli | `0.2.2` |
-| handy | `0.9.8` |
-| harbor | `0.5.10` |
+| handy | `0.10.2` (updated 2026-11-25) |
 | helix-file-watcher | `unstable-2026-08-30`; commit `8cd0726da47b` |
-| herdr-app | `0.1.11` (updated 2026-11-02) |
 | hermes-agent | `0.3.0`; commit `6ebb816e5611` |
-| hushmic | `0.8.1` |
-| jcode | `0.84.0` |
-| linear-cli | `3.0.0` |
+| hushmic | `0.11.0` (updated 2026-11-25) |
+| linear-cli | `3.1.0` (updated 2026-11-25) |
 | lmstudio | `0.4.24-1` |
-| lobe-chat | `1.114.0` |
-| mcporter | `0.16.0` |
+| mcporter | `0.17.1` (updated 2026-11-25) |
 | oh-my-pi | `19.2.1` (updated 2026-11-25) |
 | openclaw desktop | `2026.9.5` (`pkgs/openclaw.nix`) |
-| oracle | `0.21.4` |
 | paper-mono | `1.000` |
-| paperclip | `2026.626.0` |
 | Pi coding agent | `1.1.0` (`pkgs/pi-mono/default.nix`) |
 | Pi session manager | `0.4.9` (`pkgs/pi-session-manager.nix`) |
-| plannotator | `0.28.59` (updated 2026-11-10) |
-| qmd | `2.8.3` |
+| plannotator | `0.29.4` (updated 2026-11-25) |
 | radius2 | `1.2.0` |
-| rtk | `0.49.0` |
-| slk | `0.16.0` |
 | solidtime desktop | `0.3.2` (`pkgs/solidtime.nix`) |
-| soulsync | `3.4.2` |
-| terminal-browser | `0.8.1` |
+| soulsync | `3.6.9` (updated 2026-11-25) |
+| terminal-browser | `0.16.3` (updated 2026-11-25) |
 | tern | `0.9.34` (updated 2026-11-25) |
-| tldraw-offline | `1.21.0` |
+| tldraw-offline | `1.24.1` (updated 2026-11-25) |
 | vmprotect | `demo` (no numeric release identified) |
 
 ## IDA packages and plugins
@@ -58,23 +49,23 @@ Sources are `pkgs/ida-pro/<name>.nix`.
 | ida-pro | `9.4` |
 | ida-sdk-source | `9.4`; tag `v9.4.0-sdk.1` |
 | bindiff | `release-20260302-1` |
-| binsync | `5.11.2` |
+| binsync | `5.15.4` (updated 2026-11-25) |
 | headless-ida | `0.6.8` |
 | ida-bitopt | `1.0.1` |
 | ida-codemode | `0.6.1` |
 | ida-d810 | `unstable-2026-08-30`; commit `87fe12ca9cfb` |
-| ida-domain | `0.5.1` |
+| ida-domain | `0.6.0` (updated 2026-11-25) |
 | ida-guides | `1.3.0` (source URL uses `main`, content fixed by hash) |
 | ida-hrtng | `unstable-2026-08-30`; commit `eb6b9c203a5f` |
-| ida-lifter | `2.2.0` |
-| ida-mcp-rs | `9.3.1`; commit `216a67786a7b` |
-| ida-mcp | `0.8.1`; commit `a36a51c9d68d` |
-| ida-nexus | `0.9.1`; commit `abac0b389fe2` |
-| ida-sigmaker | `v1.6.0` |
-| ida-structor | `1.0.0`; commit `46d744d13a4e` |
+| ida-lifter | `2.7.0` (updated 2026-11-25) |
+| ida-mcp-rs | `9.4.4`; tag `v9.4.4` (updated 2026-11-25) |
+| ida-mcp | `20261028.0.3`; tag `v20261028.0.3` (updated 2026-11-25) |
+| ida-nexus | `0.14.2`; tag `v0.14.2` (updated 2026-11-25) |
+| ida-sigmaker | `v1.17.0` (updated 2026-11-25) |
+| ida-structor | `2.2.0`; tag `v2.2.0` (updated 2026-11-25) |
 | ida-theme-explorer | `1.0.3` |
 | ida-wakatime | `1.1` |
-| idasql | `0.0.18.1` |
+| idasql | `0.0.20` (updated 2026-11-25) |
 
 ### Bundled dependencies
 
@@ -84,10 +75,8 @@ Sources are `pkgs/ida-pro/<name>.nix`.
 | honcho-ai | `2.0.1` | `pkgs/hermes-agent.nix` |
 | firecrawl-py | `4.19.0` | `pkgs/hermes-agent.nix` |
 | agent-client-protocol | `0.8.1` | `pkgs/hermes-agent.nix` |
-| pycparser | `2.23` | `pkgs/ida-pro/binsync.nix` |
-| libbs | `3.3.3` | `pkgs/ida-pro/binsync.nix` |
+| declib | `4.5.0` | `pkgs/ida-pro/binsync.nix` |
 | idapro | `0.0.10` | `pkgs/ida-pro/ida-domain.nix`, `ida-codemode.nix` |
-| zeromcp | `1.9.0` | `pkgs/ida-pro/ida-nexus.nix` |
 
 ## Pi packages
 
@@ -129,7 +118,6 @@ Sources are `pkgs/pi-mono/extensions/<name>.nix`.
 | pi-verbosity-control | `5b4573bc25f1` |
 | pi-workflow-kit | `2d399948edfa` |
 | processes | `434fa0a860b1` |
-| rtk-rewrite | `5c4fcc614c2c` |
 | santychuy-mermaid | `0a0692fffea3` |
 | sub-bar | `65deb56853b9` |
 | subagents | `0c33ec7cb26e` |
@@ -150,17 +138,11 @@ Sources are `pkgs/pi-mono/extensions/<name>.nix`.
 
 | Software | Version or commit | Source |
 |---|---|---|
-| Herdr | `0.9.3` | `modules/home/programs/cli-agents/herdr/default.nix` |
 | OneLeet | `2.2.8` | `modules/system/programs/oneleet.nix` |
 | BleachHack | `1.2.6` | `modules/home/programs/minecraft.nix` |
 | VS Code JetBrains icon theme | `2.40.0` | `modules/home/programs/vscode/default.nix` |
 | Caddy DuckDNS plugin | `v0.5.0` | `modules/system/services/caddy.nix` |
 | steel-pty | `0.1.0-unstable-2026-08-28`; commit `4d41b6988107` | `modules/home/programs/helix/default.nix`, `flake.nix` |
-| Herdr collie | `1.6.0`; commit `2e3df8aa32e5` | Herdr module, `hosts/pc/default.nix` |
-| Herdr worktrunk | Commit `8ceca541de8f` (source comment says `0.1.0`, but revision is newer than tag `v0.7.0`) | Herdr module, `hosts/pc/default.nix` |
-| Herdr auto-title | `0.4.0`; commit `0f0026b0897f` | `hosts/pc/default.nix` |
-| Herdr annotate | `0.3.0`; commit `46cbf5dab174` | `hosts/pc/default.nix` |
-| Herdr resurrect | `0.2.0`; commit `5afa6755d4f3` | `hosts/pc/default.nix` |
 | Bluetooth patch (not a BlueZ version pin) | Commit `066a164a524e` | `modules/system/hardware/bluetooth.nix` |
 
 ## Containers
@@ -228,7 +210,7 @@ These revisions supplement the version labels above.
 
 | Source | Full revision |
 |---|---|
-| `pkgs/binja-codemode-mcp.nix` | `97651d17c15c38ee779d1c4dc354053df3931bf2` |
+| `pkgs/binja-codemode-mcp.nix` | `50a3ed3a7a10a1479f27dc89233ace5f99eebb2a` |
 | `pkgs/binja-headless.nix` | `e6ab5adb2188efd27c3485fd014125c8b9a2648b` |
 | `pkgs/choosr.nix` | `1e6b47774b8bd02d1f4135305fc5b7ac61e675a9` |
 | `pkgs/ghidra-cli.nix` | `10019ba1f3b54c9edcca8ec644a30e16fb7b7c79` |
@@ -237,11 +219,7 @@ These revisions supplement the version labels above.
 | `pkgs/ida-pro/ida-bitopt.nix` | `b25b2adc36d9bf7449a3c64b3ab6661c558547d6` |
 | `pkgs/ida-pro/ida-d810.nix` | `87fe12ca9cfbea5744c30546308898bf7199c073` |
 | `pkgs/ida-pro/ida-hrtng.nix` | `eb6b9c203a5f3a84c90d982ebf8981683233f231` |
-| `pkgs/ida-pro/ida-mcp-rs.nix` | `216a67786a7b7ca7d1b7c4808bce2a7a85393aa9` |
-| `pkgs/ida-pro/ida-mcp.nix` | `a36a51c9d68d7e8822348e057b1e82c633f2b8dd` |
-| `pkgs/ida-pro/ida-nexus.nix` | `abac0b389fe280e66f17f74a17708ee38dc0bb0a` |
-| `pkgs/ida-pro/ida-structor.nix` | `46d744d13a4e631ad79385beaf410f0b842b0802` |
-| `pkgs/mcporter.nix` | `9a8ed529e313f452a0ce977894cb63c4620ddd7c` |
+| `pkgs/mcporter.nix` | `0d8ccc9e92e9dc66875f998730485dea1a0801f4` |
 
 ## Pre-update upstream audit
 
@@ -259,24 +237,17 @@ The “Current” columns below show the pins before updates, not the current re
 | feishin | `1.8.0` | `1.17.0` | [Release](https://github.com/jeffvli/feishin/releases/tag/v1.17.0) |
 | greptile | `3.5.4` | `3.6.1` | [npm](https://registry.npmjs.org/greptile) |
 | handy | `0.9.6` | `0.9.8` | [Release](https://github.com/cjpais/Handy/releases/tag/v0.9.8) |
-| harbor | `0.5.10` | `0.5.14` | [Release](https://github.com/av/harbor/releases/tag/v0.5.14) |
 | hermes-agent | `0.3.0` | Release `v2026.9.24` | [Release](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.9.24); substantial dependency and bridge changes |
 | fal-client | `0.13.1` | `1.0.3` | [PyPI](https://pypi.org/project/fal-client/1.0.3/); major upgrade |
 | honcho-ai | `2.0.1` | `2.5.1` | [PyPI](https://pypi.org/project/honcho-ai/2.5.1/) |
 | firecrawl-py | `4.19.0` | `4.49.3` | [PyPI](https://pypi.org/project/firecrawl-py/4.49.3/) |
 | agent-client-protocol | `0.8.1` | `0.12.1` | [PyPI](https://pypi.org/project/agent-client-protocol/0.12.1/) |
 | hushmic | `0.8.1` | `0.10.2` | [Release](https://github.com/Fovty/HushMic/releases/tag/v0.10.2) |
-| jcode | `0.84.0` | `0.91.0` | [Release](https://github.com/1jehuang/jcode/releases/tag/v0.91.0) |
 | linear-cli | `2.6.0` | `3.0.0` | [Release](https://github.com/schpet/linear-cli/releases/tag/v3.0.0); Rust rewrite and CLI changes |
 | lmstudio | `0.4.24-1` | `0.4.25-1` | [Changelog](https://lmstudio.ai/changelog/lmstudio/lmstudio-v0.4.25); Linux AppImage available |
-| lobe-chat desktop | `1.114.0` | `2.2.19` | [Release](https://github.com/lobehub/lobehub/releases/tag/v2.2.19); major upgrade and renamed AppImage |
 | mcporter | `0.13.13` | `0.14.2` | [Release](https://github.com/openclaw/mcporter/releases/tag/v0.14.2) |
-| oracle | `0.21.3` | `0.21.4` | [Release](https://github.com/steipete/oracle/releases/tag/v0.21.4); check local patches |
-| paperclip | `2026.626.0` | `2026.1005.0` | [Release](https://github.com/paperclipai/paperclip/releases/tag/v2026.1005.0); database migrations |
 | pi-session-manager | `0.4.9` | `0.8.9` | [Release](https://github.com/Dwsy/pi-session-manager/releases/tag/v0.8.9); tarball replaced by bare binary |
 | plannotator | `0.28.5` | `0.28.8` | [Release](https://github.com/backnotprop/plannotator/releases/tag/v0.28.8) |
-| rtk | `0.49.0` | `0.51.0` | [Release](https://github.com/rtk-ai/rtk/releases/tag/v0.51.0); script execution CLI changes |
-| slk | `0.16.0` | `0.25.0` | [Release](https://github.com/gammons/slk/releases/tag/v0.25.0) |
 | soulsync | `3.4.2` | `3.5.2` | [Release](https://github.com/Nezreka/SoulSync/releases/tag/3.5.2) |
 | terminal-browser | `0.8.1` | `0.13.4` | [Release](https://github.com/zenbu-labs/terminal-browser/releases/tag/v0.13.4) |
 | tldraw-offline | `1.19.0` | `1.21.0` | [Release](https://github.com/tldraw/tldraw-offline/releases/tag/v1.21.0) |
@@ -335,15 +306,10 @@ Commit targets are source updates, not necessarily published releases. Coordinat
 | web-providers | `4f2450563e2e` | `4.7.0` | [Successor repository](https://github.com/mavam/webfox); renamed to webfox |
 | pi-token-usage (commented out) | `0.3.0` | `0.4.0` | [npm](https://registry.npmjs.org/@alexanderfortin/pi-token-usage) |
 
-### Herdr plugins and flakes
+### Other
 
 | Package | Current | Available | Evidence / constraint |
 |---|---|---|---|
-| collie | `1.6.0` | `1.17.2` | [Repository](https://github.com/AltanS/collie) |
-| herdr-worktrunk | Commit `8ceca541de8f` | Commit `f9df9ba700b8` | [Repository](https://github.com/devashish2203/herdr-worktrunk); latest release `0.7.0` is older than current pin |
-| herdr-auto-title | `0.4.0` | `0.13.0` | [Repository](https://github.com/kryptamine/herdr-auto-title); default title behavior changed |
-| herdr-annotate | `0.3.0` | Commit `e3ca7e88ada0`, plugin `0.9.0` | [Repository](https://github.com/plannotator/herdr-annotate); no release tags |
-| herdr-resurrect | Commit `5afa6755d4f3` | Commit `109a9376549e` | [Repository](https://github.com/ntindle/herdr-resurrect) |
 | devenv | `2.2.2` | `2.4.0` | [Release](https://github.com/cachix/devenv/releases/tag/v2.4.0) |
 
 ### Containers

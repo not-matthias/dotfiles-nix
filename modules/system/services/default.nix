@@ -18,7 +18,6 @@
   ./karakeep.nix
   ./kokoro.nix
   ./language-study.nix
-  ./lobe-chat.nix
   ./logto.nix
   ./maloja.nix
   ./sure.nix
