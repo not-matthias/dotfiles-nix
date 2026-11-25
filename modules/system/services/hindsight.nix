@@ -177,6 +177,11 @@ in {
           UV_OFFLINE = "1";
           XDG_CACHE_HOME = "/cache";
         }
+        // lib.optionalAttrs useRocm {
+          # ROCm 7.2's profiler registration leaves rocr's AsyncEventsLoop
+          # busy-polling one CPU core for the life of the process.
+          HSA_TOOLS_DISABLE_REGISTER = "1";
+        }
         // lib.optionalAttrs (!useRocm) {
           OMP_NUM_THREADS = "8";
           VLLM_CPU_KVCACHE_SPACE = "2";
