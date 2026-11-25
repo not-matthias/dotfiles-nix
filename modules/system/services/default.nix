@@ -7,6 +7,7 @@
   ./caddy.nix
   ./calibre-web.nix
   ./change-detection.nix
+  ./distributed-build.nix
   ./earlyoom.nix
   ./gitea.nix
   ./homepage.nix

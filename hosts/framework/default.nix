@@ -26,6 +26,7 @@ in {
   ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   services.taskwarrior-sync.client.enable = true;
+  services.distributed-build.enable = true;
 
   home-manager.users.${user} = {
     config,
