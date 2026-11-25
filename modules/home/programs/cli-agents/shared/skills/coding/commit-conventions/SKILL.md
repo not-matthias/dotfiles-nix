@@ -43,7 +43,7 @@ Bad — vague, just restates the diff
 ```
 feat: update config
 fix: fix bug
-feat: add pi-mono Nix package with extension system
+feat: add foo Nix package with extension system
 chore: update flake
 fix: soulsync stuff
 ```

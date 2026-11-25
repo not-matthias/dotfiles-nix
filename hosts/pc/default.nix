@@ -83,10 +83,7 @@
           pkgs.binja-codemode-mcp
         ];
       };
-      cli-agents = {
-        claude.enable = true;
-        pi-mono.enable = true;
-      };
+      cli-agents.claude.enable = true;
       btop.enable = true;
       worktrunk.enable = true;
       helium.enable = true;

@@ -1,1 +1,0 @@
-Read a text file with LINE#HASH anchors for edit

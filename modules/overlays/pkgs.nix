@@ -89,9 +89,6 @@
       soulsync = super.callPackage ../../pkgs/soulsync.nix {};
     })
     (_self: super: {
-      pi-coding-agent = super.callPackage ../../pkgs/pi-mono {};
-    })
-    (_self: super: {
       mcporter = super.callPackage ../../pkgs/mcporter.nix {};
     })
     (_self: super: {
@@ -99,9 +96,6 @@
     })
     (_self: super: {
       amp-cli = super.callPackage ../../pkgs/amp-cli.nix {};
-    })
-    (_self: super: {
-      pi-session-cli = super.callPackage ../../pkgs/pi-session-manager.nix {};
     })
     (_self: super: {
       linear-cli = super.callPackage ../../pkgs/linear-cli.nix {};
