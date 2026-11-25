@@ -30,6 +30,8 @@ in {
   config = lib.mkIf cfg.enable {
     home.packages = [cfg.package] ++ cfg.extensions;
 
+    programs.cli-agents.oh-my-pi.settings.binja.installDir = "${cfg.package}/opt/binaryninja";
+
     home.activation.binaryNinjaSettings = lib.hm.dag.entryAfter ["writeBoundary"] ''
       target="$HOME/.binaryninja/settings.json"
       if [[ -e "$target" && ! -L "$target" ]]; then
