@@ -69,6 +69,8 @@ github:
 bash:
   autoBackground:
     enabled: true
+browser:
+  relay: true
 completion:
   notify: "off"
 mcp:
