@@ -29,8 +29,6 @@ Sources are `pkgs/<name>.nix` unless noted.
 | oh-my-pi | `19.2.1` (updated 2026-11-25) |
 | openclaw desktop | `2026.9.5` (`pkgs/openclaw.nix`) |
 | paper-mono | `1.000` |
-| Pi coding agent | `1.1.0` (`pkgs/pi-mono/default.nix`) |
-| Pi session manager | `0.4.9` (`pkgs/pi-session-manager.nix`) |
 | plannotator | `0.29.4` (updated 2026-11-25) |
 | radius2 | `1.2.0` |
 | solidtime desktop | `0.3.2` (`pkgs/solidtime.nix`) |
@@ -52,13 +50,11 @@ Sources are `pkgs/ida-pro/<name>.nix`.
 | binsync | `5.15.4` (updated 2026-11-25) |
 | headless-ida | `0.6.8` |
 | ida-bitopt | `1.0.1` |
-| ida-codemode | `0.6.1` |
 | ida-d810 | `unstable-2026-08-30`; commit `87fe12ca9cfb` |
 | ida-domain | `0.6.0` (updated 2026-11-25) |
 | ida-guides | `1.3.0` (source URL uses `main`, content fixed by hash) |
 | ida-hrtng | `unstable-2026-08-30`; commit `eb6b9c203a5f` |
 | ida-lifter | `2.7.0` (updated 2026-11-25) |
-| ida-mcp-rs | `9.4.4`; tag `v9.4.4` (updated 2026-11-25) |
 | ida-mcp | `20261028.0.3`; tag `v20261028.0.3` (updated 2026-11-25) |
 | ida-nexus | `0.14.2`; tag `v0.14.2` (updated 2026-11-25) |
 | ida-sigmaker | `v1.17.0` (updated 2026-11-25) |
@@ -76,63 +72,7 @@ Sources are `pkgs/ida-pro/<name>.nix`.
 | firecrawl-py | `4.19.0` | `pkgs/hermes-agent.nix` |
 | agent-client-protocol | `0.8.1` | `pkgs/hermes-agent.nix` |
 | declib | `4.5.0` | `pkgs/ida-pro/binsync.nix` |
-| idapro | `0.0.10` | `pkgs/ida-pro/ida-domain.nix`, `ida-codemode.nix` |
-
-## Pi packages
-
-Sources are `pkgs/pi-mono/packages/<name>.nix` unless noted.
-
-| Package | Version |
-|---|---|
-| pi-codex-conversion | `3.0.47` (`pkgs/pi-mono/extensions/pi-codex-conversion.nix`; maintained `@howaboua` package, with Codex Code Mode host `0.145.0`) |
-| pi-web-access | `0.37.0` |
-| tintinweb-pi-subagents | `0.19.0` |
-| pi-token-usage | `0.4.0` (commented-out integration; `pkgs/pi-mono/extensions/pi-token-usage.nix`) |
-
-### Pi extensions pinned by commit
-
-Sources are `pkgs/pi-mono/extensions/<name>.nix`.
-
-| Extension | Commit |
-|---|---|
-| askuserquestion | `e58609c9e9c8` |
-| context-guard | `e4e047a5a203` |
-| fzf | `dd0ef2eed872` |
-| guardrails | `4eeb71c1c317` |
-| mermaid | `34cab3ae7944` |
-| nupi | `4845cb4a32f2` |
-| pi-better-messages-cache | `7798b5f49366` |
-| pi-claude-bridge | `b2e7255ece0b` |
-| pi-codex-fast | `d83b218459f0` |
-| pi-codex-goal | `31a1d4555304` |
-| pi-curated-themes | `ac8e0c8e890a` |
-| pi-diff-review | `57622138f5b0` |
-| pi-dynamic-workflows | `31b2aca0f1cb` |
-| pi-fff | `bb35f3659f30` |
-| pi-memory | `79d019bfc687` |
-| pi-mouse | `fc3c4be04bca` |
-| pi-pane | `03ca432dea29` |
-| pi-ptc | `b567c8902d75` |
-| pi-subdir-context | `c63f4876ba39` |
-| pi-tool-display | `91cef7580078` |
-| pi-verbosity-control | `5b4573bc25f1` |
-| pi-workflow-kit | `2d399948edfa` |
-| processes | `434fa0a860b1` |
-| santychuy-mermaid | `0a0692fffea3` |
-| sub-bar | `65deb56853b9` |
-| subagents | `0c33ec7cb26e` |
-| tasks | `29180d72498b` |
-| toolchain | `b1608a5ef9e68` |
-| web-providers (upstream webfox) | `2fcc7d99d8e0` |
-
-### Pi 1.1 compatibility
-
-- Updated on 2026-10-08. Existing enabled and disabled selections are preserved.
-- Extensions retain runtime-loaded TypeScript helpers. Compiled manifests declare only extension entrypoints; TypeBox is supplied by Pi.
-- Web access compiles its TypeScript entrypoint so the local GitHub extraction patch remains effective. Its MCP CLI is not an extension entrypoint.
-- The archived better-messages-cache integration stays disabled. OpenAI server compaction also stays disabled because its declared Pi peer range excludes Pi 1.
-- Goal, RTK rewrite, and santychuy Mermaid use the latest source revisions that retain their selected extraction paths. Memory uses the flattened upstream layout.
-- Claude bridge includes the Claude Agent SDK's required Anthropic SDK peer in its dependency lock.
+| idapro | `0.0.10` | `pkgs/ida-pro/ida-domain.nix` |
 
 ## Other software and plugins
 
@@ -246,7 +186,6 @@ The “Current” columns below show the pins before updates, not the current re
 | linear-cli | `2.6.0` | `3.0.0` | [Release](https://github.com/schpet/linear-cli/releases/tag/v3.0.0); Rust rewrite and CLI changes |
 | lmstudio | `0.4.24-1` | `0.4.25-1` | [Changelog](https://lmstudio.ai/changelog/lmstudio/lmstudio-v0.4.25); Linux AppImage available |
 | mcporter | `0.13.13` | `0.14.2` | [Release](https://github.com/openclaw/mcporter/releases/tag/v0.14.2) |
-| pi-session-manager | `0.4.9` | `0.8.9` | [Release](https://github.com/Dwsy/pi-session-manager/releases/tag/v0.8.9); tarball replaced by bare binary |
 | plannotator | `0.28.5` | `0.28.8` | [Release](https://github.com/backnotprop/plannotator/releases/tag/v0.28.8) |
 | soulsync | `3.4.2` | `3.5.2` | [Release](https://github.com/Nezreka/SoulSync/releases/tag/3.5.2) |
 | terminal-browser | `0.8.1` | `0.13.4` | [Release](https://github.com/zenbu-labs/terminal-browser/releases/tag/v0.13.4) |
@@ -263,10 +202,9 @@ The “Current” columns below show the pins before updates, not the current re
 | libbs | `3.3.3` | `3.8.1` | [PyPI](https://pypi.org/project/libbs/3.8.1/); deprecated shim depending on `declib` |
 | binsync | `5.11.2` | `5.15.4` | [PyPI](https://pypi.org/project/binsync/5.15.4/); now requires `declib[ghidra]>=4.0.1` |
 | headless-ida | `0.6.7` | `0.6.8` | [PyPI](https://pypi.org/project/headless-ida/0.6.8/) |
-| idapro | `0.0.10` | `0.0.11` | [PyPI](https://pypi.org/project/idapro/0.0.11/); pinned in two files |
+| idapro | `0.0.10` | `0.0.11` | [PyPI](https://pypi.org/project/idapro/0.0.11/) |
 | ida-hrtng | `eb6b9c203a5f` | `v3.9.114` | [Release](https://github.com/KasperskyLab/hrtng/releases/tag/v3.9.114); newer HEAD also exists |
 | ida-lifter | `2.2.0` | `2.7.0` | [Release](https://github.com/19h/ida-lifter/releases/tag/v2.7.0) |
-| ida-mcp-rs | `9.3.1` | `9.4.5` | [Stable release](https://github.com/blacktop/ida-mcp-rs/releases/tag/v9.4.5); 9.5 beta excluded |
 | ida-mcp | `0.8.1` | `v20261003.0.1` | [Release](https://github.com/HexRaysSA/ida-mcp/releases/tag/v20261003.0.1); versioning changed to CalVer |
 | zeromcp | `1.9.0` | `1.10.3` | [PyPI](https://pypi.org/project/zeromcp/1.10.3/) |
 | ida-nexus | `0.9.1` | `0.13.3` | [Release](https://github.com/HexRaysSA/ida-nexus/releases/tag/v0.13.3) |
@@ -275,36 +213,6 @@ The “Current” columns below show the pins before updates, not the current re
 | ida-theme-explorer | `1.0.2` | `1.0.3` | [Release](https://github.com/kevinmuoz/ida-theme-explorer/releases/tag/v1.0.3) |
 
 IDA Code Mode `0.6.1` was renamed upstream to IDA Nexus. Treat it as a migration to the existing Nexus package, not an independent Code Mode version bump.
-
-### Pi packages and extensions
-
-Commit targets are source updates, not necessarily published releases. Coordinate upgrades with Pi compatibility and refresh extension lockfiles where used.
-
-| Package / extension | Current | Available | Evidence / constraint |
-|---|---|---|---|
-| Pi coding agent | `0.84.4` | `1.1.0` | [Release](https://github.com/earendil-works/pi/releases/tag/v1.1.0); major upgrade |
-| pi-anthropic-oauth | `0.1.11` | Commit `22db92c832d3`, package version `0.3.1` | [Commit](https://github.com/leohenon/pi-anthropic-oauth/commit/22db92c832d3e9962fd1c73355b6dfd2975d60cd); requires newer Pi |
-| pi-diff | `0.1.6` | `0.9.2` | [Release](https://github.com/heyhuynhgiabuu/pi-diff/releases/tag/v0.9.2) |
-| pi-pretty | `0.4.2` | `0.6.31` | [Release](https://github.com/heyhuynhgiabuu/pi-pretty/releases/tag/v0.6.31); Pi 1.1 support |
-| pi-queue-picker | `1.0.3` | `1.0.5` | [npm](https://registry.npmjs.org/@kaiserlich-dev/pi-queue-picker) |
-| pi-web-access | `0.27.0` | `0.37.0` | [npm](https://registry.npmjs.org/pi-web-access); check local patch |
-| context-guard | `3bae6e62a296` | `pi-mono-context-guard@1.8.0` | [Release](https://github.com/emanuelcasco/pi-mono-extensions/releases/tag/pi-mono-context-guard%401.8.0) |
-| guardrails | `bec4c8be8ed9` (`0.17.1`) | `0.19.0` | [Release](https://github.com/aliou/pi-guardrails/releases/tag/v0.19.0) |
-| pi-claude-bridge | `9e3fee560fb9` (`0.7.0`) | `0.9.2` | [Release](https://github.com/elidickinson/pi-claude-bridge/releases/tag/v0.9.2) |
-| pi-codex-conversion | `1dc70f423da4` (`1.5.13`) | `1.5.16` | [Release](https://github.com/IgorWarzocha/pi-codex-conversion/releases/tag/v1.5.16); repository archived |
-| pi-codex-fast | `ea393bf8b1f5` | Commit `d83b218459f0` | [Commit](https://github.com/calesennett/pi-codex-fast/commit/d83b218459f02977222d0e85501bf98b3bafcb05) |
-| pi-codex-goal | `529eb81ccd45` (`0.2.0`) | `0.6.0` | [Release](https://github.com/fitchmultz/pi-codex-goal/releases/tag/v0.6.0) |
-| pi-fff | `e84b6258bd59` | `0.1.13` | [Release](https://github.com/ShpetimA/pi-fff/releases/tag/v0.1.13) |
-| pi-mouse | `1c66f0a7aa64` | `pi-mouse-v0.1.1` | [Repository](https://github.com/alasano/house-of-pi); select package-specific tag, not unrelated monorepo releases |
-| pi-tool-display | `7d049f13b91a` (`0.4.0`) | `0.5.0` | [Repository](https://github.com/MasuRii/pi-tool-display) |
-| pi-workflow-kit | `a81a633aadb0` (`1.4.0`) | `2.8.1` | [Repository](https://github.com/yinloo-ola/pi-workflow-kit); major upgrade |
-| processes | `ffbbda06e97e` (`0.9.3`) | `0.13.2` | [Repository](https://github.com/aliou/pi-processes) |
-| santychuy-mermaid | `c4bd7b9d459b` | Commit `37f5b5298b69` touching Mermaid | [Repository](https://github.com/santychuy/pi-setup) |
-| subagents | `a9b17bb71868` | `0.76.1` | [Repository](https://github.com/nicobailon/pi-subagents); refresh bundled lockfile |
-| tasks | `00ecbd8110f1` | Commit `29180d72498b` | [Repository](https://github.com/tintinweb/pi-tasks); current pin is newer than release `0.9.0` |
-| toolchain | `7b06b2804a6f` | `0.10.2` | [Repository](https://github.com/aliou/pi-toolchain) |
-| web-providers | `4f2450563e2e` | `4.7.0` | [Successor repository](https://github.com/mavam/webfox); renamed to webfox |
-| pi-token-usage (commented out) | `0.3.0` | `0.4.0` | [npm](https://registry.npmjs.org/@alexanderfortin/pi-token-usage) |
 
 ### Other
 
@@ -350,7 +258,6 @@ OpenClaw Gateway has upstream release [2026.9.9](https://github.com/openclaw/ope
 
 - Software: Antigravity, aw-watcher-media-player, Binary Ninja, binja-headless, Choosr, Detect It Easy, disktree, ghidra-cli, helix-file-watcher, Herdr, Oh My Pi, Paper Mono, QMD, Radius2, and Solidtime desktop. Solidtime desktop has a newer beta, excluded from stable targets.
 - IDA: SDK source, bitopt, ida-domain, D810, guides, WakaTime, and IDASQL. The SDK tag already matches the pin; D810's older `v0.1` tag is not an upgrade.
-- Pi: agentic-compaction, tintinweb-pi-subagents, askuserquestion, fzf, Gurpartap Mermaid, nupi, curated-themes, diff-review, dynamic-workflows, pane, ptc, subdir-context, verbosity-control, and sub-bar.
 - Other plugins: BleachHack, VS Code JetBrains icon theme, Caddy DuckDNS, steel-pty, and microscopehx.
 - Same container repository or release line: browserless/chrome, standalone Kokoro UI, lobe-chat-database, Maloja, PostgreSQL 16/17 point-release tags, Traggo, WatchYourLAN, and Ziit. Browserless v2 and LobeHub v2 require repository/product migrations rather than bumps within the old image repositories.
 
