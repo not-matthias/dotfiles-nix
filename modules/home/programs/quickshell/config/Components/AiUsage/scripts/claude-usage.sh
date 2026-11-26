@@ -44,46 +44,57 @@ elif [ "$rc" -ne 0 ]; then
   exit 0
 fi
 
-fh_pct=$(echo "$data" | jq -r '([.reports[]? | select(.provider == "anthropic") | .limits[]? | select(.scope.windowId == "5h" and (.scope.shared == true or .scope.shared == null))][0] | .amount.used // 0) | round')
-sd_pct=$(echo "$data" | jq -r '([.reports[]? | select(.provider == "anthropic") | .limits[]? | select(.scope.windowId == "7d" and (.scope.shared == true or .scope.shared == null))][0] | .amount.used // 0) | round')
-fh_reset=$(echo "$data" | jq -r '([.reports[]? | select(.provider == "anthropic") | .limits[]? | select(.scope.windowId == "5h" and (.scope.shared == true or .scope.shared == null))][0] | .window.resetsAt // empty)')
-sd_reset=$(echo "$data" | jq -r '([.reports[]? | select(.provider == "anthropic") | .limits[]? | select(.scope.windowId == "7d" and (.scope.shared == true or .scope.shared == null))][0] | .window.resetsAt // empty)')
+# One "|"-separated line per account: email, then used % and reset for 5h, 7d and each model.
+accounts=$(echo "$data" | jq -r '
+  def window($id): [.limits[]? | select(.scope.windowId == $id and (.scope.shared == true or .scope.shared == null))][0];
+  def model($name): [.limits[]? | select(((.scope.tier // "") | ascii_downcase) == $name or ((.label // "") | ascii_downcase | contains($name)))][0];
+  def usage: [((.amount.used // 0) | round), (.window.resetsAt // "")];
+  .reports[]? | select(.provider == "anthropic")
+  | [.metadata.email // ""] + ([window("5h"), window("7d"), model("sonnet"), model("opus"), model("cowork"), model("fable")] | map(usage) | add)
+  | map(tostring) | join("|")')
+num_accounts=$(grep -c . <<< "$accounts")
 
-fh_eta="--"
-sd_eta="--"
-[ -n "$fh_reset" ] && [ "$fh_reset" != "null" ] && fh_eta=$(format_eta "$fh_reset")
-[ -n "$sd_reset" ] && [ "$sd_reset" != "null" ] && sd_eta=$(format_eta "$sd_reset")
+header="Claude Code Usage"
+indent=""
+if [ "$num_accounts" -gt 1 ]; then
+  header="${header} (${num_accounts} accounts)"
+  indent="  "
+fi
 
 model_line() {
-  local label="$1" pct="$2" reset="$3" eta="--"
-  if [ -n "$reset" ] && [ "$reset" != "null" ]; then
-    eta=$(format_eta "$reset")
+  printf '%s%-7s %3s%%  %s' "$indent" "$1" "$2" "$(format_eta "$3")"
+}
+
+tooltip="${header}\n━━━━━━━━━━━━━━━━━━━━━━━━"
+account_sep=""
+candidates=""
+while IFS='|' read -r email fh_pct fh_reset sd_pct sd_reset sonnet_pct sonnet_reset opus_pct opus_reset cowork_pct cowork_reset fable_pct fable_reset; do
+  if [ "$num_accounts" -gt 1 ]; then
+    tooltip="${tooltip}${account_sep}\n${email}"
+    account_sep="\n"
   fi
-  printf '%-7s %3s%%  %s' "$label" "$pct" "$eta"
-}
+  tooltip="${tooltip}\n${indent}5h:  ${fh_pct}%  $(format_eta "$fh_reset")\n${indent}7d:  ${sd_pct}%  $(format_eta "$sd_reset")"
+  tooltip="${tooltip}\n\n${indent}Models (7d scoped)\n$(model_line "Sonnet:" "$sonnet_pct" "$sonnet_reset")\n$(model_line "Opus:" "$opus_pct" "$opus_reset")\n$(model_line "Cowork:" "$cowork_pct" "$cowork_reset")\n$(model_line "Fable:" "$fable_pct" "$fable_reset")"
 
-get_anthropic_model() {
-  local name="$1" field="$2"
-  echo "$data" | jq -r --arg name "$name" --arg field "$field" '
-    ([.reports[]? | select(.provider == "anthropic") | .limits[]? | select(
-      ((.scope.tier // "") | ascii_downcase == $name) or
-      ((.label // "") | ascii_downcase | contains($name))
-    )][0] | if $field == "pct" then ((.amount.used // empty) | round) else (.window.resetsAt // empty) end) // empty
-  '
-}
+  # At 100%: the account waits for its reset (7d takes priority)
+  limited=1
+  if [ "$sd_pct" -ge 100 ]; then
+    limit_reset="$sd_reset"
+  elif [ "$fh_pct" -ge 100 ]; then
+    limit_reset="$fh_reset"
+  else
+    limited=0
+    limit_reset=""
+  fi
+  candidates="${candidates}${fh_pct}|${limited}|${limit_reset}"$'\n'
+done <<< "$accounts"
 
-sonnet_pct=$(get_anthropic_model "sonnet" "pct")
-sonnet_reset=$(get_anthropic_model "sonnet" "reset")
-opus_pct=$(get_anthropic_model "opus" "pct")
-opus_reset=$(get_anthropic_model "opus" "reset")
-cowork_pct=$(get_anthropic_model "cowork" "pct")
-cowork_reset=$(get_anthropic_model "cowork" "reset")
-fable_pct=$(get_anthropic_model "fable" "pct")
-fable_reset=$(get_anthropic_model "fable" "reset")
+IFS='|' read -r bar_text bar_pct <<< "$(printf '%s' "$candidates" | pick_bar_account)"
+if [ "$num_accounts" -gt 1 ]; then
+  bar_text="${bar_text} ×${num_accounts}"
+fi
 
-models_tooltip="\n\nModels (7d scoped)\n$(model_line "Sonnet:" "${sonnet_pct:-0}" "$sonnet_reset")\n$(model_line "Opus:" "${opus_pct:-0}" "$opus_reset")\n$(model_line "Cowork:" "${cowork_pct:-0}" "$cowork_reset")\n$(model_line "Fable:" "${fable_pct:-0}" "$fable_reset")"
-
-cls=$(css_class "$fh_pct")
+cls=$(css_class "$bar_pct")
 rl_note=""
 if [ "$rate_limited" -eq 1 ]; then
   rl_note="\n⚠ Showing cached data"
@@ -108,15 +119,7 @@ if [ -n "$twox_json" ]; then
   fi
 fi
 
-tooltip="Claude Code Usage\n━━━━━━━━━━━━━━━━━━━━━━━━\n5h:  ${fh_pct}%  ${fh_eta}\n7d:  ${sd_pct}%  ${sd_eta}${models_tooltip}${twox_note}${rl_note}"
-
-# At 100%: show reset timer instead of percentage (7d takes priority)
-bar_text="${fh_pct}%"
-if [ "$sd_pct" -ge 100 ]; then
-  bar_text="${sd_eta}"
-elif [ "$fh_pct" -ge 100 ]; then
-  bar_text="${fh_eta}"
-fi
+tooltip="${tooltip}${twox_note}${rl_note}"
 
 printf '{"text":"󰜡 %s","tooltip":"%s","class":"%s","percentage":%s}\n' \
-  "$bar_text" "$tooltip" "$cls" "$fh_pct"
+  "$bar_text" "$tooltip" "$cls" "$bar_pct"
