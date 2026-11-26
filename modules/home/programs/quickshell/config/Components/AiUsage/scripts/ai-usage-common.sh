@@ -150,6 +150,30 @@ output_error() {
   printf '{"text":"%s Err","tooltip":"%s","class":"critical","percentage":0}\n' "$icon" "$msg"
 }
 
+# Picks what the bar shows for a provider with several accounts: the least-used account
+# below its limits, else the time until the first limited account resets.
+# Reads "<pct>|<limited 0|1>|<limit reset>" lines on stdin; prints "<bar text>|<pct>".
+pick_bar_account() {
+  local best_pct="" next_reset="" pct limited reset
+  while IFS='|' read -r pct limited reset; do
+    if [ "$limited" = "0" ]; then
+      if [ -z "$best_pct" ] || [ "$pct" -lt "$best_pct" ]; then
+        best_pct="$pct"
+      fi
+      continue
+    fi
+    if [ -n "$reset" ] && { [ -z "$next_reset" ] || [ "$reset" -lt "$next_reset" ]; }; then
+      next_reset="$reset"
+    fi
+  done
+
+  if [ -n "$best_pct" ]; then
+    echo "${best_pct}%|${best_pct}"
+    return
+  fi
+  echo "$(format_eta "$next_reset")|100"
+}
+
 css_class() {
   local pct="$1"
   if [ "$pct" -ge 80 ]; then
