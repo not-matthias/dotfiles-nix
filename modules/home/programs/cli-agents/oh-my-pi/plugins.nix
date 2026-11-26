@@ -6,8 +6,9 @@
   lib,
   flakes,
 }: let
-  plugins = {
+  plugins = lib.filterAttrs (_: p: p.enable) {
     "omp-autoresearch" = {
+      enable = false;
       source = flakes.omp-autoresearch.packages.${pkgs.stdenv.hostPlatform.system}.omp-autoresearch;
     };
   };
