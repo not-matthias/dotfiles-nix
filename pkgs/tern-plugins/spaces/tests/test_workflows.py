@@ -5,7 +5,39 @@ import subprocess
 
 import pytest
 
-from harness import TIMEOUT
+from harness import PLUGIN_ID, TIMEOUT
+from test_robustness import shown_sidebar
+
+# Past the plugin's one-second refresh: a width it is about to change has changed by then.
+REFRESH_WAIT_MS = 1200
+SAVED_WIDTH = 0.3
+# Appended to the plugin: saves a width the way another window's drag does.
+SAVE_WIDTH_COMMAND = f"""
+tern.command({{
+  id = "test_save_width",
+  title = "Save a sidebar width",
+  run = function(_cx: WindowCx)
+    tern.kv.set("sidebar-width", {SAVED_WIDTH})
+  end,
+}})
+"""
+
+
+def sidebar_width(tern):
+    nodes = tern.panel_tree()
+    return nodes[0]["rect"][2] if nodes else 0
+
+
+def assert_width_settles(tern, expected):
+    """The sidebar has the expected width and keeps it, unreopened, for a refresh."""
+
+    def steady():
+        before = (shown_sidebar(tern), sidebar_width(tern))
+        tern.ctl("wait", str(REFRESH_WAIT_MS))
+        pane, width = shown_sidebar(tern), sidebar_width(tern)
+        return pane and before == (pane, width) and abs(width - expected) < 1
+
+    tern.until(steady)
 
 
 def test_space_inherits_cwd_and_only_its_name_follows_cd(tern):
@@ -725,30 +757,62 @@ def test_sidebar_width_follows_resize_across_spaces_tabs_and_reload(tern, remote
 
 
 def test_sidebar_width_survives_closing_a_split_neighbour(tern):
-    def width():
-        nodes = tern.panel_tree()
-        return nodes[0]["rect"][2] if nodes else 0
-
-    def panel():
-        panels = [p["pane"] for p in tern.snapshot()["panels"] if p["owner"] == "spaces"]
-        return panels[0] if len(panels) == 1 else None
-
-    initial = tern.until(width)
+    initial = tern.until(lambda: sidebar_width(tern))
     left = tern.terminal()["pane"]
     tern.keys("ctrl+b", "v")
     tern.until(lambda: tern.terminal()["pane"] != left)
     right = tern.terminal()["pane"]
     # A reopen (e.g. after a width change elsewhere) targets only the left half.
-    old = tern.until(panel)
+    old = tern.until(lambda: shown_sidebar(tern))
     tern.lua(f"cx.layout:close({old})")
-    tern.until(lambda: panel() not in (None, old))
-    tern.until(lambda: abs(width() - initial) < 1)
+    tern.until(lambda: shown_sidebar(tern) not in (None, old))
+    assert_width_settles(tern, initial)
     tern.lua(f"cx.layout:close({right})")
     tern.until(lambda: right not in {p["pane"] for p in tern.snapshot()["panes"]})
-    tern.until(lambda: abs(width() - initial) < 1)
-    kv = tern.root / "state" / "tern" / "plugin-data" / "spaces" / "kv.json"
-    saved = json.loads(kv.read_text()) if kv.exists() else {}
-    assert "sidebar-width" not in saved
+    assert_width_settles(tern, initial)
+    # A reload opens the sidebar at the saved width: the close must not have saved one.
+    tern.reload(PLUGIN_ID)
+    assert_width_settles(tern, initial)
+
+
+def test_sidebar_width_survives_closing_the_pane_it_opened_beside(tern):
+    initial = tern.until(lambda: sidebar_width(tern))
+    # Twice: every relayout of a tab must refit the sidebar, not only the first.
+    for _ in range(2):
+        beside = tern.terminal()["pane"]
+        tern.keys("ctrl+b", "v")
+        tern.until(lambda: tern.terminal()["pane"] != beside)
+        old = tern.until(lambda: shown_sidebar(tern))
+        # A reopened sidebar sits in a split with only the pane it opens beside.
+        tern.lua(f"cx.layout:close({old})")
+        tern.until(lambda: shown_sidebar(tern) not in (None, old))
+        assert_width_settles(tern, initial)
+        # That split goes away, leaving the sidebar in the outer split's half.
+        tern.lua(f"cx.layout:close({beside})")
+        tern.until(lambda: beside not in {p["pane"] for p in tern.snapshot()["panes"]})
+        assert_width_settles(tern, initial)
+
+
+def test_equalize_keeps_the_sidebar_width(tern):
+    initial = tern.until(lambda: sidebar_width(tern))
+    left = tern.terminal()["pane"]
+    tern.keys("ctrl+b", "v")
+    tern.until(lambda: tern.terminal()["pane"] != left)
+    assert_width_settles(tern, initial)
+    tern.lua('cx.actions:run("equalize")')
+    assert_width_settles(tern, initial)
+    # The width the sidebar keeps is the saved one, also for spaces opened later.
+    tern.lua('cx.sessions:create({name="after-equalize"})')
+    tern.until(lambda: tern.current()["name"] == "after-equalize")
+    assert_width_settles(tern, initial)
+
+
+def test_sidebar_takes_the_width_another_window_saved(tern):
+    initial = tern.until(lambda: sidebar_width(tern))
+    tern.extend_plugin(SAVE_WIDTH_COMMAND)
+    tern.until(lambda: abs(sidebar_width(tern) - initial) < 1)
+    tern.ctl("plugins", "run", f"plugin.{PLUGIN_ID}.test_save_width")
+    tern.until(lambda: sidebar_width(tern) > initial * 1.5)
 
 
 @pytest.mark.parametrize("remote", [False, True], ids=["local", "remote"])

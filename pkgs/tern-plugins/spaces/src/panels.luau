@@ -20,6 +20,16 @@ local ABOUT_PATTERN = "^Spaces sidebar drawn by window (%S+) at use (%d+)$"
 
 type Content = { signature: string, render: () -> Node }
 type Update = { pane: number?, target: number, focus: number?, session: number, content: Content }
+-- What this window last drew in a panel, and the layout it last saw there.
+type Drawn = {
+  requested: number?,
+  actual: number?,
+  divider: number?,
+  split: string?,
+  signature: string?,
+  session: number?,
+  stamp: number?,
+}
 
 local sharedWidth: number = tern.kv.get(WIDTH_KEY) or DEFAULT_WIDTH
 local me: string? = nil
@@ -30,10 +40,10 @@ local seen = 0
 -- Loading the plugin counts as a use: a window that just opened owns the tab it shows.
 local used = true
 -- pane -> what this window last drew there and the width it last saw.
-local drawn = {}
+local drawn: { [number]: Drawn } = {}
 -- tab -> the panel opened there that the pane list does not show yet.
 local opening = {}
--- One reopen per tab per width; a layout that clamps the ratio would otherwise loop.
+-- One reopen per tab per width until one fits; a layout that clamps the ratio would otherwise loop.
 local reopened = {}
 local queue: { [number]: Update } = {}
 local scheduled = false
@@ -41,6 +51,8 @@ local shown: number? = nil
 local panelByTab: { [number]: number } = {}
 local restoreFocus = {}
 local reported = {}
+-- Set by the user's equalize, which moves the panel's divider without a drag.
+local evened = false
 
 local function identity(cx: WindowCx): string
   if not me then
@@ -65,29 +77,43 @@ local function canvases(cx: WindowCx)
   return result
 end
 
--- The pane's share of the tab width, and the ratio of the split directly holding it.
-local function paneGeometry(node: TabTree, pane: number, share: number, divider: number?): (number?, number?)
+-- The pane's share of the tab width, and the split directly holding it.
+local function paneGeometry(node: TabTree, pane: number, share: number, holder: TabTree?): (number?, TabTree?)
   if node.pane then
     if node.pane == pane then
-      return share, divider
+      return share, holder
     end
     return nil, nil
   end
   local horizontal = node.split == "right"
-  local found, ratio = paneGeometry(node[1], pane, if horizontal then share * node.ratio else share, node.ratio)
+  local found, split = paneGeometry(node[1], pane, if horizontal then share * node.ratio else share, node)
   if found then
-    return found, ratio
+    return found, split
   end
-  return paneGeometry(node[2], pane, if horizontal then share * (1 - node.ratio) else share, node.ratio)
+  return paneGeometry(node[2], pane, if horizontal then share * (1 - node.ratio) else share, node)
 end
 
-local function geometry(cx: WindowCx, pane: number): (number?, number?)
+local function splitPanes(node: TabTree, out: { string }): { string }
+  if node.pane then
+    table.insert(out, tostring(node.pane))
+    return out
+  end
+  splitPanes(node[1], out)
+  return splitPanes(node[2], out)
+end
+
+-- The pane's share, its divider, and the panes that divider separates.
+local function geometry(cx: WindowCx, pane: number): (number?, number?, string?)
   local tab = cx.session:tab_of(pane)
   local layout = if tab then cx.session:layout(tab) else nil
   if not layout then
-    return nil, nil
+    return nil, nil, nil
   end
-  return paneGeometry(layout.root, pane, 1, nil)
+  local share, split = paneGeometry(layout.root, pane, 1, nil)
+  if not share or not split then
+    return share, nil, nil
+  end
+  return share, split.ratio, table.concat(splitPanes(split, {}), ",")
 end
 
 local function leaves(node: TabTree, order: { [number]: number }, index: number): number
@@ -114,33 +140,47 @@ local function keepFirst(cx: WindowCx, tab: number, panes: { number }): number
   return panes[1]
 end
 
--- Only moving the panel's own divider is a resize. Closing a split neighbour also changes its
--- share, but sync reopens it at the shared width instead.
+-- Only moving the panel's own divider is a resize. Closing or moving a pane also changes its
+-- share, and closing the pane beside it moves the panel into the outer split; equalizing moves
+-- the divider too. Sync reopens the panel at the shared width after any of these instead.
 local function observeDrag(cx: WindowCx)
+  local afterEqualize = evened
+  evened = false
   local entry = if shown then drawn[shown] else nil
   if not entry or not entry.requested then
     return
   end
-  local actual, divider = geometry(cx, shown :: number)
+  local actual, divider, split = geometry(cx, shown :: number)
   if not actual then
     return
   end
-  if entry.divider and divider and math.abs(divider - entry.divider) > WIDTH_TOLERANCE then
+  local moved = entry.divider and divider and math.abs(divider - entry.divider) > WIDTH_TOLERANCE
+  if moved and entry.split == split and not afterEqualize then
     sharedWidth = actual
     tern.kv.set(WIDTH_KEY, actual)
     entry.requested = actual
     entry.actual = actual
   end
   entry.divider = divider
+  entry.split = split
+end
+
+local function remember(entry: Drawn, actual: number, divider: number?, split: string?)
+  entry.actual = actual
+  entry.divider = divider
+  entry.split = split
 end
 
 -- Exact ratios require reopening: returns true after closing the panel for sync to replace.
 local function fitWidth(cx: WindowCx, tab: number, pane: number): boolean
-  local actual, divider = geometry(cx, pane)
+  local actual, divider, split = geometry(cx, pane)
   if not actual then
     return false
   end
-  local entry = drawn[pane] or {}
+  if math.abs(actual - sharedWidth) <= WIDTH_TOLERANCE then
+    reopened[tab] = nil
+  end
+  local entry: Drawn = drawn[pane] or {}
   drawn[pane] = entry
   local relaid = entry.actual and math.abs(actual - entry.actual) > WIDTH_TOLERANCE
   if not entry.requested or relaid or math.abs(entry.requested - sharedWidth) > WIDTH_TOLERANCE then
@@ -151,12 +191,10 @@ local function fitWidth(cx: WindowCx, tab: number, pane: number): boolean
       return true
     end
     entry.requested = sharedWidth
-    entry.actual = actual
-    entry.divider = divider
+    remember(entry, actual, divider, split)
   elseif not entry.actual then
     -- Minimum pane sizes may clamp the opening ratio; this is not a drag.
-    entry.actual = actual
-    entry.divider = divider
+    remember(entry, actual, divider, split)
   end
   return false
 end
@@ -224,7 +262,7 @@ local function apply(cx: WindowCx, tab: number, update: Update, visible: number?
     end
     drawn[opened] = { requested = sharedWidth }
   end
-  local entry = drawn[pane] or {}
+  local entry: Drawn = drawn[pane] or {}
   drawn[pane] = entry
   entry.signature = update.content.signature
   entry.session = update.session
@@ -257,6 +295,11 @@ end
 -- Uses of this window decide which window owns a panel that two of them show.
 function module.touch()
   used = true
+end
+
+-- Runs before the built-in equalize changes the layout.
+function module.equalizing()
+  evened = true
 end
 
 function module.status(cx: WindowCx, pane: number, about: string?): "none" | "foreign" | "mine"
@@ -308,6 +351,8 @@ end
 
 function module.sync(cx: WindowCx, state, contentFor: (session: number) -> Content)
   local self = identity(cx)
+  -- Another window may have saved a drag since.
+  sharedWidth = tern.kv.get(WIDTH_KEY) or DEFAULT_WIDTH
   observeDrag(cx)
   local owned = canvases(cx)
   for _, canvas in owned do

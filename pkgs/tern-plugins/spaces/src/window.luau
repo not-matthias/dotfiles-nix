@@ -185,6 +185,11 @@ tern.override("new_session", function(cx: WindowCx)
   newSpace(cx)
   return true
 end)
+-- Equalizing is not a drag: the sidebar keeps its saved width.
+tern.override("equalize", function(_cx: WindowCx)
+  panels.equalizing()
+  return false
+end)
 
 local function renameSpace(cx: WindowCx, id: number)
   local session = findSession(cx, id)
