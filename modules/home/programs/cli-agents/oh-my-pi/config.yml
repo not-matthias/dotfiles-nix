@@ -175,7 +175,7 @@ retry:
       - openai-codex/gpt-6.2-astra
       - anthropic/claude-opus-5-5
     anthropic/claude-sonnet-5-5:
-      - openai-codex/gpt-6-luna
+      - openai-codex/gpt-6.2-sol
     image:
       - openai/gpt-image-1
       - google-antigravity/gemini-3-pro-image
