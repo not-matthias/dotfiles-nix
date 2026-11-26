@@ -94,7 +94,7 @@ def create_space(tern, name, cwd):
 
 
 def sidebar_names(tern):
-    return [node["text"] for node in tern.ctl("tree", ".space-name button")["nodes"]]
+    return [node["text"] for node in tern.ctl("tree", ".space-name .sf-text")["nodes"]]
 
 
 def assert_sidebar_names(tern, names):
@@ -106,7 +106,7 @@ def sidebar_button(tern, name):
         return next(
             (
                 node
-                for node in tern.ctl("tree", ".space-name button")["nodes"]
+                for node in tern.ctl("tree", ".space-name .sf-text")["nodes"]
                 if node["text"] == name
             ),
             None,

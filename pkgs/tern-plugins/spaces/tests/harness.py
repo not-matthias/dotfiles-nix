@@ -21,6 +21,8 @@ HOST_MARKERS = ("▾ ", "▸ ")
 PROBE_ATTEMPTS = 3
 PROBE_RETRY_MS = 200
 PROBE_OUT_OF_TIME = "lua exceeded hard slice budget"
+# A drag starts only after the pointer travels a few steps while pressed.
+DRAG_STEPS = 8
 HOOK_FAILURE = re.compile(
     rf'plugin (?:handler failed|hook exceeded).*plugin="{PLUGIN_ID}"'
 )
@@ -232,9 +234,23 @@ class Tern:
             *([button] if button else []),
         )
 
+    def drag(self, node, x, y):
+        """Presses the middle of a node, moves in steps to (x, y) and releases there."""
+        left, top, width, height = node["rect"]
+        start_x, start_y = left + width / 2, top + height / 2
+        self.ctl("down", str(start_x), str(start_y))
+        for step in range(1, DRAG_STEPS + 1):
+            fraction = step / DRAG_STEPS
+            self.ctl(
+                "move",
+                str(start_x + (x - start_x) * fraction),
+                str(start_y + (y - start_y) * fraction),
+            )
+        self.ctl("up", str(x), str(y))
+
     def space_names(self):
         return [
-            node["text"] for node in self.ctl("tree", ".space-name button")["nodes"]
+            node["text"] for node in self.ctl("tree", ".space-name .sf-text")["nodes"]
         ]
 
     def host_names(self):

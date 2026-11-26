@@ -1,5 +1,7 @@
 --!strict
 
+local order = require("./order")
+
 local GROUP = "Profiles"
 local IDS_KEY = "profile-ids"
 local DEFAULT_KEY = "profile-default"
@@ -199,7 +201,7 @@ local function open(cx: WindowCx, id: string)
   end
   local target = nil
   local remembered = lastSession[id] or tern.kv.get(LAST_SESSION_PREFIX .. cx:window_key() .. ":" .. id)
-  for _, session in cx.sessions:list() do
+  for _, session in order.sort(cx.sessions:list(), cx.hosts:list()) do
     if profileId(session.id) ~= id then
       continue
     end
@@ -382,7 +384,7 @@ local function sessions(cx: WindowCx)
   refresh(cx)
   local id = profileId(cx.sessions:current().id)
   local result = {}
-  for _, session in cx.sessions:list() do
+  for _, session in order.sort(cx.sessions:list(), cx.hosts:list()) do
     if profileId(session.id) == id then
       table.insert(result, session)
     end

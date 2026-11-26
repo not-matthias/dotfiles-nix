@@ -10,6 +10,7 @@ local stateModel = require("./state")
 local view = require("./view")
 local profiles = require("./profiles")
 local panels = require("./panels")
+local order = require("./order")
 
 local COLLAPSED_PREFIX = "collapsed:"
 local CUSTOM_NAME_PREFIX = "custom-name:"
@@ -24,11 +25,12 @@ local function isCollapsed(host: string): boolean
 end
 
 local function snapshot(cx: WindowCx)
+  local hosts = cx.hosts:list()
   local state = {
     panes = cx.session:panes(),
     tabs = cx.session:tabs(),
-    sessions = cx.sessions:list(),
-    hosts = cx.hosts:list(),
+    sessions = order.sort(cx.sessions:list(), hosts),
+    hosts = hosts,
     activeTab = nil :: number?,
   }
   local focused = cx.session:focused()
@@ -227,7 +229,17 @@ tern.on("canvas_action", function(ev: CanvasAction, cx: WindowCx)
   if pane then
     cx.layout:focus(pane.pane)
   end
-  local row = tonumber(string.match(ev.node, "%.space:(%d+)$"))
+  local src = view.placeSource(ev.act)
+  if src then
+    -- The act names the dragged space; the drop zone's slot names the row it landed on.
+    local dst = tonumber(string.match(ev.node, "%.slot:(%d+)%.zone:%d+$"))
+    local placement: order.Placement? = if ev.value == "before" or ev.value == "after" then ev.value else nil
+    if dst and placement and order.place(cx, src, dst, placement) then
+      sync(cx)
+    end
+    return true
+  end
+  local row = tonumber(string.match(ev.node, "%.row:(%d+)$"))
   if row and findSession(cx, row) and ev.act == "Move to profile" then
     profiles.move(cx, row)
     return true
@@ -362,7 +374,7 @@ local function closeEmptySpaces(cx: WindowCx)
   end
   tern.timer(0, function(fresh: WindowCx)
     profiles.refresh(fresh)
-    local sessions = fresh.sessions:list()
+    local sessions = order.sort(fresh.sessions:list(), fresh.hosts:list())
     local current = fresh.sessions:current()
     local currentProfile = profiles.profileId(current.id)
     local target = if current.tabs == 0 then adjacentSpace(fresh, sessions, current.id, currentProfile) else nil

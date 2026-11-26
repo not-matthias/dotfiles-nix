@@ -152,7 +152,7 @@ def measure(sources, session_count, args):
             app.until(
                 lambda: any(
                     node["text"] == expected_name
-                    for node in app.ctl("tree", ".space-name button")["nodes"]
+                    for node in app.ctl("tree", ".space-name .sf-text")["nodes"]
                 )
             )
             return {"samples": samples, "jit": json.loads(reload.stdout)["jit"]}

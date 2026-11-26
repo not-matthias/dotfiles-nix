@@ -94,7 +94,7 @@ def space_button(tern, name):
     return next(
         (
             node
-            for node in tern.ctl("tree", ".space-name button")["nodes"]
+            for node in tern.ctl("tree", ".space-name .sf-text")["nodes"]
             if node["text"] == name
         ),
         None,

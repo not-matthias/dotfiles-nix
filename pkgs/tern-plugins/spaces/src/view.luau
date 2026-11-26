@@ -36,6 +36,12 @@ tern.css(
     border-radius: 8px;
     background-color: color-mix(in srgb, var(--t1) 9%, transparent);
   }
+  .spaces-sidebar .space-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
   .spaces-sidebar .space-content {
     flex: 1;
     min-width: 0;
@@ -58,41 +64,23 @@ tern.css(
   .spaces-sidebar .space-color-purple { background-color: #8051bc; }
   .spaces-sidebar .space-color-pink { background-color: #b84274; }
   .spaces-sidebar .space-color-yellow { background-color: #8f7615; }
+  /* The text box ends 1px above the name row, so the branch below never overlaps it while the
+     row's layout animation is still settling. The glyphs sit where an 18px box would put them. */
   .spaces-sidebar .space-name {
     margin: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    height: 18px;
     min-width: 0;
   }
-  .spaces-sidebar .space-name > .sf-table {
+  .spaces-sidebar .space-name > .sf-text {
     flex: 1;
-    min-width: 0;
-  }
-  .spaces-sidebar .space-name .sf-tbl {
     margin: 0;
-    width: 100%;
-    min-width: 0;
-  }
-  .spaces-sidebar .space-name .head,
-  .spaces-sidebar .space-name .sf-tbl-probe {
-    display: none;
-  }
-  .spaces-sidebar .space-name .sf-tbl-row:not(.head) {
-    display: flex;
-  }
-  .spaces-sidebar .space-name .sf-tbl-c {
-    padding: 0;
-    flex: 1;
-    min-width: 0;
-  }
-  .spaces-sidebar .space-name button {
-    width: 100%;
-    min-height: 18px;
-    justify-content: flex-start;
     padding: 0 6px;
-    border-radius: 4px;
+    height: 17px;
+    line-height: 18px;
   }
-  .spaces-sidebar .sf-btn-label,
+  .spaces-sidebar .space-name > .sf-text,
   .spaces-sidebar .space-branch .sf-text {
     min-width: 0;
     overflow: hidden;
@@ -100,6 +88,7 @@ tern.css(
     text-overflow: ellipsis;
   }
   .spaces-sidebar .space-agent {
+    align-self: center;
     flex: 0 0 auto;
     width: 11px;
     height: 11px;
@@ -156,6 +145,20 @@ tern.css(
     width: auto;
     padding: 3px 7px;
   }
+  .spaces-sidebar .space-slot {
+    position: relative;
+  }
+  .spaces-sidebar .space-zone {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .spaces-sidebar .sf-drag-slot.sf-gone {
+    display: block;
+  }
 ]]
 )
 
@@ -168,6 +171,55 @@ local function button(label: string, action: string): Node
 end
 
 local BADGE_COLORS = { "blue", "teal", "orange", "purple", "pink", "yellow" }
+-- Canvas actions do not say which child of a `drag` container moved, so every row holds one
+-- hidden drop zone per other space of its machine within DRAG_REACH rows, acting
+-- `place:<that space>`. CSS shows only the zones of the space being dragged, and the drop node
+-- names the row it landed on.
+local PLACE_PREFIX = "place:"
+-- Zones grow with the spaces times this reach rather than with the square of the spaces; it still
+-- spans more rows than a screen shows.
+local DRAG_REACH = 16
+
+-- The space a `place:<id>` action says was dragged.
+local function placeSource(act: string): number?
+  if string.sub(act, 1, #PLACE_PREFIX) ~= PLACE_PREFIX then
+    return nil
+  end
+  return tonumber(string.sub(act, #PLACE_PREFIX + 1))
+end
+
+-- The stylesheet is shared by every sidebar of this window, whatever profile each one shows.
+local zoneIds: { [number]: boolean } = {}
+
+-- `:has()` cannot compare class names, so each rendered space gets its own rule.
+local function zoneCss(ids: { number })
+  local added = false
+  for _, id in ids do
+    if not zoneIds[id] then
+      zoneIds[id] = true
+      added = true
+    end
+  end
+  if not added then
+    return
+  end
+  local rules = {}
+  for id in zoneIds do
+    table.insert(
+      rules,
+      string.format(".spaces-sidebar:has(.drag-src-%d.sf-dragging) .space-zone-%d { display: block; }", id, id)
+    )
+  end
+  tern.css("drag-zones", table.concat(rules, "\n"))
+end
+
+-- `tern.ui.el` re-encodes every node below it, so wrapping already built rows in it again at each
+-- level costs depth × rows, and the n² drop zones made that run past the 50 ms budget. Plain
+-- containers of built nodes are therefore made as wire nodes directly.
+local function wrap(props: { [string]: any }, children: { Node }): Node
+  props.tag = "div"
+  return { k = "el", p = props, c = children }
+end
 
 local function profileRow(profiles): Node
   local items = {}
@@ -196,6 +248,7 @@ end
 
 local function render(groups, selectedSession: number, profiles): Node
   local rows = {}
+  local ids = {}
   if profiles then
     table.insert(rows, profileRow(profiles))
   end
@@ -203,25 +256,21 @@ local function render(groups, selectedSession: number, profiles): Node
   for _, host in groups do
     local marker = if host.collapsed then "▸ " else "▾ "
     table.insert(rows, button(marker .. host.name, "host:" .. host.id))
-    for _, session in host.sessions do
+    local spaceRows = {}
+    -- A space's zone is the same in every row, so one node serves them all.
+    local sessions = host.sessions
+    local zones: { [number]: Node } = {}
+    for _, session in sessions do
+      zones[session.id] = wrap({
+        class = "space-zone space-zone-" .. session.id,
+        key = "zone:" .. session.id,
+        drop = PLACE_PREFIX .. session.id,
+      }, {})
+    end
+    for index, session in sessions do
+      table.insert(ids, session.id)
       local action = "space:" .. session.id
-      local title = tern.ui.table({ { id = "name", head = "", grow = 1 } }, {
-        {
-          id = tostring(session.id),
-          cells = {
-            {
-              button = {
-                text = session.name,
-                act = action,
-                variant = "quiet",
-              },
-            },
-          },
-          menu = { "Rename", "Move to profile" },
-        },
-      })
-      title.p.key = action
-      local nameParts = { title }
+      local nameParts = { tern.ui.text(session.name) }
       local agentState = session.agent
       if agentState then
         local labels = {
@@ -250,28 +299,54 @@ local function render(groups, selectedSession: number, profiles): Node
       if branch then
         table.insert(
           contents,
-          tern.ui.el("div", {
-            class = "space-branch",
-            actions = { click = action },
-          }, { tern.ui.text({ tern.ui.span(branch, "muted") }) })
+          tern.ui.el("div", { class = "space-branch" }, { tern.ui.text({ tern.ui.span(branch, "muted") }) })
         )
       end
       local rowClass = if session.id == selectedSession then "space-row space-row-current" else "space-row"
       local color = BADGE_COLORS[session.id % #BADGE_COLORS + 1]
-      local badge = tern.ui.el("div", {
-        class = "space-index space-color-" .. color,
-        actions = { click = action },
-      }, { tern.ui.text(tostring(session.index)) })
+      local badge = tern.ui.el(
+        "div",
+        { class = "space-index space-color-" .. color },
+        { tern.ui.text(tostring(session.index)) }
+      )
+      local rowKey = "row:" .. session.id
+      local row = tern.ui.el("div", {
+        class = rowClass,
+        key = rowKey,
+        motionKey = rowKey,
+        actions = { click = action, menu = { "Rename", "Move to profile" } },
+      }, {
+        badge,
+        tern.ui.el("div", { class = "space-content" }, contents),
+      })
+      local slot = {
+        wrap({
+          class = "drag-src drag-src-" .. session.id,
+          key = "drag:" .. session.id,
+          drag = "drag-row",
+        }, { row }),
+      }
+      for other = math.max(1, index - DRAG_REACH), math.min(#sessions, index + DRAG_REACH) do
+        if other ~= index then
+          table.insert(slot, zones[sessions[other].id])
+        end
+      end
+      table.insert(spaceRows, wrap({ class = "space-slot", key = "slot:" .. session.id }, slot))
+    end
+    -- Dropping the whole list at once leaves no row to animate out.
+    if not host.collapsed then
       table.insert(
         rows,
-        tern.ui.el("div", { class = rowClass }, {
-          badge,
-          tern.ui.el("div", { class = "space-content" }, contents),
-        })
+        wrap({
+          class = "space-list",
+          key = "host-spaces:" .. host.id,
+          transition = "layout",
+        }, spaceRows)
       )
     end
   end
-  return tern.ui.el("div", { class = "spaces-sidebar" }, rows)
+  zoneCss(ids)
+  return wrap({ class = "spaces-sidebar" }, rows)
 end
 
-return { render = render }
+return { render = render, placeSource = placeSource }

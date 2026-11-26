@@ -11,6 +11,8 @@ from test_robustness import shown_sidebar
 # Past the plugin's one-second refresh: a width it is about to change has changed by then.
 REFRESH_WAIT_MS = 1200
 SAVED_WIDTH = 0.3
+# How far inside a row's edge a dragged row is dropped, in logical pixels.
+DROP_INSET = 4
 # Appended to the plugin: saves a width the way another window's drag does.
 SAVE_WIDTH_COMMAND = f"""
 tern.command({{
@@ -73,7 +75,7 @@ def test_custom_space_name_survives_cd_and_plugin_reload(tern):
     def rename_prompt(name):
         row = next(
             node
-            for node in tern.ctl("tree", ".space-name button")["nodes"]
+            for node in tern.ctl("tree", ".space-name .sf-text")["nodes"]
             if node["text"] == name
         )
         x, y, width, height = row["rect"]
@@ -230,7 +232,7 @@ def test_space_close_selects_next_then_previous_in_sidebar_order(tern, focus_sid
     def highlighted():
         return [
             row["text"]
-            for row in tern.ctl("tree", ".space-row-current .space-name button")["nodes"]
+            for row in tern.ctl("tree", ".space-row-current .space-name .sf-text")["nodes"]
         ]
 
     def assert_highlighted():
@@ -269,6 +271,57 @@ def test_space_close_selects_next_then_previous_in_sidebar_order(tern, focus_sid
     tern.until(lambda: first not in {s["id"] for s in tern.snapshot()["sessions"]})
     assert tern.current()["id"] == third
     assert_highlighted()
+
+
+def test_dragging_any_space_reorders_sidebar_and_shortcuts(tern):
+    spaces = [tern.current()["id"]]
+    for _ in range(2):
+        tern.keys("ctrl+b", "shift+n")
+        tern.until(lambda: tern.current()["id"] != spaces[-1])
+        spaces.append(tern.current()["id"])
+    first, second, third = spaces
+    tern.lua(
+        "; ".join(
+            f'cx.sessions:rename({space}, "Space {index}")'
+            for index, space in enumerate(spaces, 1)
+        )
+    )
+    tern.until(lambda: tern.space_names() == ["Space 1", "Space 2", "Space 3"])
+
+    def drag_row(source_name, target_index, edge):
+        """Drags a space by its name onto the top or bottom edge of a row."""
+        rows = tern.ctl("tree", ".space-row")["nodes"]
+        left, top, width, height = rows[target_index]["rect"]
+        source = next(
+            node
+            for node in tern.ctl("tree", ".space-name .sf-text")["nodes"]
+            if node["text"] == source_name
+        )
+        y = top + DROP_INSET if edge == "top" else top + height - DROP_INSET
+        tern.drag(source, left + width / 2, y)
+
+    def badge_numbers():
+        return [node["text"] for node in tern.ctl("tree", ".space-index")["nodes"]]
+
+    # A space other than the current one moves too, dragged by its name.
+    drag_row("Space 1", 2, "bottom")
+    tern.until(lambda: tern.space_names() == ["Space 2", "Space 3", "Space 1"])
+    assert tern.current()["id"] == third
+    tern.until(lambda: badge_numbers() == ["1", "2", "3"])
+    tern.keys("ctrl+b", "w", "1")
+    tern.until(lambda: tern.current()["id"] == second)
+
+    drag_row("Space 3", 0, "top")
+    tern.until(lambda: tern.space_names() == ["Space 3", "Space 2", "Space 1"])
+    tern.reload(PLUGIN_ID)
+    tern.ctl("wait", str(REFRESH_WAIT_MS))
+    tern.until(lambda: tern.space_names() == ["Space 3", "Space 2", "Space 1"])
+    tern.keys("ctrl+b", "w", "3")
+    tern.until(lambda: tern.current()["id"] == first)
+
+    tern.keys("ctrl+b", "shift+n")
+    tern.until(lambda: len(tern.space_names()) == 4)
+    assert tern.space_names()[:3] == ["Space 3", "Space 2", "Space 1"]
 
 
 def test_remote_space_close_stays_on_same_machine(tern):
@@ -495,7 +548,7 @@ def test_space_shows_branch_below_name_without_terminal_count(tern):
     tern.run(f"cd {repo}")
     tern.until(lambda: tern.ctl("tree", ".space-branch")["nodes"])
     label = tern.ctl("tree", ".space-branch")["nodes"][0]
-    title = tern.ctl("tree", ".space-name button")["nodes"][0]
+    title = tern.ctl("tree", ".space-name .sf-text")["nodes"][0]
     assert label["text"] == branch
     assert title["text"] == tern.current()["name"]
     assert label["rect"][1] >= title["rect"][1] + title["rect"][3]
@@ -526,10 +579,10 @@ def test_long_space_and_branch_names_stay_inside_sidebar(tern):
     tern.lua(f"cx.sessions:rename(cx.sessions:current().id,{json.dumps(name)})")
     tern.until(lambda: name in tern.panel_tree()[0]["text"])
     sidebar = tern.panel_tree()[0]["rect"]
-    button_height = tern.ctl("tree", ".space-name button")["nodes"][0]["rect"][3]
+    button_height = tern.ctl("tree", ".space-name .sf-text")["nodes"][0]["rect"][3]
     for selector in (
-        ".space-name button",
-        ".space-name .sf-btn-label",
+        ".space-name .sf-text",
+        ".space-name",
         ".space-branch",
         ".space-branch .sf-text",
     ):
@@ -541,7 +594,7 @@ def test_long_space_and_branch_names_stay_inside_sidebar(tern):
             assert x + width <= sidebar[0] + sidebar[2] + 1, node
             assert node["rect"][3] <= button_height + 1, node
     # Truncation must leave the full workspace name available for renaming.
-    x, y, width, height = tern.ctl("tree", ".space-name button")["nodes"][0]["rect"]
+    x, y, width, height = tern.ctl("tree", ".space-name .sf-text")["nodes"][0]["rect"]
     tern.ctl("click", str(x + width / 2), str(y + height / 2), "right")
     menu = tern.until(
         lambda: [
@@ -655,7 +708,11 @@ def test_remote_spaces_group_collapse_and_navigate_without_losing_local_tabs(ter
     assert remote["kind"] == "remote"
     assert remote["state"] == "connected"
     buttons = tern.ctl("tree", ".spaces-sidebar button")["nodes"]
-    labels = [node["text"] for node in buttons]
+    # Space names are plain rows, not buttons: order them with the machine headers by position.
+    names = tern.ctl("tree", ".space-name .sf-text")["nodes"]
+    labels = [
+        node["text"] for node in sorted(buttons + names, key=lambda node: node["rect"][1])
+    ]
     assert labels.index("local-space") < labels.index("▾ " + remote["name"])
     assert labels.index("▾ " + remote["name"]) < labels.index("remote-space")
     assert [node["text"] for node in tern.ctl("tree", ".space-index")["nodes"]] == [
@@ -888,7 +945,7 @@ def test_existing_native_spaces_and_tabs_stay_synchronized(tern, remote):
     assert tern.ctl("state")["tab_orientation"] == "horizontal"
     space = next(
         node
-        for node in tern.ctl("tree", ".space-name button")["nodes"]
+        for node in tern.ctl("tree", ".space-name .sf-text")["nodes"]
         if node["text"] == "Existing space"
     )
     x, y, width, height = space["rect"]
@@ -1033,10 +1090,10 @@ def test_native_agent_activity_survives_parking_and_aggregates_split_agents(tern
     name = "long-workspace-name-" * 6
     tern.lua(f"cx.sessions:rename({session},{json.dumps(name)})")
     tern.until(
-        lambda: tern.ctl("tree", ".space-name button")["nodes"][0]["text"] == name
+        lambda: tern.ctl("tree", ".space-name .sf-text")["nodes"][0]["text"] == name
     )
     marker = tern.until(lambda: indicator("working"))[0]["rect"]
-    button = tern.ctl("tree", ".space-name button")["nodes"][0]["rect"]
+    button = tern.ctl("tree", ".space-name .sf-text")["nodes"][0]["rect"]
     sidebar = tern.panel_tree()[0]["rect"]
     assert button[0] + button[2] <= marker[0]
     assert marker[0] + marker[2] <= sidebar[0] + sidebar[2]
@@ -1078,24 +1135,42 @@ def test_hidden_sidebars_keep_names_and_their_own_selection(tern, remote):
 
     def prepared_panels():
         result = tern.lua("""
-            local function buttons(node, selected, rows, current)
-                selected = selected or string.find(node.p.class or "", "space-row-current", 1, true) ~= nil
-                if node.k == "table" then
-                    for _, row in node.p.rows do
-                        for _, cell in row.cells do
-                            if not cell.button then continue end
-                            table.insert(rows, cell.button.text)
-                            if selected then table.insert(current, cell.button.act) end
-                        end
-                    end
+            local function text(node)
+                if node.k == "text" then
+                    local parts = {}
+                    for _, span in node.p.spans do table.insert(parts, span.t) end
+                    return table.concat(parts)
                 end
-                for _, child in node.c or {} do buttons(child, selected, rows, current) end
+                for _, child in node.c or {} do
+                    local found = text(child)
+                    if found then return found end
+                end
+                return nil
+            end
+            local function name(node)
+                if string.find(node.p.class or "", "space-name", 1, true) then return text(node) end
+                for _, child in node.c or {} do
+                    local found = name(child)
+                    if found then return found end
+                end
+                return nil
+            end
+            local function buttons(node, rows, current)
+                local class = node.p.class or ""
+                if string.find(class, "space-row", 1, true) then
+                    table.insert(rows, name(node))
+                    if string.find(class, "space-row-current", 1, true) then
+                        table.insert(current, node.p.actions.click)
+                    end
+                    return
+                end
+                for _, child in node.c or {} do buttons(child, rows, current) end
             end
             local result = {}
             for _, panel in cx.canvas:list() do
                 if panel.owner ~= "spaces" then continue end
                 local rows, current = {}, {}
-                buttons(cx.canvas:get(panel.pane).view, false, rows, current)
+                buttons(cx.canvas:get(panel.pane).view, rows, current)
                 table.insert(result, {tab=cx.session:tab_of(panel.pane), rows=rows, current=current})
             end
             return tern.json.encode(result)
